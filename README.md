@@ -1,7 +1,7 @@
 # The Unofficial Gunn Web App "gunn-web-app"
 The Gunn App was originally only available to [Android](https://github.com/RiceCakess/TheGunnApp) and [iOS](https://github.com/xaviloinaz/thegunnapp) users. Then recently it died.
 
-We ,nobody, want to fix that. But instead of limiting it to Android and iOS (also because we, nobody, don't know how to make the proper apps in Android and iOS), we're going to make it in plain HTML, CSS, and JS!
+We, nobody, want to fix that. But instead of limiting it to Android and iOS (also because we, nobody, don't know how to make the proper apps in Android and iOS), we're going to make it in plain HTML, CSS, and JS!
 
 The app will:
 
