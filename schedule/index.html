@@ -6,10 +6,6 @@
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style media="screen">
-      .modal-content .simplecolourpicker {
-        opacity: 1;
-        pointer-events: all;
-      }
       .input-field input[type=text]:focus + label {
         color: var(--colour) !important;
       }
@@ -29,14 +25,39 @@
       <a class="btn-floating btn-large red waves-effect waves-light waves-circle modal-trigger" href="#settings">
         <i class="large material-icons">settings</i>
       </a>
+      <ul>
+        <li><a class="btn-floating red modal-trigger" href="#about"><i class="material-icons">info</i></a></li>
+      </ul>
     </div>
     <div id="settings" class="modal modal-fixed-footer">
       <div class="modal-content">
         <h4>Settings</h4>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect btn-flat" id="dontsavesets">Cancel</a>
-        <a href="#!" class="modal-action modal-close waves-effect btn red" id="savesets">Done</a>
+        <a href="#!" class="modal-action modal-close waves-effect btn-flat" id="dontsavesets">Never mind</a>
+        <a href="#!" class="modal-action modal-close waves-effect btn red" id="savesets">Save</a>
+      </div>
+    </div>
+    <div id="about" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4>About</h4>
+        <p>This is an HTML5 schedule thingy. It's currently set on our school's constantly changing schedule of 2017-18, but you should be able to configure it yourself by modifying the code.</p>
+        <p>This is open sourced <a href="https://github.com/Orbiit/gunn-web-app">here on Github</a>.</p>
+        <h4>How to use properly</h4>
+        <p>This uses special cache magic so that it should probably work offline after you load this page once online. On some mobile devices you should be able to add this website to your home screen or something; do that and this will become a true web app!</p>
+        <p>This just shows today's schedule.</p>
+        <p>Click on the settings icon on the bottom-right corner to configure the names and colours of each period.</p>
+        <h4>Credits</h4>
+        <p><a href="http://jquery.com/">jQuery</a>; I forgot how useful you are. Unfortunately I forgot how to use you, so the JS is a complete mess.</p>
+        <p><a href="http://materializecss.com/">Materialize</a> because I was too lazy to do the CSS myself. Also because material design is cool.</p>
+        <p><a href="https://material.io/">Material Design</a> (made by the Google peoples) I suppose I should credit them?</p>
+        <p><a href="https://www.materialui.co/colors">Material UI</a> for their copy feature because the table Materialize had had spaces after the hex colour codes, which made copying the colours without the spaces a bit annoying (since double-clicking on a word/hex colour code selects the word/hex colour code and the space after it, if there is one).</p>
+        <p><a href="https://atom.io/">Atom</a> was used by me because I can.</p>
+        <p><a href="http://hardmath123.github.io/bellhop/">Bellhop</a> inspired this; it's still made better than this horrifying monstrosity. Unfortunately it is using last year's schedule.</p>
+        <p>TheGunnApp (<a href="https://itunes.apple.com/app/thegunnapp/id1141159201">iOS</a>, <a href="https://play.google.com/store/apps/details?id=xyz.dchen.thegunnapp">Android</a>) died, so I made this. Sorry.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect btn-flat">I see</a>
       </div>
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -119,7 +140,7 @@ schedule=[
 weekdays='Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' ');
 function settings(set) {
   if (set) {
-    $('.modal-content > div').each(function (i) {
+    $('#settings .modal-content > div').each(function (i) {
       this.querySelector('input').value=set[i].name;
       $(this).css('--colour','#'+colours[set[i].colour]);
       $(this.querySelector('a')).css('background-color','#'+colours[set[i].colour]);
@@ -128,7 +149,7 @@ function settings(set) {
     });
   } else {
     var periods=[];
-    $('.modal-content > div').each(function () {
+    $('#settings .modal-content > div').each(function () {
       periods.push({
         name:this.querySelector('input').value,
         colour:(t=>{
@@ -233,7 +254,7 @@ function createInput(period,defaultcolour='black',name='') {
       $('<label></label>').addClass('active').attr('for','period'+period).append('Period '+period)
     )
   );
-  $('.modal-content').append(b);
+  $('#settings .modal-content').append(b);
   $('body').append(
     $('<ul></ul>').attr('id','colour'+period).addClass('dropdown-content').append(...generateColours())
   );
