@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Sat Sep 02 2017 18:54:51 GMT-0700 (Pacific Daylight Time)
+# Sat Sep 02 2017 22:04:20 GMT-0700 (PDT)
 CACHE:
 index.html
 https://fonts.googleapis.com/icon?family=Material+Icons
@@ -10,3 +10,5 @@ https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/fonts/roboto/Roboto-L
 https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/fonts/roboto/Roboto-Medium.woff2
 https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/fonts/roboto/Roboto-Regular.woff2
 https://fonts.gstatic.com/s/materialicons/v29/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2
+favicon-32x32.png
+favicon-16x16.png
