@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# Sat Sep 02 2017 18:54:51 GMT-0700 (Pacific Daylight Time)
+# Sun Sep 03 2017 11:18:56 GMT-0700 (Pacific Daylight Time)
 CACHE:
 index.html
+main.js
 https://fonts.googleapis.com/icon?family=Material+Icons
 https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css
 https://code.jquery.com/jquery-3.2.1.min.js
