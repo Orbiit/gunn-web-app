@@ -1,0 +1,46 @@
+<!-- 
+Quick Schedule Fetcher using HTML/Javascipt
+Note: This is by no means final. This code desperately needs some CSS pizzaz and a theme to make it look good with a phone.
+-->
+
+<!DOCTYPE html>
+<html>
+
+<title>Gunn Web App</title>
+<body>
+
+<hr>
+<h1 id="Day"></h1>
+<br>
+<h2 id="Schedule"><h1>
+<hr>
+
+<script>
+var d = new Date();
+var weekday = new Array(7);
+weekday[0] =  "Sunday";
+weekday[1] = "Monday";
+weekday[2] = "Tuesday";
+weekday[3] = "Wednesday";
+weekday[4] = "Thursday";
+weekday[5] = "Friday";
+weekday[6] = "Saturday";
+
+var schedule = new Array(7);
+schedule[0] = "No School!";
+schedule[1] = "Period A (8:25-9:45)<br>Brunch (9:45-10:00)<br>Period B (10:00-11:15)<br>Period C (11:25-12:40)<br>Lunch (12:40-1:20)<br>Period F (1:20-2:35)";
+schedule[2] = "Period D (8:25-9:45)<br>Brunch (9:45-10:00)<br>FlexTime (10:00-10:50)<br>Period E (11:00-12:15)<br>Lunch (12:15-12:55)<br>Period A(12:55-2:15) <br>Period G (2:25-3:40)";
+schedule[3] = "Period B (8:25-9:50)<br>Brunch (9:50-10:05)<br>Period C (10:05-11:25)<br>Period D (11:35-12:55)<br>Lunch (12:55-1:35)<br>Period F (1:35-2:55)";
+schedule[4] = "Period E (8:25-9:50)<br>Brunch (9:50-10:05)<br>FlexTime (10:05-11:15)<br>Period B (11:30-12:35)<br>Lunch (12:45-1:15)<br>Period A (1:25-2:35)<br>Period G (2:45-3:35)";
+schedule[5] = "Period C (8:25-9:40)<br>Brunch (9:40-9:55)<br>Period D (9:55-11:05)<br>Period E (11:15-12:25)<br>Lunch (12:25-1:05)<br>Period F (1:05-2:15)<br>Period G (2:25-3:35)";
+schedule[6] = "No School!";
+
+var n = weekday[d.getDay()];
+document.getElementById("Day").innerHTML = n;
+
+var s = schedule[d.getDay()];
+document.getElementById("Schedule").innerHTML = s;
+</script>
+
+</body>
+
