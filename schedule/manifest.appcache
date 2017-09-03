@@ -1,0 +1,11 @@
+CACHE MANIFEST
+# 2015-12-08-18:14
+CACHE:
+index.html
+https://fonts.googleapis.com/icon?family=Material+Icons
+https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css
+https://code.jquery.com/jquery-3.2.1.min.js
+https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js
+https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/fonts/roboto/Roboto-Light.woff2
+https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/fonts/roboto/Roboto-Medium.woff2
+https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/fonts/roboto/Roboto-Regular.woff2
