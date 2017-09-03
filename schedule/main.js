@@ -227,6 +227,13 @@ $(document).ready(function(){
     options=settings();
     localStorage.setItem('[gunn-web-app] schedule.options',JSON.stringify(options));
     update();
+    update('tom1',1);
+    update('tom2',2);
+    update('tom3',3);
+    update('tom4',4);
+    update('tom5',5);
+    update('tom6',6);
+    update('tom7',7);
   });
   update();
   setTimeout(()=>{
