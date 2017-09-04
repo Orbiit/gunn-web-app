@@ -9,8 +9,6 @@ function code39(chars,canvaselem) {
   if (canvaselem&&canvaselem.tagName==='CANVAS') canvas=canvaselem;
   else canvas=document.createElement("canvas"),canvaselem=undefined;
   var c=canvas.getContext('2d');
-  canvas.height=100;
-  canvas.width=chars.length*16+31;
   try {
     canvas.style.imageRendering='optimizeSpeed';
     canvas.style.imageRendering='-moz-crisp-edges';
@@ -21,11 +19,13 @@ function code39(chars,canvaselem) {
   } catch (e) {
     console.log(e);
   }
+  chars='*'+chars.toUpperCase().replace(/[^A-Z0-9\-\. \+/\$%]/g,'')+'*';
+  canvas.height=100;
+  canvas.width=chars.length*16+31;
   if (canvaselem) c.clearRect(0,0,canvas.width,canvas.height);
   c.fillStyle='white';
   c.fillRect(0,0,canvas.width,canvas.height);
   c.fillStyle='black';
-  chars='*'+chars.toUpperCase().replace(/[^A-Z0-9\-\. \+/\$%]/g,'')+'*';
   for (var i=0,x=0;i<chars.length;i++) {
     var pattern=code39.values[chars[i]];
     for (var j=0;j<pattern.length;j++) switch (pattern[j]) {
