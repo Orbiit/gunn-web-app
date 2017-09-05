@@ -39,9 +39,21 @@
     function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 17,
-        center: {lat: 37.40125, lng: -122.133}
+        center: {lat: 37.400922, lng: -122.133584}
       });
-     }
+      map.setMapTypeId('satellite');
+       var imageBounds = {
+    north: 37.402294,
+    south: 37.398824,
+    east: -122.130923,
+    west: -122.136685
+  };
+
+  historicalOverlay = new google.maps.GroundOverlay(
+      'http://i.imgur.com/cnsWqDz.png',
+      imageBounds);
+  historicalOverlay.setMap(map);
+    }
     </script>
   </body>
 </html>
