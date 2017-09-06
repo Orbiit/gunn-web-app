@@ -2,8 +2,15 @@
 <html>
   <head>
     <title>Campus Map</title>
+    
+    <!-- Material Design stuff -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0/>
+    
     <style>
       body {
         max-width: 1000px;
@@ -24,6 +31,10 @@
   <body>
     <h1>Campus Map</h1>
     <div id="map"></div>
+                 
+    <!-- Material Design Stuff -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
     
     <!-- Maps API Key (i just generated one at random, feel free to make a new one if you want) -->
     <script async defer
@@ -54,7 +65,7 @@
       imageBounds);
   historicalOverlay.setMap(map);
     }
-    </script>
+    </script>                                                                                
   </body>
 </html>
 
