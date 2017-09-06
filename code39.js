@@ -21,7 +21,7 @@ function code39(chars,canvaselem) {
   }
   chars='*'+chars.toUpperCase().replace(/[^A-Z0-9\-\. \+/\$%]/g,'')+'*';
   canvas.height=100;
-  canvas.width=chars.length*16+31;
+  canvas.width=chars.length*16-1;
   if (canvaselem) c.clearRect(0,0,canvas.width,canvas.height);
   c.fillStyle='white';
   c.fillRect(0,0,canvas.width,canvas.height);
