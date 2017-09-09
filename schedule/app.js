@@ -32,13 +32,17 @@ function scheduleApp(options={}) {
     innerHTML=`<h2 class="dayname">${day}</h2><h3 class="date">${months[d.getMonth()]} ${d.getDate()}</h3>`;
     if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
       var sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()];
-      innerHTML+=`<span class="alternate">This is an alternate schedule. The school says, "${sched.description}"</span>`;
+      innerHTML+=`<span class="alternatemsg">This is an alternate schedule. The school says, "<strong>${sched.description}</strong>"</span>`;
       if (sched.periods.length) {
-        //
+        for (var period of sched.periods) {
+          // innerHTML+=`<div class="period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="periodname">${getPeriod(period.type).label}</span><span class="periodtimerange">${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span></div>`;
+        }
       } else innerHTML+=generateNoSchool();
     } else {
       if (options.normal[day]&&options.normal[day].length) {
-        for (var period of options.normal[day]) innerHTML+=`<div class="period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="periodname">${getPeriod(period.type).label}</span><span class="periodtimerange">${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span></div>`;
+        for (var period of options.normal[day]) {
+          innerHTML+=`<div class="period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="periodname">${getPeriod(period.type).label}</span><span class="periodtimerange">${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span></div>`;
+        }
       } else innerHTML+=generateNoSchool();
     }
     return innerHTML;
