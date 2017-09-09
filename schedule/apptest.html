@@ -8,8 +8,15 @@
     <style>
       body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
       body {
-        background-color: #eee;
         font-family: 'Roboto', sans-serif;
+      }
+      body.light {
+        background-color: #fafafa;
+        color: rgba(0,0,0,0.87);
+      }
+      body.dark {
+        background-color: #303030;
+        color: white;
       }
       #app {
         width: 100%;
@@ -23,6 +30,7 @@
         box-sizing: border-box;
         padding: 0 10px;
         font-size: 0;
+        line-height: 1.5;
       }
       .dayname {
         font-weight: normal;
@@ -37,11 +45,38 @@
         text-align: center;
         margin-bottom: 20px;
       }
-      .alternatemsg {
+      .alternatemsg, .noschool {
         font-size: 14px;
         text-align: center;
         display: block;
         color: rgba(0,0,0,0.5);
+      }
+      .dark .alternatemsg, .dark .noschool {
+        color: rgba(255,255,255,0.5);
+      }
+      .noschool {
+        margin-top: 15px;
+      }
+      .endingin {
+        font-size: 14px;
+      }
+      .periodprogress {
+        height: 4px;
+        background-color: rgba(0,0,0,0.2);
+        margin: 10px 0;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .dark .periodprogress {
+        background-color: rgba(255,255,255,0.2);
+      }
+      .periodprogress > div {
+        background-color: rgba(0,0,0,0.8);
+        height: 100%;
+        border-radius: 2px;
+      }
+      .dark .periodprogress > div {
+        background-color: rgba(255,255,255,0.8);
       }
       .period {
         margin: 14px 0;
@@ -50,16 +85,22 @@
         box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
         font-size: 14px;
       }
+      .dark .period {
+        background-color: rgba(255,255,255,0.3);
+      }
+      .period span {
+        display: block;
+      }
       .periodname {
         font-size: 24px;
         font-weight: 300;
-        display: block;
         margin-bottom: 8px;
       }
     </style>
   </head>
-  <body>
+  <body class="light">
     <div id="app"></div>
+    <button type="button" onclick="document.body.classList.contains('light')?document.body.classList.remove('light'):document.body.classList.add('light');document.body.classList.contains('dark')?document.body.classList.remove('dark'):document.body.classList.add('dark')">toggle light/dark theme</button>
     <script src="app.js" charset="utf-8"></script>
     <script type="text/javascript">
       var xmlHttp=new XMLHttpRequest(),alternates;
@@ -70,10 +111,7 @@
             scheduleApp({
               element:document.querySelector('#app'),
               periods:{
-                BEFORE_SCHOOL:{label:"School hasn't started yet"},
-                AFTER_SCHOOL:{label:"School's over!"},
-                BETWEEN_PERIODS:{label:"Passing period"},
-                NO_SCHOOL:{label:"No school today!",colour:"#F44336"},
+                NO_SCHOOL:{label:"No school today!"},
                 "Brunch":{label:"Brunch",colour:"#90a4ae"},
                 "Lunch":{label:"Lunch",colour:"#90a4ae"},
                 "Flex":{label:"Flex",colour:"#455a64"},
@@ -130,7 +168,9 @@
                   {type:'G',begin:'1425',end:'1535'}
                 ]
               },
-              alternates:alternates
+              alternates:alternates,
+              offset:0,
+              update:true
             });
           }
         }
