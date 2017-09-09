@@ -7,7 +7,7 @@ function scheduleApp(options={}) {
   if (!options.periods) options.periods={};
   if (!options.normal) options.normal={};
   function getPeriod(name) {
-    return options.periods[name]||{label:name,colour:"#bbb"};
+    return options.periods[name]||{label:name,colour:"#000"};
   }
   function getHumanTime(messytime) {
     return `${+messytime.slice(0,2)}:${messytime.slice(2)}`;
@@ -35,7 +35,7 @@ function scheduleApp(options={}) {
       innerHTML+=`<span class="alternatemsg">This is an alternate schedule. The school says, "<strong>${sched.description}</strong>"</span>`;
       if (sched.periods.length) {
         for (var period of sched.periods) {
-          // innerHTML+=`<div class="period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="periodname">${getPeriod(period.type).label}</span><span class="periodtimerange">${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span></div>`;
+          innerHTML+=`<div class="period" style="background-color:${getPeriod(period.name).colour};color:${getFontColour(getPeriod(period.name).colour)};"><span class="periodname">${getPeriod(period.name).label}</span><span class="periodtimerange">${period.start.hour}:${('0'+period.start.minute).slice(-2)} &ndash; ${period.end.hour}:${('0'+period.end.minute).slice(-2)}</span></div>`;
         }
       } else innerHTML+=generateNoSchool();
     } else {
