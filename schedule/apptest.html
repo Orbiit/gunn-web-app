@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Schedule App Test - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+      body {
+        background-color: #eee;
+        font-family: 'Roboto', sans-serif;
+      }
+      #app {
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        overflow: auto;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 0 10px;
+        font-size: 0;
+      }
+      .dayname {
+        font-weight: normal;
+        font-size: 60px;
+        margin: 0;
+        text-align: center;
+      }
+      .date {
+        font-weight: normal;
+        font-size: 20px;
+        margin: 0;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .period {
+        margin: 14px 0;
+        padding: 24px;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+        font-size: 14px;
+      }
+      .periodname {
+        font-size: 24px;
+        font-weight: 300;
+        display: block;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="app.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var xmlHttp=new XMLHttpRequest(),alternates;
+      xmlHttp.onreadystatechange=function(){
+        if (xmlHttp.readyState===4) {
+          if (xmlHttp.status===200) {
+            alternates=JSON.parse(xmlHttp.responseText);
+            scheduleApp({
+              element:document.querySelector('#app'),
+              periods:{
+                BEFORE_SCHOOL:{label:"School hasn't started yet"},
+                AFTER_SCHOOL:{label:"School's over!"},
+                BETWEEN_PERIODS:{label:"Passing period"},
+                NO_SCHOOL:{label:"No school today!",colour:"#F44336"},
+                "Brunch":{label:"Brunch",colour:"#90a4ae"},
+                "Lunch":{label:"Lunch",colour:"#90a4ae"},
+                "Flex":{label:"Flex",colour:"#455a64"},
+                "A":{label:"Period_A",colour:"#f44336"},
+                "B":{label:"Period_B",colour:"#2196F3"},
+                "C":{label:"Period_C",colour:"#FFEB3B"},
+                "D":{label:"Period_D",colour:"#795548"},
+                "E":{label:"Period_E",colour:"#FF9800"},
+                "F":{label:"Period_F",colour:"#9C27B0"},
+                "G":{label:"Period_G",colour:"#4CAF50"}
+              },
+              normal:{
+                Monday:[
+                  {type:'A',begin:'0825',end:'0945'},
+                  {type:'Brunch',begin:'0945',end:'1000'},
+                  {type:'B',begin:'1000',end:'1115'},
+                  {type:'C',begin:'1125',end:'1240'},
+                  {type:'Lunch',begin:'1240',end:'1320'},
+                  {type:'F',begin:'1320',end:'1435'}
+                ],
+                Tuesday:[
+                  {type:'D',begin:'0825',end:'0945'},
+                  {type:'Brunch',begin:'0945',end:'1000'},
+                  {type:'Flex',begin:'1000',end:'1050'},
+                  {type:'E',begin:'1100',end:'1215'},
+                  {type:'Lunch',begin:'1215',end:'1255'},
+                  {type:'A',begin:'1255',end:'1415'},
+                  {type:'G',begin:'1425',end:'1540'}
+                ],
+                Wednesday:[
+                  {type:'B',begin:'0825',end:'0950'},
+                  {type:'Brunch',begin:'0950',end:'1005'},
+                  {type:'C',begin:'1005',end:'1125'},
+                  {type:'D',begin:'1135',end:'1255'},
+                  {type:'Lunch',begin:'1255',end:'1335'},
+                  {type:'F',begin:'1335',end:'1455'},
+                ],
+                Thursday:[
+                  {type:'E',begin:'0825',end:'0950'},
+                  {type:'Brunch',begin:'0950',end:'1005'},
+                  {type:'Flex',begin:'1005',end:'1055'},
+                  {type:'B',begin:'1105',end:'1215'},
+                  {type:'Lunch',begin:'1215',end:'1255'},
+                  {type:'A',begin:'1255',end:'1405'},
+                  {type:'G',begin:'1415',end:'1535'},
+                ],
+                Friday:[
+                  {type:'C',begin:'0825',end:'0940'},
+                  {type:'Brunch',begin:'0940',end:'0955'},
+                  {type:'D',begin:'0955',end:'1105'},
+                  {type:'E',begin:'1115',end:'1225'},
+                  {type:'Lunch',begin:'1225',end:'1305'},
+                  {type:'F',begin:'1305',end:'1415'},
+                  {type:'G',begin:'1425',end:'1535'}
+                ]
+              },
+              alternates:alternates
+            });
+          }
+        }
+      };
+      xmlHttp.open("GET","https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json",true);
+      xmlHttp.send(null);
+    </script>
+  </body>
+</html>
