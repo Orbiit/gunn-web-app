@@ -32,7 +32,6 @@ function scheduleApp(options={}) {
   function generateDay(offset=0) {
     var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
-    checkfuture=true; // TEMPORARY
     day=days[d.getDay()];
     innerHTML=`<h2 class="dayname">${day}</h2><h3 class="date">${months[d.getMonth()]} ${d.getDate()}</h3>`;
     if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
@@ -82,17 +81,31 @@ function scheduleApp(options={}) {
     }
     return innerHTML;
   }
-  var returnval={element:elem};
-  if (options.update) {
-    var t;
-    function update() {
-      container.innerHTML=generateDay(options.offset||0);
+  if (!options.offset) options.offset=0;
+  var returnval={
+    element:elem,
+    update() {
+      container.innerHTML=generateDay(options.offset);
+      clearTimeout(timeout);
+      timeout=setTimeout(returnval.update,(60-new Date().getSeconds())*1000);
+    },
+    stopupdate() {
       clearTimeout(t);
-      t=setTimeout(update,(60-new Date().getSeconds())*1000);
+    },
+    get offset() {return options.offset},
+    set offset(o) {
+      options.offset=o;
+      container.innerHTML=generateDay(options.offset);
+    },
+    setPeriod(id,name,colour) {
+      if (name) options.periods[id].label=name;
+      if (colour) options.periods[id].colour=colour;
+      container.innerHTML=generateDay(options.offset);
     }
-    update();
-    returnval.stopUpdate=()=>clearTimeout(t);
-  } else container.innerHTML=generateDay(options.offset||0);
+  };
+  var timeout;
+  if (options.update) returnval.update();
+  else container.innerHTML=generateDay(options.offset);
   elem.appendChild(container);
-  return elem;
+  return returnval;
 }

@@ -68,8 +68,8 @@ class ColourPicker {
     ColourPicker.css(this.window)`opacity:1` `pointer-events:all`;
     if (src) {
       var rect=src.getBoundingClientRect(),windowrect=this.window.getBoundingClientRect();
-      this.window.style.top=(rect.bottom+windowrect.height>window.innerHeight?rect.top-windowrect.height:rect.bottom)+'px';
-      this.window.style.left=(rect.left+windowrect.width>window.innerWidth?rect.right-windowrect.width:rect.left)+'px';
+      this.window.style.top=(rect.bottom+windowrect.height>window.innerHeight?(rect.top-windowrect.height<0?0:rect.top-windowrect.height):rect.bottom)+'px';
+      this.window.style.left=(rect.left+windowrect.width>window.innerWidth?(rect.right-windowrect.width<0?0:rect.right-windowrect.width):rect.left)+'px';
     }
     var dismiss=e=>{
       if (!this.window.contains(e.target)&&e.target!==src) {
