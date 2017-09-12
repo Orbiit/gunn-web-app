@@ -23,10 +23,10 @@ try {
   document.addEventListener("touchstart",e=>{
     try {
       var s='';
-      for (var t of e.changedTouches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)} rx ${t.radiusX} rot ${t.rotationAngle}`;
+      for (var i=0;i<e.changedTouches.length;i++) s+=`x ${Math.round(e.changedTouches[i].clientX)} y ${Math.round(e.changedTouches[i].clientY)} rx ${e.changedTouches[i].radiusX} rot ${e.changedTouches[i].rotationAngle}`;
       p.innerHTML=`<strong>touchstart</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length} ${s}`;
       s='';
-      for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
+      for (var i=0;i<e.touches.length;i++) s+=`x ${Math.round(e.touches[i].clientX)} y ${Math.round(e.touches[i].clientY)}; `;
       pppp.innerHTML=s;
       e.preventDefault();
     } catch (e) {alert(e);}
@@ -34,10 +34,10 @@ try {
   document.addEventListener("touchmove",e=>{
     try {
       var s='';
-      for (var t of e.changedTouches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)} rx ${t.radiusX} rot ${t.rotationAngle}`;
+      for (var i=0;i<e.changedTouches.length;i++) s+=`x ${Math.round(e.changedTouches[i].clientX)} y ${Math.round(e.changedTouches[i].clientY)} rx ${e.changedTouches[i].radiusX} rot ${e.changedTouches[i].rotationAngle}`;
       pp.innerHTML=`<strong>touchmove</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length} ${s}`;
       s='';
-      for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
+      for (var i=0;i<e.touches.length;i++) s+=`x ${Math.round(e.touches[i].clientX)} y ${Math.round(e.touches[i].clientY)}; `;
       pppp.innerHTML=s;
       e.preventDefault();
     } catch (e) {alert(e);}
@@ -46,7 +46,7 @@ try {
     try {
       ppp.innerHTML=`<strong>touchend</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length}`;
       s='';
-      for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
+      for (var i=0;i<e.touches.length;i++) s+=`x ${Math.round(e.touches[i].clientX)} y ${Math.round(e.touches[i].clientY)}; `;
       pppp.innerHTML=s;
       e.preventDefault();
     } catch (e) {alert(e);}
