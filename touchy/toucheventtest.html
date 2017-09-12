@@ -10,40 +10,48 @@
   </head>
   <body>
     <h1>Touch Event Test</h1>
-    <p id='p'></p>
-    <p id='pp'></p>
-    <p id='ppp'></p>
-    <p id='pppp'></p>
+    <p id='p'>START</p>
+    <p id='pp'>MOVE</p>
+    <p id='ppp'>END</p>
+    <p id='pppp'>POSIES</p>
     <script type="text/javascript">
-var p=document.querySelector('#p'),
-pp=document.querySelector('#pp'),
-ppp=document.querySelector('#ppp'),
-pppp=document.querySelector('#pppp');
-document.addEventListener("touchstart",e=>{
-  var s='';
-  for (var t of e.changedTouches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)} rx ${t.radiusX} rot ${t.rotationAngle}`;
-  p.innerHTML=`<strong>touchstart</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length} ${s}`;
-  s='';
-  for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
-  pppp.innerHTML=s;
-  e.preventDefault();
-},{passive:false});
-document.addEventListener("touchmove",e=>{
-  var s='';
-  for (var t of e.changedTouches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)} rx ${t.radiusX} rot ${t.rotationAngle}`;
-  pp.innerHTML=`<strong>touchmove</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length} ${s}`;
-  s='';
-  for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
-  pppp.innerHTML=s;
-  e.preventDefault();
-},{passive:false});
-document.addEventListener("touchend",e=>{
-  ppp.innerHTML=`<strong>touchend</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length}`;
-  s='';
-  for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
-  pppp.innerHTML=s;
-  e.preventDefault();
-},{passive:false});
+try {
+  var p=document.querySelector('#p'),
+  pp=document.querySelector('#pp'),
+  ppp=document.querySelector('#ppp'),
+  pppp=document.querySelector('#pppp');
+  document.addEventListener("touchstart",e=>{
+    try {
+      var s='';
+      for (var t of e.changedTouches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)} rx ${t.radiusX} rot ${t.rotationAngle}`;
+      p.innerHTML=`<strong>touchstart</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length} ${s}`;
+      s='';
+      for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
+      pppp.innerHTML=s;
+      e.preventDefault();
+    } catch (e) {alert(e);}
+  },{passive:false});
+  document.addEventListener("touchmove",e=>{
+    try {
+      var s='';
+      for (var t of e.changedTouches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)} rx ${t.radiusX} rot ${t.rotationAngle}`;
+      pp.innerHTML=`<strong>touchmove</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length} ${s}`;
+      s='';
+      for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
+      pppp.innerHTML=s;
+      e.preventDefault();
+    } catch (e) {alert(e);}
+  },{passive:false});
+  document.addEventListener("touchend",e=>{
+    try {
+      ppp.innerHTML=`<strong>touchend</strong> changedTouches ${e.changedTouches.length} touches ${e.touches.length}`;
+      s='';
+      for (var t of e.touches) s+=`x ${Math.round(t.clientX)} y ${Math.round(t.clientY)}; `;
+      pppp.innerHTML=s;
+      e.preventDefault();
+    } catch (e) {alert(e);}
+  },{passive:false});
+} catch (e) {alert(e);}
     </script>
   </body>
 </html>
