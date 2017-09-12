@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Zoom Test - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+      img {
+        border: 1px solid black;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Zoom Test</h1>
+    <img src="../schedule/apple-touch-icon.png" alt="bleh" id="img">
+    <script type="text/javascript">
+var img=document.querySelector('#img'),dragging=false,currentScale=1;
+Math.hypot=Math.hypot||function (...x) {
+  var sum=0;
+  for (var i=0;i<x.length;i++) sum+=x[i]*x[i];
+  return Math.sqrt(sum);
+};
+document.addEventListener("touchstart",e=>{
+  if (dragging) {
+    if (dragging==="waitingforpoint") {
+      dragging={
+        initdist:Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY),
+        initscale:currentScale
+      };
+    }
+  } else {
+    dragging='waitingforpoint';
+  }
+  e.preventDefault();
+},{passive:false});
+document.addEventListener("touchmove",e=>{
+  if (dragging&&dragging!=="waitingforpoint") {
+    currentScale=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)/dragging.initdist*dragging.initscale;
+    img.style.transform=`scale(${currentScale})`;
+  }
+  e.preventDefault();
+},{passive:false});
+document.addEventListener("touchend",e=>{
+  dragging=false;
+  e.preventDefault();
+},{passive:false});
+    </script>
+  </body>
+</html>

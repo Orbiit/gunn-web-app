@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Angle from points - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+    </style>
+  </head>
+  <body>
+    <h1>Angle from points</h1>
+    <p>move mouse AROUND</p>
+    <p>imagine a line from the middle of the page to your cursor. mm hmm. credit to <a href="https://scratch.mit.edu/projects/84576472/">chooper100 on Scratch</a></p>
+    <script type="text/javascript">
+var p=document.querySelector('p');
+document.addEventListener("mousemove",e=>{
+  var x=e.clientX-innerWidth/2,
+  y=innerHeight/2-e.clientY;
+  p.innerHTML=`${Math.round(Math.atan(x/y)/Math.PI*180+180*(y<0))}&deg;`;
+},false);
+    </script>
+  </body>
+</html>

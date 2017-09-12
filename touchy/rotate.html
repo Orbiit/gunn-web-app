@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rotate and Zoom Test - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+      body {
+        overflow: hidden;
+      }
+      img {
+        border: 1px solid black;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Rotate and Zoom Test</h1>
+    <p><strong>with two fingers</strong> you can pan, roate, and zoom!</p>
+    <p>and with just one finger all you can do is pan.</p>
+    <p><strong>with a cursor</strong>... all you can really do is pan. lol</p>
+    <p>you can use a scroll wheel to zoom though</p>
+    <p>we can also have a thing that lets you select the direction</p>
+    <img src="../schedule/apple-touch-icon.png" alt="bleh" id="img">
+    <script type="text/javascript">
+var img=document.querySelector('#img'),dragging=false,currentScale=1,currentRotate=0,translate={x:0,y:0};
+Math.hypot=Math.hypot||function (...x) {
+  var sum=0;
+  for (var i=0;i<x.length;i++) sum+=x[i]*x[i];
+  return Math.sqrt(sum);
+};
+document.addEventListener("touchstart",e=>{
+  if (dragging) {
+    if (dragging.fingers===1) {
+      var x=e.touches[0].clientX-e.touches[1].clientX,
+      y=e.touches[1].clientY-e.touches[0].clientY;
+      dragging={
+        fingers:2,
+        initangle:Math.atan(x/y)/Math.PI*180+180*(y<0),
+        initrot:currentRotate,
+        initdist:Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY),
+        initscale:currentScale,
+        initmidx:(e.touches[0].clientX+e.touches[1].clientX)/2,
+        initmidy:(e.touches[0].clientY+e.touches[1].clientY)/2,
+        initposx:translate.x,
+        initposy:translate.y
+      };
+    }
+  } else {
+    dragging={
+      fingers:1,
+      initx:e.touches[0].clientX,
+      inity:e.touches[0].clientY,
+      initposx:translate.x,
+      initposy:translate.y
+    };
+  }
+  e.preventDefault();
+},{passive:false});
+document.addEventListener("touchmove",e=>{
+  if (dragging) {
+    if (dragging.fingers===2) {
+      var x=e.touches[0].clientX-e.touches[1].clientX,
+      y=e.touches[1].clientY-e.touches[0].clientY;
+      currentRotate=dragging.initrot+Math.atan(x/y)/Math.PI*180+180*(y<0)-dragging.initangle;
+      currentScale=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)/dragging.initdist*dragging.initscale;
+      translate={
+        x:(e.touches[0].clientX+e.touches[1].clientX)/2-dragging.initmidx+dragging.initposx,
+        y:(e.touches[0].clientY+e.touches[1].clientY)/2-dragging.initmidy+dragging.initposy
+      };
+      img.style.transform=`translate(${translate.x}px,${translate.y}px) rotate(${currentRotate}deg) scale(${currentScale})`;
+    } else if (dragging.fingers===1) {
+      translate={
+        x:e.touches[0].clientX-dragging.initx+dragging.initposx,
+        y:e.touches[0].clientY-dragging.inity+dragging.initposy
+      };
+      img.style.transform=`translate(${translate.x}px,${translate.y}px) rotate(${currentRotate}deg) scale(${currentScale})`;
+    }
+  }
+  e.preventDefault();
+},{passive:false});
+document.addEventListener("touchend",e=>{
+  dragging=false;
+  e.preventDefault();
+},{passive:false});
+document.addEventListener("mousedown",e=>{
+  if (!dragging) dragging={
+    initx:e.clientX,
+    inity:e.clientY,
+    initposx:translate.x,
+    initposy:translate.y
+  };
+  e.preventDefault();
+},false);
+document.addEventListener("mousemove",e=>{
+  if (dragging) {
+    translate={
+      x:e.clientX-dragging.initx+dragging.initposx,
+      y:e.clientY-dragging.inity+dragging.initposy
+    };
+    img.style.transform=`translate(${translate.x}px,${translate.y}px) rotate(${currentRotate}deg) scale(${currentScale})`;
+  }
+  e.preventDefault();
+},false);
+document.addEventListener("mouseup",e=>{
+  dragging=false;
+  e.preventDefault();
+},false);
+document.addEventListener("wheel",e=>{
+  if (e.deltaY<0) currentScale*=-e.deltaY/1000+1;
+  else if (e.deltaY>0) currentScale/=e.deltaY/1000+1;
+  img.style.transform=`translate(${translate.x}px,${translate.y}px) rotate(${currentRotate}deg) scale(${currentScale})`;
+},false);
+    </script>
+  </body>
+</html>
