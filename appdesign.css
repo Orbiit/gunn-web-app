@@ -43,7 +43,9 @@ body.dark #footer {
   box-sizing: border-box;
   overflow: hidden;
   transition: all .2s;
+  -webkit-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: none;
 }
 body.light #footer ul li {
   color: rgba(0,0,0,0.54);
