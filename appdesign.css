@@ -1,6 +1,9 @@
 * {
   -webkit-tap-highlight-color: transparent;
 }
+:focus {
+  outline: none;
+}
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -9,10 +12,49 @@ body {
 }
 body.light {
   background-color: #fafafa;
+  color: rgba(0,0,0,0.87);
 }
 body.dark {
   background-color: #303030;
+  color: white;
 }
+
+.section {
+  display: none;
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  bottom: 56px;
+  left: 0;
+  right: 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.section h1 {
+  font-size: 20px;
+  font-weight: normal;
+}
+.section p {
+  font-size: 14px;
+}
+.footer-map .section.map {
+  display: block;
+}
+.footer-events .section.events {
+  display: block;
+}
+.footer-schedule .section.schedule {
+  display: block;
+}
+.footer-staff .section.staff {
+  display: block;
+}
+.footer-barcode .section.barcode {
+  display: block;
+}
+
 #footer {
   box-shadow: 0 0 4px rgba(0,0,0,0.3);
   position: fixed;
@@ -88,9 +130,28 @@ div.ripple {
   border-radius: 50%;
   z-index: -1;
 }
+div.ripple.ripple-focus {
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: scale(1);
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+@keyframes pulse {
+  from {transform: scale(1.05);}
+  to {transform: scale(0.95);}
+}
 body.light div.ripple {
   background-color: rgba(0,0,0,0.2);
 }
 body.dark div.ripple {
-  background-color: rgba(255,255,255,0.45);
+  background-color: rgba(255,255,255,0.3);
+}
+body.light div.ripple.ripple-focus {
+  background-color: rgba(0,0,0,0.05);
+}
+body.dark div.ripple.ripple-focus {
+  background-color: rgba(255,255,255,0.05);
 }
