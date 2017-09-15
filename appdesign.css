@@ -1,3 +1,6 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -45,7 +48,6 @@ body.dark #footer {
   transition: all .2s;
   -webkit-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 body.light #footer ul li {
   color: rgba(0,0,0,0.54);
