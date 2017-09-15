@@ -8,44 +8,91 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="appdesign.css">
   </head>
-  <body class="light">
+  <body class="dark footer-schedule">
     <div class="section map">
-      <h1>map</h1>
+      <h1>Map</h1>
+      <p>map goes here</p>
+    </div>
+    <div class="section events">
+      <h1>Upcoming Events</h1>
+      <p>events goes here</p>
+    </div>
+    <div class="section schedule">
+      <h1>Schedule</h1>
+      <p>schedule goes here</p>
+    </div>
+    <div class="section staff">
+      <h1>Staff list</h1>
+      <p>list goes here</p>
+    </div>
+    <div class="section barcode">
+      <h1>Flex time barcode generator</h1>
+      <p>barcode goes here</p>
     </div>
     <div id="footer">
       <ul>
-        <li><i class="material-icons">map</i><span>Map</span></li>
-        <li><i class="material-icons">event</i><span>Events</span></li>
-        <li class="active"><i class="material-icons">schedule</i><span>Schedule</span></li>
-        <li><i class="material-icons">people</i><span>Staff</span></li>
-        <li><i class="material-icons">code</i><span>Barcode</span></li>
+        <li tabindex="0"><i class="material-icons">map</i><span>Map</span></li>
+        <li tabindex="0"><i class="material-icons">event</i><span>Events</span></li>
+        <li class="active" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
+        <li tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
+        <li tabindex="0"><i class="material-icons">code</i><span>Barcode</span></li>
       </ul>
     </div>
     <script type="text/javascript">
-      function ripple(elem,x,y) {
-        var r=document.createElement("div"),
-        rect=elem.getBoundingClientRect();
-        r.classList.add('ripple');
-        r.style.left=(x-rect.left)+'px';
-        r.style.top=(y-rect.top)+'px';
-        elem.appendChild(r);
-        var start=new Date().getTime(),
-        dest=Math.max(rect.width,rect.height)/10;
-        function updateScale() {
-          var elapsed=(new Date().getTime()-start)/500;
-          if (elapsed>1) {
-            elem.removeChild(r);
-            r=null;
-          } else {
-            r.style.transform=`scale(${elapsed*dest})`;
-            r.style.opacity=1-elapsed;
-            window.requestAnimationFrame(updateScale);
+      function ripple(elem) {
+        function mousedown(x,y) {
+          var r=document.createElement("div"),
+          rect=elem.getBoundingClientRect();
+          r.classList.add('ripple');
+          r.style.left=(x-rect.left)+'px';
+          r.style.top=(y-rect.top)+'px';
+          elem.appendChild(r);
+          var start=new Date().getTime(),
+          dest=Math.max(rect.width,rect.height)/10,
+          fade=false,fadestart;
+          function updateScale() {
+            var elapsed=(new Date().getTime()-start)/500,
+            fadeelapsed=(new Date().getTime()-fadestart)/500;
+            if (fade&&fadeelapsed>1) {
+              elem.removeChild(r);
+              r=null;
+            } else {
+              r.style.transform=`scale(${elapsed*dest})`;
+              if (fadeelapsed) r.style.opacity=1-fadeelapsed;
+              else r.style.opacity=1;
+              window.requestAnimationFrame(updateScale);
+            }
           }
+          function mouseup() {
+            fade=true,fadestart=new Date().getTime();
+            document.removeEventListener('mouseup',mouseup,false);
+            document.removeEventListener('touchend',mouseup,false);
+          }
+          window.requestAnimationFrame(updateScale);
+          document.addEventListener('mouseup',mouseup,false);
+          document.addEventListener('touchend',mouseup,false);
         }
-        window.requestAnimationFrame(updateScale);
+        elem.addEventListener("mousedown",e=>{
+          mousedown(e.clientX,e.clientY);
+        },false);
+        elem.addEventListener("touchstart",e=>{
+          mousedown(e.touches[0].clientX,e.touches[0].clientY);
+        },false);
+        var focusblob=document.createElement('div');
+        focusblob.classList.add('ripple');
+        focusblob.classList.add('ripple-focus');
+        /* elem.addEventListener("focus",e=>{
+          var rect=elem.getBoundingClientRect();
+          focusblob.style.width=focusblob.style.height=(Math.max(rect.width,rect.height)*0.8)+'px';
+          elem.appendChild(focusblob);
+        },false);
+        elem.addEventListener("blur",e=>{
+          elem.removeChild(focusblob);
+        },false); */
       }
+      for (var t of document.querySelectorAll('#footer > ul > li')) ripple(t);
       var ul=document.querySelector('#footer > ul');
-      ul.addEventListener("click",e=>{
+      function ulclick(e) {
         if (e.target!==ul&&ul.contains(e.target)) {
           var t=ul.querySelector('.active');
           if (t) {
@@ -56,8 +103,11 @@
           while (n.tagName!=="LI") n=e.target.parentNode;
           n.classList.add('active');
           document.body.classList.add('footer-'+n.children[1].textContent.toLowerCase());
-          ripple(n,e.clientX,e.clientY);
         }
+      }
+      ul.addEventListener("click",ulclick,false);
+      ul.addEventListener("keydown",e=>{
+        if (e.keyCode===13) ulclick(e);
       },false);
     </script>
   </body>
