@@ -5,14 +5,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="appdesign.css">
   </head>
   <body class="light">
+    <div class="section map">
+      <h1>map</h1>
+    </div>
     <div id="footer">
       <ul>
-        <li><i class="material-icons">map</i></li>
-        <li><i class="material-icons">schedule</i></li>
+        <li><i class="material-icons">map</i><span>Map</span></li>
+        <li><i class="material-icons">event</i><span>Events</span></li>
+        <li class="active"><i class="material-icons">schedule</i><span>Schedule</span></li>
+        <li><i class="material-icons">people</i><span>Staff</span></li>
+        <li><i class="material-icons">code</i><span>Barcode</span></li>
       </ul>
     </div>
+    <script type="text/javascript">
+      function ripple(elem,x,y) {
+        var r=document.createElement("div"),
+        rect=elem.getBoundingClientRect();
+        r.classList.add('ripple');
+        r.style.left=(x-rect.left)+'px';
+        r.style.top=(y-rect.top)+'px';
+        elem.appendChild(r);
+        var start=new Date().getTime(),
+        dest=Math.max(rect.width,rect.height)/10;
+        function updateScale() {
+          var elapsed=(new Date().getTime()-start)/500;
+          if (elapsed>1) {
+            elem.removeChild(r);
+            r=null;
+          } else {
+            r.style.transform=`scale(${elapsed*dest})`;
+            r.style.opacity=1-elapsed;
+            window.requestAnimationFrame(updateScale);
+          }
+        }
+        window.requestAnimationFrame(updateScale);
+      }
+      var ul=document.querySelector('#footer > ul');
+      ul.addEventListener("click",e=>{
+        if (e.target!==ul&&ul.contains(e.target)) {
+          var t=ul.querySelector('.active');
+          if (t) {
+            t.classList.remove('active');
+            document.body.classList.remove('footer-'+t.children[1].textContent.toLowerCase());
+          }
+          var n=e.target;
+          while (n.tagName!=="LI") n=e.target.parentNode;
+          n.classList.add('active');
+          document.body.classList.add('footer-'+n.children[1].textContent.toLowerCase());
+          ripple(n,e.clientX,e.clientY);
+        }
+      },false);
+    </script>
   </body>
 </html>
