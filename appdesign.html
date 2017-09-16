@@ -63,17 +63,19 @@
               window.requestAnimationFrame(updateScale);
             }
           }
-          function mouseup() {
+          function mouseup(e) {
             fade=true,fadestart=new Date().getTime();
             document.removeEventListener('mouseup',mouseup,false);
             document.removeEventListener('touchend',mouseup,false);
+            lasttap=new Date().getTime();
           }
           window.requestAnimationFrame(updateScale);
           document.addEventListener('mouseup',mouseup,false);
           document.addEventListener('touchend',mouseup,false);
         }
+        var lasttap;
         elem.addEventListener("mousedown",e=>{
-          mousedown(e.clientX,e.clientY);
+          if (new Date().getTime()-lasttap>100) mousedown(e.clientX,e.clientY);
         },false);
         elem.addEventListener("touchstart",e=>{
           mousedown(e.touches[0].clientX,e.touches[0].clientY);
