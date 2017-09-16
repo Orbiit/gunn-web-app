@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>get coord of image - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+      #input {
+        position: fixed;
+        top: 0;
+      }
+      #input2 {
+        position: fixed;
+        bottom: 0;
+      }
+      div {
+        position: absolute;
+        height: 2px;
+        width: 2px;
+        margin-left: -1px;
+        margin-top: -1px;
+        background-color: red;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>get coord of image</h1>
+    <p>click on image</p>
+    <input type="text" id="input">
+    <img src="gunnmap.png" id="img">
+    <input type="text" id="input2">
+    <script type="text/javascript">
+      window.onload=e=>{
+        var img=document.querySelector('#img'),
+        rect=img.getBoundingClientRect(),
+        i1=document.querySelector('#input'),
+        i2=document.querySelector('#input2');
+        console.log(rect);
+        img.addEventListener("click",e=>{
+          i1.value=`${Math.round((e.pageX-rect.left)*10)/10} ${Math.round((e.pageY-rect.top)*10)/10}`;
+          i2.value=`x="${Math.round((e.pageX-rect.left)*10)/10}" y="${Math.round((e.pageY-rect.top)*10)/10}"`;
+          i2.focus();
+          var t=document.createElement("div");
+          t.style.left=`${e.pageX}px`;
+          t.style.top=`${e.pageY}px`;
+          document.body.appendChild(t);
+        },false);
+      };
+    </script>
+  </body>
+</html>
