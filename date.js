@@ -60,6 +60,8 @@ class DatePicker {
       if (e.target.classList.contains('datepicker-day')&&e.target.dataset.notinrange!=='true') this.day={d:+e.target.dataset.date,m:+e.target.dataset.month,y:+e.target.dataset.year};
     },false);
     this.wrapper.appendChild(this.dates);
+    var d=new Date();
+    this.dates.querySelector(`.datepicker-day[data-date="${d.getDate()}"][data-month="${d.getMonth()}"][data-year="${d.getFullYear()}"]`).classList.add('datepicker-today');
   }
   get day() {return this.selected;}
   set day(day) {
@@ -72,6 +74,7 @@ class DatePicker {
       this.selectedelem=null;
       this.selected=null;
     }
+    if (this.onchange) this.onchange(day);
   }
   static css(elem) {
     function setCSS([declaration]) {

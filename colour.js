@@ -146,13 +146,6 @@ class ColourPicker {
     }
     return setCSS;
   }
-  static test(elem) {
-    function setCSS(...bleh) {
-      console.log(bleh);
-      return setCSS;
-    }
-    return setCSS;
-  }
   // ranges: 255, 360, 100 (figure out what that means yourself)
   static SVtoSL(s,v) {
     s/=100,v/=100;

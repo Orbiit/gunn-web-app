@@ -51,7 +51,7 @@ body.dark {
 .footer-staff .section.staff {
   display: block;
 }
-.footer-barcode .section.barcode {
+.footer-options .section.options {
   display: block;
 }
 
@@ -128,7 +128,7 @@ div.ripple {
   transform: scale(0);
   pointer-events: none;
   border-radius: 50%;
-  z-index: -1;
+  /*z-index: -1;*/
 }
 div.ripple.ripple-focus {
   margin: auto;
@@ -143,15 +143,242 @@ div.ripple.ripple-focus {
   from {transform: scale(1.05);}
   to {transform: scale(0.95);}
 }
-body.light div.ripple {
+body.light div.ripple:not(.ripple-light), body div.ripple.ripple-dark {
   background-color: rgba(0,0,0,0.2);
 }
-body.dark div.ripple {
+body.dark div.ripple:not(.ripple-dark), body div.ripple.ripple-light {
   background-color: rgba(255,255,255,0.3);
 }
-body.light div.ripple.ripple-focus {
+body.light div.ripple.ripple-focus:not(.ripple-light), body div.ripple.ripple-dark.ripple-focus {
   background-color: rgba(0,0,0,0.05);
 }
-body.dark div.ripple.ripple-focus {
+body.dark div.ripple.ripple-focus:not(.ripple-dark), body div.ripple.ripple-light.ripple-focus {
   background-color: rgba(255,255,255,0.05);
+}
+button.material {
+  text-transform: uppercase;
+  font-size: 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  display: inline-block;
+  position: relative;
+  height: 36px;
+  border-radius: 2px;
+  font-weight: bold;
+  padding: 0 16px;
+}
+body.light button.material {
+  color: rgba(0,0,0,0.87);
+}
+body.dark button.material {
+  color: white;
+}
+
+.datepicker-wrapper {
+  position: fixed;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50vh;
+  width: 210px;
+  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  padding: 24px;
+  border-radius: 2px;
+  line-height: 1;
+  padding-top: 64px;
+  transition: all .2s;
+}
+.datepicker-wrapper.hide {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-5px);
+}
+body.light .datepicker-wrapper {
+  background-color: #FFFFFF;
+}
+body.dark .datepicker-wrapper {
+  background-color: #424242;
+}
+.datepicker-dayheadings {
+  background-color: inherit;
+  padding: 24px;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  font-size: 20px;
+  height: 64px;
+}
+body.light .datepicker-dayheadings {
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.05);
+}
+body.dark .datepicker-dayheadings {
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+.datepicker-days {
+  padding-top: 20px;
+}
+body.light .datepicker-monthalt:not(.datepicker-selected) {
+  background-color: rgba(0,0,0,0.05);
+}
+body.dark .datepicker-monthalt:not(.datepicker-selected) {
+  background-color: rgba(255,255,255,0.03);
+}
+.datepicker-month {
+  font-size: 50px;
+  display: block;
+  text-align: center;
+  width: 100%;
+  font-weight: 300;
+}
+body.light .datepicker-month {
+  color: rgba(0,0,0,0.3);
+}
+body.dark .datepicker-month {
+  color: rgba(255,255,255,0.2);
+}
+.datepicker-day {
+  cursor: pointer;
+  height: 14px;
+  font-size: 14px;
+  padding: 5px 0;
+}
+.datepicker-day.datepicker-selected {
+  background-color: #FF594C;
+  color: white;
+}
+.datepicker-day.datepicker-today:not(.datepicker-selected) {
+  color: #FF594C;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.colourpicker-window {
+  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  padding: 24px;
+  border-radius: 2px;
+  line-height: 1;
+  transition: all .2s;
+  font-size: 0;
+}
+body.light .colourpicker-window {
+  background-color: #FFFFFF;
+}
+body.dark .colourpicker-window {
+  background-color: #424242;
+}
+.colourpicker-input {
+  display: block;
+  border: none;
+  padding: 0;
+  width: 380px;
+  font-size: 16px;
+  height: 16px;
+}
+.colourpicker-svslider {
+  width: 360px;
+  height: 360px;
+  display: inline-block;
+}
+.colourpicker-svindicator {
+  border: 1px solid white;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  margin-left: -3px;
+  margin-top: -3px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.3), inset 0 0 3px rgba(0,0,0,0.3);
+}
+.colourpicker-hueslider {
+  width: 20px;
+  height: 360px;
+  display: inline-block;
+}
+.colourpicker-hueindicator {
+  border: 1px solid white;
+  border-width: 1px 0;
+  margin-top: -1px;
+  width: 100%;
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.customiser-wrapper {
+  display: flex;
+}
+.customiser-colour {
+  width: 36px;
+}
+.customiser-inputwrapper {
+  position: relative;
+  flex: auto;
+  margin: 0 20px;
+  line-height: 1;
+}
+.customiser-label {
+  font-size: 16px;
+  position: absolute;
+  top: 16px;
+  height: 1em;
+  transition: all .2s;
+  pointer-events: none;
+}
+body.light .customiser-label {
+  color: rgba(0,0,0,0.54);
+}
+body.dark .customiser-label {
+  color: rgba(255,255,255,0.7);
+}
+.customiser-inputwrapper.filled .customiser-label {
+  font-size: 12px;
+  top: -4px;
+}
+.customiser-inputwrapper.focus .customiser-label {
+  font-size: 12px;
+  color: #FF594C;
+  top: -4px;
+}
+body.light .customiser-inputwrapper.focus .customiser-label {
+  opacity: 0.87;
+}
+.customiser-input {
+  font-size: 16px;
+  background: none;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  color: inherit;
+  top: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+.customiser-line {
+  position: absolute;
+  height: 1px;
+  top: 32px;
+  margin-top: 8px;
+  width: 100%;
+  transition: all .2s;
+  pointer-events: none;
+}
+body.light .customiser-line {
+  background-color: rgba(0,0,0,0.42);
+}
+body.dark .customiser-line {
+  background-color: rgba(255,255,255,0.7);
+}
+.customiser-inputwrapper.hover .customiser-line {
+  height: 2px;
+}
+body.light .customiser-inputwrapper.hover:not(.focus) .customiser-line {
+  background-color: rgba(0,0,0,0.87);
+}
+body.dark .customiser-inputwrapper.hover:not(.focus) .customiser-line {
+  background-color: white;
+}
+.customiser-inputwrapper.focus .customiser-line {
+  height: 2px;
+  background-color: #FF594C;
 }

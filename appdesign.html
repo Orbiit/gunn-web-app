@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
     <link rel="stylesheet" href="appdesign.css">
+    <link rel="stylesheet" href="schedule/schedule.css">
   </head>
   <body class="dark footer-schedule">
     <div class="section map">
@@ -18,16 +19,14 @@
       <p>events goes here</p>
     </div>
     <div class="section schedule">
-      <h1>Schedule</h1>
-      <p>schedule goes here</p>
+      <button class='material' id="datepicker">select date</button>
     </div>
     <div class="section staff">
       <h1>Staff list</h1>
       <p>list goes here</p>
     </div>
-    <div class="section barcode">
-      <h1>Flex time barcode generator</h1>
-      <p>barcode goes here</p>
+    <div class="section options">
+      <h1>Periods</h1>
     </div>
     <div id="footer">
       <ul>
@@ -35,15 +34,20 @@
         <li tabindex="0"><i class="material-icons">event</i><span>Events</span></li>
         <li class="active" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
         <li tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
-        <li tabindex="0"><i class="material-icons">code</i><span>Barcode</span></li>
+        <li tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
       </ul>
     </div>
+    <script src="schedule/app.js" charset="utf-8"></script>
+    <script src="date.js" charset="utf-8"></script>
+    <script src="colour.js" charset="utf-8"></script>
     <script type="text/javascript">
       function ripple(elem) {
         function mousedown(x,y) {
           var r=document.createElement("div"),
           rect=elem.getBoundingClientRect();
           r.classList.add('ripple');
+          if (elem.classList.contains('ripple-light')) r.classList.add('ripple-light');
+          if (elem.classList.contains('ripple-dark')) r.classList.add('ripple-dark');
           r.style.left=(x-rect.left)+'px';
           r.style.top=(y-rect.top)+'px';
           elem.appendChild(r);
@@ -67,13 +71,13 @@
             fade=true,fadestart=new Date().getTime();
             document.removeEventListener('mouseup',mouseup,false);
             document.removeEventListener('touchend',mouseup,false);
-            lasttap=new Date().getTime();
+            if (e.type==="touchend") lasttap=fadestart;
           }
           window.requestAnimationFrame(updateScale);
           document.addEventListener('mouseup',mouseup,false);
           document.addEventListener('touchend',mouseup,false);
         }
-        var lasttap;
+        var lasttap=0;
         elem.addEventListener("mousedown",e=>{
           if (new Date().getTime()-lasttap>100) mousedown(e.clientX,e.clientY);
         },false);
@@ -93,6 +97,7 @@
         },false); */
       }
       for (var t of document.querySelectorAll('#footer > ul > li')) ripple(t);
+      for (var t of document.querySelectorAll('button.material')) ripple(t);
       var ul=document.querySelector('#footer > ul');
       function ulclick(e) {
         if (e.target!==ul&&ul.contains(e.target)) {
@@ -110,6 +115,165 @@
       ul.addEventListener("click",ulclick,false);
       ul.addEventListener("keydown",e=>{
         if (e.keyCode===13) ulclick(e);
+      },false);
+      var xmlHttp=new XMLHttpRequest(),alternates,app;
+      xmlHttp.onreadystatechange=function(){
+        if (xmlHttp.readyState===4) {
+          if (xmlHttp.status===200) {
+            alternates=JSON.parse(xmlHttp.responseText);
+            scheduleapp=scheduleApp({
+              element:document.querySelector('.section.schedule'),
+              periods:{
+                NO_SCHOOL:{label:"No school today!"},
+                "Brunch":{label:"Brunch",colour:"#90a4ae"},
+                "Lunch":{label:"Lunch",colour:"#90a4ae"},
+                "Flex":{label:"Flex",colour:"#455a64"},
+                "A":{label:"Period_A",colour:"#f44336"},
+                "B":{label:"Period_B",colour:"#2196F3"},
+                "C":{label:"Period_C",colour:"#FFEB3B"},
+                "D":{label:"Period_D",colour:"#795548"},
+                "E":{label:"Period_E",colour:"#FF9800"},
+                "F":{label:"Period_F",colour:"#9C27B0"},
+                "G":{label:"Period_G",colour:"#4CAF50"}
+              },
+              normal:{
+                Monday:[
+                  {type:'A',begin:'0825',end:'0945'},
+                  {type:'Brunch',begin:'0945',end:'1000'},
+                  {type:'B',begin:'1000',end:'1115'},
+                  {type:'C',begin:'1125',end:'1240'},
+                  {type:'Lunch',begin:'1240',end:'1320'},
+                  {type:'F',begin:'1320',end:'1435'}
+                ],
+                Tuesday:[
+                  {type:'D',begin:'0825',end:'0945'},
+                  {type:'Brunch',begin:'0945',end:'1000'},
+                  {type:'Flex',begin:'1000',end:'1050'},
+                  {type:'E',begin:'1100',end:'1215'},
+                  {type:'Lunch',begin:'1215',end:'1255'},
+                  {type:'A',begin:'1255',end:'1415'},
+                  {type:'G',begin:'1425',end:'1540'}
+                ],
+                Wednesday:[
+                  {type:'B',begin:'0825',end:'0950'},
+                  {type:'Brunch',begin:'0950',end:'1005'},
+                  {type:'C',begin:'1005',end:'1125'},
+                  {type:'D',begin:'1135',end:'1255'},
+                  {type:'Lunch',begin:'1255',end:'1335'},
+                  {type:'F',begin:'1335',end:'1455'},
+                ],
+                Thursday:[
+                  {type:'E',begin:'0825',end:'0950'},
+                  {type:'Brunch',begin:'0950',end:'1005'},
+                  {type:'Flex',begin:'1005',end:'1055'},
+                  {type:'B',begin:'1105',end:'1215'},
+                  {type:'Lunch',begin:'1215',end:'1255'},
+                  {type:'A',begin:'1255',end:'1405'},
+                  {type:'G',begin:'1415',end:'1535'},
+                ],
+                Friday:[
+                  {type:'C',begin:'0825',end:'0940'},
+                  {type:'Brunch',begin:'0940',end:'0955'},
+                  {type:'D',begin:'0955',end:'1105'},
+                  {type:'E',begin:'1115',end:'1225'},
+                  {type:'Lunch',begin:'1225',end:'1305'},
+                  {type:'F',begin:'1305',end:'1415'},
+                  {type:'G',begin:'1425',end:'1535'}
+                ]
+              },
+              alternates:alternates,
+              offset:0,
+              update:true
+            });
+          }
+        }
+      };
+      xmlHttp.open("GET","https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json",true);
+      xmlHttp.send(null);
+      function addPeriodCustomisers(elem) {
+        function period(name) {
+          var div=document.createElement("div"),
+          pickertrigger=document.createElement("button"),
+          picker=new ColourPicker(e=>{
+            pickertrigger.style.backgroundColor=e;
+            if (picker.darkness()>125) {
+              pickertrigger.classList.add('ripple-dark');
+              pickertrigger.classList.remove('ripple-light');
+            } else {
+              pickertrigger.classList.add('ripple-light');
+              pickertrigger.classList.remove('ripple-dark');
+            }
+          }),
+          inputwrapper=document.createElement("div"),
+          label=document.createElement("label"),
+          input=document.createElement("input"),
+          line=document.createElement("div");
+          div.classList.add('customiser-wrapper');
+          ripple(pickertrigger);
+          pickertrigger.classList.add('material');
+          pickertrigger.classList.add('customiser-colour');
+          pickertrigger.addEventListener("click",e=>{
+            picker.trigger(pickertrigger);
+          },false);
+          picker.colour='#FF594C';
+          div.appendChild(pickertrigger);
+          inputwrapper.classList.add('customiser-inputwrapper');
+          label.classList.add('customiser-label');
+          label.innerHTML=name;
+          input.classList.add('customiser-input');
+          input.addEventListener("change",e=>{
+            if (input.value) inputwrapper.classList.add('filled');
+            else inputwrapper.classList.remove('filled');
+          },false);
+          input.addEventListener("mouseenter",e=>{
+            inputwrapper.classList.add('hover');
+          },false);
+          input.addEventListener("mouseleave",e=>{
+            inputwrapper.classList.remove('hover');
+          },false);
+          input.addEventListener("focus",e=>{
+            inputwrapper.classList.add('focus');
+          },false);
+          input.addEventListener("blur",e=>{
+            inputwrapper.classList.remove('focus');
+          },false);
+          line.classList.add('customiser-line');
+          inputwrapper.appendChild(label);
+          inputwrapper.appendChild(input);
+          inputwrapper.appendChild(line);
+          div.appendChild(inputwrapper);
+          elem.appendChild(div);
+          return period;
+        }
+        return period;
+      }
+      addPeriodCustomisers(document.querySelector('.section.options'))('Period A');
+      var datepicker=new DatePicker({d:14,m:7,y:2017},{d:1,m:5,y:2018}),
+      d=new Date();
+      datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
+      datepicker.onchange=e=>{
+        if (e!==null) {
+          var d=new Date(e.y,e.m,e.d).getTime(),
+          today=new Date().getTime();
+          scheduleapp.offset=Math.round((d-today)/86400000)+1;
+        }
+      };
+      datepicker.wrapper.classList.add('hide');
+      datepicker.wrapper.style.position='fixed';
+      document.body.appendChild(datepicker.wrapper);
+      document.querySelector('#datepicker').addEventListener("click",e=>{
+        if (datepicker.wrapper.classList.contains('hide')) {
+          datepicker.wrapper.classList.remove('hide');
+          function close(e) {
+            if (!datepicker.wrapper.contains(e.target)) {
+              datepicker.wrapper.classList.add('hide');
+              document.removeEventListener("click",close,false);
+            }
+          }
+          setTimeout(()=>{
+            document.addEventListener("click",close,false);
+          },0);
+        }
       },false);
     </script>
   </body>
