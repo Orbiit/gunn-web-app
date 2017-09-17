@@ -175,7 +175,25 @@ body.light button.material {
 body.dark button.material {
   color: white;
 }
+.material-switch {
+  display: inline-block;
+  margin: 0;
+  height: 14px;
+  width: 36px;
+  border-radius: 7px;
+  background-color: rgba(255,89,76,0.5);
+  margin: 0 15px;
+  vertical-align: bottom;
+  cursor: pointer;
+}
+.material-switch::after {
+  content: '';
+  background-color: #FF594C;
+}
 
+label {
+  font-size: 14px;
+}
 .datepicker-wrapper {
   position: fixed;
   margin: auto;
@@ -252,6 +270,14 @@ body.dark .datepicker-month {
 .datepicker-day.datepicker-today:not(.datepicker-selected) {
   color: #FF594C;
 }
+body.light .datepicker-day:not(.datepicker-today):not(.datepicker-selected):first-child,
+body.light .datepicker-day:not(.datepicker-today):not(.datepicker-selected):last-child {
+  color: rgba(0,0,0,0.38);
+}
+body.dark .datepicker-day:not(.datepicker-today):not(.datepicker-selected):first-child,
+body.dark .datepicker-day:not(.datepicker-today):not(.datepicker-selected):last-child {
+  color: rgba(255,255,255,0.5);
+}
 ::-webkit-scrollbar {
   display: none;
 }
@@ -274,14 +300,19 @@ body.dark .colourpicker-window {
   display: block;
   border: none;
   padding: 0;
-  width: 380px;
+  width: 127px;
   font-size: 16px;
   height: 16px;
+  margin-bottom: 12px;
+  background: none;
+  color: inherit;
 }
 .colourpicker-svslider {
-  width: 360px;
-  height: 360px;
+  width: 100px;
+  height: 100px;
   display: inline-block;
+  margin-right: 12px;
+  border-radius: 2px;
 }
 .colourpicker-svindicator {
   border: 1px solid white;
@@ -293,9 +324,10 @@ body.dark .colourpicker-window {
   box-shadow: 0 0 3px rgba(0,0,0,0.3), inset 0 0 3px rgba(0,0,0,0.3);
 }
 .colourpicker-hueslider {
-  width: 20px;
-  height: 360px;
+  width: 15px;
+  height: 100px;
   display: inline-block;
+  border-radius: 2px;
 }
 .colourpicker-hueindicator {
   border: 1px solid white;
@@ -307,6 +339,7 @@ body.dark .colourpicker-window {
 
 .customiser-wrapper {
   display: flex;
+  margin: 20px 0;
 }
 .customiser-colour {
   width: 36px;
@@ -381,4 +414,24 @@ body.dark .customiser-inputwrapper.hover:not(.focus) .customiser-line {
 .customiser-inputwrapper.focus .customiser-line {
   height: 2px;
   background-color: #FF594C;
+}
+.customiser-colourwrapper {
+  width: 133.75px;
+  margin-right: -6.75px;
+  margin-top: 5.25px;
+}
+.customiser-materialcolour {
+  margin-right: 6.75px;
+  margin-top: 6.75px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+body.light .customiser-materialcolour.customiser-blackwhite {
+  background-color: black;
+}
+body.dark .customiser-materialcolour.customiser-blackwhite {
+  background-color: white;
 }

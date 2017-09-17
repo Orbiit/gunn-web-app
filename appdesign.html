@@ -26,6 +26,8 @@
       <p>list goes here</p>
     </div>
     <div class="section options">
+      <h1>Theme</h1>
+      <label>Toggle light/dark theme</label><span class="material-switch"></span>
       <h1>Periods</h1>
     </div>
     <div id="footer">
@@ -53,9 +55,10 @@
           elem.appendChild(r);
           var start=new Date().getTime(),
           dest=Math.max(rect.width,rect.height)/10,
+          duration=dest*31,
           fade=false,fadestart;
           function updateScale() {
-            var elapsed=(new Date().getTime()-start)/500,
+            var elapsed=(new Date().getTime()-start)/duration,
             fadeelapsed=(new Date().getTime()-fadestart)/500;
             if (fade&&fadeelapsed>1) {
               elem.removeChild(r);
@@ -116,26 +119,38 @@
       ul.addEventListener("keydown",e=>{
         if (e.keyCode===13) ulclick(e);
       },false);
+      var periodstyles={
+        NO_SCHOOL:{label:"No school today!"},
+        "Brunch":{label:"Brunch",colour:"#90a4ae"},
+        "Lunch":{label:"Lunch",colour:"#90a4ae"},
+        "Flex":{label:"Flex",colour:"#455a64"},
+        "A":{label:"Period A",colour:"#f44336"},
+        "B":{label:"Period B",colour:"#2196F3"},
+        "C":{label:"Period C",colour:"#FFEB3B"},
+        "D":{label:"Period D",colour:"#795548"},
+        "E":{label:"Period E",colour:"#FF9800"},
+        "F":{label:"Period F",colour:"#9C27B0"},
+        "G":{label:"Period G",colour:"#4CAF50"}
+      },options,
+      letras='ABCDEFG',
+      scheduleapp;
+      if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
+        options=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options'));
+      } else {
+        options=[];
+        for (var l of letras) {
+          options.push([periodstyles[l].label,periodstyles[l].colour]);
+        }
+      }
       var xmlHttp=new XMLHttpRequest(),alternates,app;
       xmlHttp.onreadystatechange=function(){
         if (xmlHttp.readyState===4) {
           if (xmlHttp.status===200) {
             alternates=JSON.parse(xmlHttp.responseText);
+            for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
             scheduleapp=scheduleApp({
               element:document.querySelector('.section.schedule'),
-              periods:{
-                NO_SCHOOL:{label:"No school today!"},
-                "Brunch":{label:"Brunch",colour:"#90a4ae"},
-                "Lunch":{label:"Lunch",colour:"#90a4ae"},
-                "Flex":{label:"Flex",colour:"#455a64"},
-                "A":{label:"Period_A",colour:"#f44336"},
-                "B":{label:"Period_B",colour:"#2196F3"},
-                "C":{label:"Period_C",colour:"#FFEB3B"},
-                "D":{label:"Period_D",colour:"#795548"},
-                "E":{label:"Period_E",colour:"#FF9800"},
-                "F":{label:"Period_F",colour:"#9C27B0"},
-                "G":{label:"Period_G",colour:"#4CAF50"}
-              },
+              periods:periodstyles,
               normal:{
                 Monday:[
                   {type:'A',begin:'0825',end:'0945'},
@@ -190,12 +205,16 @@
       };
       xmlHttp.open("GET","https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json",true);
       xmlHttp.send(null);
+      var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
       function addPeriodCustomisers(elem) {
-        function period(name) {
+        function period(name,id,colour='#FF594C',val='') {
           var div=document.createElement("div"),
           pickertrigger=document.createElement("button"),
           picker=new ColourPicker(e=>{
             pickertrigger.style.backgroundColor=e;
+            if (scheduleapp) scheduleapp.setPeriod(id,'',e);
+            options[letras.indexOf(id)][1]=e;
+            localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
             if (picker.darkness()>125) {
               pickertrigger.classList.add('ripple-dark');
               pickertrigger.classList.remove('ripple-light');
@@ -215,15 +234,22 @@
           pickertrigger.addEventListener("click",e=>{
             picker.trigger(pickertrigger);
           },false);
-          picker.colour='#FF594C';
+          picker.colour=colour;
           div.appendChild(pickertrigger);
           inputwrapper.classList.add('customiser-inputwrapper');
           label.classList.add('customiser-label');
           label.innerHTML=name;
           input.classList.add('customiser-input');
+          if (val) {
+            input.value=val;
+            inputwrapper.classList.add('filled');
+          }
           input.addEventListener("change",e=>{
             if (input.value) inputwrapper.classList.add('filled');
             else inputwrapper.classList.remove('filled');
+            if (scheduleapp) scheduleapp.setPeriod(id,input.value);
+            options[letras.indexOf(id)][0]=input.value;
+            localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
           },false);
           input.addEventListener("mouseenter",e=>{
             inputwrapper.classList.add('hover');
@@ -243,11 +269,38 @@
           inputwrapper.appendChild(line);
           div.appendChild(inputwrapper);
           elem.appendChild(div);
+          var t=document.createElement("div");
+          t.classList.add('customiser-colourwrapper');
+          for (var c of materialcolours)
+            (c=>{
+              var s=document.createElement("span");
+              s.classList.add('customiser-materialcolour');
+              s.addEventListener("click",e=>{
+                picker.colour=c;
+              },false);
+              s.style.backgroundColor=c;
+              t.appendChild(s);
+            })('#'+c);
+          var s=document.createElement("span");
+          s.classList.add('customiser-materialcolour');
+          s.classList.add('customiser-blackwhite');
+          s.addEventListener("click",e=>{
+            picker.colour=document.body.classList.contains('light')?'#000000':'#ffffff';
+          },false);
+          t.appendChild(s);
+          picker.window.appendChild(t);
           return period;
         }
         return period;
       }
-      addPeriodCustomisers(document.querySelector('.section.options'))('Period A');
+      addPeriodCustomisers(document.querySelector('.section.options'))
+        ('Period A','A',options[0][1],options[0][0])
+        ('Period B','B',options[1][1],options[1][0])
+        ('Period C','C',options[2][1],options[2][0])
+        ('Period D','D',options[3][1],options[3][0])
+        ('Period E','E',options[4][1],options[4][0])
+        ('Period F','F',options[5][1],options[5][0])
+        ('Period G','G',options[6][1],options[6][0]);
       var datepicker=new DatePicker({d:14,m:7,y:2017},{d:1,m:5,y:2018}),
       d=new Date();
       datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};

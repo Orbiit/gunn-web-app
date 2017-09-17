@@ -90,7 +90,7 @@ class ColourPicker {
   set colour(c) {
     c=c.toUpperCase().replace(/[^0-9A-F]/g,'').slice(0,6);
     if (c.length===4) c=c.slice(0,3);
-    if (c.length===3) c=c+c;
+    if (c.length===3) c=c.split('').map(a=>a+a).join('');
     if (c.length===6) {
       this.input.value='#'+c;
       this.hsv=ColourPicker.RGBtoHSV(parseInt(c.slice(0,2),16),parseInt(c.slice(2,4),16),parseInt(c.slice(4,6),16));

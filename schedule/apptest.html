@@ -35,26 +35,32 @@
     <p>type in console: <code>app</code> also alternate schedule is <code>alternates</code></p>
     <script src="app.js" charset="utf-8"></script>
     <script type="text/javascript">
-      var xmlHttp=new XMLHttpRequest(),alternates,app;
+      var xmlHttp=new XMLHttpRequest(),alternates,app,
+      periods={
+        NO_SCHOOL:{label:"No school today!"},
+        "Brunch":{label:"Brunch",colour:"#90a4ae"},
+        "Lunch":{label:"Lunch",colour:"#90a4ae"},
+        "Flex":{label:"Flex",colour:"#455a64"},
+        "A":{label:"Period_A",colour:"#f44336"},
+        "B":{label:"Period_B",colour:"#2196F3"},
+        "C":{label:"Period_C",colour:"#FFEB3B"},
+        "D":{label:"Period_D",colour:"#795548"},
+        "E":{label:"Period_E",colour:"#FF9800"},
+        "F":{label:"Period_F",colour:"#9C27B0"},
+        "G":{label:"Period_G",colour:"#4CAF50"}
+      };
+      if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
+        var t=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options')),
+        letras='ABCDEFG';
+        for (var i=0;i<letras.length;i++) periods[letras[i]]={label:t[i][0],colour:t[i][1]};
+      }
       xmlHttp.onreadystatechange=function(){
         if (xmlHttp.readyState===4) {
           if (xmlHttp.status===200) {
             alternates=JSON.parse(xmlHttp.responseText);
             app=scheduleApp({
               element:document.querySelector('#app'),
-              periods:{
-                NO_SCHOOL:{label:"No school today!"},
-                "Brunch":{label:"Brunch",colour:"#90a4ae"},
-                "Lunch":{label:"Lunch",colour:"#90a4ae"},
-                "Flex":{label:"Flex",colour:"#455a64"},
-                "A":{label:"Period_A",colour:"#f44336"},
-                "B":{label:"Period_B",colour:"#2196F3"},
-                "C":{label:"Period_C",colour:"#FFEB3B"},
-                "D":{label:"Period_D",colour:"#795548"},
-                "E":{label:"Period_E",colour:"#FF9800"},
-                "F":{label:"Period_F",colour:"#9C27B0"},
-                "G":{label:"Period_G",colour:"#4CAF50"}
-              },
+              periods:periods,
               normal:{
                 Monday:[
                   {type:'A',begin:'0825',end:'0945'},
