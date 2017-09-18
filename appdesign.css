@@ -168,6 +168,14 @@ button.material {
   border-radius: 2px;
   font-weight: bold;
   padding: 0 16px;
+  vertical-align: bottom;
+}
+button.material.icon {
+  width: 36px;
+  padding: 0;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 0;
 }
 body.light button.material {
   color: rgba(0,0,0,0.87);
@@ -181,19 +189,133 @@ body.dark button.material {
   height: 14px;
   width: 36px;
   border-radius: 7px;
-  background-color: rgba(255,89,76,0.5);
   margin: 0 15px;
   vertical-align: bottom;
   cursor: pointer;
+  position: relative;
+  transition: all .2s;
+}
+body.light .material-switch:not(.checked) {
+  background-color: rgba(0,0,0,0.38);
+}
+body.dark .material-switch:not(.checked) {
+  background-color: rgba(255,255,255,0.3);
+}
+.material-switch.checked {
+  background-color: rgba(255,89,76,0.5);
+}
+.material-switch::before {
+  content: '';
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 12px;
+  width: 12px;
+  margin: 1px;
+  border-radius: 50%;
+  transition: all .2s;
+  left: 0;
+}
+.material-switch:focus::before {
+  opacity: 0.1;
+  transform: scale(4);
+}
+body.light .material-switch:not(.checked)::before {
+  background-color: black;
+}
+body.dark .material-switch:not(.checked)::before {
+  background-color: white;
+}
+.material-switch.checked::before {
+  background-color: #FF594C;
+  left: calc(100% - 14px);
 }
 .material-switch::after {
   content: '';
+  display: block;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  margin-left: -3px;
+  margin-top: -3px;
+  position: absolute;
+  left: 0;
+  transition: all .2s;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}
+body.light .material-switch:not(.checked)::after {
+  background-color: #FAFAFA;
+}
+body.dark .material-switch:not(.checked)::after {
+  background-color: #BDBDBD;
+}
+.material-switch.checked::after {
   background-color: #FF594C;
+  left: calc(100% - 20px);
+  margin-left: 3px;
+}
+.radio-wrapper, .radio-wrapper * {
+  cursor: pointer;
+}
+.material-radio {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  margin: 0;
+  vertical-align: bottom;
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid black;
+  margin-right: 15px;
+  transition: all .2s;
+}
+.material-radio::before, .material-radio::after {
+  content: '';
+  display: block;
+  height: 8px;
+  width: 8px;
+  position: absolute;
+  transform: scale(0);
+  background: #FF594C;
+  top: 2px;
+  left: 2px;
+  transition: all .2s;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.material-radio::before {
+  opacity: 0;
+  top: 1px;
+  left: 1px;
+  height: 10px;
+  width: 10px;
+}
+body.light .material-radio:not(:checked) {
+  border-color: rgba(0,0,0,0.54);
+}
+body.dark .material-radio:not(:checked) {
+  border-color: rgba(255,255,255,0.7);
+}
+.material-radio:checked {
+  border-color: #FF594C;
+}
+.material-radio:checked::after {
+  transform: scale(1);
+}
+.material-radio:focus::before {
+  transform: scale(4);
+  opacity: 0.1;
 }
 
 label {
   font-size: 14px;
 }
+p.center {
+  text-align: center;
+}
+
 .datepicker-wrapper {
   position: fixed;
   margin: auto;

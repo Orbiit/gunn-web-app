@@ -10,7 +10,7 @@ class ColourPicker {
     ColourPicker.css(this.window)
     `position:fixed`
     `opacity:0`
-    `pointer-events:none`
+    `pointer-events:none`;
     this.window.classList.add('colourpicker-window');
     this.input.type="text";
     this.input.classList.add('colourpicker-input');
@@ -76,7 +76,7 @@ class ColourPicker {
         ColourPicker.css(this.window)`opacity:0` `pointer-events:none`;
         document.removeEventListener("click",dismiss,false);
       }
-    }
+    };
     document.addEventListener("click",dismiss,false);
   }
   getHueGradient() {

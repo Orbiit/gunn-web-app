@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="appdesign.css">
     <link rel="stylesheet" href="schedule/schedule.css">
   </head>
-  <body class="dark footer-schedule">
+  <body class="footer-schedule">
     <div class="section map">
       <h1>Map</h1>
       <p>map goes here</p>
@@ -19,15 +19,17 @@
       <p>events goes here</p>
     </div>
     <div class="section schedule">
-      <button class='material' id="datepicker">select date</button>
+      <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">chevron_left</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">chevron_right</i></button></p>
     </div>
     <div class="section staff">
       <h1>Staff list</h1>
       <p>list goes here</p>
     </div>
     <div class="section options">
+      <label>Material design switch (does nothing)</label><span class="material-switch" tabindex="0"></span>
       <h1>Theme</h1>
-      <label>Toggle light/dark theme</label><span class="material-switch"></span>
+      <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>Light theme</label></p>
+      <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>Dark theme</label></p>
       <h1>Periods</h1>
     </div>
     <div id="footer">
@@ -40,8 +42,8 @@
       </ul>
     </div>
     <script src="schedule/app.js" charset="utf-8"></script>
-    <script src="date.js" charset="utf-8"></script>
-    <script src="colour.js" charset="utf-8"></script>
+    <script src="date.min.js" charset="utf-8"></script>
+    <script src="colour.min.js" charset="utf-8"></script>
     <script type="text/javascript">
       function ripple(elem) {
         function mousedown(x,y) {
@@ -327,6 +329,49 @@
             document.addEventListener("click",close,false);
           },0);
         }
+      },false);
+      for (var t of document.querySelectorAll('.material-switch'))
+        (t=>{
+          t.addEventListener("click",e=>{
+            t.classList.toggle('checked');
+          },false);
+        })(t);
+      for (var t of document.querySelectorAll('.radio-wrapper'))
+        (t=>{
+          var radio=t.querySelector('input[type=radio]');
+          t.addEventListener("click",e=>{
+            radio.click();
+            radio.focus();
+          },false);
+        })(t);
+      if (localStorage.getItem('global.theme')) {
+        document.querySelector(`input[name=theme][value=${localStorage.getItem('global.theme')}]`).checked=true;
+        document.body.classList.add(localStorage.getItem('global.theme'));
+      } else {
+        document.querySelector('input[name=theme][value=light]').checked=true;
+        document.body.classList.add('light');
+      }
+      function themeChange(e) {
+        if (e.target.value==='light') {
+          document.body.classList.remove('dark');
+          document.body.classList.add('light');
+          document.querySelector('input[name=theme][value=light]').checked=true;
+          localStorage.setItem('global.theme','light');
+        } else {
+          document.body.classList.remove('light');
+          document.body.classList.add('dark');
+          document.querySelector('input[name=theme][value=dark]').checked=true;
+          localStorage.setItem('global.theme','dark');
+        }
+      }
+      for (var t of document.querySelectorAll('input[name=theme]')) t.addEventListener("click",themeChange,false);
+      document.querySelector('#plihieraux').addEventListener("click",e=>{
+        var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
+        if (datepicker.inrange(proposal)) datepicker.day=proposal;
+      },false);
+      document.querySelector('#plimorgaux').addEventListener("click",e=>{
+        var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
+        if (datepicker.inrange(proposal)) datepicker.day=proposal;
       },false);
     </script>
   </body>

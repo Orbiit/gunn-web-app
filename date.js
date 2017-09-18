@@ -1,6 +1,8 @@
 class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor(start,end,elem) {
+    this.start=start;
+    this.end=end;
     this.selectedelem=null;
     this.selected=null;
     var days='S M T W &theta; F S'.split(' '),
@@ -66,7 +68,8 @@ class DatePicker {
   get day() {return this.selected;}
   set day(day) {
     if (this.selectedelem) this.selectedelem.classList.remove('datepicker-selected');
-    if (day) {
+    if (day&&this.inrange(day)) {
+      day=DatePicker.purify(day);
       this.selectedelem=this.dates.querySelector(`.datepicker-day[data-date="${day.d}"][data-month="${day.m}"][data-year="${day.y}"]`);
       this.selectedelem.classList.add('datepicker-selected');
       this.selected=day;
@@ -75,6 +78,14 @@ class DatePicker {
       this.selected=null;
     }
     if (this.onchange) this.onchange(day);
+  }
+  inrange(day) {
+    var d=new Date(day.y,day.m,day.d).getTime();
+    return !(d<new Date(this.start.y,this.start.m,this.start.d).getTime()||d>new Date(this.end.y,this.end.m,this.end.d).getTime());
+  }
+  static purify(day) {
+    var d=new Date(day.y,day.m,day.d);
+    return {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   }
   static css(elem) {
     function setCSS([declaration]) {
