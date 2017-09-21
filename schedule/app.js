@@ -111,6 +111,24 @@ function scheduleApp(options={}) {
       if (name) options.periods[id].label=name;
       if (colour) options.periods[id].colour=colour;
       container.innerHTML=generateDay(options.offset);
+    },
+    getWeek() {
+      var actualtoday=new Date(),week=[];
+      today=new Date(actualtoday.getFullYear(),actualtoday.getMonth(),actualtoday.getDate()+options.offset);
+      for (var i=0;i<7;i++) {
+        var d=new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay()+i),
+        day=[];
+        if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
+          var sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()];
+          if (sched.periods.length) for (var period of sched.periods) day.push(getPeriod(period.name));
+        } else {
+          var periods=options.normal[['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]];
+          if (periods&&periods.length) for (var period of periods) day.push(getPeriod(period.type));
+        }
+        if (options.offset===0&&actualtoday.getDay()===i) day.today=true;
+        week.push(day);
+      }
+      return week;
     }
   };
   var timeout;

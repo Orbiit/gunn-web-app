@@ -39,7 +39,7 @@ body.dark {
 .section p {
   font-size: 14px;
 }
-.footer-map .section.map {
+.footer-utilities .section.utilities {
   display: block;
 }
 .footer-events .section.events {
@@ -308,11 +308,43 @@ body.dark .material-radio:not(:checked) {
   transform: scale(4);
   opacity: 0.1;
 }
+ul.material-two-line {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding: 8px 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+ul.material-two-line li {
+  height: 72px;
+  padding: 20px 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+ul.material-two-line span {
+  display: block;
+}
+ul.material-two-line span.primary {
+  font-size: 16px;
+}
+ul.material-two-line span.secondary {
+  font-size: 14px;
+}
+body.light ul.material-two-line span.secondary {
+  color: rgba(0,0,0,0.54);
+}
+body.dark ul.material-two-line span.secondary {
+  color: rgba(255,255,255,0.7);
+}
 
 label {
   font-size: 14px;
 }
-p.center {
+.center {
   text-align: center;
 }
 
@@ -556,4 +588,70 @@ body.light .customiser-materialcolour.customiser-blackwhite {
 }
 body.dark .customiser-materialcolour.customiser-blackwhite {
   background-color: white;
+}
+
+#weekwrapper {
+  display: table;
+  margin: 0 auto;
+  text-align: center;
+}
+#weekwrapper div {
+  display: inline-block;
+  width: 30px;
+  box-sizing: border-box;
+  padding: 0 2px;
+}
+#weekwrapper div.today {
+  width: 40px;
+}
+#weekwrapper h1 {
+  display: inline;
+}
+#weekwrapper div.today h1 {
+  font-weight: bold;
+}
+#weekwrapper span {
+  display: block;
+  width: 100%;
+  height: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  margin: 4px 0;
+}
+
+#seconds {
+  font-size: 50px;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  padding: 15px;
+  line-height: 60px;
+  text-align: center;
+  position: relative;
+}
+#seconds::after {
+  content: '';
+  background-color: #f44336;
+  width: 1px;
+  height: 40%;
+  position: absolute;
+  bottom: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transform: var(--rotation);
+  transform-origin: bottom;
+  z-index: -1;
+  transition: transform .2s cubic-bezier(0,1.4,1,1.23);
+}
+#seconds.notransition::after {
+  transition: none;
+}
+body.light #seconds {
+  border-color: rgba(0,0,0,0.12);
+}
+body.dark #seconds {
+  border-color: rgba(255,255,255,0.12);
 }

@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="schedule/schedule.css">
   </head>
   <body class="footer-schedule">
-    <div class="section map">
+    <div class="section utilities">
+      <h1>Barcode</h1>
+      <p>barcode goes here</p>
       <h1>Map</h1>
       <p>map goes here</p>
     </div>
@@ -19,11 +21,17 @@
       <p>events goes here</p>
     </div>
     <div class="section schedule">
+      <span id='seconds'></span>
       <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">chevron_left</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">chevron_right</i></button></p>
+      <div id="schedulewrapper"></div>
+      <div id="weekwrapper"></div>
     </div>
     <div class="section staff">
       <h1>Staff list</h1>
-      <p>list goes here</p>
+      <ul class="material-two-line">
+        <li><span class="primary">Bob the Builder</span><span class="secondary">Destruction Tech</span></li>
+        <li><span class="primary">John Smith</span><span class="secondary">Placeholder Management</span></li>
+      </ul>
     </div>
     <div class="section options">
       <label>Material design switch (does nothing)</label><span class="material-switch" tabindex="0"></span>
@@ -34,7 +42,7 @@
     </div>
     <div id="footer">
       <ul>
-        <li tabindex="0"><i class="material-icons">map</i><span>Map</span></li>
+        <li tabindex="0"><i class="material-icons">build</i><span>Utilities</span></li>
         <li tabindex="0"><i class="material-icons">event</i><span>Events</span></li>
         <li class="active" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
         <li tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
@@ -134,15 +142,40 @@
         "F":{label:"Period F",colour:"#9C27B0"},
         "G":{label:"Period G",colour:"#4CAF50"}
       },options,
-      letras='ABCDEFG',
-      scheduleapp;
+      letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
+      scheduleapp,
+      VERSION=1; // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
       if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
         options=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options'));
-      } else {
-        options=[];
-        for (var l of letras) {
+        if (options[0]!==VERSION) {
+          if (typeof options[0]!=='string') {
+            options.splice(0,0,VERSION);
+            options.push([periodstyles.Flex.label,periodstyles.Flex.colour]);
+            options.push([periodstyles.Brunch.label,periodstyles.Brunch.colour]);
+            options.push([periodstyles.Lunch.label,periodstyles.Lunch.colour]);
+          } else switch (options[0]) {
+            default:
+              options=null;
+          }
+        }
+      }
+      if (!options) {
+        options=[VERSION];
+        for (var l of letras) if (l!==0) {
           options.push([periodstyles[l].label,periodstyles[l].colour]);
         }
+      }
+      var weekwrapper=document.querySelector('#weekwrapper');
+      function makeWeekHappen() {
+        var innerHTML='',
+        days=['S','M','T','W','&theta;','F','S'],
+        week=scheduleapp.getWeek();
+        for (var i=0;i<7;i++) {
+          innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
+          for (var period of week[i]) innerHTML+=`<span style="background-color:${period.colour};" title="${period.label}"></span>`;
+          innerHTML+=`</div>`;
+        }
+        weekwrapper.innerHTML=innerHTML;
       }
       var xmlHttp=new XMLHttpRequest(),alternates,app;
       xmlHttp.onreadystatechange=function(){
@@ -151,7 +184,7 @@
             alternates=JSON.parse(xmlHttp.responseText);
             for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
             scheduleapp=scheduleApp({
-              element:document.querySelector('.section.schedule'),
+              element:document.querySelector('#schedulewrapper'),
               periods:periodstyles,
               normal:{
                 Monday:[
@@ -202,6 +235,7 @@
               offset:0,
               update:true
             });
+            makeWeekHappen();
           }
         }
       };
@@ -296,13 +330,16 @@
         return period;
       }
       addPeriodCustomisers(document.querySelector('.section.options'))
-        ('Period A','A',options[0][1],options[0][0])
-        ('Period B','B',options[1][1],options[1][0])
-        ('Period C','C',options[2][1],options[2][0])
-        ('Period D','D',options[3][1],options[3][0])
-        ('Period E','E',options[4][1],options[4][0])
-        ('Period F','F',options[5][1],options[5][0])
-        ('Period G','G',options[6][1],options[6][0]);
+        ('Period A','A',options[1][1],options[1][0])
+        ('Period B','B',options[2][1],options[2][0])
+        ('Period C','C',options[3][1],options[3][0])
+        ('Period D','D',options[4][1],options[4][0])
+        ('Period E','E',options[5][1],options[5][0])
+        ('Period F','F',options[6][1],options[6][0])
+        ('Period G','G',options[7][1],options[7][0])
+        ('Flex','Flex',options[8][1],options[8][0])
+        ('Brunch','Brunch',options[9][1],options[9][0])
+        ('Lunch','Lunch',options[10][1],options[10][0]);
       var datepicker=new DatePicker({d:14,m:7,y:2017},{d:1,m:5,y:2018}),
       d=new Date();
       datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
@@ -310,7 +347,8 @@
         if (e!==null) {
           var d=new Date(e.y,e.m,e.d).getTime(),
           today=new Date().getTime();
-          scheduleapp.offset=Math.round((d-today)/86400000)+1;
+          scheduleapp.offset=Math.floor((d-today)/86400000)+1;
+          makeWeekHappen();
         }
       };
       datepicker.wrapper.classList.add('hide');
@@ -373,6 +411,21 @@
         var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
         if (datepicker.inrange(proposal)) datepicker.day=proposal;
       },false);
+      var secondsCounter=document.querySelector('#seconds');
+      function updateSeconds() {
+        var d=new Date();
+        secondsCounter.innerHTML=('0'+d.getSeconds()).slice(-2);
+        secondsCounter.style.setProperty('--rotation',`rotate(${d.getSeconds()*6}deg)`);
+        if (d.getSeconds()===0) {
+          secondsCounter.classList.add('notransition'); // cheaty way to deal with getting from :59 to :00
+          setTimeout(()=>{
+            secondsCounter.classList.remove('notransition');
+          },300);
+        }
+        setTimeout(updateSeconds,1010-d.getMilliseconds());
+      }
+      updateSeconds();
+      for (var t of document.querySelectorAll('ul.material-two-line li')) ripple(t);
     </script>
   </body>
 </html>
