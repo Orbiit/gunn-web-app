@@ -313,17 +313,33 @@ ul.material-two-line {
   padding: 0;
   list-style: none;
   padding: 8px 0;
-  position: absolute;
-  left: 0;
-  right: 0;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 ul.material-two-line li {
+  display: inline-block;
+  width: 100%;
   height: 72px;
   padding: 20px 16px;
   box-sizing: border-box;
   cursor: pointer;
   overflow: hidden;
   position: relative;
+}
+@media (min-width: 540px) {
+  ul.material-two-line.short li {
+    width: 50%;
+  }
+}
+@media (min-width: 710px) {
+  ul.material-two-line.short li {
+    width: calc(100% / 3);
+  }
+}
+@media (min-width: 900px) {
+  ul.material-two-line.short li {
+    width: 25%;
+  }
 }
 ul.material-two-line span {
   display: block;

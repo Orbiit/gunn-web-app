@@ -28,7 +28,7 @@
     </div>
     <div class="section staff">
       <h1>Staff list</h1>
-      <ul class="material-two-line">
+      <ul class="material-two-line short" id='staff'>
         <li><span class="primary">Bob the Builder</span><span class="secondary">Destruction Tech</span></li>
         <li><span class="primary">John Smith</span><span class="secondary">Placeholder Management</span></li>
       </ul>
@@ -242,6 +242,42 @@
       xmlHttp.open("GET","https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json",true);
       xmlHttp.send(null);
       var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
+      function materialInput(labeltext) {
+        var inputwrapper=document.createElement("div"),
+        label=document.createElement("label"),
+        input=document.createElement("input"),
+        line=document.createElement("div");
+        inputwrapper.classList.add('customiser-inputwrapper');
+        label.classList.add('customiser-label');
+        label.innerHTML=labeltext;
+        input.classList.add('customiser-input');
+        input.addEventListener("change",e=>{
+          if (input.value) inputwrapper.classList.add('filled');
+          else inputwrapper.classList.remove('filled');
+        },false);
+        input.addEventListener("mouseenter",e=>{
+          inputwrapper.classList.add('hover');
+        },false);
+        input.addEventListener("mouseleave",e=>{
+          inputwrapper.classList.remove('hover');
+        },false);
+        input.addEventListener("focus",e=>{
+          inputwrapper.classList.add('focus');
+        },false);
+        input.addEventListener("blur",e=>{
+          inputwrapper.classList.remove('focus');
+        },false);
+        line.classList.add('customiser-line');
+        inputwrapper.appendChild(label);
+        inputwrapper.appendChild(input);
+        inputwrapper.appendChild(line);
+        return {
+          wrapper:inputwrapper,
+          label:label,
+          input:input,
+          line:line
+        };
+      }
       function addPeriodCustomisers(elem) {
         function period(name,id,colour='#FF594C',val='') {
           var div=document.createElement("div"),
@@ -259,10 +295,7 @@
               pickertrigger.classList.remove('ripple-dark');
             }
           }),
-          inputwrapper=document.createElement("div"),
-          label=document.createElement("label"),
-          input=document.createElement("input"),
-          line=document.createElement("div");
+          input=materialInput(name);
           div.classList.add('customiser-wrapper');
           ripple(pickertrigger);
           pickertrigger.classList.add('material');
@@ -272,38 +305,16 @@
           },false);
           picker.colour=colour;
           div.appendChild(pickertrigger);
-          inputwrapper.classList.add('customiser-inputwrapper');
-          label.classList.add('customiser-label');
-          label.innerHTML=name;
-          input.classList.add('customiser-input');
           if (val) {
-            input.value=val;
-            inputwrapper.classList.add('filled');
+            input.input.value=val;
+            input.wrapper.classList.add('filled');
           }
-          input.addEventListener("change",e=>{
-            if (input.value) inputwrapper.classList.add('filled');
-            else inputwrapper.classList.remove('filled');
-            if (scheduleapp) scheduleapp.setPeriod(id,input.value);
-            options[letras.indexOf(id)][0]=input.value;
+          input.input.addEventListener("change",e=>{
+            if (scheduleapp) scheduleapp.setPeriod(id,input.input.value);
+            options[letras.indexOf(id)][0]=input.input.value;
             localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
           },false);
-          input.addEventListener("mouseenter",e=>{
-            inputwrapper.classList.add('hover');
-          },false);
-          input.addEventListener("mouseleave",e=>{
-            inputwrapper.classList.remove('hover');
-          },false);
-          input.addEventListener("focus",e=>{
-            inputwrapper.classList.add('focus');
-          },false);
-          input.addEventListener("blur",e=>{
-            inputwrapper.classList.remove('focus');
-          },false);
-          line.classList.add('customiser-line');
-          inputwrapper.appendChild(label);
-          inputwrapper.appendChild(input);
-          inputwrapper.appendChild(line);
-          div.appendChild(inputwrapper);
+          div.appendChild(input.wrapper);
           elem.appendChild(div);
           var t=document.createElement("div");
           t.classList.add('customiser-colourwrapper');
@@ -425,7 +436,24 @@
         setTimeout(updateSeconds,1010-d.getMilliseconds());
       }
       updateSeconds();
-      for (var t of document.querySelectorAll('ul.material-two-line li')) ripple(t);
+      var staff,xmlHttp2=new XMLHttpRequest();
+      xmlHttp2.onreadystatechange=function(){
+        if (xmlHttp2.readyState===4) {
+          if (xmlHttp2.status===200) {
+            staff=JSON.parse(xmlHttp2.responseText);
+            staff["Nick Mount"]={game:true,jobTitle:"Easter Bunny"};
+            var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
+            innerHTML=``;
+            for (var person of staffnames) {
+              innerHTML+=`<li><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span></li>`;
+            }
+            document.querySelector('#staff').innerHTML=innerHTML;
+            for (var t of document.querySelectorAll('ul.material-two-line li')) ripple(t);
+          }
+        }
+      };
+      xmlHttp2.open("GET","https://orbiit.github.io/gunn-web-app/staff.json",true);
+      xmlHttp2.send(null);
     </script>
   </body>
 </html>
