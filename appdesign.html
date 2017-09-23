@@ -28,10 +28,7 @@
     </div>
     <div class="section staff">
       <h1>Staff list</h1>
-      <ul class="material-two-line short" id='staff'>
-        <li><span class="primary">Bob the Builder</span><span class="secondary">Destruction Tech</span></li>
-        <li><span class="primary">John Smith</span><span class="secondary">Placeholder Management</span></li>
-      </ul>
+      <ul class="material-list three-line short" id='staff'></ul>
     </div>
     <div class="section options">
       <label>Material design switch (does nothing)</label><span class="material-switch" tabindex="0"></span>
@@ -48,6 +45,15 @@
         <li tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
         <li tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
       </ul>
+    </div>
+    <div id="staffcontact" class="material-dialog">
+      <h1>Staff name</h1>
+      <div class="content">
+        <strong>boop</strong> bleh
+      </div>
+      <div class="buttons">
+        <button class="material red">Close</button>
+      </div>
     </div>
     <script src="schedule/app.js" charset="utf-8"></script>
     <script src="date.min.js" charset="utf-8"></script>
@@ -436,24 +442,46 @@
         setTimeout(updateSeconds,1010-d.getMilliseconds());
       }
       updateSeconds();
-      var staff,xmlHttp2=new XMLHttpRequest();
+      var staff,xmlHttp2=new XMLHttpRequest(),
+      stafflist=document.querySelector('#staff'),
+      staffcontact=document.querySelector('#staffcontact'),
+      staffh1=document.querySelector('#staffcontact h1'),
+      staffcontent=document.querySelector('#staffcontact .content');
       xmlHttp2.onreadystatechange=function(){
         if (xmlHttp2.readyState===4) {
           if (xmlHttp2.status===200) {
             staff=JSON.parse(xmlHttp2.responseText);
-            staff["Nick Mount"]={game:true,jobTitle:"Easter Bunny"};
+            staff["Nick Mount"]={game:true,jobTitle:"Easter Bunny",department:"Easter"};
+            staff["Josh Paley"].jobTitle="Blamed Teacher";
             var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
             innerHTML=``;
             for (var person of staffnames) {
-              innerHTML+=`<li><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span></li>`;
+              innerHTML+=`<li data-person="${person}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${staff[person].department}</span></li>`;
             }
-            document.querySelector('#staff').innerHTML=innerHTML;
-            for (var t of document.querySelectorAll('ul.material-two-line li')) ripple(t);
+            stafflist.innerHTML=innerHTML;
+            for (var t of document.querySelectorAll('#staff li')) ripple(t);
           }
         }
       };
       xmlHttp2.open("GET","https://orbiit.github.io/gunn-web-app/staff.json",true);
       xmlHttp2.send(null);
+      stafflist.addEventListener("click",e=>{
+        var target=e.target;
+        if (target.tagName==='SPAN') target=target.parentNode;
+        if (target.tagName==='LI') {
+          staffcontact.classList.add('show');
+          var person=target.dataset.person;
+          staffh1.innerHTML=person;
+          if (staff[person].game) {
+            staffcontent.innerHTML=`<p>I hope to have a game here one day</p>`;
+          } else {
+            staffcontent.innerHTML=`<p><strong>Title</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department</strong> ${staff[person].department}</p>`:''}<p><strong>Email</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}`;
+          }
+        }
+      },false);
+      document.querySelector('#staffcontact button').addEventListener("click",e=>{
+        staffcontact.classList.remove('show');
+      },false);
     </script>
   </body>
 </html>
