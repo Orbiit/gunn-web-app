@@ -6,10 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
-    <link rel="stylesheet" href="appdesign.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/material.css">
+    <link rel="stylesheet" href="css/colourpicker.css">
+    <link rel="stylesheet" href="css/datepicker.css">
+    <link rel="stylesheet" href="css/periodcustomisation.css">
     <link rel="stylesheet" href="schedule/schedule.css">
   </head>
-  <body class="footer-schedule">
+  <body>
+    <script type="text/javascript">
+      if (document&&document.body) document.body.className=`${localStorage.getItem('global.theme')||'light'} footer-${localStorage.getItem('[gunn-web-app] section')||'schedule'}`;
+      /* prevent flash of white as the rest of body loads */
+    </script>
     <div class="section utilities">
       <h1>Barcode</h1>
       <p>barcode goes here</p>
@@ -25,10 +33,12 @@
       <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">chevron_left</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">chevron_right</i></button></p>
       <div id="schedulewrapper"></div>
       <div id="weekwrapper"></div>
+      <h1 class="center">Events</h1>
+      <ul class="material-list two-line" id='events'></ul>
     </div>
     <div class="section staff">
       <h1>Staff list</h1>
-      <ul class="material-list three-line short" id='staff'></ul>
+      <ul class="material-list three-line short clickables" id='staff'></ul>
     </div>
     <div class="section options">
       <label>Material design switch (does nothing)</label><span class="material-switch" tabindex="0"></span>
@@ -39,11 +49,11 @@
     </div>
     <div id="footer">
       <ul>
-        <li tabindex="0"><i class="material-icons">build</i><span>Utilities</span></li>
-        <li tabindex="0"><i class="material-icons">event</i><span>Events</span></li>
-        <li class="active" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
-        <li tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
-        <li tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
+        <li data-section="utilities" tabindex="0"><i class="material-icons">build</i><span>Utilities</span></li>
+        <li data-section="events" tabindex="0"><i class="material-icons">event</i><span>Events</span></li>
+        <li data-section="schedule" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
+        <li data-section="staff" tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
+        <li data-section="options" tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
       </ul>
     </div>
     <div id="staffcontact" class="material-dialog">
@@ -115,8 +125,9 @@
           elem.removeChild(focusblob);
         },false); */
       }
-      for (var t of document.querySelectorAll('#footer > ul > li')) ripple(t);
-      for (var t of document.querySelectorAll('button.material')) ripple(t);
+      for (var i=0,arr=document.querySelectorAll('#footer > ul > li'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) ripple(t);
+      for (var i=0,arr=document.querySelectorAll('button.material'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) ripple(t);
+      document.querySelector(`#footer > ul > li[data-section="${localStorage.getItem('[gunn-web-app] section')||'schedule'}"]`).classList.add('active');
       var ul=document.querySelector('#footer > ul');
       function ulclick(e) {
         if (e.target!==ul&&ul.contains(e.target)) {
@@ -129,6 +140,7 @@
           while (n.tagName!=="LI") n=e.target.parentNode;
           n.classList.add('active');
           document.body.classList.add('footer-'+n.children[1].textContent.toLowerCase());
+          localStorage.setItem('[gunn-web-app] section',n.children[1].textContent.toLowerCase());
         }
       }
       ul.addEventListener("click",ulclick,false);
@@ -167,7 +179,7 @@
       }
       if (!options) {
         options=[VERSION];
-        for (var l of letras) if (l!==0) {
+        for (var i=0,arr=letras,len=arr.length,l=arr[i];i<len;i++,l=arr[i]) if (l!==0) {
           options.push([periodstyles[l].label,periodstyles[l].colour]);
         }
       }
@@ -178,10 +190,51 @@
         week=scheduleapp.getWeek();
         for (var i=0;i<7;i++) {
           innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
-          for (var period of week[i]) innerHTML+=`<span style="background-color:${period.colour};" title="${period.label}"></span>`;
+          for (var j=0,arr=week[i],len=arr.length,period=arr[j];j<len;j++,period=arr[j]) innerHTML+=`<span style="background-color:${period.colour};" title="${period.label}"></span>`;
           innerHTML+=`</div>`;
         }
         weekwrapper.innerHTML=innerHTML;
+        renderEvents();
+      }
+      var eventsul=document.querySelector('#events'),events={},
+      months="January February March April May June July August September October November December".split(' ');
+      function renderEvents() {
+        var offset=scheduleapp.offset,d=new Date();
+        eventsul.innerHTML=`<li><span class="secondary center">Loading</span></li>`;
+        function actuallyRender(items) {
+          var innerHTML=``;
+          if (items.length) {
+            for (var i=0;i<items.length;i++) {
+              var timerange;
+              if (items[i].start.date) {
+                var start=new Date(items[i].start.date);
+                timerange=`${months[start.getMonth()]} ${start.getDate()}, ${start.getFullYear()}`;
+              } else {
+                var start=new Date(items[i].start.dateTime),
+                end=new Date(items[i].end.dateTime);
+                timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
+              }
+              innerHTML+=`<li><span class="primary">${items[i].summary}</span><span class="secondary">${items[i].description||""}</span><span class="secondary">${timerange}</span></li>`;
+            }
+          } else {
+            innerHTML=`<li><span class="secondary center">No events today :(</span></li>`;
+          }
+          eventsul.innerHTML=innerHTML;
+        }
+        if (events[offset]) actuallyRender(events[offset]);
+        else {
+          var xmlHttp=new XMLHttpRequest();
+          xmlHttp.onreadystatechange=function(){
+            if (xmlHttp.readyState===4) {
+              if (xmlHttp.status===200) {
+                events[offset]=JSON.parse(xmlHttp.responseText).items;
+                if (scheduleapp.offset===offset) actuallyRender(events[offset]);
+              }
+            }
+          };
+          xmlHttp.open("GET",`https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString()}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime`,true);
+          xmlHttp.send(null);
+        }
       }
       var xmlHttp=new XMLHttpRequest(),alternates,app;
       xmlHttp.onreadystatechange=function(){
@@ -324,7 +377,7 @@
           elem.appendChild(div);
           var t=document.createElement("div");
           t.classList.add('customiser-colourwrapper');
-          for (var c of materialcolours)
+          for (var i=0,arr=materialcolours,len=arr.length,c=arr[i];i<len;i++,c=arr[i])
             (c=>{
               var s=document.createElement("span");
               s.classList.add('customiser-materialcolour');
@@ -385,13 +438,13 @@
           },0);
         }
       },false);
-      for (var t of document.querySelectorAll('.material-switch'))
+      for (var i=0,arr=document.querySelectorAll('.material-switch'),len=arr.length,t=arr[i];i<len;i++,t=arr[i])
         (t=>{
           t.addEventListener("click",e=>{
             t.classList.toggle('checked');
           },false);
         })(t);
-      for (var t of document.querySelectorAll('.radio-wrapper'))
+      for (var i=0,arr=document.querySelectorAll('.radio-wrapper'),len=arr.length,t=arr[i];i<len;i++,t=arr[i])
         (t=>{
           var radio=t.querySelector('input[type=radio]');
           t.addEventListener("click",e=>{
@@ -399,13 +452,10 @@
             radio.focus();
           },false);
         })(t);
-      if (localStorage.getItem('global.theme')) {
+      if (localStorage.getItem('global.theme'))
         document.querySelector(`input[name=theme][value=${localStorage.getItem('global.theme')}]`).checked=true;
-        document.body.classList.add(localStorage.getItem('global.theme'));
-      } else {
+      else
         document.querySelector('input[name=theme][value=light]').checked=true;
-        document.body.classList.add('light');
-      }
       function themeChange(e) {
         if (e.target.value==='light') {
           document.body.classList.remove('dark');
@@ -419,7 +469,7 @@
           localStorage.setItem('global.theme','dark');
         }
       }
-      for (var t of document.querySelectorAll('input[name=theme]')) t.addEventListener("click",themeChange,false);
+      for (var i=0,arr=document.querySelectorAll('input[name=theme]'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) t.addEventListener("click",themeChange,false);
       document.querySelector('#plihieraux').addEventListener("click",e=>{
         var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
         if (datepicker.inrange(proposal)) datepicker.day=proposal;
@@ -455,11 +505,11 @@
             staff["Josh Paley"].jobTitle="Blamed Teacher";
             var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
             innerHTML=``;
-            for (var person of staffnames) {
+            for (var i=0,arr=staffnames,len=arr.length,person=arr[i];i<len;i++,person=arr[i]) {
               innerHTML+=`<li data-person="${person}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${staff[person].department}</span></li>`;
             }
             stafflist.innerHTML=innerHTML;
-            for (var t of document.querySelectorAll('#staff li')) ripple(t);
+            for (var i=0,arr=document.querySelectorAll('#staff li'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) ripple(t);
           }
         }
       };

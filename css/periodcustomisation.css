@@ -1,0 +1,98 @@
+.customiser-wrapper {
+  display: flex;
+  margin: 20px 0;
+}
+.customiser-colour {
+  width: 36px;
+}
+.customiser-inputwrapper {
+  position: relative;
+  flex: auto;
+  margin: 0 20px;
+  line-height: 1;
+}
+.customiser-label {
+  font-size: 16px;
+  position: absolute;
+  top: 16px;
+  height: 1em;
+  transition: all .2s;
+  pointer-events: none;
+}
+body.light .customiser-label {
+  color: rgba(0,0,0,0.54);
+}
+body.dark .customiser-label {
+  color: rgba(255,255,255,0.7);
+}
+.customiser-inputwrapper.filled .customiser-label {
+  font-size: 12px;
+  top: -4px;
+}
+.customiser-inputwrapper.focus .customiser-label {
+  font-size: 12px;
+  color: #FF594C;
+  top: -4px;
+}
+body.light .customiser-inputwrapper.focus .customiser-label {
+  opacity: 0.87;
+}
+.customiser-input {
+  font-size: 16px;
+  background: none;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  color: inherit;
+  top: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+.customiser-line {
+  position: absolute;
+  height: 1px;
+  top: 32px;
+  margin-top: 8px;
+  width: 100%;
+  transition: all .2s;
+  pointer-events: none;
+}
+body.light .customiser-line {
+  background-color: rgba(0,0,0,0.42);
+}
+body.dark .customiser-line {
+  background-color: rgba(255,255,255,0.7);
+}
+.customiser-inputwrapper.hover .customiser-line {
+  height: 2px;
+}
+body.light .customiser-inputwrapper.hover:not(.focus) .customiser-line {
+  background-color: rgba(0,0,0,0.87);
+}
+body.dark .customiser-inputwrapper.hover:not(.focus) .customiser-line {
+  background-color: white;
+}
+.customiser-inputwrapper.focus .customiser-line {
+  height: 2px;
+  background-color: #FF594C;
+}
+.customiser-colourwrapper {
+  width: 133.75px;
+  margin-right: -6.75px;
+  margin-top: 5.25px;
+}
+.customiser-materialcolour {
+  margin-right: 6.75px;
+  margin-top: 6.75px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+body.light .customiser-materialcolour.customiser-blackwhite {
+  background-color: black;
+}
+body.dark .customiser-materialcolour.customiser-blackwhite {
+  background-color: white;
+}

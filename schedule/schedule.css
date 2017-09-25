@@ -31,7 +31,7 @@ body.dark .schedule-container .schedule-alternatemsg, body.dark .schedule-contai
   color: rgba(255,255,255,0.7);
 }
 .schedule-container .schedule-noschool {
-  margin-top: 15px;
+  margin: 15px 0;
 }
 .schedule-container .schedule-endingin {
   font-size: 14px;
