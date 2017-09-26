@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html manifest="cachetest.appcache">
+  <head>
+    <title>Cache Test - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
+    <link href="cachetest.css" rel="stylesheet">
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+      body {
+        font-family: 'Libre Barcode 39 Text', cursive;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cache test</h1>
+    <p>If you see the barcode font while offline, the cache works!</p>
+    <p id="test">If this text isn't being replaced or isn't red, the cache doesn't work.</p>
+    <script src="cachetest.js"></script>
+  </body>
+</html>
