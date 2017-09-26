@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="css/datepicker.css">
     <link rel="stylesheet" href="css/periodcustomisation.css">
     <link rel="stylesheet" href="schedule/schedule.css">
+    <script src="schedule/app.js" charset="utf-8"></script>
+    <script src="js/date.min.js" charset="utf-8"></script>
+    <script src="js/colour.min.js" charset="utf-8"></script>
+    <script src="js/material.js" charset="utf-8"></script>
+    <script src="js/footer.js" charset="utf-8"></script>
+    <script src="js/schedule.js" charset="utf-8"></script>
+    <script src="js/stafflist.js" charset="utf-8"></script>
   </head>
   <body>
     <script type="text/javascript">
@@ -24,7 +31,7 @@
       <h1>Map</h1>
       <p>map goes here</p>
     </div>
-    <div class="section events">
+    <div class="section tbd">
       <h1>Upcoming Events</h1>
       <p>events goes here</p>
     </div>
@@ -50,7 +57,7 @@
     <div id="footer">
       <ul>
         <li data-section="utilities" tabindex="0"><i class="material-icons">build</i><span>Utilities</span></li>
-        <li data-section="events" tabindex="0"><i class="material-icons">event</i><span>Events</span></li>
+        <li data-section="tbd" tabindex="0"><i class="material-icons">info</i><span>TBD</span></li>
         <li data-section="schedule" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
         <li data-section="staff" tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
         <li data-section="options" tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
@@ -65,472 +72,48 @@
         <button class="material red">Close</button>
       </div>
     </div>
-    <script src="schedule/app.js" charset="utf-8"></script>
-    <script src="date.min.js" charset="utf-8"></script>
-    <script src="colour.min.js" charset="utf-8"></script>
     <script type="text/javascript">
-      function ripple(elem) {
-        function mousedown(x,y) {
-          var r=document.createElement("div"),
-          rect=elem.getBoundingClientRect();
-          r.classList.add('ripple');
-          if (elem.classList.contains('ripple-light')) r.classList.add('ripple-light');
-          if (elem.classList.contains('ripple-dark')) r.classList.add('ripple-dark');
-          r.style.left=(x-rect.left)+'px';
-          r.style.top=(y-rect.top)+'px';
-          elem.appendChild(r);
-          var start=new Date().getTime(),
-          dest=Math.max(rect.width,rect.height)/10,
-          duration=dest*31,
-          fade=false,fadestart;
-          function updateScale() {
-            var elapsed=(new Date().getTime()-start)/duration,
-            fadeelapsed=(new Date().getTime()-fadestart)/500;
-            if (fade&&fadeelapsed>1) {
-              elem.removeChild(r);
-              r=null;
-            } else {
-              r.style.transform=`scale(${elapsed*dest})`;
-              if (fadeelapsed) r.style.opacity=1-fadeelapsed;
-              else r.style.opacity=1;
-              window.requestAnimationFrame(updateScale);
-            }
-          }
-          function mouseup(e) {
-            fade=true,fadestart=new Date().getTime();
-            document.removeEventListener('mouseup',mouseup,false);
-            document.removeEventListener('touchend',mouseup,false);
-            if (e.type==="touchend") lasttap=fadestart;
-          }
-          window.requestAnimationFrame(updateScale);
-          document.addEventListener('mouseup',mouseup,false);
-          document.addEventListener('touchend',mouseup,false);
-        }
-        var lasttap=0;
-        elem.addEventListener("mousedown",e=>{
-          if (new Date().getTime()-lasttap>100) mousedown(e.clientX,e.clientY);
-        },false);
-        elem.addEventListener("touchstart",e=>{
-          mousedown(e.touches[0].clientX,e.touches[0].clientY);
-        },false);
-        var focusblob=document.createElement('div');
-        focusblob.classList.add('ripple');
-        focusblob.classList.add('ripple-focus');
-        /* elem.addEventListener("focus",e=>{
-          var rect=elem.getBoundingClientRect();
-          focusblob.style.width=focusblob.style.height=(Math.max(rect.width,rect.height)*0.8)+'px';
-          elem.appendChild(focusblob);
-        },false);
-        elem.addEventListener("blur",e=>{
-          elem.removeChild(focusblob);
-        },false); */
-      }
-      for (var i=0,arr=document.querySelectorAll('#footer > ul > li'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) ripple(t);
-      for (var i=0,arr=document.querySelectorAll('button.material'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) ripple(t);
-      document.querySelector(`#footer > ul > li[data-section="${localStorage.getItem('[gunn-web-app] section')||'schedule'}"]`).classList.add('active');
-      var ul=document.querySelector('#footer > ul');
-      function ulclick(e) {
-        if (e.target!==ul&&ul.contains(e.target)) {
-          var t=ul.querySelector('.active');
-          if (t) {
-            t.classList.remove('active');
-            document.body.classList.remove('footer-'+t.children[1].textContent.toLowerCase());
-          }
-          var n=e.target;
-          while (n.tagName!=="LI") n=e.target.parentNode;
-          n.classList.add('active');
-          document.body.classList.add('footer-'+n.children[1].textContent.toLowerCase());
-          localStorage.setItem('[gunn-web-app] section',n.children[1].textContent.toLowerCase());
-        }
-      }
-      ul.addEventListener("click",ulclick,false);
-      ul.addEventListener("keydown",e=>{
-        if (e.keyCode===13) ulclick(e);
-      },false);
-      var periodstyles={
-        NO_SCHOOL:{label:"No school today!"},
-        "Brunch":{label:"Brunch",colour:"#90a4ae"},
-        "Lunch":{label:"Lunch",colour:"#90a4ae"},
-        "Flex":{label:"Flex",colour:"#455a64"},
-        "A":{label:"Period A",colour:"#f44336"},
-        "B":{label:"Period B",colour:"#2196F3"},
-        "C":{label:"Period C",colour:"#FFEB3B"},
-        "D":{label:"Period D",colour:"#795548"},
-        "E":{label:"Period E",colour:"#FF9800"},
-        "F":{label:"Period F",colour:"#9C27B0"},
-        "G":{label:"Period G",colour:"#4CAF50"}
-      },options,
-      letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
-      scheduleapp,
-      VERSION=1; // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
-      if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
-        options=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options'));
-        if (options[0]!==VERSION) {
-          if (typeof options[0]!=='string') {
-            options.splice(0,0,VERSION);
-            options.push([periodstyles.Flex.label,periodstyles.Flex.colour]);
-            options.push([periodstyles.Brunch.label,periodstyles.Brunch.colour]);
-            options.push([periodstyles.Lunch.label,periodstyles.Lunch.colour]);
-          } else switch (options[0]) {
-            default:
-              options=null;
-          }
-        }
-      }
-      if (!options) {
-        options=[VERSION];
-        for (var i=0,arr=letras,len=arr.length,l=arr[i];i<len;i++,l=arr[i]) if (l!==0) {
-          options.push([periodstyles[l].label,periodstyles[l].colour]);
-        }
-      }
-      var weekwrapper=document.querySelector('#weekwrapper');
-      function makeWeekHappen() {
-        var innerHTML='',
-        days=['S','M','T','W','&theta;','F','S'],
-        week=scheduleapp.getWeek();
-        for (var i=0;i<7;i++) {
-          innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
-          for (var j=0,arr=week[i],len=arr.length,period=arr[j];j<len;j++,period=arr[j]) innerHTML+=`<span style="background-color:${period.colour};" title="${period.label}"></span>`;
-          innerHTML+=`</div>`;
-        }
-        weekwrapper.innerHTML=innerHTML;
-        renderEvents();
-      }
-      var eventsul=document.querySelector('#events'),events={},
-      months="January February March April May June July August September October November December".split(' ');
-      function renderEvents() {
-        var offset=scheduleapp.offset,d=new Date();
-        eventsul.innerHTML=`<li><span class="secondary center">Loading</span></li>`;
-        function actuallyRender(items) {
-          var innerHTML=``;
-          if (items.length) {
-            for (var i=0;i<items.length;i++) {
-              var timerange;
-              if (items[i].start.date) {
-                var start=new Date(items[i].start.date);
-                timerange=`${months[start.getMonth()]} ${start.getDate()}, ${start.getFullYear()}`;
-              } else {
-                var start=new Date(items[i].start.dateTime),
-                end=new Date(items[i].end.dateTime);
-                timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
-              }
-              innerHTML+=`<li><span class="primary">${items[i].summary}</span><span class="secondary">${items[i].description||""}</span><span class="secondary">${timerange}</span></li>`;
-            }
-          } else {
-            innerHTML=`<li><span class="secondary center">No events today :(</span></li>`;
-          }
-          eventsul.innerHTML=innerHTML;
-        }
-        if (events[offset]) actuallyRender(events[offset]);
-        else {
-          var xmlHttp=new XMLHttpRequest();
-          xmlHttp.onreadystatechange=function(){
-            if (xmlHttp.readyState===4) {
-              if (xmlHttp.status===200) {
-                events[offset]=JSON.parse(xmlHttp.responseText).items;
-                if (scheduleapp.offset===offset) actuallyRender(events[offset]);
-              }
-            }
-          };
-          xmlHttp.open("GET",`https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString()}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime`,true);
-          xmlHttp.send(null);
-        }
-      }
-      var xmlHttp=new XMLHttpRequest(),alternates,app;
-      xmlHttp.onreadystatechange=function(){
-        if (xmlHttp.readyState===4) {
-          if (xmlHttp.status===200) {
-            alternates=JSON.parse(xmlHttp.responseText);
-            for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
-            scheduleapp=scheduleApp({
-              element:document.querySelector('#schedulewrapper'),
-              periods:periodstyles,
-              normal:{
-                Monday:[
-                  {type:'A',begin:'0825',end:'0945'},
-                  {type:'Brunch',begin:'0945',end:'1000'},
-                  {type:'B',begin:'1000',end:'1115'},
-                  {type:'C',begin:'1125',end:'1240'},
-                  {type:'Lunch',begin:'1240',end:'1320'},
-                  {type:'F',begin:'1320',end:'1435'}
-                ],
-                Tuesday:[
-                  {type:'D',begin:'0825',end:'0945'},
-                  {type:'Brunch',begin:'0945',end:'1000'},
-                  {type:'Flex',begin:'1000',end:'1050'},
-                  {type:'E',begin:'1100',end:'1215'},
-                  {type:'Lunch',begin:'1215',end:'1255'},
-                  {type:'A',begin:'1255',end:'1415'},
-                  {type:'G',begin:'1425',end:'1540'}
-                ],
-                Wednesday:[
-                  {type:'B',begin:'0825',end:'0950'},
-                  {type:'Brunch',begin:'0950',end:'1005'},
-                  {type:'C',begin:'1005',end:'1125'},
-                  {type:'D',begin:'1135',end:'1255'},
-                  {type:'Lunch',begin:'1255',end:'1335'},
-                  {type:'F',begin:'1335',end:'1455'},
-                ],
-                Thursday:[
-                  {type:'E',begin:'0825',end:'0950'},
-                  {type:'Brunch',begin:'0950',end:'1005'},
-                  {type:'Flex',begin:'1005',end:'1055'},
-                  {type:'B',begin:'1105',end:'1215'},
-                  {type:'Lunch',begin:'1215',end:'1255'},
-                  {type:'A',begin:'1255',end:'1405'},
-                  {type:'G',begin:'1415',end:'1535'},
-                ],
-                Friday:[
-                  {type:'C',begin:'0825',end:'0940'},
-                  {type:'Brunch',begin:'0940',end:'0955'},
-                  {type:'D',begin:'0955',end:'1105'},
-                  {type:'E',begin:'1115',end:'1225'},
-                  {type:'Lunch',begin:'1225',end:'1305'},
-                  {type:'F',begin:'1305',end:'1415'},
-                  {type:'G',begin:'1425',end:'1535'}
-                ]
-              },
-              alternates:alternates,
-              offset:0,
-              update:true
-            });
-            makeWeekHappen();
-          }
-        }
-      };
-      xmlHttp.open("GET","https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json",true);
-      xmlHttp.send(null);
-      var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
-      function materialInput(labeltext) {
-        var inputwrapper=document.createElement("div"),
-        label=document.createElement("label"),
-        input=document.createElement("input"),
-        line=document.createElement("div");
-        inputwrapper.classList.add('customiser-inputwrapper');
-        label.classList.add('customiser-label');
-        label.innerHTML=labeltext;
-        input.classList.add('customiser-input');
-        input.addEventListener("change",e=>{
-          if (input.value) inputwrapper.classList.add('filled');
-          else inputwrapper.classList.remove('filled');
-        },false);
-        input.addEventListener("mouseenter",e=>{
-          inputwrapper.classList.add('hover');
-        },false);
-        input.addEventListener("mouseleave",e=>{
-          inputwrapper.classList.remove('hover');
-        },false);
-        input.addEventListener("focus",e=>{
-          inputwrapper.classList.add('focus');
-        },false);
-        input.addEventListener("blur",e=>{
-          inputwrapper.classList.remove('focus');
-        },false);
-        line.classList.add('customiser-line');
-        inputwrapper.appendChild(label);
-        inputwrapper.appendChild(input);
-        inputwrapper.appendChild(line);
-        return {
-          wrapper:inputwrapper,
-          label:label,
-          input:input,
-          line:line
+      function ajax(url,callback,error) {
+        var xmlHttp=new XMLHttpRequest();
+        xmlHttp.onreadystatechange=()=>{
+          if (xmlHttp.readyState===4) xmlHttp.status===200?callback(xmlHttp.responseText):error?error(xmlHttp.status):0;
         };
+        xmlHttp.open("GET",url,true);
+        xmlHttp.send(null);
       }
-      function addPeriodCustomisers(elem) {
-        function period(name,id,colour='#FF594C',val='') {
-          var div=document.createElement("div"),
-          pickertrigger=document.createElement("button"),
-          picker=new ColourPicker(e=>{
-            pickertrigger.style.backgroundColor=e;
-            if (scheduleapp) scheduleapp.setPeriod(id,'',e);
-            options[letras.indexOf(id)][1]=e;
-            localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
-            if (picker.darkness()>125) {
-              pickertrigger.classList.add('ripple-dark');
-              pickertrigger.classList.remove('ripple-light');
-            } else {
-              pickertrigger.classList.add('ripple-light');
-              pickertrigger.classList.remove('ripple-dark');
-            }
-          }),
-          input=materialInput(name);
-          div.classList.add('customiser-wrapper');
-          ripple(pickertrigger);
-          pickertrigger.classList.add('material');
-          pickertrigger.classList.add('customiser-colour');
-          pickertrigger.addEventListener("click",e=>{
-            picker.trigger(pickertrigger);
-          },false);
-          picker.colour=colour;
-          div.appendChild(pickertrigger);
-          if (val) {
-            input.input.value=val;
-            input.wrapper.classList.add('filled');
-          }
-          input.input.addEventListener("change",e=>{
-            if (scheduleapp) scheduleapp.setPeriod(id,input.input.value);
-            options[letras.indexOf(id)][0]=input.input.value;
-            localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
-          },false);
-          div.appendChild(input.wrapper);
-          elem.appendChild(div);
-          var t=document.createElement("div");
-          t.classList.add('customiser-colourwrapper');
-          for (var i=0,arr=materialcolours,len=arr.length,c=arr[i];i<len;i++,c=arr[i])
-            (c=>{
-              var s=document.createElement("span");
-              s.classList.add('customiser-materialcolour');
-              s.addEventListener("click",e=>{
-                picker.colour=c;
-              },false);
-              s.style.backgroundColor=c;
-              t.appendChild(s);
-            })('#'+c);
-          var s=document.createElement("span");
-          s.classList.add('customiser-materialcolour');
-          s.classList.add('customiser-blackwhite');
-          s.addEventListener("click",e=>{
-            picker.colour=document.body.classList.contains('light')?'#000000':'#ffffff';
-          },false);
-          t.appendChild(s);
-          picker.window.appendChild(t);
-          return period;
-        }
-        return period;
+      function toEach(query,fn) {
+        var elems=document.querySelectorAll(query);
+        for (var i=0,len=elems.length;i<len;i++) fn(elems[i],i);
       }
-      addPeriodCustomisers(document.querySelector('.section.options'))
-        ('Period A','A',options[1][1],options[1][0])
-        ('Period B','B',options[2][1],options[2][0])
-        ('Period C','C',options[3][1],options[3][0])
-        ('Period D','D',options[4][1],options[4][0])
-        ('Period E','E',options[5][1],options[5][0])
-        ('Period F','F',options[6][1],options[6][0])
-        ('Period G','G',options[7][1],options[7][0])
-        ('Flex','Flex',options[8][1],options[8][0])
-        ('Brunch','Brunch',options[9][1],options[9][0])
-        ('Lunch','Lunch',options[10][1],options[10][0]);
-      var datepicker=new DatePicker({d:14,m:7,y:2017},{d:1,m:5,y:2018}),
-      d=new Date();
-      datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
-      datepicker.onchange=e=>{
-        if (e!==null) {
-          var d=new Date(e.y,e.m,e.d).getTime(),
-          today=new Date().getTime();
-          scheduleapp.offset=Math.floor((d-today)/86400000)+1;
-          makeWeekHappen();
-        }
-      };
-      datepicker.wrapper.classList.add('hide');
-      datepicker.wrapper.style.position='fixed';
-      document.body.appendChild(datepicker.wrapper);
-      document.querySelector('#datepicker').addEventListener("click",e=>{
-        if (datepicker.wrapper.classList.contains('hide')) {
-          datepicker.wrapper.classList.remove('hide');
-          function close(e) {
-            if (!datepicker.wrapper.contains(e.target)) {
-              datepicker.wrapper.classList.add('hide');
-              document.removeEventListener("click",close,false);
-            }
-          }
-          setTimeout(()=>{
-            document.addEventListener("click",close,false);
-          },0);
-        }
-      },false);
-      for (var i=0,arr=document.querySelectorAll('.material-switch'),len=arr.length,t=arr[i];i<len;i++,t=arr[i])
-        (t=>{
-          t.addEventListener("click",e=>{
-            t.classList.toggle('checked');
-          },false);
-        })(t);
-      for (var i=0,arr=document.querySelectorAll('.radio-wrapper'),len=arr.length,t=arr[i];i<len;i++,t=arr[i])
-        (t=>{
-          var radio=t.querySelector('input[type=radio]');
-          t.addEventListener("click",e=>{
-            radio.click();
-            radio.focus();
-          },false);
-        })(t);
-      if (localStorage.getItem('global.theme'))
-        document.querySelector(`input[name=theme][value=${localStorage.getItem('global.theme')}]`).checked=true;
-      else
-        document.querySelector('input[name=theme][value=light]').checked=true;
-      function themeChange(e) {
-        if (e.target.value==='light') {
-          document.body.classList.remove('dark');
-          document.body.classList.add('light');
-          document.querySelector('input[name=theme][value=light]').checked=true;
-          localStorage.setItem('global.theme','light');
-        } else {
-          document.body.classList.remove('light');
-          document.body.classList.add('dark');
-          document.querySelector('input[name=theme][value=dark]').checked=true;
-          localStorage.setItem('global.theme','dark');
-        }
-      }
-      for (var i=0,arr=document.querySelectorAll('input[name=theme]'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) t.addEventListener("click",themeChange,false);
-      document.querySelector('#plihieraux').addEventListener("click",e=>{
-        var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
-        if (datepicker.inrange(proposal)) datepicker.day=proposal;
-      },false);
-      document.querySelector('#plimorgaux').addEventListener("click",e=>{
-        var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
-        if (datepicker.inrange(proposal)) datepicker.day=proposal;
-      },false);
-      var secondsCounter=document.querySelector('#seconds');
-      function updateSeconds() {
-        var d=new Date();
-        secondsCounter.innerHTML=('0'+d.getSeconds()).slice(-2);
-        secondsCounter.style.setProperty('--rotation',`rotate(${d.getSeconds()*6}deg)`);
-        if (d.getSeconds()===0) {
-          secondsCounter.classList.add('notransition'); // cheaty way to deal with getting from :59 to :00
-          setTimeout(()=>{
-            secondsCounter.classList.remove('notransition');
-          },300);
-        }
-        setTimeout(updateSeconds,1010-d.getMilliseconds());
-      }
-      updateSeconds();
-      var staff,xmlHttp2=new XMLHttpRequest(),
-      stafflist=document.querySelector('#staff'),
-      staffcontact=document.querySelector('#staffcontact'),
-      staffh1=document.querySelector('#staffcontact h1'),
-      staffcontent=document.querySelector('#staffcontact .content');
-      xmlHttp2.onreadystatechange=function(){
-        if (xmlHttp2.readyState===4) {
-          if (xmlHttp2.status===200) {
-            staff=JSON.parse(xmlHttp2.responseText);
-            staff["Nick Mount"]={game:true,jobTitle:"Easter Bunny",department:"Easter"};
-            staff["Josh Paley"].jobTitle="Blamed Teacher";
-            var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
-            innerHTML=``;
-            for (var i=0,arr=staffnames,len=arr.length,person=arr[i];i<len;i++,person=arr[i]) {
-              innerHTML+=`<li data-person="${person}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${staff[person].department}</span></li>`;
-            }
-            stafflist.innerHTML=innerHTML;
-            for (var i=0,arr=document.querySelectorAll('#staff li'),len=arr.length,t=arr[i];i<len;i++,t=arr[i]) ripple(t);
-          }
-        }
-      };
-      xmlHttp2.open("GET","https://orbiit.github.io/gunn-web-app/staff.json",true);
-      xmlHttp2.send(null);
-      stafflist.addEventListener("click",e=>{
-        var target=e.target;
-        if (target.tagName==='SPAN') target=target.parentNode;
-        if (target.tagName==='LI') {
-          staffcontact.classList.add('show');
-          var person=target.dataset.person;
-          staffh1.innerHTML=person;
-          if (staff[person].game) {
-            staffcontent.innerHTML=`<p>I hope to have a game here one day</p>`;
+      window.addEventListener("load",e=>{
+        ripple("#footer > ul > li, button.material");
+        toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
+          if (e.target.value==='light') {
+            document.body.classList.remove('dark');
+            document.body.classList.add('light');
+            document.querySelector('input[name=theme][value=light]').checked=true;
+            localStorage.setItem('global.theme','light');
           } else {
-            staffcontent.innerHTML=`<p><strong>Title</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department</strong> ${staff[person].department}</p>`:''}<p><strong>Email</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}`;
+            document.body.classList.remove('light');
+            document.body.classList.add('dark');
+            document.querySelector('input[name=theme][value=dark]').checked=true;
+            localStorage.setItem('global.theme','dark');
           }
+        },false));
+        var secondsCounter=document.querySelector('#seconds');
+        function updateSeconds() {
+          var d=new Date();
+          secondsCounter.innerHTML=('0'+d.getSeconds()).slice(-2);
+          secondsCounter.style.setProperty('--rotation',`rotate(${d.getSeconds()*6}deg)`);
+          if (d.getSeconds()===0) {
+            secondsCounter.classList.add('notransition'); // cheaty way to deal with getting from :59 to :00
+            setTimeout(()=>{
+              secondsCounter.classList.remove('notransition');
+            },300);
+          }
+          setTimeout(updateSeconds,1010-d.getMilliseconds());
         }
-      },false);
-      document.querySelector('#staffcontact button').addEventListener("click",e=>{
-        staffcontact.classList.remove('show');
+        updateSeconds();
       },false);
     </script>
   </body>
