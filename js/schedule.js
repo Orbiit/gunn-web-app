@@ -108,8 +108,13 @@ window.addEventListener("load",e=>{
           if (items[i].start) {
             var start=new Date(items[i].start),
             end=new Date(items[i].end);
-            timerange=`<span class="secondary">${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m</span>`;
+            timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
           }
+          if (items[i].loc) {
+            if (timerange) timerange+=' &mdash; ';
+            timerange+=items[i].loc;
+          }
+          if (timerange) timerange=`<span class="secondary">${timerange}</span>`;
           innerHTML+=`<li><span class="primary">${items[i].name}</span><span class="secondary">${items[i].desc||""}</span>${timerange}</li>`;
         }
       } else {
@@ -128,7 +133,8 @@ window.addEventListener("load",e=>{
               start:e[i].start.dateTime,
               end:e[i].end.dateTime,
               name:e[i].summary,
-              desc:e[i].description
+              desc:e[i].description,
+              loc:e[i].location
             };
           }
           events[offset]=e;
