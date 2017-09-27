@@ -1,4 +1,5 @@
 var options,
+letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
 VERSION=1; // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
   options=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options'));
@@ -201,8 +202,7 @@ window.addEventListener("load",e=>{
     document.querySelector('input[name=theme][value=light]').checked=true;
 
   /* CUSTOMISE PERIODS */
-  var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' '),
-  letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'];
+  var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
   function materialInput(labeltext) {
     var inputwrapper=document.createElement("div"),
     label=document.createElement("label"),
