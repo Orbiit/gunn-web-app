@@ -1,6 +1,64 @@
 var options,
 letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
-VERSION=1; // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+VERSION=1, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+periodstyles={
+  NO_SCHOOL:{label:"No school today!"},
+  "Brunch":{label:"Brunch",colour:"#90a4ae"},
+  "Lunch":{label:"Lunch",colour:"#90a4ae"},
+  "Flex":{label:"Flex",colour:"#455a64"},
+  "A":{label:"Period A",colour:"#f44336"},
+  "B":{label:"Period B",colour:"#2196F3"},
+  "C":{label:"Period C",colour:"#FFEB3B"},
+  "D":{label:"Period D",colour:"#795548"},
+  "E":{label:"Period E",colour:"#FF9800"},
+  "F":{label:"Period F",colour:"#9C27B0"},
+  "G":{label:"Period G",colour:"#4CAF50"}
+},
+normalschedule={
+  Monday:[
+    {type:'A',begin:'0825',end:'0945'},
+    {type:'Brunch',begin:'0945',end:'1000'},
+    {type:'B',begin:'1000',end:'1115'},
+    {type:'C',begin:'1125',end:'1240'},
+    {type:'Lunch',begin:'1240',end:'1320'},
+    {type:'F',begin:'1320',end:'1435'}
+  ],
+  Tuesday:[
+    {type:'D',begin:'0825',end:'0945'},
+    {type:'Brunch',begin:'0945',end:'1000'},
+    {type:'Flex',begin:'1000',end:'1050'},
+    {type:'E',begin:'1100',end:'1215'},
+    {type:'Lunch',begin:'1215',end:'1255'},
+    {type:'A',begin:'1255',end:'1415'},
+    {type:'G',begin:'1425',end:'1540'}
+  ],
+  Wednesday:[
+    {type:'B',begin:'0825',end:'0950'},
+    {type:'Brunch',begin:'0950',end:'1005'},
+    {type:'C',begin:'1005',end:'1125'},
+    {type:'D',begin:'1135',end:'1255'},
+    {type:'Lunch',begin:'1255',end:'1335'},
+    {type:'F',begin:'1335',end:'1455'},
+  ],
+  Thursday:[
+    {type:'E',begin:'0825',end:'0950'},
+    {type:'Brunch',begin:'0950',end:'1005'},
+    {type:'Flex',begin:'1005',end:'1055'},
+    {type:'B',begin:'1105',end:'1215'},
+    {type:'Lunch',begin:'1215',end:'1255'},
+    {type:'A',begin:'1255',end:'1405'},
+    {type:'G',begin:'1415',end:'1535'},
+  ],
+  Friday:[
+    {type:'C',begin:'0825',end:'0940'},
+    {type:'Brunch',begin:'0940',end:'0955'},
+    {type:'D',begin:'0955',end:'1105'},
+    {type:'E',begin:'1115',end:'1225'},
+    {type:'Lunch',begin:'1225',end:'1305'},
+    {type:'F',begin:'1305',end:'1415'},
+    {type:'G',begin:'1425',end:'1535'}
+  ]
+};
 if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
   options=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options'));
   if (options[0]!==VERSION) {
@@ -23,66 +81,7 @@ if (!options) {
 }
 window.addEventListener("load",e=>{
   /* SCHEDULE APP */
-  var periodstyles={
-    NO_SCHOOL:{label:"No school today!"},
-    "Brunch":{label:"Brunch",colour:"#90a4ae"},
-    "Lunch":{label:"Lunch",colour:"#90a4ae"},
-    "Flex":{label:"Flex",colour:"#455a64"},
-    "A":{label:"Period A",colour:"#f44336"},
-    "B":{label:"Period B",colour:"#2196F3"},
-    "C":{label:"Period C",colour:"#FFEB3B"},
-    "D":{label:"Period D",colour:"#795548"},
-    "E":{label:"Period E",colour:"#FF9800"},
-    "F":{label:"Period F",colour:"#9C27B0"},
-    "G":{label:"Period G",colour:"#4CAF50"}
-  },
-  normalschedule={
-    Monday:[
-      {type:'A',begin:'0825',end:'0945'},
-      {type:'Brunch',begin:'0945',end:'1000'},
-      {type:'B',begin:'1000',end:'1115'},
-      {type:'C',begin:'1125',end:'1240'},
-      {type:'Lunch',begin:'1240',end:'1320'},
-      {type:'F',begin:'1320',end:'1435'}
-    ],
-    Tuesday:[
-      {type:'D',begin:'0825',end:'0945'},
-      {type:'Brunch',begin:'0945',end:'1000'},
-      {type:'Flex',begin:'1000',end:'1050'},
-      {type:'E',begin:'1100',end:'1215'},
-      {type:'Lunch',begin:'1215',end:'1255'},
-      {type:'A',begin:'1255',end:'1415'},
-      {type:'G',begin:'1425',end:'1540'}
-    ],
-    Wednesday:[
-      {type:'B',begin:'0825',end:'0950'},
-      {type:'Brunch',begin:'0950',end:'1005'},
-      {type:'C',begin:'1005',end:'1125'},
-      {type:'D',begin:'1135',end:'1255'},
-      {type:'Lunch',begin:'1255',end:'1335'},
-      {type:'F',begin:'1335',end:'1455'},
-    ],
-    Thursday:[
-      {type:'E',begin:'0825',end:'0950'},
-      {type:'Brunch',begin:'0950',end:'1005'},
-      {type:'Flex',begin:'1005',end:'1055'},
-      {type:'B',begin:'1105',end:'1215'},
-      {type:'Lunch',begin:'1215',end:'1255'},
-      {type:'A',begin:'1255',end:'1405'},
-      {type:'G',begin:'1415',end:'1535'},
-    ],
-    Friday:[
-      {type:'C',begin:'0825',end:'0940'},
-      {type:'Brunch',begin:'0940',end:'0955'},
-      {type:'D',begin:'0955',end:'1105'},
-      {type:'E',begin:'1115',end:'1225'},
-      {type:'Lunch',begin:'1225',end:'1305'},
-      {type:'F',begin:'1305',end:'1415'},
-      {type:'G',begin:'1425',end:'1535'}
-    ]
-  },
-  letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
-  scheduleapp;
+  var scheduleapp;
   var weekwrapper=document.querySelector('#weekwrapper');
   function makeWeekHappen() {
     var innerHTML='',
