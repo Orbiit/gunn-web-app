@@ -139,6 +139,7 @@ body.dark .material-switch:not(.checked)::after {
 }
 .material-radio {
   -webkit-appearance: none;
+  -moz-appearance: none;
   height: 16px;
   width: 16px;
   margin: 0;
