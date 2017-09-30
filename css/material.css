@@ -204,6 +204,7 @@ ul.material-list li {
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+  vertical-align: top;
 }
 ul.material-list.clickables li {
   cursor: pointer;
@@ -238,11 +239,18 @@ ul.material-list span.primary {
 ul.material-list span.secondary {
   font-size: 14px;
 }
-body.light ul.material-list span.secondary {
+body.light ul.material-list span.secondary, body.light ul.material-list li.error, body.light .get-error {
   color: rgba(0,0,0,0.54);
 }
-body.dark ul.material-list span.secondary {
+body.dark ul.material-list span.secondary, body.dark ul.material-list li.error, body.dark .get-error {
   color: rgba(255,255,255,0.7);
+}
+ul.material-list li.error, .get-error {
+  width: 100%;
+  font-size: 14px;
+  cursor: default;
+  text-align: center;
+  min-height: auto;
 }
 .material-dialog {
   position: fixed;
@@ -300,6 +308,7 @@ body.dark .material-dialog > h1 {
   box-sizing: border-box;
   padding: 20px 0;
   overflow: auto;
+  line-height: 1.4;
 }
 .material-dialog > .buttons {
   height: 52px;

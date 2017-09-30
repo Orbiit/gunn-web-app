@@ -1,5 +1,11 @@
 window.addEventListener("load",e=>{
-  document.querySelector(`#footer > ul > li[data-section="${localStorage.getItem('[gunn-web-app] section')||'schedule'}"]`).classList.add('active');
+  var t=document.querySelector(`#footer > ul > li[data-section="${localStorage.getItem('[gunn-web-app] section')||'schedule'}"]`);
+  if (t) t.classList.add('active');
+  else {
+    document.querySelector(`#footer > ul > li[data-section="schedule"]`).classList.add('active');
+    localStorage.setItem('[gunn-web-app] section','schedule');
+    document.body.classList.add('footer-schedule');
+  }
   var ul=document.querySelector('#footer > ul');
   function ulclick(e) {
     if (e.target!==ul&&ul.contains(e.target)) {

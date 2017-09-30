@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="css/datepicker.css">
     <link rel="stylesheet" href="css/periodcustomisation.css">
     <link rel="stylesheet" href="schedule/schedule.css">
-    <script src="schedule/app.js" charset="utf-8"></script>
+    <script src="js/main.js" charset="utf-8"></script>
     <script src="js/date.min.js" charset="utf-8"></script>
     <script src="js/colour.min.js" charset="utf-8"></script>
     <script src="js/material.js" charset="utf-8"></script>
     <script src="js/footer.js" charset="utf-8"></script>
     <script src="js/schedule.js" charset="utf-8"></script>
-    <script src="js/stafflist.js" charset="utf-8"></script>
+    <script src="js/lists.js" charset="utf-8"></script>
+    <script src="schedule/app.js" charset="utf-8"></script>
   </head>
   <body>
     <script type="text/javascript">
@@ -31,20 +32,21 @@
       <h1>Map</h1>
       <p>map goes here</p>
     </div>
-    <div class="section tbd">
-      <h1>Upcoming Events</h1>
-      <p>events goes here</p>
+    <div class="section clubs">
+      <h1>Clubs<input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"></h1>
+      <ul class="material-list three-line short clickables" id='clubs'></ul>
     </div>
     <div class="section schedule">
       <span id='seconds'></span>
       <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">chevron_left</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">chevron_right</i></button></p>
+      <p class="center get-error" id="alternateerror"></p>
       <div id="schedulewrapper"></div>
       <div id="weekwrapper"></div>
       <h1 class="center">Events</h1>
       <ul class="material-list two-line" id='events'></ul>
     </div>
     <div class="section staff">
-      <h1>Staff list</h1>
+      <h1>Staff list<input type="search" id='staffsearch' placeholder="Search staff" class="notmaterial-input"></h1>
       <ul class="material-list three-line short clickables" id='staff'></ul>
     </div>
     <div class="section options">
@@ -53,11 +55,18 @@
       <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>Light theme</label></p>
       <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>Dark theme</label></p>
       <h1>Periods</h1>
+      <a id="periodcustomisermarker"></a>
+      <h1>About</h1>
+      <p>The app was originally made to make the features of theGunnApp available to more users (that is, users who use platforms that support Chrome, or iOS) and to increase competition on the original theGunnApp to squeeze out more features from them.</p>
+      <h1>Credits</h1>
+      <p><a href="https://sheeptester.github.io/">Sean</a>, who casually made the entire app in his free time.</p>
+      <p>Henry for his ideas, Google Maps overlay, and bug reports that came with screenshots.</p>
+      <p>Alex and Steven for moral support.</p>
     </div>
     <div id="footer">
       <ul>
         <li data-section="utilities" tabindex="0"><i class="material-icons">build</i><span>Utilities</span></li>
-        <li data-section="tbd" tabindex="0"><i class="material-icons">info</i><span>TBD</span></li>
+        <li data-section="clubs" tabindex="0"><i class="material-icons">group_work</i><span>Clubs</span></li>
         <li data-section="schedule" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
         <li data-section="staff" tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
         <li data-section="options" tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
@@ -65,56 +74,17 @@
     </div>
     <div id="staffcontact" class="material-dialog">
       <h1>Staff name</h1>
-      <div class="content">
-        <strong>boop</strong> bleh
-      </div>
+      <div class="content"></div>
       <div class="buttons">
         <button class="material red">Close</button>
       </div>
     </div>
-    <script type="text/javascript">
-      function ajax(url,callback,error) {
-        var xmlHttp=new XMLHttpRequest();
-        xmlHttp.onreadystatechange=()=>{
-          if (xmlHttp.readyState===4) xmlHttp.status===200?callback(xmlHttp.responseText):error?error(xmlHttp.status):0;
-        };
-        xmlHttp.open("GET",url,true);
-        xmlHttp.send(null);
-      }
-      function toEach(query,fn) {
-        var elems=document.querySelectorAll(query);
-        for (var i=0,len=elems.length;i<len;i++) fn(elems[i],i);
-      }
-      window.addEventListener("load",e=>{
-        ripple("#footer > ul > li, button.material");
-        toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
-          if (e.target.value==='light') {
-            document.body.classList.remove('dark');
-            document.body.classList.add('light');
-            document.querySelector('input[name=theme][value=light]').checked=true;
-            localStorage.setItem('global.theme','light');
-          } else {
-            document.body.classList.remove('light');
-            document.body.classList.add('dark');
-            document.querySelector('input[name=theme][value=dark]').checked=true;
-            localStorage.setItem('global.theme','dark');
-          }
-        },false));
-        var secondsCounter=document.querySelector('#seconds');
-        function updateSeconds() {
-          var d=new Date();
-          secondsCounter.innerHTML=('0'+d.getSeconds()).slice(-2);
-          secondsCounter.style.setProperty('--rotation',`rotate(${d.getSeconds()*6}deg)`);
-          if (d.getSeconds()===0) {
-            secondsCounter.classList.add('notransition'); // cheaty way to deal with getting from :59 to :00
-            setTimeout(()=>{
-              secondsCounter.classList.remove('notransition');
-            },300);
-          }
-          setTimeout(updateSeconds,1010-d.getMilliseconds());
-        }
-        updateSeconds();
-      },false);
-    </script>
+    <div id="clubinfo" class="material-dialog">
+      <h1>Club name</h1>
+      <div class="content"></div>
+      <div class="buttons">
+        <button class="material red">Close</button>
+      </div>
+    </div>
   </body>
 </html>

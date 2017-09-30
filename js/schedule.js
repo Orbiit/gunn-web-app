@@ -115,7 +115,7 @@ window.addEventListener("load",e=>{
             timerange+=items[i].loc;
           }
           if (timerange) timerange=`<span class="secondary">${timerange}</span>`;
-          innerHTML+=`<li><span class="primary">${items[i].name}</span><span class="secondary">${items[i].desc||""}</span>${timerange}</li>`;
+          innerHTML+=`<li><span class="primary">${items[i].name}</span><span class="secondary${items[i].error?' get-error':''}">${items[i].desc||""}</span>${timerange}</li>`;
         }
       } else {
         innerHTML=`<li><span class="secondary center">No events today :(</span></li>`;
@@ -139,24 +139,37 @@ window.addEventListener("load",e=>{
           }
           events[offset]=e;
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
+        },
+        e=>{
+          events[offset]=[{name:'',desc:`${e}; either you aren't connected to the internet or you should try reloading.`,error:true}];
+          if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
         }
       );
     }
   }
+  function alternateGet(e,successful) {
+    if (successful) alternates=JSON.parse(e);
+    else
+      document.querySelector('#alternateerror').innerHTML=`${e}; couldn't get alternate schedules; either you aren't connected to the internet or you should try reloading.`,
+      alternates={};
+    for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
+    scheduleapp=scheduleApp({
+      element:document.querySelector('#schedulewrapper'),
+      periods:periodstyles,
+      normal:normalschedule,
+      alternates:alternates,
+      offset:0,
+      update:true
+    });
+    makeWeekHappen();
+  }
   ajax(
-    window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json":'alt-schedules-2017-18-object.json',
+    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'alt-schedules-2017-18-object.json',
     e=>{
-      alternates=JSON.parse(e);
-      for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
-      scheduleapp=scheduleApp({
-        element:document.querySelector('#schedulewrapper'),
-        periods:periodstyles,
-        normal:normalschedule,
-        alternates:alternates,
-        offset:0,
-        update:true
-      });
-      makeWeekHappen();
+      alternateGet(e,true);
+    },
+    e=>{
+      alternateGet(e,false);
     }
   );
   var datepicker=new DatePicker({d:14,m:7,y:2017},{d:1,m:5,y:2018}),
@@ -300,7 +313,8 @@ window.addEventListener("load",e=>{
     }
     return period;
   }
-  addPeriodCustomisers(document.querySelector('.section.options'))
+  var periodCustomisers=document.createDocumentFragment();
+  addPeriodCustomisers(periodCustomisers)
     ('Period A','A',options[1][1],options[1][0])
     ('Period B','B',options[2][1],options[2][0])
     ('Period C','C',options[3][1],options[3][0])
@@ -311,4 +325,5 @@ window.addEventListener("load",e=>{
     ('Flex','Flex',options[8][1],options[8][0])
     ('Brunch','Brunch',options[9][1],options[9][0])
     ('Lunch','Lunch',options[10][1],options[10][0]);
+  document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
 },false);
