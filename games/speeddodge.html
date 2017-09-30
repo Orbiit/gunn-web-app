@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Game Ideas - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var canvas=document.createElement("canvas"),
+      c=canvas.getContext('2d')
+      y=0,
+      currenty=0,
+      playerheight=10,
+      playerx=30,
+      enemies=[],
+      enemytick=0;
+      canvas.height=300;
+      canvas.width=500;
+      canvas.addEventListener("mousemove",e=>{
+        y=e.clientY-canvas.getBoundingClientRect().top-playerheight/2;
+        if (y>canvas.height-playerheight) y=canvas.height-playerheight;
+        else if (y<0) y=0;
+      },false);
+      canvas.addEventListener("touchmove",e=>{
+        y=e.touches[0].clientY-canvas.getBoundingClientRect().top-playerheight/2;
+        if (y>canvas.height-playerheight) y=canvas.height-playerheight;
+        else if (y<0) y=0;
+      },false);
+      function render() {
+        c.fillStyle='rgba(255,255,255,0.3)';
+        c.fillRect(0,0,canvas.width,canvas.height);
+        currenty+=(y-currenty)/5;
+        var lose=false;
+        if (enemytick%3===0) enemies.push({x:500,y:Math.random()*(canvas.height-playerheight),type:Math.floor(Math.random()*3)?'normal':'fast'});
+        enemytick++;
+        for (var i=0;i<enemies.length;i++) {
+          enemies[i].x-=enemies[i].type==='fast'?12:9;
+          c.fillStyle=enemies[i].type==='fast'?'red':'blue';
+          if (enemies[i].x-20<0) enemies.splice(i--,1);
+          else {
+            c.fillRect(enemies[i].x,enemies[i].y,20,10);
+            if (Math.abs(enemies[i].y-currenty)<playerheight&&Math.abs(enemies[i].x-playerx)<20) lose=true;
+          }
+        }
+        c.fillStyle='black';
+        c.fillRect(playerx,currenty,20,10);
+        if (!lose) window.requestAnimationFrame(render);
+      }
+      window.requestAnimationFrame(render);
+      document.body.appendChild(canvas);
+    </script>
+  </body>
+</html>
