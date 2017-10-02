@@ -17,12 +17,12 @@ window.addEventListener("load",e=>{
       document.body.classList.remove('dark');
       document.body.classList.add('light');
       document.querySelector('input[name=theme][value=light]').checked=true;
-      localStorage.setItem('global.theme','light');
+      cookie.setItem('global.theme','light');
     } else {
       document.body.classList.remove('light');
       document.body.classList.add('dark');
       document.querySelector('input[name=theme][value=dark]').checked=true;
-      localStorage.setItem('global.theme','dark');
+      cookie.setItem('global.theme','dark');
     }
   },false));
   var secondsCounter=document.querySelector('#seconds');
@@ -39,4 +39,19 @@ window.addEventListener("load",e=>{
     setTimeout(updateSeconds,1010-d.getMilliseconds());
   }
   updateSeconds();
+  var psa=document.querySelector('#psadialog .content');
+  ajax(
+    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+"psa.html",
+    e=>{
+      document.querySelector('#psa').innerHTML=e;
+      if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')!==e) {
+        localStorage.setItem('[gunn-web-app] scheduleapp.psa',e);
+        psa.innerHTML=e;
+        psa.parentNode.classList.add("show");
+      }
+    },
+    e=>{
+      document.querySelector('#psa').innerHTML=`<p>${e}; either you aren't connected to the internet or you should try reloading.</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
+    }
+  );
 },false);

@@ -1,7 +1,7 @@
 # The Unofficial Gunn Web App "gunn-web-app"
 The Gunn App was originally only available to [Android](https://github.com/RiceCakess/TheGunnApp) and [iOS](https://github.com/xaviloinaz/thegunnapp) users. Then recently it died. Then it came back to life.
 
-Since people for some reason want to limit their fun to phone users (specifically, iOS and Android), we're going to make it in plain HTML, CSS, and JS!
+We're going to make it in plain HTML, CSS, and JS so even people without a phone can view alternate schedules!
 
 We aim to:
 

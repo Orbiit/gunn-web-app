@@ -3,11 +3,11 @@ window.addEventListener("load",e=>{
   add=document.querySelector('#addbarcode'),
   barcodes=["95012345"],
   barcodeelems=[];
-  if (localStorage.getItem('[gunn-web-app] barcode.ids')) {
-    barcodes=localStorage.getItem('[gunn-web-app] barcode.ids').split(',');
+  if (cookie.getItem('[gunn-web-app] barcode.ids')) {
+    barcodes=cookie.getItem('[gunn-web-app] barcode.ids').split(',');
   }
   function updateSave() {
-    localStorage.setItem('[gunn-web-app] barcode.ids',barcodeelems.map(a=>a.value).join(','));
+    cookie.setItem('[gunn-web-app] barcode.ids',barcodeelems.map(a=>a.value).join(','));
   }
   function newBarcodeLi(code="95012345") {
     var li=document.createElement("li"),
@@ -42,7 +42,7 @@ window.addEventListener("load",e=>{
       li=divcanvas=input=canvas=divbtn=removebtn=viewbtn=null;
       updateSave();
     },false);
-    removebtn.innerHTML=`<i class="material-icons">remove</i>`;
+    removebtn.innerHTML=`<i class="material-icons">&#xE15B;</i>`;
     divbtn.appendChild(removebtn);
     viewbtn.classList.add('material');
     viewbtn.classList.add('icon');
@@ -50,7 +50,7 @@ window.addEventListener("load",e=>{
     viewbtn.addEventListener("click",e=>{
       canvas.classList.add('viewbarcode');
     },false);
-    viewbtn.innerHTML=`<i class="material-icons">visibility</i>`;
+    viewbtn.innerHTML=`<i class="material-icons">&#xE8F4;</i>`;
     divbtn.appendChild(viewbtn);
     li.appendChild(divbtn);
     return li;

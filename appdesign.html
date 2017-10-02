@@ -4,6 +4,14 @@
     <title>Unofficial Gunn Web App</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/manifest.json">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#ff594c">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <meta name="msapplication-config" content="favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ff594c">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
@@ -25,10 +33,12 @@
   </head>
   <body>
     <script type="text/javascript">
-      if (document&&document.body) document.body.className=`${localStorage.getItem('global.theme')||'light'} footer-${localStorage.getItem('[gunn-web-app] section')||'schedule'}`;
+      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+      if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
       /* prevent flash of white as the rest of body loads */
     </script>
     <div class="section utilities">
+      <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised red">PAUSD Login Page</button></a></p>
       <h1>Barcode</h1>
       <p>Click/tap on the barcode to edit.</p>
       <ul id='barcode'><li class="center"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
@@ -41,7 +51,7 @@
     </div>
     <div class="section schedule">
       <span id='seconds'></span>
-      <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">chevron_left</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">chevron_right</i></button></p>
+      <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button></p>
       <p class="center get-error" id="alternateerror"></p>
       <div id="schedulewrapper"></div>
       <div id="weekwrapper"></div>
@@ -53,7 +63,8 @@
       <ul class="material-list three-line short clickables" id='staff'></ul>
     </div>
     <div class="section options">
-      <label>Material design switch (does nothing)</label><span class="material-switch" tabindex="0"></span>
+      <h1>Last PSA</h1>
+      <div class="material-card" id="psa">loading</div>
       <h1>Theme</h1>
       <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>Light theme</label></p>
       <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>Dark theme</label></p>
@@ -62,31 +73,38 @@
       <h1>About</h1>
       <p>The app was originally made to make the features of theGunnApp available to more users (that is, users who use platforms that support Chrome, or iOS) and to increase competition on the original theGunnApp to squeeze out more features from them.</p>
       <h1>Credits</h1>
-      <p><a href="https://sheeptester.github.io/">Sean</a>, who casually made the entire app in his free time.</p>
+      <p><a href="https://sheeptester.github.io/">Sean</a> who made most of the app.</p>
       <p>Henry for his ideas, Google Maps overlay, and bug reports that came with screenshots.</p>
-      <p>Alex and Steven for moral support.</p>
+      <p>Alex, Steven, and Aaryan for moral support.</p>
     </div>
     <div id="footer">
       <ul>
-        <li data-section="utilities" tabindex="0"><i class="material-icons">build</i><span>Utilities</span></li>
-        <li data-section="clubs" tabindex="0"><i class="material-icons">group_work</i><span>Clubs</span></li>
-        <li data-section="schedule" tabindex="0"><i class="material-icons">schedule</i><span>Schedule</span></li>
-        <li data-section="staff" tabindex="0"><i class="material-icons">people</i><span>Staff</span></li>
-        <li data-section="options" tabindex="0"><i class="material-icons">settings</i><span>Options</span></li>
+        <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>Utilities</span></li>
+        <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>Clubs</span></li>
+        <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>Schedule</span></li>
+        <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>Staff</span></li>
+        <li data-section="options" tabindex="0"><i class="material-icons">&#xE8B8;</i><span>Options</span></li>
       </ul>
     </div>
     <div id="staffcontact" class="material-dialog">
       <h1>Staff name</h1>
       <div class="content"></div>
       <div class="buttons">
-        <button class="material red">Close</button>
+        <button class="material red close">Close</button>
       </div>
     </div>
     <div id="clubinfo" class="material-dialog">
       <h1>Club name</h1>
       <div class="content"></div>
       <div class="buttons">
-        <button class="material red">Close</button>
+        <button class="material red close">Close</button>
+      </div>
+    </div>
+    <div id="psadialog" class="material-dialog">
+      <h1>From the Creators</h1>
+      <div class="content"></div>
+      <div class="buttons">
+        <button class="material red close">OK</button>
       </div>
     </div>
   </body>

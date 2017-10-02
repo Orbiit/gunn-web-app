@@ -1,9 +1,9 @@
 window.addEventListener("load",e=>{
-  var t=document.querySelector(`#footer > ul > li[data-section="${localStorage.getItem('[gunn-web-app] section')||'schedule'}"]`);
+  var t=document.querySelector(`#footer > ul > li[data-section="${cookie.getItem('[gunn-web-app] section')||'schedule'}"]`);
   if (t) t.classList.add('active');
   else {
     document.querySelector(`#footer > ul > li[data-section="schedule"]`).classList.add('active');
-    localStorage.setItem('[gunn-web-app] section','schedule');
+    cookie.setItem('[gunn-web-app] section','schedule');
     document.body.classList.add('footer-schedule');
   }
   var ul=document.querySelector('#footer > ul');
@@ -18,7 +18,7 @@ window.addEventListener("load",e=>{
       while (n.tagName!=="LI") n=e.target.parentNode;
       n.classList.add('active');
       document.body.classList.add('footer-'+n.children[1].textContent.toLowerCase());
-      localStorage.setItem('[gunn-web-app] section',n.children[1].textContent.toLowerCase());
+      cookie.setItem('[gunn-web-app] section',n.children[1].textContent.toLowerCase());
     }
   }
   ul.addEventListener("click",ulclick,false);

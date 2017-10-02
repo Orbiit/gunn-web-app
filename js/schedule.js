@@ -59,8 +59,9 @@ normalschedule={
     {type:'G',begin:'1425',end:'1535'}
   ]
 };
-if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
-  options=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options'));
+if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
+  options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
   if (options[0]!==VERSION) {
     if (typeof options[0]!=='string') {
       options.splice(0,0,VERSION);
@@ -208,8 +209,8 @@ window.addEventListener("load",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.inrange(proposal)) datepicker.day=proposal;
   },false);
-  if (localStorage.getItem('global.theme'))
-    document.querySelector(`input[name=theme][value=${localStorage.getItem('global.theme')}]`).checked=true;
+  if (cookie.getItem('global.theme'))
+    document.querySelector(`input[name=theme][value=${cookie.getItem('global.theme')}]`).checked=true;
   else
     document.querySelector('input[name=theme][value=light]').checked=true;
 
@@ -259,7 +260,7 @@ window.addEventListener("load",e=>{
         pickertrigger.style.backgroundColor=e;
         if (window.scheduleapp) scheduleapp.setPeriod(id,'',e);
         options[letras.indexOf(id)][1]=e;
-        localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
+        cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
         if (picker.darkness()>125) {
           pickertrigger.classList.add('ripple-dark');
           pickertrigger.classList.remove('ripple-light');
@@ -285,7 +286,7 @@ window.addEventListener("load",e=>{
       input.input.addEventListener("change",e=>{
         if (scheduleapp) scheduleapp.setPeriod(id,input.input.value);
         options[letras.indexOf(id)][0]=input.input.value;
-        localStorage.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
+        cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
       },false);
       div.appendChild(input.wrapper);
       elem.appendChild(div);
