@@ -28,18 +28,6 @@
     <h1>The Unofficial Gunn Web App</h1>
     <p><em>(sometimes abbreviated as UGWA)</em></p>
     <p>It is open sourced <a href="https://github.com/Orbiit/gunn-web-app/">here</a>.</p>
-    <p>Type in your student ID: <input type="number" placeholder="Stud. ID" id="barcode"></p>
-    <canvas id="barcodecanvas"></canvas>
-    <script src="code39.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      var barcodeinput=document.querySelector('#barcode'),
-      barcodecanvas=document.querySelector('#barcodecanvas');
-      if (localStorage.getItem('[gunn-web-app] barcode.id')) barcodeinput.value=localStorage.getItem('[gunn-web-app] barcode.id');
-      code39(barcodeinput.value,barcodecanvas);
-      barcodeinput.addEventListener("input",e=>{
-        code39(barcodeinput.value,barcodecanvas);
-        localStorage.setItem('[gunn-web-app] barcode.id',barcodeinput.value);
-      },false);
-    </script>
+    <p>See the work in progress version of the app <a href="appdesign.html">here</a>.</p>
   </body>
 </html>
