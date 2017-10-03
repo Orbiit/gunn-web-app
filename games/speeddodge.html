@@ -17,7 +17,8 @@
       playerheight=10,
       playerx=30,
       enemies=[],
-      enemytick=0;
+      enemytick=0,
+      starttime=new Date().getTime();
       canvas.height=300;
       canvas.width=500;
       canvas.addEventListener("mousemove",e=>{
@@ -48,7 +49,15 @@
         }
         c.fillStyle='black';
         c.fillRect(playerx,currenty,20,10);
-        if (!lose) window.requestAnimationFrame(render);
+        if (lose) {
+          var p=document.createElement('p');
+          p.innerHTML=new Date().getTime()-starttime;
+          document.body.appendChild(p);
+          enemies=[],
+          enemytick=0,
+          starttime=new Date().getTime();
+        }
+        window.requestAnimationFrame(render);
       }
       window.requestAnimationFrame(render);
       document.body.appendChild(canvas);
