@@ -45,9 +45,11 @@ window.addEventListener("load",e=>{
     e=>{
       document.querySelector('#psa').innerHTML=e;
       if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')!==e) {
+        if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')) {
+          psa.innerHTML=e;
+          psa.parentNode.classList.add("show");
+        }
         localStorage.setItem('[gunn-web-app] scheduleapp.psa',e);
-        psa.innerHTML=e;
-        psa.parentNode.classList.add("show");
       }
     },
     e=>{
