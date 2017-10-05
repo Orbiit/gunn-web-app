@@ -323,3 +323,43 @@ body.dark .notmaterial-input {
   display: block;
   margin: 10px;
 }
+
+#mapimage {
+  max-height: 100vh;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+body.dark #mapimage {
+  -webkit-filter: hue-rotate(180deg) invert();
+  filter: hue-rotate(180deg) invert();
+}
+.zoom-rotate {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  pointer-events: none;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  position: fixed;
+  margin-left: -25px;
+  margin-top: -25px;
+}
+body.light .zoom-rotate {
+  background-color: #ffffff;
+}
+body.dark .zoom-rotate {
+  background-color: #424242;
+}
+.zoom-dial {
+  background-color: #f44336;
+  position: absolute;
+  top: 5px;
+  bottom: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 1px;
+}
+#mapgoogle {
+  height: calc(100vh - 96px);
+}

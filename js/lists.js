@@ -22,7 +22,7 @@ window.addEventListener("load",e=>{
       ripple('#staff li');
     },
     e=>{
-      stafflist.innerHTML=`<li class="error">${e}; either you aren't connected to the internet or you should try reloading.</li>`;
+      stafflist.innerHTML=`<li class="error">${e}; couldn't get staff data; maybe you aren't connected to the internet?</li>`;
     }
   );
   stafflist.addEventListener("click",e=>{
@@ -63,7 +63,7 @@ window.addEventListener("load",e=>{
       ripple('#clubs li');
     },
     e=>{
-      clublist.innerHTML=`<li class="error">${e}; either you aren't connected to the internet or you should try reloading.</li>`;
+      clublist.innerHTML=`<li class="error">${e}; couldn't get club data; maybe you aren't connected to the internet?</li>`;
     }
   );
   clublist.addEventListener("click",e=>{

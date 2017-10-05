@@ -14,8 +14,7 @@
     <meta name="theme-color" content="#ff594c">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400|Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/material.css">
     <link rel="stylesheet" href="css/colourpicker.css">
@@ -32,20 +31,22 @@
     <script src="js/lists.js" charset="utf-8"></script>
     <script src="js/barcodes.js" charset="utf-8"></script>
     <script src="schedule/app.js" charset="utf-8"></script>
+    <script src="touchy/rotate1.min.js" charset="utf-8"></script>
   </head>
   <body>
     <script type="text/javascript">
       if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
       if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
-      /* prevent flash of white as the rest of body loads */
     </script>
     <div class="section utilities">
-      <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised red">PAUSD Login Page</button></a></p>
+      <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised">PAUSD Login Page</button></a></p>
       <h1>Barcode</h1>
       <p>Click/tap on the barcode to edit.</p>
       <ul id='barcode'><li class="center"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
       <h1>Map</h1>
-      <p>map goes here</p>
+      <p class="center" id="maptoggle">Loading</p>
+      <img src="images/gunnmap.svg" id='mapimage'>
+      <div id="mapgoogle"></div>
     </div>
     <div class="section clubs">
       <h1>Clubs<input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"></h1>
@@ -109,5 +110,6 @@
         <button class="material red close">OK</button>
       </div>
     </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap" charset="utf-8" onerror="window.googleMapsFailed=event;"></script>
   </body>
 </html>

@@ -10,6 +10,24 @@ function toEach(query,fn) {
   var elems=document.querySelectorAll(query);
   for (var i=0,len=elems.length;i<len;i++) fn(elems[i],i);
 }
+function initMap() {
+  var map=new google.maps.Map(document.getElementById('mapgoogle'), {
+    zoom:18,
+    center:{lat:37.400922,lng:-122.133584}
+  });
+  map.setMapTypeId('satellite');
+  var imageBounds={
+    north:37.402294,
+    south:37.398824,
+    east:-122.130923,
+    west:-122.136685
+  };
+  historicalOverlay=new google.maps.GroundOverlay(
+    'http://i.imgur.com/cnsWqDz.png',
+    imageBounds
+  );
+  historicalOverlay.setMap(map);
+}
 window.addEventListener("load",e=>{
   ripple("#footer > ul > li, button.material");
   toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
@@ -53,7 +71,38 @@ window.addEventListener("load",e=>{
       }
     },
     e=>{
-      document.querySelector('#psa').innerHTML=`<p>${e}; either you aren't connected to the internet or you should try reloading.</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
+      document.querySelector('#psa').innerHTML=`<p>${e}; couldn't get last PSA; maybe you aren't connected to the internet?</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
     }
   );
+  zoomImage(document.querySelector('#mapimage'));
+  var maptoggle=document.querySelector('#maptoggle');
+  if (window.googleMapsFailed) {
+    maptoggle.innerHTML=`Google Maps not loading! Maybe you aren't connected to the internet?`;
+  } else {
+    maptoggle.innerHTML='';
+    var btn=document.createElement("button"),
+    img=document.querySelector('#mapimage'),
+    google=document.querySelector('#mapgoogle'),
+    usingGoogle=false,
+    btncontent=document.createTextNode('');
+    img.style.display='block',
+    google.style.display='none',
+    btncontent.nodeValue='use google maps';
+    btn.classList.add('material');
+    ripple(btn);
+    btn.addEventListener("click",e=>{
+      usingGoogle=!usingGoogle;
+      if (usingGoogle) {
+        img.style.display='none',
+        google.style.display='block',
+        btncontent.nodeValue='use the image';
+      } else {
+        img.style.display='block',
+        google.style.display='none',
+        btncontent.nodeValue='use google maps';
+      }
+    },false);
+    btn.appendChild(btncontent);
+    maptoggle.appendChild(btn);
+  }
 },false);

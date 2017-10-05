@@ -142,7 +142,7 @@ window.addEventListener("load",e=>{
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
         },
         e=>{
-          events[offset]=[{name:'',desc:`${e}; either you aren't connected to the internet or you should try reloading.`,error:true}];
+          events[offset]=[{name:'',desc:`${e}; couldn't get events; maybe you aren't connected to the internet?`,error:true}];
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
         }
       );
@@ -151,7 +151,7 @@ window.addEventListener("load",e=>{
   function alternateGet(e,successful) {
     if (successful) alternates=JSON.parse(e);
     else
-      document.querySelector('#alternateerror').innerHTML=`${e}; couldn't get alternate schedules; either you aren't connected to the internet or you should try reloading.`,
+      document.querySelector('#alternateerror').innerHTML=`${e}; couldn't get alternate schedules; maybe you aren't connected to the internet?`,
       alternates={};
     for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
     scheduleapp=scheduleApp({
