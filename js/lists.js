@@ -8,7 +8,7 @@ window.addEventListener("load",e=>{
   staffstyle=document.createElement("style");
   document.body.appendChild(staffstyle);
   ajax(
-    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'staff.json',
+    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/staff.json',
     e=>{
       staff=JSON.parse(e);
       staff["Nick Mount"]={game:true,jobTitle:"Easter Bunny",department:"Easter"};
@@ -51,7 +51,7 @@ window.addEventListener("load",e=>{
   clubstyle=document.createElement("style");
   document.body.appendChild(clubstyle);
   ajax(
-    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'clubs.json',
+    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/clubs.json',
     e=>{
       clubs=JSON.parse(e);
       var clubnames=Object.keys(clubs).sort(),

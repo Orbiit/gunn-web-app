@@ -165,7 +165,7 @@ window.addEventListener("load",e=>{
     makeWeekHappen();
   }
   ajax(
-    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'alt-schedules-2017-18-object.json',
+    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/alt-schedules-2017-18-object.json',
     e=>{
       alternateGet(e,true);
     },
