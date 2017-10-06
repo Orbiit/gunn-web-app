@@ -45,11 +45,14 @@
       <ul id='barcode'><li class="center"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
       <h1>Map</h1>
       <p class="center" id="maptoggle">Loading</p>
-      <img src="images/gunnmap.svg" id='mapimage'>
+      <p><strong>For the image:</strong> You can use a finger to pan, or two to rotate, zoom, and pan. You can use your mouse to drag, or scroll to zoom or right-click to rotate.</p>
+      <p><strong>For Google Maps:</strong> It doesn't seem to work properly on the first load, but reloading the page might help. Also, it'll only work when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.</p>
+      <img src="images/gunnmap.svg" id='mapimage' alt="The map image failed to load :(">
       <div id="mapgoogle"></div>
     </div>
     <div class="section clubs">
       <h1>Clubs<input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"></h1>
+      <p>Please note that club information was taken from their <a href="https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/">chartered club list as of September 14th, 2017</a>. Apparently some of their information turned out to be inaccurate, so blame them, not us.</p>
       <ul class="material-list three-line short clickables" id='clubs'></ul>
     </div>
     <div class="section schedule">

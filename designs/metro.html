@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Design idea 1 - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        font-size: 0;
+        line-height: 1;
+        font-family: 'Open Sans', sans-serif;
+        word-wrap: break-word;
+      }
+      body.light {
+        background-color: #eee;
+        color: rgba(0,0,0,0.8);
+      }
+      body.dark {
+        background-color: #333333;
+        color: white;
+      }
+      h1, h2, h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: normal;
+        margin: 0;
+      }
+      #main {
+        max-width: 1000px;
+        box-sizing: border-box;
+        padding: 30px;
+        margin: 0 auto;
+      }
+      h1.weekday {
+        font-size: 100px;
+      }
+      div.period {
+        padding: 20px;
+        margin: 30px 0;
+        position: relative;
+        min-height: 150px;
+        box-sizing: border-box;
+      }
+      div.period.light {
+        color: rgba(0,0,0,0.7);
+      }
+      div.period.dark {
+        color: rgba(255,255,255,1);
+      }
+      div.period.progressing {
+        padding-bottom: 30px;
+      }
+      div.period span {
+        display: block;
+      }
+      div.period > span.name {
+        font-size: 70px;
+        font-family: 'Montserrat', sans-serif;
+      }
+      div.period > span.time {
+        font-size: 30px;
+        opacity: 0.7;
+        margin-top: 10px;
+      }
+      div.period > span.letter {
+        font-size: 150px;
+        height: 150px;
+        opacity: 0.3;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto 20px;
+        font-family: 'Montserrat', sans-serif;
+      }
+      span.relative {
+        font-size: 20px;
+        top: 100%;
+        margin-top: -20px;
+        opacity: 0.6;
+        display: block;
+      }
+      span.relative > span.duration {
+        font-weight: bold;
+        display: inline;
+      }
+      div.period > div.progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 10px;
+      }
+      div.period.light > div.progress {
+        background-color: rgba(0,0,0,0.3);
+      }
+      div.period.dark > div.progress {
+        background-color: rgba(255,255,255,0.3);
+      }
+      div.period > div.progress::before {
+        content: '';
+        display: block;
+        width: var(--progress);
+        height: 100%;
+        background-color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+      if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'}`;
+    </script>
+    <div id="main">
+      <h1 class="weekday">Ĵaŭdo</h1>
+      <div class="periods">
+        <div class="period dark" style="background-color: #9C27B0;">
+          <span class="name">La Angla</span>
+          <span class="time">5:45am &ndash; 6:10am</span>
+          <span class="letter">F</span>
+        </div>
+        <span class="relative">Finiĝis antaŭ <span class="duration">5 horoj kaj 6 minutoj</span></span>
+        <div class="period dark progressing" style="background-color: #E91E63;--progress: 80%;">
+          <span class="name">La Historio</span>
+          <span class="time">6:10am &ndash; 7:10am</span>
+          <span class="letter">A</span>
+          <div class="progress"></div>
+        </div>
+        <div class="period dark" style="background-color: #2196F3;">
+          <span class="name">La Matematiko</span>
+          <span class="time">7:10am &ndash; 12:05pm</span>
+          <span class="letter">F</span>
+        </div>
+        <span class="relative">Komencos en <span class="duration">5 horoj kaj 6 minutoj</span></span>
+      </div>
+    </div>
+  </body>
+</html>

@@ -10,7 +10,8 @@ function scheduleApp(options={}) {
     return options.periods[name]||{label:name,colour:"#000"};
   }
   function getHumanTime(messytime) {
-    return `${+messytime.slice(0,2)}:${messytime.slice(2)}`;
+    var hr=+messytime.slice(0,2)%24;
+    return `${(hr-1)%12+1}:${messytime.slice(2)}${hr<12?'a':'p'}m`;
   }
   function getFontColour(colour) {
     colourtoy.style.backgroundColor=colour;
@@ -49,7 +50,7 @@ function scheduleApp(options={}) {
           else innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[i].start.totalminutes-totalminute)}</strong>.</p>`; // passing period
         }
         for (var period of sched.periods) {
-          innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.name).colour};color:${getFontColour(getPeriod(period.name).colour)};"><span class="schedule-periodname">${getPeriod(period.name).label}</span><span>${period.start.hour}:${('0'+period.start.minute).slice(-2)} &ndash; ${period.end.hour}:${('0'+period.end.minute).slice(-2)}</span>`;
+          innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.name).colour};color:${getFontColour(getPeriod(period.name).colour)};"><span class="schedule-periodname">${getPeriod(period.name).label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))}</span>`;
           if (checkfuture) {
             innerHTML+=`<span>`;
             if (totalminute>=period.end.totalminutes) innerHTML+=`Ended <strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong> ago.`;

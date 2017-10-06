@@ -16,7 +16,7 @@ window.addEventListener("load",e=>{
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
       innerHTML=``;
       for (var i=0,arr=staffnames,len=arr.length,person=arr[i];i<len;i++,person=arr[i]) {
-        innerHTML+=`<li data-person="${person}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${staff[person].department||''}</span></li>`;
+        innerHTML+=`<li data-person="${person}" data-search="${person} ${staff[person].jobTitle} ${staff[person].department||''}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${staff[person].department||''}</span></li>`;
       }
       stafflist.innerHTML=innerHTML;
       ripple('#staff li');
@@ -40,7 +40,7 @@ window.addEventListener("load",e=>{
     }
   },false);
   staffsearch.addEventListener("input",e=>{
-    staffstyle.innerHTML=staffsearch.value?`#staff li:not([data-person*="${staffsearch.value}"i]){display:none}`:'';
+    staffstyle.innerHTML=staffsearch.value?`#staff li:not([data-search*="${staffsearch.value.replace(/\\/g,'\\')}"i]){display:none}`:'';
   },false);
   var clubs,
   clublist=document.querySelector('#clubs'),
@@ -57,7 +57,7 @@ window.addEventListener("load",e=>{
       var clubnames=Object.keys(clubs).sort(),
       innerHTML=``;
       for (var i=0,arr=clubnames,len=arr.length,club=arr[i];i<len;i++,club=arr[i]) {
-        innerHTML+=`<li data-club="${club}"><span class="primary">${club}</span><span class="secondary">${clubs[club].room}</span><span class="secondary">${clubs[club].day}</span></li>`;
+        innerHTML+=`<li data-club="${club}" data-search="${club} ${clubs[club].room} ${clubs[club].day}"><span class="primary">${club}</span><span class="secondary">${clubs[club].room}</span><span class="secondary">${clubs[club].day}</span></li>`;
       }
       clublist.innerHTML=innerHTML;
       ripple('#clubs li');
@@ -79,6 +79,6 @@ window.addEventListener("load",e=>{
     }
   },false);
   clubsearch.addEventListener("input",e=>{
-    clubstyle.innerHTML=clubsearch.value?`#clubs li:not([data-club*="${clubsearch.value}"i]){display:none}`:'';
+    clubstyle.innerHTML=clubsearch.value?`#clubs li:not([data-search*="${clubsearch.value.replace(/\\/g,'\\')}"i]){display:none}`:'';
   },false);
 },false);
