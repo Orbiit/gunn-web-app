@@ -9,7 +9,9 @@ class Elem extends Array {
   }
   click(fn) {
     this.each(e=>{
-      e.addEventListener('click',fn,false);
+      e.addEventListener('click',ev=>{
+        fn(ev,new Elem(e));
+      },false);
       // if (!e.hasKey) e.addEventListener("keydown",e=>{
       //   if (e.keyCode===13||e.keyCode===32) fn(e);
       // },false);
@@ -19,7 +21,9 @@ class Elem extends Array {
   on(listener,fn,touch=false) {
     this.each(e=>{
       if (listener==='keydown'||listener==='keypress') e.hasKey=true;
-      e.addEventListener(listener,fn,touch?{passive:false}:false);
+      e.addEventListener(listener,ev=>{
+        fn(ev,new Elem(e));
+      },touch?{passive:false}:false);
     });
     return this;
   }

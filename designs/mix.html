@@ -4,7 +4,7 @@
     <title>Design idea 2 - UGWA</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <style>
       body {
         margin: 0;
@@ -19,10 +19,26 @@
         color: rgba(0,0,0,0.8);
         background-color: #eee;
       }
+      body.dark {
+        color: white;
+        background-color: #333;
+      }
       h1 {
         font-size: 50px;
         font-weight: normal;
         margin: 0;
+        font-family: 'Open Sans', sans-serif;
+      }
+      button, select, input, textarea {
+        color: inherit;
+        font: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
       }
       button {
         cursor: pointer;
@@ -33,6 +49,7 @@
         padding: 20px;
         max-width: 500px;
         margin: 0 auto;
+        width: 50%;
       }
       .column:not(#schedule) {
         margin-left: 0;
@@ -47,10 +64,14 @@
         width: 40px;
         height: 40px;
         padding: 0;
+        z-index: 10;
         transition: all .2s cubic-bezier(0.4,0,0.2,1);
       }
       body.light #control {
         background-color: rgba(0,0,0,0.6);
+      }
+      body.dark #control {
+        background-color: rgba(255,255,255,0.6);
       }
       body.useblur > *:not(#control) {
         transition: all .2s;
@@ -94,6 +115,10 @@
         border-color: rgba(255,255,255,0.6);
         color: white;
       }
+      body.dark #menu button {
+        border-color: rgba(0,0,0,0.6);
+        color: rgba(0,0,0,0.8);
+      }
       body #menu button:focus {
         border-color: #ff594c;
       }
@@ -111,12 +136,17 @@
         font-size: 0;
       }
       #controltoggle svg path {
-        stroke: white;
         fill: none;
         transform-origin: center;
         transform: translate(0,-4px) rotate(-45deg);
         stroke-dasharray: 10;
         transition: all .2s;
+      }
+      body.light #controltoggle svg path {
+        stroke: white;
+      }
+      body.dark #controltoggle svg path {
+        stroke: rgba(0,0,0,0.8);
       }
       body.opencontrol #controltoggle svg path {
         transform: translate(0,0) rotate(-45deg);
@@ -124,6 +154,67 @@
       }
       #controltoggle:focus svg path {
         stroke: #ff594c;
+      }
+      .period {
+        padding: 20px;
+        margin: 10px 0;
+        position: relative;
+        cursor: pointer;
+        transition: all .2s;
+      }
+      .period.expanded {
+        box-shadow: 0 0 3px rgba(0,0,0,0.3);
+        margin: 20px -5px;
+      }
+      .period.expanded.transparent {
+        /*box-shadow: inset 0 0 3px rgba(0,0,0,0.3);*/
+        box-shadow: none;
+      }
+      .period::before {
+        content: attr(data-period);
+        opacity: 0.5;
+        display: block;
+        font-size: 100px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        pointer-events: none;
+        margin: 10px 20px;
+      }
+      .period .name {
+        font-size: 50px;
+        height: auto;
+      }
+      .period span {
+        display: block;
+        font-size: 20px;
+        padding-bottom: 10px;
+        overflow: hidden;
+        height: 1.2em;
+        text-overflow: ellipsis;
+        transition: all .2s;
+      }
+      .period span:last-child, .period:not(.expanded) .desc {
+        padding-bottom: 0;
+      }
+      .period span em {
+        font-style: normal;
+      }
+      .period.light, body.light .period.transparent {
+        color: rgba(0,0,0,0.6);
+      }
+      .period.dark, body.dark .period.transparent {
+        color: rgba(255,255,255,0.8);
+      }
+      .period.light .name, .period.light span em, body.light .period.transparent .name, body.light .period.transparent span em {
+        color: rgba(0,0,0,0.8);
+      }
+      .period.dark .name, .period.dark span em, body.dark .period.transparent .name, body.dark .period.transparent span em {
+        color: white;
+      }
+      .period:not(.expanded) span:not(.name):not(.desc) {
+        height: 0;
+        padding-bottom: 0;
       }
       @media (orientation: portrait) {
         body {
@@ -166,6 +257,29 @@
     <div class="column" id="schedule">
       <div class="container">
         <h1>schedule</h1>
+        <div id="periods">
+          <div class="period dark" data-period="A" style="background-color: #E91E63;" title="Social Studies">
+            <span class="name">Social Studies</span>
+            <span>8:25am – 9:45am</span>
+            <span>started <em>5 minutes</em> ago</span>
+            <span class="desc">ended <em>3 minutes</em> ago</span>
+            <span>lasts <em>2 minutes</em></span>
+          </div>
+          <div class="period transparent" title="Brunch">
+            <span class="name">Brunch</span>
+            <span>9:45am – 10:00am</span>
+            <span>started <em>3 minutes</em> ago</span>
+            <span class="desc">ending in <em>5 minutes</em></span>
+            <span>lasts <em>8 minutes</em></span>
+          </div>
+          <div class="period dark" data-period="B" style="background-color: #2196F3;" title="Science">
+            <span class="name">Science</span>
+            <span>10:00am – 11:15am</span>
+            <span class="desc">starting in <em>5 minutes</em></span>
+            <span>ending in <em>13 minutes</em></span>
+            <span>lasts <em>8 minutes</em></span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="column" id="events">
@@ -183,6 +297,11 @@
         DB.toggleClass('opencontrol');
         if (DB.hasClass('opencontrol')[0]) sel('#menu button:not(#controltoggle)').prop('disabled',false);
         else sel('#menu button:not(#controltoggle)').prop('disabled',true);
+      });
+      sel('.period').click((e,elem)=>{
+        var hadClass=elem.hasClass('expanded')[0];
+        sel('.period.expanded').removeClass('expanded');
+        if (!hadClass) elem.addClass('expanded');
       });
     </script>
   </body>
