@@ -18,12 +18,15 @@ class Elem extends Array {
     });
     return this;
   }
-  on(listener,fn,touch=false) {
+  on(listeners,fn,touch=false) {
+    if (!Array.isArray(listeners)) listeners=[listeners];
     this.each(e=>{
-      if (listener==='keydown'||listener==='keypress') e.hasKey=true;
-      e.addEventListener(listener,ev=>{
-        fn(ev,new Elem(e));
-      },touch?{passive:false}:false);
+      if (~listeners.indexOf('keydown')||~listeners.indexOf('keypress')) e.hasKey=true;
+      for (var i=0;i<listeners.length;i++) {
+        e.addEventListener(listeners[i],ev=>{
+          fn(ev,new Elem(e));
+        },touch?{passive:false}:false);
+      }
     });
     return this;
   }

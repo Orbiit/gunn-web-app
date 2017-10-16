@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <style>
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+      :focus {
+        outline: none;
+      }
       body {
         margin: 0;
         font-size: 0;
@@ -36,9 +42,13 @@
       a {
         color: inherit;
         text-decoration: none;
+        color: #ff594c;
       }
       a:hover {
         text-decoration: underline;
+      }
+      a:focus {
+        box-shadow: 0 0 0 1px #ff594c;
       }
       button {
         cursor: pointer;
@@ -65,6 +75,7 @@
         height: 40px;
         padding: 0;
         z-index: 10;
+        box-sizing: border-box;
         transition: all .2s cubic-bezier(0.4,0,0.2,1);
       }
       body.light #control {
@@ -77,19 +88,29 @@
         transition: all .2s;
       }
       body.opencontrol.useblur > *:not(#control) {
+        -webkit-filter: blur(10px);
         filter: blur(10px);
       }
       body.opencontrol #control {
-        width: 190px;
-        height: 190px;
+        width: 230px;
+        height: 230px;
         padding: 20px;
       }
       #menu {
+        display: -ms-grid;
         display: grid;
         grid-template-columns: repeat(4,40px);
         grid-template-rows: repeat(4,40px);
         grid-gap: 10px;
         grid-template-areas:
+          "settings settings about credits"
+          "settings settings barcode barcode"
+          "clubs map barcode barcode"
+          "staff map howtouse close";
+        -ms-grid-columns: 40px 40px 40px 40px;
+        -ms-grid-rows: 40px 40px 40px 40px;
+        -ms-grid-gap: 10px;
+        -ms-grid-areas:
           "settings settings about credits"
           "settings settings barcode barcode"
           "clubs map barcode barcode"
@@ -122,18 +143,22 @@
       body #menu button:focus {
         border-color: #ff594c;
       }
-      #settings {grid-area: settings;}
-      #about {grid-area: about;}
-      #credits {grid-area: credits;}
-      #barcode {grid-area: barcode;}
-      #clubs {grid-area: clubs;}
-      #staff {grid-area: staff;}
-      #map {grid-area: map;}
-      #howtouse {grid-area: howtouse;}
+      #settings {grid-area: settings;-ms-grid-area: settings;}
+      #about {grid-area: about;-ms-grid-area: about;}
+      #credits {grid-area: credits;-ms-grid-area: credits;}
+      #barcode {grid-area: barcode;-ms-grid-area: barcode;}
+      #clubs {grid-area: clubs;-ms-grid-area: clubs;}
+      #staff {grid-area: staff;-ms-grid-area: staff;}
+      #map {grid-area: map;-ms-grid-area: map;}
+      #howtouse {grid-area: howtouse;-ms-grid-area: howtouse;}
       #menu #controltoggle {
         grid-area: close;
         border: none;
         font-size: 0;
+      }
+      #controltoggle svg {
+        width: 100%;
+        height: 100%;
       }
       #controltoggle svg path {
         fill: none;
@@ -142,10 +167,10 @@
         stroke-dasharray: 10;
         transition: all .2s;
       }
-      body.light #controltoggle svg path {
+      body.light #controltoggle:not(:focus) svg path {
         stroke: white;
       }
-      body.dark #controltoggle svg path {
+      body.dark #controltoggle:not(:focus) svg path {
         stroke: rgba(0,0,0,0.8);
       }
       body.opencontrol #controltoggle svg path {
@@ -155,6 +180,39 @@
       #controltoggle:focus svg path {
         stroke: #ff594c;
       }
+      #date {
+        text-align: center;
+        height: 90px;
+        position: relative;
+      }
+      #date h1 {
+        margin-left: -20px;
+        margin-right: -20px;
+        transition: all .2s;
+      }
+      #date h2 {
+        font-size: 20px;
+        opacity: 0.6;
+        font-weight: normal;
+        margin: 10px 0;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+      .lockdate #date h1 {
+        position: fixed;
+        top: 0;
+        z-index: 9;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 10px 0;
+        font-size: 40px;
+      }
+      body.light.lockdate #date h1 {
+        background-color: rgba(255,255,255,0.8);
+      }
+      body.dark.lockdate #date h1 {
+        background-color: rgba(0,0,0,0.8);
+      }
       .period {
         padding: 20px;
         margin: 10px 0;
@@ -162,11 +220,11 @@
         cursor: pointer;
         transition: all .2s;
       }
-      .period.expanded {
+      .period:focus {
         box-shadow: 0 0 3px rgba(0,0,0,0.3);
         margin: 20px -5px;
       }
-      .period.expanded.transparent {
+      .period:focus.transparent {
         /*box-shadow: inset 0 0 3px rgba(0,0,0,0.3);*/
         box-shadow: none;
       }
@@ -194,7 +252,7 @@
         text-overflow: ellipsis;
         transition: all .2s;
       }
-      .period span:last-child, .period:not(.expanded) .desc {
+      .period span:last-child, .period:not(:focus) .desc {
         padding-bottom: 0;
       }
       .period span em {
@@ -212,9 +270,54 @@
       .period.dark .name, .period.dark span em, body.dark .period.transparent .name, body.dark .period.transparent span em {
         color: white;
       }
-      .period:not(.expanded) span:not(.name):not(.desc) {
+      .period:not(:focus) span:not(.name):not(.desc) {
         height: 0;
         padding-bottom: 0;
+      }
+      .period svg {
+        width: 40px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        fill: none;
+      }
+      .period.light svg, body.light .period.transparent svg {
+        stroke: rgba(0,0,0,0.8);
+      }
+      .period.dark svg, body.dark .period.transparent svg {
+        stroke: white;
+      }
+      .period svg path {
+        transform-origin: center;
+        transform: translate(0,-4px) rotate(-45deg);
+        stroke-dasharray: 10;
+        stroke-dashoffset: 10;
+        transition: all .2s;
+      }
+      .period:focus svg path {
+        transform: translate(0,4px) rotate(-45deg);
+        stroke-dashoffset: 0;
+      }
+      #events {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      #events li {
+        margin: 10px 0;
+      }
+      #events li span {
+        display: block;
+        white-space: pre-wrap;
+        margin: 2px 0;
+        line-height: 1.2;
+      }
+      #events li span.name {
+        font-size: 20px;
+      }
+      #events li span.desc {
+        font-size: 15px;
+        opacity: 0.7;
       }
       @media (orientation: portrait) {
         body {
@@ -223,11 +326,55 @@
         .column {
           flex: none;
           margin: 0;
+          width: 100%;
+          max-width: none;
+        }
+        #control {
+          height: 60px;
+          width: 60px;
+          border-radius: 50%;
+        }
+        body.opencontrol #control {
+          border-radius: 0;
+          bottom: 0;
+          right: 0;
+          width: 100vw;
+          height: 100vw;
+        }
+        #menu {
+          grid-template-columns: repeat(4,calc(calc(100vw - 70px) / 4));
+          grid-template-rows: repeat(4,calc(calc(100vw - 70px) / 4));
+        }
+        #controltoggle {
+          position: absolute;
+          height: 60px;
+          width: 60px;
+          right: 0;
+          bottom: 0;
+          transition: all .2s;
+        }
+        body.opencontrol #controltoggle {
+          height: 100%;
+          width: 100%;
         }
         body.opencontrol #controltoggle svg path {
           transform: translate(0,4px) rotate(-45deg);
           stroke-dasharray: 10;
           stroke-dashoffset: 10;
+        }
+      }
+      /* very cheaty CSS IMO, so I'm putting it here */
+      .lockdate #date h1 {
+        width: 500px;
+      }
+      @media (max-width: 1000px) {
+        .lockdate #date h1 {
+          width: 50%;
+        }
+      }
+      @media (orientation: portrait) {
+        .lockdate #date h1 {
+          width: 100%;
         }
       }
     </style>
@@ -248,44 +395,94 @@
         <button type="button" id="map">map</button>
         <button type="button" id="howtouse">help</button>
         <button type="button" id="controltoggle">
-          <svg height='40' width="40">
-            <path d="M10 20H30M20 30V10"/>
+          <svg viewBox="0 0 40 40">
+            <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
           </svg>
         </button>
       </div>
     </div>
     <div class="column" id="schedule">
       <div class="container">
-        <h1>schedule</h1>
+        <div id="date">
+          <h1>August 8</h1>
+          <h2>Thursday</h2>
+        </div>
         <div id="periods">
           <div class="period dark" data-period="A" style="background-color: #E91E63;" title="Social Studies">
             <span class="name">Social Studies</span>
-            <span>8:25am – 9:45am</span>
+            <span>8:25am &ndash; 9:45am</span>
             <span>started <em>5 minutes</em> ago</span>
             <span class="desc">ended <em>3 minutes</em> ago</span>
             <span>lasts <em>2 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+              <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
+            </svg>
           </div>
           <div class="period transparent" title="Brunch">
             <span class="name">Brunch</span>
-            <span>9:45am – 10:00am</span>
+            <span>9:45am &ndash; 10:00am</span>
             <span>started <em>3 minutes</em> ago</span>
             <span class="desc">ending in <em>5 minutes</em></span>
             <span>lasts <em>8 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+              <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
+            </svg>
           </div>
           <div class="period dark" data-period="B" style="background-color: #2196F3;" title="Science">
             <span class="name">Science</span>
-            <span>10:00am – 11:15am</span>
+            <span>10:00am &ndash; 11:15am</span>
             <span class="desc">starting in <em>5 minutes</em></span>
             <span>ending in <em>13 minutes</em></span>
             <span>lasts <em>8 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+              <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
+            </svg>
+          </div>
+          <div class="period light" data-period="?" style="background-color: white;" title="meh">
+            <span class="name">meh</span>
+            <span>??:??pm &ndash; ??:??pm</span>
+            <span class="desc">starting in <em>?? minutes</em></span>
+            <span>ending in <em>?? minutes</em></span>
+            <span>lasts <em>?? minutes</em></span>
+            <svg viewBox="0 0 40 40">
+              <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
+            </svg>
+          </div>
+          <div class="period transparent" title="Lunch">
+            <span class="name">Lunch</span>
+            <span>??:??pm &en; ??:??pm</span>
+            <span class="desc">starting in <em>?? minutes</em></span>
+            <span>ending in <em>?? minutes</em></span>
+            <span>lasts <em>?? minutes</em></span>
+            <svg viewBox="0 0 40 40">
+              <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
+            </svg>
+          </div>
+          <div class="period light" data-period="?" style="background-color: white;" title="meh">
+            <span class="name">meh</span>
+            <span>??:??pm &en; ??:??pm</span>
+            <span class="desc">starting in <em>?? minutes</em></span>
+            <span>ending in <em>?? minutes</em></span>
+            <span>lasts <em>?? minutes</em></span>
+            <svg viewBox="0 0 40 40">
+              <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
+            </svg>
           </div>
         </div>
       </div>
     </div>
-    <div class="column" id="events">
+    <div class="column">
       <div class="container">
         <h1>this week</h1>
+        <p style="font-size: 15px;white-space:pre-wrap;">one day i'll put some CONTENT here. but there's this BATHROOM BREAK i must attend so not now</p>
         <h1>events</h1>
+        <ul id="events">
+          <li><span class="name">donation time</span><span class="desc">7:00pm &ndash; 8:00pm</span><span class="desc">pls donate we need money</span></li>
+          <li><span class="name">donation day</span><span class="desc">Wednesday, December 10th, 2017</span><span class="desc">u rich people dont donate enough</span></li>
+          <li><span class="name">donation day #2</span><span class="desc">Thursday, December 11th, 2017</span><span class="desc">rly we desperately need money!!1!</span></li>
+          <li><span class="name">donation day #3</span><span class="desc">Friday, December 12th, 2017</span><span class="desc">there are kids in AFRICA that could've used that money more wisely!!</span></li>
+          <li><span class="name">buying spree</span><span class="desc">5:00am &ndash; 5:30am</span><span class="desc">lets buy some CANDY using the money from those donations wee</span></li>
+        </ul>
       </div>
     </div>
     <script src="../js/dom.js" charset="utf-8"></script>
@@ -298,11 +495,19 @@
         if (DB.hasClass('opencontrol')[0]) sel('#menu button:not(#controltoggle)').prop('disabled',false);
         else sel('#menu button:not(#controltoggle)').prop('disabled',true);
       });
-      sel('.period').click((e,elem)=>{
-        var hadClass=elem.hasClass('expanded')[0];
-        sel('.period.expanded').removeClass('expanded');
-        if (!hadClass) elem.addClass('expanded');
+      sel('.period').attr('tabindex','0').click((e,elem)=>{
+        // var hadClass=elem.hasClass('expanded')[0];
+        // sel('.period.expanded').removeClass('expanded');
+        // if (!hadClass) elem.addClass('expanded');
+        elem[0].focus();
       });
+      document.addEventListener("scroll",e=>{
+        if (document.body.classList.contains('lockdate')) {
+          if ((pageYOffset||document.scrollTop||0)<=20) document.body.classList.remove('lockdate');
+        } else {
+          if ((pageYOffset||document.scrollTop||0)>20) document.body.classList.add('lockdate');
+        }
+      },false);
     </script>
   </body>
 </html>
