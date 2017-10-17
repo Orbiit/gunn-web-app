@@ -225,6 +225,7 @@ window.addEventListener("load",e=>{
     label.classList.add('customiser-label');
     label.innerHTML=labeltext;
     input.classList.add('customiser-input');
+    input.setAttribute('aria-label','Set label for '+labeltext);
     input.addEventListener("change",e=>{
       if (input.value) inputwrapper.classList.add('filled');
       else inputwrapper.classList.remove('filled');

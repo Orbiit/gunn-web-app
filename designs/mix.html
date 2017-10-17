@@ -66,16 +66,18 @@
       }
       #control {
         position: fixed;
-        border-radius: 20px;
+        border-radius: 25px;
         overflow: hidden;
         bottom: 10px;
         right: 10px;
         box-shadow: 0 0 3px rgba(0,0,0,0.3);
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         padding: 0;
         z-index: 10;
         box-sizing: border-box;
+        --tile-size: 50px;
+        --tile-gap: calc(var(--tile-size) + 10px);
         transition: all .2s cubic-bezier(0.4,0,0.2,1);
       }
       body.light #control {
@@ -92,37 +94,9 @@
         filter: blur(10px);
       }
       body.opencontrol #control {
-        width: 230px;
-        height: 230px;
-        padding: 20px;
-      }
-      #menu {
-        display: -ms-grid;
-        display: grid;
-        grid-template-columns: repeat(4,40px);
-        grid-template-rows: repeat(4,40px);
-        grid-gap: 10px;
-        grid-template-areas:
-          "settings settings about credits"
-          "settings settings barcode barcode"
-          "clubs map barcode barcode"
-          "staff map howtouse close";
-        -ms-grid-columns: 40px 40px 40px 40px;
-        -ms-grid-rows: 40px 40px 40px 40px;
-        -ms-grid-gap: 10px;
-        -ms-grid-areas:
-          "settings settings about credits"
-          "settings settings barcode barcode"
-          "clubs map barcode barcode"
-          "staff map howtouse close";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        transition: all .2s;
-      }
-      body.opencontrol #menu {
-        bottom: 20px;
-        right: 20px;
+        width: calc(calc(calc(var(--tile-gap) * 3) + var(--tile-size)) + 50px);
+        height: calc(calc(calc(var(--tile-gap) * 3) + var(--tile-size)) + 50px);
+        padding: 25px;
       }
       #menu button {
         background: none;
@@ -131,6 +105,13 @@
         padding: 0;
         font-size: 10px;
         -webkit-appearance: none;
+        position: absolute;
+        margin: 0;
+        right: calc(var(--tile-gap) * var(--x));
+        bottom: calc(var(--tile-gap) * var(--y));
+        width: calc(calc(var(--tile-gap) * var(--colspan)) + var(--tile-size));
+        height: calc(calc(var(--tile-gap) * var(--rowspan)) + var(--tile-size));
+        transition: all .2s;
       }
       body.light #menu button {
         border-color: rgba(255,255,255,0.6);
@@ -140,19 +121,25 @@
         border-color: rgba(0,0,0,0.6);
         color: rgba(0,0,0,0.8);
       }
+      body.opencontrol #menu button {
+        margin: 25px;
+      }
       body #menu button:focus {
         border-color: #ff594c;
       }
-      #settings {grid-area: settings;-ms-grid-area: settings;}
-      #about {grid-area: about;-ms-grid-area: about;}
-      #credits {grid-area: credits;-ms-grid-area: credits;}
-      #barcode {grid-area: barcode;-ms-grid-area: barcode;}
-      #clubs {grid-area: clubs;-ms-grid-area: clubs;}
-      #staff {grid-area: staff;-ms-grid-area: staff;}
-      #map {grid-area: map;-ms-grid-area: map;}
-      #howtouse {grid-area: howtouse;-ms-grid-area: howtouse;}
+      #settings {--x:2;--y:2;--colspan:1;--rowspan:1;}
+      #about {--x:1;--y:3;--colspan:0;--rowspan:0;}
+      #credits {--x:0;--y:3;--colspan:0;--rowspan:0;}
+      #barcode {--x:0;--y:1;--colspan:1;--rowspan:1;}
+      #clubs {--x:3;--y:1;--colspan:0;--rowspan:0;}
+      #staff {--x:3;--y:0;--colspan:0;--rowspan:0;}
+      #map {--x:2;--y:0;--colspan:0;--rowspan:1;}
+      #howtouse {--x:1;--y:0;--colspan:0;--rowspan:0;}
       #menu #controltoggle {
-        grid-area: close;
+        --x: 0;
+        --y: 0;
+        --colspan: 0;
+        --rowspan: 0;
         border: none;
         font-size: 0;
       }
@@ -188,6 +175,7 @@
       #date h1 {
         margin-left: -20px;
         margin-right: -20px;
+        position: relative;
         transition: all .2s;
       }
       #date h2 {
@@ -333,6 +321,8 @@
           height: 60px;
           width: 60px;
           border-radius: 50%;
+          --tile-size: calc(calc(100vw - 80px) / 4);
+          --tile-gap: calc(var(--tile-size) + 10px);
         }
         body.opencontrol #control {
           border-radius: 0;
@@ -341,21 +331,15 @@
           width: 100vw;
           height: 100vw;
         }
-        #menu {
-          grid-template-columns: repeat(4,calc(calc(100vw - 70px) / 4));
-          grid-template-rows: repeat(4,calc(calc(100vw - 70px) / 4));
-        }
         #controltoggle {
           position: absolute;
-          height: 60px;
-          width: 60px;
           right: 0;
           bottom: 0;
           transition: all .2s;
         }
-        body.opencontrol #controltoggle {
-          height: 100%;
-          width: 100%;
+        body:not(.opencontrol) #controltoggle {
+          height: 60px;
+          width: 60px;
         }
         body.opencontrol #controltoggle svg path {
           transform: translate(0,4px) rotate(-45deg);
@@ -394,7 +378,7 @@
         <button type="button" id="staff">staff</button>
         <button type="button" id="map">map</button>
         <button type="button" id="howtouse">help</button>
-        <button type="button" id="controltoggle">
+        <button type="button" id="controltoggle" aria-label="open menu">
           <svg viewBox="0 0 40 40">
             <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"/>
           </svg>
