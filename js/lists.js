@@ -33,7 +33,21 @@ window.addEventListener("load",e=>{
       var person=target.dataset.person;
       staffh1.innerHTML=person;
       if (staff[person].game) {
-        staffcontent.innerHTML=`<p>I hope to have a game here one day</p>`;
+        staffcontent.innerHTML=``;
+        var btn=document.createElement("button"),
+        clicks=document.createElement("p"),
+        count=+localStorage.getItem('[gunn-web-app] scheduleapp.clicks')||0;
+        btn.innerHTML="click me";
+        btn.className="material ripple-light raised";
+        ripple(btn);
+        clicks.innerHTML=`${count} click(s)`;
+        btn.addEventListener("click",e=>{
+          count++;
+          localStorage.setItem('[gunn-web-app] scheduleapp.clicks',count);
+          clicks.innerHTML=`${count} click(s)`;
+        },false);
+        staffcontent.appendChild(btn);
+        staffcontent.appendChild(clicks);
       } else {
         staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}`;
       }
