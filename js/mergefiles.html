@@ -24,7 +24,7 @@
         xmlHttp.onreadystatechange=()=>{
           if (xmlHttp.readyState===4) xmlHttp.status===200?callback(xmlHttp.responseText):error?error(xmlHttp.status):0;
         };
-        xmlHttp.open("GET",url,true);
+        xmlHttp.open("GET",'../'+url,true);
         xmlHttp.send(null);
       }
       var files=document.querySelector('#files'),
