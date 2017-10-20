@@ -16,9 +16,9 @@ This is open sourced on [GitHub](https://github.com/Orbiit/gunn-web-app), if you
 # Credits
 [Sean](https://sheeptester.github.io/) who made most of the app.
 
-Henry for his ideas, Google Maps overlay, and bug reports that came with screenshots.
+[Henry](https://poolehenry.github.io/) for his ideas, Google Maps overlay, and bug reports that came with screenshots.
 
-Alex, Steven, Tomer, and some other people for moral support.
+Alex, [Steven](https://velosify.github.io/), Tomer, Aaryan, [Julien](https://gamepro5.github.io/) and some other people for moral support and ideas.
 
 The [Android version of the Gunn App](https://github.com/RiceCakess/TheGunnApp) which was open sourced and I was able to get the Google Calendar events URL thing from their code. Apparently for me Java is to JavaScript as Interlingua is to Spanish.
 
