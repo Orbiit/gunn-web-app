@@ -76,8 +76,8 @@
         padding: 0;
         z-index: 10;
         box-sizing: border-box;
-        --tile-size: 50px;
-        --tile-gap: calc(var(--tile-size) + 10px);
+        /*--tile-size: 50px;
+        --tile-gap: calc(var(--tile-size) + 10px);*/
         transition: all .2s cubic-bezier(0.4,0,0.2,1);
       }
       body.light #control {
@@ -94,9 +94,25 @@
         filter: blur(10px);
       }
       body.opencontrol #control {
-        width: calc(calc(calc(var(--tile-gap) * 3) + var(--tile-size)) + 50px);
-        height: calc(calc(calc(var(--tile-gap) * 3) + var(--tile-size)) + 50px);
-        padding: 25px;
+        /*width: calc(calc(calc(var(--tile-gap) * 3) + var(--tile-size)) + 50px);
+        height: calc(calc(calc(var(--tile-gap) * 3) + var(--tile-size)) + 50px);*/
+        width: 230px;
+        height: 230px;
+        /*padding: 25px;*/
+      }
+      #menu {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 227.27272727272728px;
+        height: 227.27272727272728px;
+        transition: all .2s;
+      }
+      body.opencontrol #menu {
+        right: 25px;
+        bottom: 25px;
+        width: 180px;
+        height: 180px;
       }
       #menu button {
         background: none;
@@ -107,10 +123,10 @@
         -webkit-appearance: none;
         position: absolute;
         margin: 0;
-        right: calc(var(--tile-gap) * var(--x));
+        /*right: calc(var(--tile-gap) * var(--x));
         bottom: calc(var(--tile-gap) * var(--y));
         width: calc(calc(var(--tile-gap) * var(--colspan)) + var(--tile-size));
-        height: calc(calc(var(--tile-gap) * var(--rowspan)) + var(--tile-size));
+        height: calc(calc(var(--tile-gap) * var(--rowspan)) + var(--tile-size));*/
         transition: all .2s;
       }
       body.light #menu button {
@@ -122,24 +138,36 @@
         color: rgba(0,0,0,0.8);
       }
       body.opencontrol #menu button {
-        margin: 25px;
+        /*margin: 25px;*/
       }
       body #menu button:focus {
         border-color: #ff594c;
       }
-      #settings {--x:2;--y:2;--colspan:1;--rowspan:1;}
+      /*#settings {--x:2;--y:2;--colspan:1;--rowspan:1;}
       #about {--x:1;--y:3;--colspan:0;--rowspan:0;}
       #credits {--x:0;--y:3;--colspan:0;--rowspan:0;}
       #barcode {--x:0;--y:1;--colspan:1;--rowspan:1;}
       #clubs {--x:3;--y:1;--colspan:0;--rowspan:0;}
       #staff {--x:3;--y:0;--colspan:0;--rowspan:0;}
       #map {--x:2;--y:0;--colspan:0;--rowspan:1;}
-      #howtouse {--x:1;--y:0;--colspan:0;--rowspan:0;}
+      #howtouse {--x:1;--y:0;--colspan:0;--rowspan:0;}*/
+      #settings {right:52%;bottom:52%;width:48%;height:48%;}
+      #about {right:26%;bottom:78%;width:22%;height:22%;}
+      #credits {right:0;bottom:78%;width:22%;height:22%;}
+      #barcode {right:0;bottom:26%;width:48%;height:48%;}
+      #clubs {right:78%;bottom:26%;width:22%;height:22%;}
+      #staff {right:78%;bottom:0;width:22%;height:22%;}
+      #map {right:52%;bottom:0;width:22%;height:48%;}
+      #howtouse {right:26%;bottom:0;width:22%;height:22%;}
       #menu #controltoggle {
-        --x: 0;
+        /*--x: 0;
         --y: 0;
         --colspan: 0;
-        --rowspan: 0;
+        --rowspan: 0;*/
+        right:0;
+        bottom:0;
+        width:22%;
+        height:22%;
         border: none;
         font-size: 0;
       }
@@ -321,8 +349,12 @@
           height: 60px;
           width: 60px;
           border-radius: 50%;
-          --tile-size: calc(calc(100vw - 80px) / 4);
-          --tile-gap: calc(var(--tile-size) + 10px);
+          /*--tile-size: calc(calc(100vw - 80px) / 4);
+          --tile-gap: calc(var(--tile-size) + 10px);*/
+        }
+        #menu {
+          width: 272.72727272727275px;
+          height: 272.72727272727275px;
         }
         body.opencontrol #control {
           border-radius: 0;
@@ -330,6 +362,12 @@
           right: 0;
           width: 100vw;
           height: 100vw;
+        }
+        body.opencontrol #menu {
+          bottom: 5vw;
+          right: 5vw;
+          width: 90vw;
+          height: 90vw;
         }
         #controltoggle {
           position: absolute;

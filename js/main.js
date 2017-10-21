@@ -105,4 +105,7 @@ window.addEventListener("load",e=>{
     btn.appendChild(btncontent);
     maptoggle.appendChild(btn);
   }
+  window.applicationCache.addEventListener('updateready',e=>{
+    if (window.applicationCache.status===window.applicationCache.UPDATEREADY) window.location.reload();
+  },false);
 },false);

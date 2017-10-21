@@ -259,7 +259,7 @@ window.addEventListener("load",e=>{
       pickertrigger=document.createElement("button"),
       picker=new ColourPicker(e=>{
         pickertrigger.style.backgroundColor=e;
-        if (window.scheduleapp) scheduleapp.setPeriod(id,'',e);
+        if (scheduleapp) scheduleapp.setPeriod(id,'',e);
         options[letras.indexOf(id)][1]=e;
         cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
         if (picker.darkness()>125) {
