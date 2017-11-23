@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fullscreen view</title>
+    <meta charset="UTF-8">
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+      :focus {
+        outline: none;
+      }
+      button, select, textarea, input {
+        font: inherit;
+        -webkit-appearance: none;
+      }
+      input[type="search"]::-webkit-search-decoration,
+      input[type="search"]::-webkit-search-cancel-button,
+      input[type="search"]::-webkit-search-results-button,
+      input[type="search"]::-webkit-search-results-decoration {
+        display: none;
+      }
+      input[type=number]::-webkit-inner-spin-button,
+      input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1;
+        font-size: 0;
+        background-color: black;
+      }
+      .fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .fullscreen.light, .fullscreen.light .wrapper .label em {
+        color: rgba(0,0,0,0.8);
+      }
+      .fullscreen.dark, .fullscreen.dark .wrapper .label em {
+        color: rgba(255,255,255,0.9);
+      }
+      .fullscreen .exit {
+        flex: none;
+        border: none;
+        background: none;
+        background-image: url('../images/material_fullscreen_exit.svg');
+        background-size: 40px;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 60px;
+        width: 60px;
+        opacity: 1;
+        cursor: pointer;
+        opacity: 0.6;
+        padding: 10px;
+      }
+      .fullscreen .exit:hover {
+        opacity: 1;
+      }
+      .fullscreen.dark .exit {
+        -webkit-filter: invert();
+        filter: invert();
+      }
+      .fullscreen .time {
+        font-size: 60px;
+        flex: none;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin: 20px;
+        opacity: 0.8
+      }
+      .fullscreen .wrapper {
+        max-width: 350px;
+      }
+      .fullscreen .wrapper span {
+        display: block;
+      }
+      .fullscreen .wrapper .label {
+        text-transform: uppercase;
+        font-size: 24px;
+      }
+      .fullscreen.light .wrapper .label {
+        color: rgba(0,0,0,0.6);
+      }
+      .fullscreen.dark .wrapper .label {
+        color: rgba(255,255,255,0.6);
+      }
+      .fullscreen .wrapper .label em {
+        font-style: normal;
+      }
+      .fullscreen .wrapper .name {
+        font-size: 72px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fullscreen dark" style="background-color: #673AB7;">
+      <div class="wrapper">
+        <span class="label">ending in <em>5 minutes</em></span>
+        <span class="name">Period D</span>
+        <span class="label">starting in <em>5 minutes</em></span>
+        <span class="name">Lunch</span>
+      </div>
+      <button class="exit"></button>
+      <span class="time">10:54 pm</span>
+    </div>
+  </body>
+  <!-- MADE BY SEAN -->
+</html>
