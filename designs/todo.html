@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>to-do list concept design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+      body {
+        font-size: 0;
+        font-family: 'Roboto', sans-serif;
+      }
+      .period {
+        background-color: #E91E63;
+        color: white;
+        padding: 10px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.3);
+        border-radius: 2px;
+        padding: 20px;
+        max-width: 550px;
+      }
+      .description {
+        background-color: rgba(255,255,255,0.1);
+        border: none;
+        resize: none;
+        display: block;
+        -webkit-appearance: none;
+        font: inherit;
+        color: inherit;
+        font-size: 16px;
+        min-height: 20px;
+        line-height: 1.5;
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 2px;
+        transition: all .2s;
+      }
+      ::-webkit-input-placeholder {
+        color: inherit;
+        opacity: 0.5;
+      }
+      .description:focus {
+        outline: none;
+        cursor: auto;
+        background-color: rgba(255,255,255,0.3);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8);
+      }
+      .add-btn {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+      }
+      .remove-btn {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M19 13H5v-2h14v2z'/%3E%3C/svg%3E");
+      }
+      .todo {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .todo button {
+        background-color: transparent;
+        border: none;
+        background-size: 24px;
+        background-position: center;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        cursor: pointer;
+        margin-right: 10px;
+        opacity: 0.6;
+        border-radius: 50%;
+        padding: 5px;
+        background-repeat: no-repeat;
+        box-sizing: content-box;
+        transition: all .2s;
+      }
+      .todo button:hover {
+        opacity: 1;
+      }
+      .todo button:focus {
+        opacity: 1;
+        outline: none;
+        background-color: rgba(255,255,255,0.2);
+      }
+      .todo input {
+        background: none;
+        border: none;
+        color: inherit;
+        font: inherit;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 5px;
+        height: 1em;
+        vertical-align: middle;
+        width: calc(100% - 55px);
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        transition: all .2s;
+      }
+      .todo input:focus {
+        outline: none;
+        cursor: auto;
+        background-color: rgba(255,255,255,0.1);
+        border-bottom-color: rgba(255,255,255,0.9);
+      }
+      .todo li {
+        margin: 10px 0;
+      }
+      .todo li:last-child {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="period">
+      <textarea class="description" placeholder="Class description here"></textarea>
+      <ul class="todo">
+        <li><button class="remove-btn"></button><input value="roasting is not the JLS way"/></li>
+        <li><button class="remove-btn"></button><input value="no necking"/></li>
+        <li><button class="remove-btn"></button><input value="no water bottle flips above the shoulder"/></li>
+        <li><button class="remove-btn"></button><input value="ALL HAIL MS. HICKEY THE SUPREME PRINCIPAL OF THE DPRJLS"/></li>
+        <li><button class="add-btn"></button><input class="add-input" placeholder="Add new to-do item"/></li>
+      </ul>
+    </div>
+
+    <script>
+let addbtn = document.querySelector('.add-btn'),
+addinput = document.querySelector('.add-input');
+function removeMe(e) {
+  this.parentNode.parentNode.removeChild(this.parentNode);
+}
+for (let lis = document.querySelectorAll('.remove-btn'), i = lis.length; i--;) lis[i].onclick = removeMe;
+addbtn.onclick = e => {
+  if (!addinput.value) return;
+  let li = document.createElement('li'),
+  btn = document.createElement('button'),
+  input = document.createElement('input');
+  btn.classList.add("remove-btn");
+  input.value = addinput.value;
+  btn.onclick = removeMe;
+  li.appendChild(btn);
+  li.appendChild(input);
+  addbtn.parentNode.parentNode.insertBefore(li, addbtn.parentNode);
+  addinput.value = "";
+};
+addinput.onkeydown = e => {
+  if (e.keyCode === 13) addbtn.onclick();
+};
+    </script>
+  </body>
+  <!-- MADE BY SEAN -->
+</html>
