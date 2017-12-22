@@ -1,0 +1,1 @@
+If you see this, <pre>AJAX works on cache!</pre>.

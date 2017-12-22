@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scroll Tests - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}a:hover{text-decoration:underline;}
+      .scroll {
+        height: 100px;
+        width: 100px;
+        border: 1px solid black;
+        overflow: auto;
+      }
+      .scroll > div {
+        height: 200px;
+        width: 10px;
+        background-color: #eee;
+      }
+      #simple {
+        transform: rotate(-90deg);
+        transform-origin: right top;
+        transition: transform .2s;
+      }
+      #simple > div {
+        width: 200px;
+        height: 50px;
+        transform: rotate(90deg);
+        transform-origin: right top;
+        margin: 5px;
+        background-color: #aa4455;
+        transition: all .2s;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>JS Scroll Tests</h1>
+    <p>pure css horizontal scroll test (<a href="https://css-tricks.com/pure-css-horizontal-scrolling/">src</a>):</p>
+    <div class="scroll" id="simple"><div></div></div>
+    <p>scroll speed: <span id="scrollspeed"></span></p>
+    <div class="scroll" id="speed"><div></div></div>
+    <script>
+      let speedspan = document.querySelector('#scrollspeed'),
+      speeddiv = document.querySelector('#speed');
+      speeddiv.addEventListener("scroll", e => {
+        speedspan.textContent = e.deltaY;
+        speeddiv.scrollTop = 50;
+      }, false);
+    </script>
+  </body>
+</html>
