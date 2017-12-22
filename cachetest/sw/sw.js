@@ -3,7 +3,8 @@ urlsToCache = [
   './',
   'swtest.css',
   'swtest.js',
-  'swtest.txt'
+  'swtest.txt',
+  'https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text'
 ];
 
 self.addEventListener('install', e => {
