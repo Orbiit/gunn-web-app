@@ -1,0 +1,206 @@
+div.dp2-wrapper {
+  position: absolute;
+  width: 100%;
+  max-width: 272px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  /* TEMP */
+  top: 100px;
+  left: 100px;
+}
+body.light div.dp2-wrapper {
+  background-color: #FAFAFA;
+}
+body.dark div.dp2-wrapper {
+  background-color: #424242;
+}
+div.dp2-wrapper div.dp2-month-select {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  height: 100px;
+  box-sizing: border-box;
+  padding: 20px 0;
+}
+body.light div.dp2-wrapper div.dp2-month-select {
+  background-color: #ff594c;
+}
+body.dark div.dp2-wrapper div.dp2-month-select {
+  background-color: #555555;
+}
+div.dp2-wrapper div.dp2-month-select span {
+  padding: 0 20px;
+  padding-bottom: 10px;
+  display: block;
+}
+div.dp2-wrapper div.dp2-month-select span.dp2-year {
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  font-weight: bold;
+}
+div.dp2-wrapper div.dp2-month-select span.dp2-month {
+  font-size: 34px;
+  color: white;
+  border-left: 0 solid rgba(255,255,255,0.7);
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: 0;
+  margin: 10px;
+  padding: 0;
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow:focus {
+  outline: none;
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow::after {
+  content: '';
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  top: 50%;
+  left: 50%;
+  margin-top: -18px;
+  margin-left: -18px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow:focus::after {
+  opacity: 1;
+}
+body.light div.dp2-wrapper div.dp2-month-select button.dp2-arrow::after {
+  background-color: rgba(255,255,255,0.3);
+}
+body.dark div.dp2-wrapper div.dp2-month-select button.dp2-arrow::after {
+  background-color: rgba(255,255,255,0.2);
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow.dp2-left {
+  background-image: url("../images/left.svg");
+  right: 39px;
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow.dp2-right {
+  background-image: url("../images/right.svg");
+  right: 0;
+}
+div.dp2-wrapper div.dp2-month-select button.dp2-arrow:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+div.dp2-wrapper div.dp2-date-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-days {
+  width: 100%;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 10px 0;
+  font-weight: bold;
+}
+body.light div.dp2-wrapper div.dp2-date-select div.dp2-days {
+  color: rgba(0,0,0,0.38);
+}
+body.dark div.dp2-wrapper div.dp2-date-select div.dp2-days {
+  color: rgba(255,255,255,0.5);
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-days span {
+  display: inline-block;
+  width: 36px;
+  text-align: center;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar {
+  font-size: 16px;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.dp2-leaving {
+  position: absolute;
+  width: 252px;
+  animation: .5s;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.dp2-coming {
+  position: relative;
+  animation: .5s;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.left-out {
+  animation-name: left-out;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.right-out {
+  animation-name: right-out;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.left-in {
+  animation-name: left-in;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.right-in {
+  animation-name: right-in;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span {
+  display: inline-block;
+  width: 36px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px 0;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.today {
+  color: #ff594c;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.disabled,
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.dp2-dummy-date,
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar.dp2-leaving > span {
+  pointer-events: none;
+}
+body.light div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.disabled,
+body.light div.dp2-wrapper div.dp2-date-select div.dp2-calendar.dp2-leaving > span {
+  opacity: 0.38;
+}
+body.dark div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.disabled,
+body.dark div.dp2-wrapper div.dp2-date-select div.dp2-calendar.dp2-leaving > span {
+  opacity: 0.5;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.active {
+  color: white;
+  position: relative;
+  z-index: 0;
+  cursor: default;
+}
+div.dp2-wrapper div.dp2-date-select div.dp2-calendar > span.active::after {
+  content: '';
+  display: block;
+  background-color: #ff594c;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  margin-top: -18px;
+  margin-left: -18px;
+}
+@keyframes left-out {
+  from {right: 10px;}
+  to {right: 272px;}
+}
+@keyframes right-out {
+  from {left: 10px;}
+  to {left: 272px;}
+}
+@keyframes left-in {
+  from {right: 272px;}
+  to {right: 0;}
+}
+@keyframes right-in {
+  from {left: 272px;}
+  to {left: 0;}
+}

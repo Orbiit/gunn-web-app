@@ -1,4 +1,4 @@
-const CACHE_NAME = 'swtest-v1',
+const CACHE_NAME = 'swtest-v1', // change to update assets
 urlsToCache = [
   './',
   'swtest.css',
