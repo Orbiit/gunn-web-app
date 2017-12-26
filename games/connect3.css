@@ -21,6 +21,16 @@ body {
   height: 355px;
   position: relative;
 }
+.grid::after {
+  content: attr(data-score);
+  font-size: 72px;
+  text-align: center;
+  display: block;
+  width: 100%;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+}
 .grid > span {
   position: absolute;
   padding: 20px;
@@ -43,11 +53,12 @@ body {
 .grid > span.plus {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linecap='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M5 1V9M1 5H9'/%3E%3C/svg%3E")
 }
-.grid > span.x {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linecap='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M1.5 1.5L8.5 8.5M8.5 1.5L1.5 8.5'/%3E%3C/svg%3E")
+.grid > span.minus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linecap='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M2 5H8'/%3E%3C/svg%3E")
 }
 .grid > span.hexagon {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linejoin='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M3 1.5H7L9 5L7 8.5H3L1 5z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' stroke-linejoin='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M4 1H8L10.6 5L8 9H4L1.4 5z'/%3E%3C/svg%3E");
+  background-size: 24px 20px;
 }
 .grid > span.dot {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='rgba(0,0,0,0.3)'%3E%3Ccircle cx='5' cy='5' r='1'/%3E%3C/svg%3E");
