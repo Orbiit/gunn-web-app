@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>event maker test - UGWA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}a:hover{text-decoration:underline;}
+      canvas {
+        border: 1px solid rgba(0,0,0,0.1);
+        -ms-interpolation-mode: bicubic;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        height: 100px;
+      }
+      #hoverinfo {
+        position: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>event lay-outer</h1>
+    <p>scroll that way --></p>
+    <canvas id="canvas" width="292" height="10"></canvas>
+    <p>each pixel represents an event. same-coloured pixels in a row represent the same event spanning multiple days</p>
+    <p id="hoverinfo">click on a pixel to view details</p>
+    <script type="text/javascript">
+const times = [
+  "2017-08-14T07%3A00%3A00.000Z",
+  "2017-09-01T07%3A00%3A00.000Z",
+  "2017-10-01T07%3A00%3A00.000Z",
+  "2017-11-01T07%3A00%3A00.000Z",
+  "2017-12-01T07%3A00%3A00.000Z",
+  "2018-01-01T07%3A00%3A00.000Z",
+  "2018-02-01T07%3A00%3A00.000Z",
+  "2018-03-01T07%3A00%3A00.000Z",
+  "2018-04-01T07%3A00%3A00.000Z",
+  "2018-05-01T07%3A00%3A00.000Z",
+  "2018-06-01T07%3A00%3A00.000Z"
+],
+startDate = new Date(times[0].replace(/%3A/g, ":")),
+startTime = startDate.getTime(),
+endDate = new Date(times[times.length - 1].replace(/%3A/g, ":")),
+canvas = document.querySelector('#canvas'),
+c = canvas.getContext("2d"),
+hoverOutput = document.querySelector('#hoverinfo');
+
+c.imageSmoothingEnabled = false;
+c.mozImageSmoothingEnabled = false;
+c.webkitImageSmoothingEnabled = false;
+canvas.addEventListener("click", e => {
+  let rect = canvas.getBoundingClientRect(),
+  x = Math.floor((e.clientX - rect.left) / 10),
+  y = Math.floor((e.clientY - rect.top) / 10),
+  eventItem = (days[x] || [])[y];
+  if (eventItem) {
+    hoverOutput.textContent = `${numberToDate(x).toDateString()}: ${eventIDs[eventItem].name}`;
+  }
+  else hoverOutput.textContent = `Nothing here...`;
+}, false);
+
+function ajax(url, callback, error = () => {}) {
+  let xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = () => {
+    if (xmlHttp.readyState === 4) {
+      xmlHttp.status === 200 ? callback(xmlHttp.responseText) : error(xmlHttp.responseText, xmlHttp.status);
+    }
+  };
+  xmlHttp.open("GET", url, true);
+  xmlHttp.send(null);
+}
+function dateToNumber(date) {
+  return Math.floor((date.getTime() - startTime) / 86400000);
+}
+function numberToDate(number) {
+  return new Date(number * 86400000 + startTime);
+}
+function randomColourFromString(str) {
+  return "#" + (btoa(str).replace(/[^0-9a-f]/gi, "") + "000000").slice(0,6);
+}
+function doThings() {
+  for (let i = dateToNumber(startDate), stop = dateToNumber(endDate); i <= stop; i++) {
+    days[i] = [];
+  }
+  for (let id in eventIDs) {
+    if (!eventIDs.hasOwnProperty(id)) continue;
+    c.fillStyle = randomColourFromString(id);
+    let eventPosition = 0;
+    while (true) {
+      let successful = true;
+      for (let j = eventIDs[id].events.length; j--;) {
+        if (days[eventIDs[id].events[j].startNumber][eventPosition]) {
+          successful = false;
+          break;
+        }
+      }
+      if (successful) break;
+      else eventPosition++;
+    }
+    for (let j = eventIDs[id].events.length; j--;) {
+      days[eventIDs[id].events[j].startNumber][eventPosition] = id;
+      c.fillRect(eventIDs[id].events[j].startNumber, eventPosition, 1, 1);
+    }
+  }
+}
+function toMyFormat(item) {
+  let eventItem = {
+    start: new Date(item.start.dateTime || item.start.date), // should not use in actual thing
+    end: new Date(item.end.dateTime || item.end.date),
+    name: item.summary,
+    id: item.iCalUID
+  };
+  eventItem.startNumber = Math.max(0, dateToNumber(eventItem.start));
+  eventItem.endNumber = Math.max(0, dateToNumber(eventItem.end));
+  if (eventIDs[item.iCalUID]) {
+    eventIDs[item.iCalUID].events.push(eventItem);
+  } else {
+    eventIDs[item.iCalUID] = {
+      name: eventItem.name,
+      events: [eventItem]
+    };
+  }
+  if (item.description) eventItem.desc = item.description;
+  if (item.location) eventItem.loc = item.location;
+  return eventItem;
+}
+let eventItems = [],
+eventIDs = {},
+days = [],
+done = 0;
+for (let i = 0; i < times.length - 1; i++) {
+  ajax(
+    `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0%40group.calendar.google.com/events?singleEvents=true&timeMax=${times[i + 1]}&timeMin=${times[i]}&fields=items(description%2Cend(date%2CdateTime)%2CiCalUID%2Clocation%2Cstart(date%2CdateTime)%2Csummary)&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o`,
+    json => {
+      done++;
+      eventItems.push(...JSON.parse(json).items.map(toMyFormat));
+      if (done === times.length - 1) doThings();
+    }
+  );
+}
+    </script>
+  </body>
+</html>
