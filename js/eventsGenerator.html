@@ -13,17 +13,19 @@
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
         image-rendering: pixelated;
-        height: 100px;
+        height: 110px;
+        filter: drop-shadow(0 0.5px 1.5px rgba(0,0,0,0.4));
       }
       #hoverinfo {
         position: fixed;
+        max-width: 1000px;
       }
     </style>
   </head>
   <body>
     <h1>event lay-outer</h1>
     <p>scroll that way --></p>
-    <canvas id="canvas" width="292" height="10"></canvas>
+    <canvas id="canvas" width="292" height="11"></canvas>
     <p>each pixel represents an event. same-coloured pixels in a row represent the same event spanning multiple days</p>
     <p id="hoverinfo">click on a pixel to view details</p>
     <script type="text/javascript">
@@ -56,11 +58,14 @@ canvas.addEventListener("click", e => {
   y = Math.floor((e.clientY - rect.top) / 10),
   eventItem = (days[x] || [])[y];
   if (eventItem) {
-    hoverOutput.textContent = `${numberToDate(x).toDateString()}: ${eventIDs[eventItem].name}`;
+    hoverOutput.innerHTML = `<strong>${numberToDate(x).toDateString()}</strong>: ${eventIDs[eventItem].name} <em>at</em> ${eventIDs[eventItem].loc || "???"}<br>${eventIDs[eventItem].desc || ""}`;
   }
-  else hoverOutput.textContent = `Nothing here...`;
+  else hoverOutput.innerHTML = `Nothing here...`;
 }, false);
 
+function escapeHTML(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\r?\n/g, "<br>");
+}
 function ajax(url, callback, error = () => {}) {
   let xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = () => {
@@ -86,12 +91,12 @@ function doThings() {
   }
   for (let id in eventIDs) {
     if (!eventIDs.hasOwnProperty(id)) continue;
-    c.fillStyle = randomColourFromString(id);
+    c.fillStyle = randomColourFromString(eventIDs[id].name); // or just "id"
     let eventPosition = 0;
     while (true) {
       let successful = true;
       for (let j = eventIDs[id].events.length; j--;) {
-        if (days[eventIDs[id].events[j].startNumber][eventPosition]) {
+        if (days[eventIDs[id].events[j].dateNumber][eventPosition]) {
           successful = false;
           break;
         }
@@ -100,33 +105,38 @@ function doThings() {
       else eventPosition++;
     }
     for (let j = eventIDs[id].events.length; j--;) {
-      days[eventIDs[id].events[j].startNumber][eventPosition] = id;
-      c.fillRect(eventIDs[id].events[j].startNumber, eventPosition, 1, 1);
+      days[eventIDs[id].events[j].dateNumber][eventPosition] = id;
+      c.fillRect(eventIDs[id].events[j].dateNumber, eventPosition, 1, 1);
     }
   }
 }
 function toMyFormat(item) {
-  let eventItem = {
-    start: new Date(item.start.dateTime || item.start.date), // should not use in actual thing
-    end: new Date(item.end.dateTime || item.end.date),
-    name: item.summary,
-    id: item.iCalUID
-  };
-  eventItem.startNumber = Math.max(0, dateToNumber(eventItem.start));
-  eventItem.endNumber = Math.max(0, dateToNumber(eventItem.end));
+  let eventItems = [],
+  start = new Date(item.start.dateTime || item.start.date), // should not use in actual thing
+  end = new Date(item.end.dateTime || item.end.date);
+  if (item.start.date) {
+    for (let i = Math.max(0, dateToNumber(start)), stop = dateToNumber(end); i < stop; i++) {
+      eventItems.push({dateNumber: i});
+    }
+  } else { // is it safe to assume "dateTime" will only be on the same date?
+    eventItems.push({
+      startTime: start, endTime: end,
+      dateNumber: Math.max(0, dateToNumber(start))
+    });
+  }
   if (eventIDs[item.iCalUID]) {
-    eventIDs[item.iCalUID].events.push(eventItem);
+    eventIDs[item.iCalUID].events.push(...eventItems);
   } else {
     eventIDs[item.iCalUID] = {
-      name: eventItem.name,
-      events: [eventItem]
+      name: item.summary,
+      desc: item.description || null,
+      loc: item.location || null,
+      events: eventItems
     };
   }
-  if (item.description) eventItem.desc = item.description;
-  if (item.location) eventItem.loc = item.location;
-  return eventItem;
+  return eventItems[0];
 }
-let eventItems = [],
+let json,
 eventIDs = {},
 days = [],
 done = 0;
@@ -135,7 +145,7 @@ for (let i = 0; i < times.length - 1; i++) {
     `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0%40group.calendar.google.com/events?singleEvents=true&timeMax=${times[i + 1]}&timeMin=${times[i]}&fields=items(description%2Cend(date%2CdateTime)%2CiCalUID%2Clocation%2Cstart(date%2CdateTime)%2Csummary)&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o`,
     json => {
       done++;
-      eventItems.push(...JSON.parse(json).items.map(toMyFormat));
+      JSON.parse(json).items.map(toMyFormat);
       if (done === times.length - 1) doThings();
     }
   );
