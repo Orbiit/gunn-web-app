@@ -118,8 +118,8 @@ try {
 if (!storage.getItem("[gunn-web-app] lite.alts")) {
   refreshAlts();
 }
-if (storage.getItem("[gunn-web-app] lite.offline") === "on") {
-  if ("serviceWorker" in navigator) {
+if ("serviceWorker" in navigator) {
+  if (storage.getItem("[gunn-web-app] lite.offline") === "on") {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register('sw.js').then(regis => {
         console.log('MUAHAHAHAHA I REGISTERED THE SERVICE WORKER! THE SCOPE IS:', regis.scope);
@@ -127,6 +127,8 @@ if (storage.getItem("[gunn-web-app] lite.offline") === "on") {
         console.log(':( couldnt register service worker', err);
       });
     });
+  } else {
+    navigator.serviceWorker.getRegistrations().then(regis => regis.map(regis => regis.unregister()));
   }
 }
 
