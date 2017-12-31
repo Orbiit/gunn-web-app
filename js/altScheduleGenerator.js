@@ -16,7 +16,7 @@ function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
           if (times[0] < EARLIEST_AM_HOUR) times[0] += 12;
           if (times[2] < EARLIEST_AM_HOUR) times[2] += 12;
           periods.push({
-            name: lastString + period.slice(0, period.lastIndexOf(" (")),
+            name: (lastString + period.slice(0, period.lastIndexOf(" ("))).replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"),
             start: times[0] * 60 + times[1],
             end: times[2] * 60 + times[3]
           });

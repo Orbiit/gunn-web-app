@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
-    <title>Ugwita</title>
+    <title>UGWA Lite</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content="A lightweight version of the Unofficial Gunn Web App.">
@@ -13,33 +13,49 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <link rel="mask-icon" href="../favicon/safari-pinned-tab.svg" color="#ff594c">
 
-    <link rel="manifest" href="../favicon/manifest.json">
+    <link rel="manifest" href="../favicon/manifest-lite.json">
     <link rel="shortcut icon" href="../favicon/favicon.ico">
     <meta name="msapplication-config" content="../favicon/browserconfig.xml">
     <meta name="theme-color" content="#ff594c">
 
-
     <meta property="og:title" content="Ugwita"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="https://orbiit.github.io/gunn-web-app/"/>
-    <meta property="og:image" content="https://orbiit.github.io/gunn-web-app/images/opengraph.png"/>
+    <meta property="og:url" content="https://orbiit.github.io/gunn-web-app/lite/"/>
     <meta property="og:description" content="A lightweight version of the Unofficial Gunn Web App."/>
 
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="Ugwita"/>
     <meta name="twitter:description" content="A lightweight version of the Unofficial Gunn Web App."/>
-    <meta name="twitter:image" content="https://orbiit.github.io/gunn-web-app/images/opengraph.png"/>
 
     <!-- <link rel="stylesheet" href="main.css"> -->
+    <style media="screen">
+      body.dark {
+        background-color: #3a3a3a;
+        color: #ddd;
+      }
+      body.dark a {
+        color: lightblue;
+      }
+      body.dark a:visited {
+        color: mediumpurple;
+      }
+      body.dark a:active {
+        color: indianred;
+      }
+    </style>
     <script src="../js/altScheduleGenerator.js" charset="utf-8"></script>
+    <script src="data.js" charset="utf-8"></script>
     <script src="main.js" charset="utf-8"></script>
   </head>
   <body>
-    <div id="settings">
-      <p><button type="button" id="refreshalts">Refresh alternate schedules</button></p>
-      <p><input type="checkbox" id="offline"><label>Work offline? (works only on <a href="https://caniuse.com/#feat=serviceworkers">Chrome and Firefox</a>)</label></p>
-      <p><input type="checkbox" id="theme"><label>Dark theme?</label></p>
-    </div>
+    <p id="timeleft"></p>
+    <div id="dateselect"><button type="button" id="yesterday">&lt;</button><button type="button" id="tomorrow">&gt;</button></div>
     <div id="schedule"></div>
+    <div id="settings">
+      <h2>Settings</h2>
+      <p><button type="button" id="refreshalts">Refresh alternate schedules</button></p>
+      <p><input type="checkbox" name="offline" id="offline"><label for="offline">Work offline? (works only on <a href="https://caniuse.com/#feat=serviceworkers">these browsers</a>)</label></p>
+      <p><input type="checkbox" name="theme" id="theme"><label for="theme">Dark theme?</label></p>
+    </div>
   </body>
 </html>
