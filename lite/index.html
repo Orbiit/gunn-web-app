@@ -42,6 +42,21 @@
       body.dark a:active {
         color: indianred;
       }
+      #dateselectwrapper {
+        border: 2px solid black;
+      }
+      #dateselectwrapper p {
+        display: table;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      td, th {
+        border: 1px solid black;
+      }
+      body.dark #dateselectwrapper, body.dark td, body.dark th {
+        border-color: #ddd;
+      }
     </style>
     <script src="../js/altScheduleGenerator.js" charset="utf-8"></script>
     <script src="data.js" charset="utf-8"></script>
@@ -49,7 +64,13 @@
   </head>
   <body>
     <p id="timeleft"></p>
-    <div id="dateselect"><button type="button" id="yesterday">&lt;</button><button type="button" id="tomorrow">&gt;</button></div>
+    <div><button type="button" id="yesterday">&lt;</button><button type="button" id="dateselect">select date</button><button type="button" id="tomorrow">&gt;</button></div>
+    <div id="dateselectwrapper">
+      <p><label>Select month:</label><select id="monthselect"></select><button type="button" id="monthselectdone">Select</button></p>
+      <p><label>Select date:</label><input type="number" id="dateinput"></p>
+      <p><button type="button" id="dateinputdone">Select</button><span id="dateinputerror"></span></p>
+      <button type="button" id="dateselectcancel">Cancel</button>
+    </div>
     <div id="schedule"></div>
     <div id="settings">
       <h2>Settings</h2>

@@ -53,7 +53,7 @@ function toEnglishDuration(totalMinutes) {
   if (minutes === 0) return hoursString;
   return hoursString + " and " + minutesString;
 }
-function generateScheduleHTML(year, month, date) { // 0-indexed months
+function generateScheduleHTML(year, month, date) { // 0-indexed months, not validated
   let innerHTML = "",
   dateString = ("0" + (month + 1)).slice(-2) + "-" + ("0" + date).slice(-2),
   day = new Date(year, month, date).getDay(),
@@ -90,6 +90,10 @@ function getTimeLeft(schedule) {
   }
   return `<strong>${schedule[schedule.length - 1].name}</strong> ended ${toEnglishDuration(totalMinutes - schedule[schedule.length - 1].end)} ago.`;
 }
+function offsetDate(myDateObj, offset) {
+  let dateObj = new Date(myDateObj.year, myDateObj.month, myDateObj.date + offset);
+  return {year: dateObj.getFullYear(), month: dateObj.getMonth(), date: dateObj.getDate()};
+}
 
 try {
   window.storage = localStorage;
@@ -100,6 +104,9 @@ try {
     removeItem: a => delete storage[a]
   }
 }
+
+const startDate = {year: 2017, month: 7, date: 14},
+endDate = {year: 2018, month: 5, date: 1};
 
 let alternateSchedules;
 try {
@@ -124,12 +131,27 @@ if (storage.getItem("[gunn-web-app] lite.offline") === "on") {
 }
 
 document.addEventListener("DOMContentLoaded", e => {
+  function updateCalendar() {
+    scheduleWrapper.innerHTML = generateScheduleHTML(viewingDate.year, viewingDate.month, viewingDate.date);
+  }
   let scheduleWrapper = document.getElementById("schedule"),
   offlineCheckbox = document.getElementById("offline"),
   themeCheckbox = document.getElementById("theme"),
   timeLeft = document.getElementById("timeleft"),
+  yesterday = document.getElementById("yesterday"),
+  tomorrow = document.getElementById("tomorrow"),
 
-  today = new Date(2017, 11, 18);
+  daySelectOpen = document.getElementById("dateselect"),
+  daySelectWrapper = document.getElementById("dateselectwrapper"),
+  daySelectCancel = document.getElementById("dateselectcancel"),
+  monthSelect = document.getElementById("monthselect"),
+  monthDone = document.getElementById("monthselectdone"),
+  dateSelect = document.getElementById("dateinput"),
+  dateDone = document.getElementById("dateinputdone"),
+  dateError = document.getElementById("dateinputerror"),
+
+  viewingDate,
+  today = new Date();
   today = {
     obj: today,
     year: today.getFullYear(),
@@ -139,9 +161,10 @@ document.addEventListener("DOMContentLoaded", e => {
   };
   today.dateString = ("0" + (today.month + 1)).slice(-2) + "-" + ("0" + today.date).slice(-2);
   today.schedule = alternateSchedules[today.dateString] || normalSchedules[today.day];
+  viewingDate = {year: today.year, month: today.month, date: today.date};
 
   document.getElementById("refreshalts").addEventListener("click", refreshAlts, false);
-  scheduleWrapper.innerHTML = generateScheduleHTML(today.year, today.month, today.date);
+  updateCalendar();
   timeLeft.innerHTML = getTimeLeft(today.schedule);
   setInterval(() => {
     timeLeft.innerHTML = getTimeLeft(today.schedule);
@@ -168,6 +191,56 @@ document.addEventListener("DOMContentLoaded", e => {
     } else {
       storage.setItem("global.theme", "light");
       document.body.classList.remove("dark");
+    }
+  }, false);
+
+  yesterday.addEventListener("click", e => {
+    viewingDate = offsetDate(viewingDate, -1);
+    updateCalendar();
+  }, false);
+  tomorrow.addEventListener("click", e => {
+    viewingDate = offsetDate(viewingDate, 1);
+    updateCalendar();
+  }, false);
+
+  let monthItems = document.createDocumentFragment();
+  for (let month = startDate.month, year = startDate.year; month <= endDate.month || year <= startDate.year; month++) {
+    if (month >= monthNames.length) month = 0, year++;
+    let monthItem = document.createElement("option");
+    monthItem.textContent = monthNames[month] + " " + year;
+    monthItems.appendChild(monthItem);
+  }
+  monthSelect.appendChild(monthItems);
+
+  daySelectWrapper.style.display = "none";
+  daySelectOpen.addEventListener("click", e => {
+    daySelectWrapper.style.display = "table";
+    monthSelect.disabled = monthDone.disabled = false;
+    dateSelect.disabled = dateDone.disabled = true;
+    dateSelect.value = "";
+    dateError.textContent = "";
+  }, false);
+  daySelectCancel.addEventListener("click", e => {
+    daySelectWrapper.style.display = "none";
+  }, false);
+  monthDone.addEventListener("click", e => {
+    monthSelect.disabled = monthDone.disabled = true;
+    dateSelect.disabled = dateDone.disabled = false;
+    dateSelect.max = new Date(
+      +monthSelect.value.slice(monthSelect.value.indexOf(" ") + 1),
+      monthNames.indexOf(monthSelect.value.slice(0, monthSelect.value.indexOf(" "))) + 1,
+      0
+    ).getDate();
+  }, false);
+  dateDone.addEventListener("click", e => {
+    if (/[^0-9]/.test(dateSelect.value)) dateError.textContent = "not a positive integer";
+    else if (+dateSelect.value < 1 || +dateSelect.value > +dateSelect.max) dateError.textContent = "out of range";
+    else {
+      daySelectWrapper.style.display = "none";
+      viewingDate.year = +monthSelect.value.slice(monthSelect.value.indexOf(" ") + 1);
+      viewingDate.month = monthNames.indexOf(monthSelect.value.slice(0, monthSelect.value.indexOf(" ")));
+      viewingDate.date = +dateSelect.value;
+      updateCalendar();
     }
   }, false);
 }, false);
