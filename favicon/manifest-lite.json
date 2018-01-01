@@ -1,7 +1,7 @@
 {
   "name": "UGWA Lite",
   "short_name": "Ugwita",
-  "start_url": "..",
+  "start_url": "../lite/",
   "icons": [{
     "src": "android-chrome-192x192.png",
     "sizes": "192x192",
