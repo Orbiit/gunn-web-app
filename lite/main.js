@@ -12,8 +12,8 @@ function ajax(url, callback, error = () => {}) {
 }
 function refreshAlts() {
   getAlternateSchedules(alts => {
-    alternateSchedules = alts;
     storage.setItem("[gunn-web-app] lite.alts", JSON.stringify(alts));
+    window.location.reload();
   });
 }
 function getAlternateSchedules(callback) {
@@ -162,7 +162,8 @@ document.addEventListener("DOMContentLoaded", e => {
     day: today.getDay()
   };
   today.dateString = ("0" + (today.month + 1)).slice(-2) + "-" + ("0" + today.date).slice(-2);
-  today.schedule = alternateSchedules[today.dateString] || normalSchedules[today.day];
+  today.schedule = alternateSchedules[today.dateString];
+  if (today.schedule === undefined) today.schedule = normalSchedules[today.day];
   viewingDate = {year: today.year, month: today.month, date: today.date};
 
   document.getElementById("refreshalts").addEventListener("click", refreshAlts, false);
