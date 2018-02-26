@@ -1,10 +1,11 @@
-const CACHE_NAME = "ugwita-cache-v01", // change cache name to force update
+const CACHE_NAME = "ugwita-cache-v02", // change cache name to force update
 urlsToCache = [
   "./",
   "index.html",
   "../js/altScheduleGenerator.js",
   "data.js",
-  "main.js"
+  "main.js",
+  "pretty.css"
 ];
 
 self.addEventListener("install", e => {

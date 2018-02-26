@@ -1,0 +1,75 @@
+body {
+  max-width: 500px;
+  margin: 10px auto;
+  font-family: sans-serif;
+  background-color: #e4ebf3;
+  color: rgba(0,0,0,0.75);
+}
+body.dark {
+  background-color: #393f45;
+  color: rgba(255,255,255,0.8);
+}
+a {
+  color: #c25050;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button {
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  border: 1px solid CurrentColor;
+  margin-right: 5px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+#dateselectwrapper {
+  border: 1px solid black;
+  padding: 10px;
+  margin-top: 10px;
+}
+#dateselectwrapper p {
+  display: table;
+}
+#dateinputerror {
+  color: #c25050;
+  margin-left: 10px;
+}
+#dateselectwrapper label ~ button {
+  margin-left: 5px;
+  margin-right: 0;
+}
+input[type=number] {
+  width: 50px;
+}
+label {
+  margin-right: 10px;
+  cursor: text;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td, th {
+  border: 1px solid CurrentColor;
+}
+th {
+  text-align: left;
+}
+h1, h2, th {
+  font-weight: normal;
+}
+p {
+  margin: 0;
+}
+h1, h2 {
+  margin: 10px 0;
+}

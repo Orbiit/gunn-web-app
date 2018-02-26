@@ -59,7 +59,7 @@ function generateScheduleHTML(year, month, date) { // 0-indexed months, not vali
   day = new Date(year, month, date).getDay(),
   schedule = alternateSchedules[dateString];
   innerHTML += `<h1>${monthNames[month]} ${date}, ${year}</h1><h2>${dayNames[day]}</h2>`;
-  if (schedule !== undefined) innerHTML += `<p><em>Today follows an alternate schedule:</em></p>`;
+  if (schedule !== undefined) innerHTML += `<p>Today follows an alternate schedule:</p>`;
   else schedule = normalSchedules[day];
   if (schedule !== null) {
     innerHTML += `<table><tr><th>Period name</th><th>Time range</th><th>Length</th></tr>`;
