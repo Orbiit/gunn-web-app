@@ -23,7 +23,7 @@ function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
             }
           }
           if (foundDuplicate) {
-            periods[j].name += periodName;
+            periods[j].name += "\n" + periodName;
           } else {
             if (times[2] < EARLIEST_AM_HOUR) times[2] += 12;
             periods.push({
