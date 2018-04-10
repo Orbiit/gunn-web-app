@@ -23,7 +23,7 @@ function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
             start: times[0] * 60 + times[1],
             end: times[2] * 60 + times[3]
           });
-        } else {
+        } else if (periods.length > 0) {
           periods[periods.length - 1].name += periodItems[i].trim().replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;");
         }
       }
