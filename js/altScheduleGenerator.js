@@ -3,7 +3,7 @@ function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
   for (let i = eventItems.length; i--;) {
     if (/(schedule|extended)/i.test(eventItems[i].summary)) {
       if (!eventItems[i].description) continue;
-      let periodItems = eventItems[i].description.replace(/<p>(.*?)<\/p>/g,"$1\n").replace(/<\/?[a-z]+>/gi, "").replace(/&nbsp;/g, " ").replace(/(\).*?),(.*?\()/g, "$1\n$2").split(/\r?\n/),
+      let periodItems = eventItems[i].description.replace(/<p>(.*?)<\/p>/g,"$1\n").replace(/<\/?[^>]+>/gi, "").replace(/&nbsp;/g, " ").replace(/(\).*?),(.*?\()/g, "$1\n$2").split(/\r?\n/),
       periods = [];
       for (let i = 0; i < periodItems.length; i++) {
         let period = periodItems[i],
