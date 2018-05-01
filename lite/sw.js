@@ -1,4 +1,4 @@
-const CACHE_NAME = "ugwita-cache-v02", // change cache name to force update
+const CACHE_NAME = "ugwita-cache-v03", // change cache name to force update
 urlsToCache = [
   "./",
   "index.html",
