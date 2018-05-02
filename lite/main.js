@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", e => {
   timeLeft = document.getElementById("timeleft"),
   yesterday = document.getElementById("yesterday"),
   tomorrow = document.getElementById("tomorrow"),
+  notes = document.getElementById("notesinput"),
 
   daySelectOpen = document.getElementById("dateselect"),
   daySelectWrapper = document.getElementById("dateselectwrapper"),
@@ -245,5 +246,13 @@ document.addEventListener("DOMContentLoaded", e => {
       viewingDate.date = +dateSelect.value;
       updateCalendar();
     }
+  }, false);
+  
+  notes.value = storage.getItem("[gunn-web-app] lite.notes") || "";
+  notes.addEventListener("input", e => {
+    storage.setItem("[gunn-web-app] lite.notes", notes.value);
+  }, false);
+  window.addEventListener("storage", e => {
+    notes.value = storage.getItem("[gunn-web-app] lite.notes") || "";
   }, false);
 }, false);
