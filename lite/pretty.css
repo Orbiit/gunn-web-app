@@ -85,7 +85,7 @@ h1, h2 {
   box-sizing: border-box;
 }
 :target {
-  animation: flash .2s;
+  animation: flash 1s cubic-bezier(1,0,1,1);
 }
 @keyframes flash {
   from {background-color: rgba(194,80,80,0.5);}
