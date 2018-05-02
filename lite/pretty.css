@@ -73,3 +73,13 @@ p {
 h1, h2 {
   margin: 10px 0;
 }
+#notesinput {
+  background: none;
+  border: 1px solid currentColor;
+  font: inherit;
+  color: inherit;
+  font-family: monospace;
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+}
