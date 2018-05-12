@@ -47,6 +47,9 @@
   </head>
   <body>
     <script type="text/javascript">
+      if (window.location.pathname.includes('appdesign')) window.location.replace('.');
+    </script>
+    <script type="text/javascript">
       if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
       if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
     </script>
