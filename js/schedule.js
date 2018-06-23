@@ -148,11 +148,58 @@ window.addEventListener("load",e=>{
       );
     }
   }
-  function alternateGet(e,successful) {
-    if (successful) alternates=JSON.parse(e);
+  function identifyPeriod(name) {
+    name = name.toLowerCase();
+    if (~name.indexOf("period")) {
+      let letter = /\b[a-g]\b/.exec(name);
+      if (letter) return letter[0].toUpperCase();
+    }
+    if (~name.indexOf("flex")
+        || ~name.indexOf("self")
+        || ~name.indexOf("assembly")
+        || ~name.indexOf("tutorial"))
+      return "Flex";
+    else if (~name.indexOf("brunch") || ~name.indexOf("break")) return "Brunch";
+    else if (~name.indexOf("lunch")) return "Lunch";
+    else return name;
+  }
+  function alternateGet() {
+    if (cookie.getItem('[gunn-web-app] lite.alts')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
     else
-      document.querySelector('#alternateerror').innerHTML=`${e}; couldn't get alternate schedules; maybe you aren't connected to the internet?`,
+      document.querySelector('#alternateerror').innerHTML=`You haven't loaded any alternate schedules! Go to <a href="./lite/#refreshalts">Ugwita</a> and click "Refresh alternate schedules."`,
       alternates={};
+    var days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+    for (var dayString in alternates) {
+      var [month, day] = dayString.split('-').map(Number);
+      var date;
+      if (month > 6) date = new Date(2018, month - 1, day);
+      else date = new Date(2019, month - 1, day);
+      alternates[`${month}-${day}`] = {
+        dayname: days[date.getDay()],
+        day: date.getDay(),
+        monthname: months[month],
+        month: month,
+        date: day,
+        description: 'good luck with our schedule lol',
+        periods: alternates[dayString] === null ? []
+          : alternates[dayString].map(p => /collaboration|meeting/i.test(p.name)
+            ? null
+            : ({
+              name: identifyPeriod(p.name),
+              start: {
+                totalminutes: p.start,
+                hour: Math.floor(p.start / 60),
+                minute: p.start % 60
+              },
+              end: {
+                totalminutes: p.end,
+                hour: Math.floor(p.end / 60),
+                minute: p.end % 60
+              }
+            })).filter(a => a)
+      };
+    }
     for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
     scheduleapp=scheduleApp({
       element:document.querySelector('#schedulewrapper'),
@@ -164,16 +211,8 @@ window.addEventListener("load",e=>{
     });
     makeWeekHappen();
   }
-  ajax(
-    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/alt-schedules-2017-18-object.json',
-    e=>{
-      alternateGet(e,true);
-    },
-    e=>{
-      alternateGet(e,false);
-    }
-  );
-  var datepicker=new DatePicker({d:14,m:7,y:2017},{d:1,m:5,y:2018}),
+  alternateGet();
+  var datepicker=new DatePicker({d:13,m:7,y:2018},{d:31,m:4,y:2019}),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   datepicker.onchange=e=>{

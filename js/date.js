@@ -63,7 +63,8 @@ class DatePicker {
     },false);
     this.wrapper.appendChild(this.dates);
     var d=new Date();
-    this.dates.querySelector(`.datepicker-day[data-date="${d.getDate()}"][data-month="${d.getMonth()}"][data-year="${d.getFullYear()}"]`).classList.add('datepicker-today');
+    var t=this.dates.querySelector(`.datepicker-day[data-date="${d.getDate()}"][data-month="${d.getMonth()}"][data-year="${d.getFullYear()}"]`);
+    if (t) t.classList.add('datepicker-today');
   }
   get day() {return this.selected;}
   set day(day) {

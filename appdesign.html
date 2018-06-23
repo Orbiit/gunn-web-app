@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- <link rel="stylesheet" href="css/everything.css"> -->
     <script src="js/main.js" charset="utf-8"></script>
-    <script src="js/date.min.js" charset="utf-8"></script>
+    <script src="js/date.js" charset="utf-8"></script>
     <script src="js/colour.min.js" charset="utf-8"></script>
     <script src="js/code39.min.js" charset="utf-8"></script>
     <script src="js/material.js" charset="utf-8"></script>
@@ -47,7 +47,7 @@
   </head>
   <body>
     <script type="text/javascript">
-      if (window.location.pathname.includes('appdesign')) window.location.replace('.');
+      if (window.location.protocol !== 'file:') window.location.replace('.');
     </script>
     <script type="text/javascript">
       if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
