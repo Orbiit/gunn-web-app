@@ -1,45 +1,47 @@
+const EARLIEST_AM_HOUR = 6;
+
+const HTMLnewlineRegex = /<(p|div).*?>/g;
+const noHTMLRegex = /<.*?>/g;
+const noNbspRegex = /&nbsp;/g;
+const parserRegex = /(?:\n|,|\))(.*?)\(?(1?[0-9]):([0-9]{2})-(1?[0-9]):([0-9]{2})(?=\))?/g;
+
+function parseAlternate(summary, description) {
+  if (/(schedule|extended)/i.test(summary)) {
+    if (!description) return undefined;
+    description = "\n" + description.replace(HTMLnewlineRegex, "\n").replace(noHTMLRegex, "").replace(noNbspRegex, " ");
+    let periods = [];
+    description.replace(parserRegex, (m, name, sH, sM, eH, eM) => {
+      name = name.trim();
+      if (!name) return;
+
+      sH = +sH; sM = +sM; eH = +eH; eM = +eM;
+      if (sH < EARLIEST_AM_HOUR) sH += 12;
+      if (eH < EARLIEST_AM_HOUR) eH += 12;
+      let startTime = sH * 60 + sM,
+      endTime = eH * 60 + eM;
+
+      let duplicatePeriod = periods.findIndex(p => p.start === startTime);
+      if (~duplicatePeriod) {
+        periods[duplicatePeriod].original += "\n" + name;
+      } else {
+        periods.push({
+          name: name,
+          start: startTime,
+          end: endTime
+        });
+      }
+    });
+    return periods;
+  } else if (/(holiday|no\sstudents|break)/i.test(summary)) {
+    return null;
+  }
+}
+
 function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
   let altSchedules = {};
   for (let i = eventItems.length; i--;) {
-    if (/(schedule|extended)/i.test(eventItems[i].summary)) {
-      if (!eventItems[i].description) continue;
-      let periodItems = eventItems[i].description.replace(/<p>(.*?)<\/p>/g,"$1\n").replace(/<\/?[^>]+>/gi, "").replace(/&nbsp;/g, " ").replace(/(\).*?),(.*?\()/g, "$1\n$2").replace(/\)/g, ")\n").split(/\r?\n/),
-      periods = [];
-      for (let i = 0; i < periodItems.length; i++) {
-        let period = periodItems[i],
-        matches = /(.*?)\(?(1?[0-9]):([0-9]{2})-(1?[0-9]):([0-9]{2})\)?/g.exec(period);
-        if (!period.trim()) continue;
-        if (matches) {
-          let times = matches.slice(2, 6).map(Number);
-          if (times[0] < EARLIEST_AM_HOUR) times[0] += 12;
-          let startTime = times[0] * 60 + times[1],
-              periodName = matches[1].trim().replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;"),
-              foundDuplicate = false,
-              j;
-          for (j = 0; j < periods.length; j++) {
-            if (periods[j].start === startTime) {
-              foundDuplicate = true;
-              break;
-            }
-          }
-          if (foundDuplicate) {
-            periods[j].name += "\n" + periodName;
-          } else {
-            if (times[2] < EARLIEST_AM_HOUR) times[2] += 12;
-            periods.push({
-              name: periodName,
-              start: startTime,
-              end: times[2] * 60 + times[3]
-            });
-          }
-        } else if (periods.length > 0) {
-          periods[periods.length - 1].name += periodItems[i].trim().replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;");
-        }
-      }
-      altSchedules[(eventItems[i].start.date || eventItems[i].start.dateTime).slice(5, 10)] = periods;
-    } else if (/(holiday|no\sstudents|break)/i.test(eventItems[i].summary)) {
-      altSchedules[(eventItems[i].start.date || eventItems[i].start.dateTime).slice(5, 10)] = null;
-    }
+    altSchedules[(eventItems[i].start.date || eventItems[i].start.dateTime).slice(5, 10)]
+      = parseAlternate(eventItems[i].summary, eventItems[i].description);
   }
   return altSchedules;
 }

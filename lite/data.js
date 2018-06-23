@@ -40,19 +40,11 @@ const normalSchedules = [
     {name: "Period G", start: 865, end: 935}
   ],
   null
-],
-times = [
-  "2017-08-14T00%3A00%3A00.000-07%3A00",
-  "2017-09-01T00%3A00%3A00.000-07%3A00",
-  "2017-10-01T00%3A00%3A00.000-07%3A00",
-  "2017-11-01T00%3A00%3A00.000-07%3A00",
-  "2017-12-01T00%3A00%3A00.000-07%3A00",
-  "2018-01-01T00%3A00%3A00.000-07%3A00",
-  "2018-02-01T00%3A00%3A00.000-07%3A00",
-  "2018-03-01T00%3A00%3A00.000-07%3A00",
-  "2018-04-01T00%3A00%3A00.000-07%3A00",
-  "2018-05-01T00%3A00%3A00.000-07%3A00",
-  "2018-06-01T23%3A59%3A59.999-07%3A00"
-],
-monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+];
+
+const firstDay = "2018-08-13T00:00:00.000-07:00";
+const lastDay = "2019-05-31T23:59:59.999-07:00";
+const keywords = ["schedule", "extended", "holiday", "no students", "break"];
+
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

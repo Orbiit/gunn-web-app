@@ -1,5 +1,11 @@
 'use strict';
 
+const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
+  + encodeURIComponent("u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com")
+  + "/events?singleEvents=true&fields="
+  + encodeURIComponent("items(description,end(date,dateTime),start(date,dateTime),summary)")
+  + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o";
+
 function ajax(url, callback, error = () => {}) {
   let xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = () => {
@@ -19,19 +25,13 @@ function refreshAlts() {
 function getAlternateSchedules(callback) {
   let done = 0,
   alternateSchedules = {};
-  for (let i = 0; i < times.length - 1; i++) {
+  for (let i = 0; i < keywords.length - 1; i++) {
     ajax(
-      "https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0%40group.calendar.google.com/events"
-        + "?singleEvents=true&timeMax="
-        + times[i + 1]
-        + "&timeMin="
-        + times[i]
-        + "&fields=items(description%2Cend(date%2CdateTime)%2CiCalUID%2Clocation%2Cstart(date%2CdateTime)%2Csummary)"
-        + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o",
+      calendarURL + `&timeMin=${encodeURIComponent(firstDay)}&timeMax=${encodeURIComponent(lastDay)}&q=${keywords[i]}`,
       json => {
         done++;
         Object.assign(alternateSchedules, toAlternateSchedules(JSON.parse(json).items));
-        if (done === times.length - 1) callback(alternateSchedules);
+        if (done === keywords.length - 1) callback(alternateSchedules);
       }
     );
   }
@@ -105,8 +105,8 @@ try {
   }
 }
 
-const startDate = {year: 2017, month: 7, date: 14},
-endDate = {year: 2018, month: 5, date: 1};
+const startDate = {year: 2018, month: 5, date: 13},
+endDate = {year: 2019, month: 4, date: 31};
 
 let alternateSchedules;
 try {
@@ -128,7 +128,9 @@ if ("serviceWorker" in navigator) {
       });
     });
   } else {
-    navigator.serviceWorker.getRegistrations().then(regis => regis.map(regis => regis.unregister()));
+    navigator.serviceWorker.getRegistrations()
+      .then(regis => regis.map(regis => regis.unregister()))
+      .catch(err => console.log(err));
   }
 }
 
@@ -247,7 +249,7 @@ document.addEventListener("DOMContentLoaded", e => {
       updateCalendar();
     }
   }, false);
-  
+
   notes.value = storage.getItem("[gunn-web-app] lite.notes") || "";
   notes.addEventListener("input", e => {
     storage.setItem("[gunn-web-app] lite.notes", notes.value);
