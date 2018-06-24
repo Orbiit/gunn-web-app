@@ -50,7 +50,7 @@ window.addEventListener("load",e=>{
         staffcontent.appendChild(btn);
         staffcontent.appendChild(clicks);
       } else {
-        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].woznicki?`<p><i>Behind that blush and smile<br>Lies Woznicki's brain and bile<br>Her auntie's knee<br>Is bent 'round like a tree<br>And she won't get unblocked for a while</i></p>`:''}`;
+        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].woznicki?`<p><i>Behind that blush and smile<br>Lies <a href="https://www.urbandictionary.com/define.php?term=woznicki">Woznicki</a>'s brain and bile<br>Her auntie's knee<br>Is bent 'round like a tree<br>And she won't get unblocked for a while</i></p>`:''}`;
       }
     }
   },false);
