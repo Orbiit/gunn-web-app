@@ -56,10 +56,15 @@ Promise.all(css.map(c => readFile(c))).then(css => {
             const result = UglifyJS.minify(code, {
               compress: {
                 drop_console: true,
-                keep_fargs: false
+                keep_fargs: false,
+                unused: false, // it gets rid of initMap for being useless
+                warnings: true
               },
               parse: {
                 bare_returns: inline
+              },
+              mangle: {
+                reserved: ['initMap']
               },
               toplevel: true
             });
