@@ -1,6 +1,7 @@
 /* MAIN */
 * {
   -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
 }
 :focus {
   outline: none;
