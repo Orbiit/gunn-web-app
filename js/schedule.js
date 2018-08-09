@@ -17,44 +17,44 @@ periodstyles={
 normalschedule={
   Monday:[
     {type:'A',begin:'0825',end:'0945'},
-    {type:'Brunch',begin:'0945',end:'1000'},
+    {type:'Brunch',begin:'0945',end:'0950'},
     {type:'B',begin:'1000',end:'1115'},
     {type:'C',begin:'1125',end:'1240'},
-    {type:'Lunch',begin:'1240',end:'1320'},
+    {type:'Lunch',begin:'1240',end:'1310'},
     {type:'F',begin:'1320',end:'1435'}
   ],
   Tuesday:[
     {type:'D',begin:'0825',end:'0945'},
-    {type:'Brunch',begin:'0945',end:'1000'},
+    {type:'Brunch',begin:'0945',end:'0950'},
     {type:'Flex',begin:'1000',end:'1050'},
     {type:'E',begin:'1100',end:'1215'},
-    {type:'Lunch',begin:'1215',end:'1255'},
+    {type:'Lunch',begin:'1215',end:'1245'},
     {type:'A',begin:'1255',end:'1415'},
     {type:'G',begin:'1425',end:'1540'}
   ],
   Wednesday:[
     {type:'B',begin:'0825',end:'0950'},
-    {type:'Brunch',begin:'0950',end:'1005'},
+    {type:'Brunch',begin:'0950',end:'0955'},
     {type:'C',begin:'1005',end:'1125'},
     {type:'D',begin:'1135',end:'1255'},
-    {type:'Lunch',begin:'1255',end:'1335'},
+    {type:'Lunch',begin:'1255',end:'1325'},
     {type:'F',begin:'1335',end:'1455'},
   ],
   Thursday:[
     {type:'E',begin:'0825',end:'0950'},
-    {type:'Brunch',begin:'0950',end:'1005'},
+    {type:'Brunch',begin:'0950',end:'0955'},
     {type:'Flex',begin:'1005',end:'1055'},
     {type:'B',begin:'1105',end:'1215'},
-    {type:'Lunch',begin:'1215',end:'1255'},
+    {type:'Lunch',begin:'1215',end:'1245'},
     {type:'A',begin:'1255',end:'1405'},
     {type:'G',begin:'1415',end:'1535'},
   ],
   Friday:[
     {type:'C',begin:'0825',end:'0940'},
-    {type:'Brunch',begin:'0940',end:'0955'},
+    {type:'Brunch',begin:'0940',end:'0945'},
     {type:'D',begin:'0955',end:'1105'},
     {type:'E',begin:'1115',end:'1225'},
-    {type:'Lunch',begin:'1225',end:'1305'},
+    {type:'Lunch',begin:'1225',end:'1255'},
     {type:'F',begin:'1305',end:'1415'},
     {type:'G',begin:'1425',end:'1535'}
   ]
