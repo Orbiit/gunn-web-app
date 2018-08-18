@@ -18,6 +18,8 @@ function ajax(url, callback, error = () => {}) {
 }
 function refreshAlts() {
   getAlternateSchedules(alts => {
+    const today = new Date();
+    alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
     storage.setItem("[gunn-web-app] lite.alts", JSON.stringify(alts));
     window.location.reload();
   });
@@ -156,24 +158,30 @@ document.addEventListener("DOMContentLoaded", e => {
   dateError = document.getElementById("dateinputerror"),
 
   viewingDate,
-  today = new Date();
-  today = {
-    obj: today,
-    year: today.getFullYear(),
-    month: today.getMonth(),
-    date: today.getDate(),
-    day: today.getDay()
-  };
-  today.dateString = ("0" + (today.month + 1)).slice(-2) + "-" + ("0" + today.date).slice(-2);
-  today.schedule = alternateSchedules[today.dateString];
-  if (today.schedule === undefined) today.schedule = normalSchedules[today.day];
-  viewingDate = {year: today.year, month: today.month, date: today.date};
+  today = setToday();
+
+  function setToday() {
+    const today = new Date();
+    const obj = {
+      obj: today,
+      year: today.getFullYear(),
+      month: today.getMonth(),
+      date: today.getDate(),
+      day: today.getDay()
+    };
+    obj.dateString = ("0" + (obj.month + 1)).slice(-2) + "-" + ("0" + obj.date).slice(-2);
+    obj.schedule = alternateSchedules[obj.dateString];
+    if (obj.schedule === undefined) obj.schedule = normalSchedules[obj.day];
+    viewingDate = {year: obj.year, month: obj.month, date: obj.date};
+    updateCalendar();
+    return obj;
+  }
 
   document.getElementById("refreshalts").addEventListener("click", refreshAlts, false);
-  updateCalendar();
   timeLeft.innerHTML = getTimeLeft(today.schedule);
   setInterval(() => {
     timeLeft.innerHTML = getTimeLeft(today.schedule);
+    if (today.day !== new Date().getDay()) today = setToday();
   }, 5000);
 
   if (storage.getItem("[gunn-web-app] lite.offline") === "on") offlineCheckbox.checked = true;
