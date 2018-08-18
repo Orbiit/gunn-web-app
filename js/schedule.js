@@ -171,6 +171,7 @@ window.addEventListener("load",e=>{
     var days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
     months=["January","February","March","April","May","June","July","August","September","October","November","December"];
     for (var dayString in alternates) {
+      if (dayString === 'lastGenerated') continue;
       var [month, day] = dayString.split('-').map(Number);
       var date;
       if (month > 6) date = new Date(2018, month - 1, day);
