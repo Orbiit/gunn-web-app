@@ -11,9 +11,10 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/staff.json',
     e=>{
       staff=JSON.parse(e);
-      staff["Nick Mount"]={game:true,jobTitle:"Easter Bunny",department:"Easter"};
+      staff["Aaryan Agrawal Person"]={game:true,jobTitle:"Supreme Leader",department:"Universe"};
       staff["Josh Paley"].jobTitle="Blamed Teacher";
       staff["Christina Woznicki"].woznicki=true;
+      staff["Casey O Connell"].oc=true;
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
       innerHTML=``;
       for (var i=0,arr=staffnames,len=arr.length,person=arr[i];i<len;i++,person=arr[i]) {
@@ -50,7 +51,7 @@ window.addEventListener("load",e=>{
         staffcontent.appendChild(btn);
         staffcontent.appendChild(clicks);
       } else {
-        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].woznicki?`<p><i>Behind that blush and smile<br>Lies <a href="https://www.urbandictionary.com/define.php?term=woznicki">Woznicki</a>'s brain and bile<br>Her auntie's knee<br>Is bent 'round like a tree<br>And she won't get unblocked for a while</i></p>`:''}`;
+        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>Basement:</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">OC's Basement</a></p>`:''}${staff[person].woznicki?`<p><i>Behind that blush and smile<br>Lies <a href="https://www.urbandictionary.com/define.php?term=woznicki">Woznicki</a>'s brain and bile<br>Her auntie's knee<br>Is bent 'round like a tree<br>And she won't get unblocked for a while</i></p>`:''}`;
       }
     }
   },false);
@@ -69,6 +70,15 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/clubs.json',
     e=>{
       clubs=JSON.parse(e);
+      clubs["Sophomore Club"]={
+        "desc":"A club to commemorate the class of 2021, the first class to undergo SELF. All grades welcome!",
+        "day":"Thursday",
+        "time":"Flex",
+        "room":"Any room",
+        "president":"Tara Firenzi",
+        "teacher":"Courtney Carlomagno",
+        "email":"ccarlomagno@pausd.org"
+      };
       var clubnames=Object.keys(clubs).sort(),
       innerHTML=``;
       for (var i=0,arr=clubnames,len=arr.length,club=arr[i];i<len;i++,club=arr[i]) {
