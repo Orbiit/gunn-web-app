@@ -71,7 +71,7 @@ window.addEventListener("load",e=>{
     e=>{
       clubs=JSON.parse(e);
       clubs["Sophomore Club"]={
-        "desc":"A club to commemorate the class of 2021, the first class to undergo SELF. All grades welcome!",
+        "desc":"A club to commemorate the class of 2021, the first class to undergo SELF, with one of the best attendance rates. All grades welcome!",
         "day":"Thursday",
         "time":"Flex",
         "room":"Any room",
