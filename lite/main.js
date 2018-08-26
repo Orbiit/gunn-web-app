@@ -77,16 +77,23 @@ function generateScheduleHTML(year, month, date) { // 0-indexed months, not vali
   return innerHTML;
 }
 function getTimeLeft(schedule) {
-  if (!schedule) return "";
-  let now = new Date(),
+  if (!schedule) {
+    document.title = 'No school today - Ugwita';
+    return "";
+  }
+  const now = new Date(),
   totalMinutes = now.getHours() * 60 + now.getMinutes();
   for (let i = 0; i < schedule.length; i++) {
     if (totalMinutes < schedule[i].end) {
       if (totalMinutes < schedule[i].start) {
-        return `<strong>${schedule[i].name}</strong> starting in ${toEnglishDuration(schedule[i].start - totalMinutes)}.`;
+        const duration = toEnglishDuration(schedule[i].start - totalMinutes);
+        document.title = `${schedule[i].name} in ${duration} - Ugwita`;
+        return `<strong>${schedule[i].name}</strong> starting in ${duration}.`;
       } else {
-        let percentage = Math.round((totalMinutes - schedule[i].start) / (schedule[i].end - schedule[i].start) * 100);
-        return `<strong>${schedule[i].name}</strong> ending in ${toEnglishDuration(schedule[i].end - totalMinutes)}. (${percentage}%)`;
+        const percentage = Math.round((totalMinutes - schedule[i].start) / (schedule[i].end - schedule[i].start) * 100);
+        const duration = toEnglishDuration(schedule[i].end - totalMinutes);
+        document.title = `${duration} left - Ugwita`;
+        return `<strong>${schedule[i].name}</strong> ending in ${duration}. (${percentage}%)`;
       }
     }
   }
