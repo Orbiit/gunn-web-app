@@ -76,10 +76,11 @@ function generateScheduleHTML(year, month, date) { // 0-indexed months, not vali
   }
   return innerHTML;
 }
-function getTimeLeft(schedule) {
+function getTimeLeft(timeLeftElem, schedule, setTitle) {
   if (!schedule) {
-    document.title = 'No school today - Ugwita';
-    return "";
+    if (setTitle) document.title = 'No school today - Ugwita';
+    timeLeftElem.innerHTML = "";
+    return false;
   }
   const now = new Date(),
   totalMinutes = now.getHours() * 60 + now.getMinutes();
@@ -87,17 +88,21 @@ function getTimeLeft(schedule) {
     if (totalMinutes < schedule[i].end) {
       if (totalMinutes < schedule[i].start) {
         const duration = toEnglishDuration(schedule[i].start - totalMinutes);
-        document.title = `${schedule[i].name} in ${duration} - Ugwita`;
-        return `<strong>${schedule[i].name}</strong> starting in ${duration}.`;
+        if (setTitle) document.title = `${schedule[i].name} in ${duration} - Ugwita`;
+        timeLeftElem.innerHTML = `<strong>${schedule[i].name}</strong> starting in ${duration}.`;
+        return false;
       } else {
         const percentage = Math.round((totalMinutes - schedule[i].start) / (schedule[i].end - schedule[i].start) * 100);
         const duration = toEnglishDuration(schedule[i].end - totalMinutes);
-        document.title = `${duration} left - Ugwita`;
-        return `<strong>${schedule[i].name}</strong> ending in ${duration}. (${percentage}%)`;
+        if (setTitle) document.title = `${duration} left - Ugwita`;
+        timeLeftElem.innerHTML = `<strong>${schedule[i].name}</strong> ending in ${duration}. (${percentage}%)`;
+        return schedule[i].end - totalMinutes === 1;
       }
     }
   }
-  return `<strong>${schedule[schedule.length - 1].name}</strong> ended ${toEnglishDuration(totalMinutes - schedule[schedule.length - 1].end)} ago.`;
+  if (setTitle) document.title = 'UGWA Lite';
+  timeLeftElem.innerHTML = `<strong>${schedule[schedule.length - 1].name}</strong> ended ${toEnglishDuration(totalMinutes - schedule[schedule.length - 1].end)} ago.`;
+  return false;
 }
 function offsetDate(myDateObj, offset) {
   let dateObj = new Date(myDateObj.year, myDateObj.month, myDateObj.date + offset);
@@ -165,7 +170,8 @@ document.addEventListener("DOMContentLoaded", e => {
   dateError = document.getElementById("dateinputerror"),
 
   viewingDate,
-  today = setToday();
+  today = setToday(),
+  countingSeconds = false;
 
   function setToday() {
     const today = new Date();
@@ -185,11 +191,36 @@ document.addEventListener("DOMContentLoaded", e => {
   }
 
   document.getElementById("refreshalts").addEventListener("click", refreshAlts, false);
-  timeLeft.innerHTML = getTimeLeft(today.schedule);
-  setInterval(() => {
-    timeLeft.innerHTML = getTimeLeft(today.schedule);
+  const loop = () => {
+    const oneMinuteLeft = getTimeLeft(timeLeft, today.schedule, !countingSeconds);
+    if (oneMinuteLeft) {
+      if (!countingSeconds) {
+        countingSeconds = true;
+        let lastSecond = null;
+        let interval = setInterval(() => {
+          if (countingSeconds) {
+            const secondsLeft = 60 - Date.now() % 60000 / 1000;
+            if (lastSecond !== null && secondsLeft > lastSecond) {
+              countingSeconds = false;
+              loop();
+            } else {
+              lastSecond = secondsLeft;
+              document.title = `${secondsLeft.toFixed(3)} second${secondsLeft === 1 ? '' : 's'} left - Ugwita`;
+              return;
+            }
+          } else {
+            countingSeconds = false;
+          }
+          clearInterval(interval);
+        }, 100);
+      }
+    } else if (countingSeconds) {
+      countingSeconds = false;
+    }
     if (today.day !== new Date().getDay()) today = setToday();
-  }, 5000);
+  };
+  setInterval(loop, 5000);
+  loop();
 
   if (storage.getItem("[gunn-web-app] lite.offline") === "on") offlineCheckbox.checked = true;
   offlineCheckbox.addEventListener("click", e => {
