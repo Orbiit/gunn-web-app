@@ -90,7 +90,7 @@ function getTimeLeft(timeLeftElem, schedule, setTitle) {
         const duration = toEnglishDuration(schedule[i].start - totalMinutes);
         if (setTitle) document.title = `${schedule[i].name} in ${duration} - Ugwita`;
         timeLeftElem.innerHTML = `<strong>${schedule[i].name}</strong> starting in ${duration}.`;
-        return false;
+        return schedule[i].start - totalMinutes === 1;
       } else {
         const percentage = Math.round((totalMinutes - schedule[i].start) / (schedule[i].end - schedule[i].start) * 100);
         const duration = toEnglishDuration(schedule[i].end - totalMinutes);
