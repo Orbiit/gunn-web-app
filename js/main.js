@@ -67,7 +67,9 @@ window.addEventListener("load",e=>{
           psa.innerHTML=e;
           psa.parentNode.classList.add("show");
         }
-        localStorage.setItem('[gunn-web-app] scheduleapp.psa',e);
+        document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
+          localStorage.setItem('[gunn-web-app] scheduleapp.psa',e);
+        }, {once: true});
       }
     },
     e=>{
