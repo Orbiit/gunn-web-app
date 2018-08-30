@@ -62,13 +62,13 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+"psa.html",
     e=>{
       document.querySelector('#psa').innerHTML=e;
-      if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')!==e) {
+      if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')!==e+'v1') {
         if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')) {
           psa.innerHTML=e;
           psa.parentNode.classList.add("show");
         }
         document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
-          localStorage.setItem('[gunn-web-app] scheduleapp.psa',e);
+          localStorage.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
         }, {once: true});
       }
     },
