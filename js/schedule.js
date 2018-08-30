@@ -160,7 +160,7 @@ window.addEventListener("load",e=>{
         || ~name.indexOf("tutorial"))
       return "Flex";
     else if (~name.indexOf("brunch") || ~name.indexOf("break")) return "Brunch";
-    else if (~name.indexOf("lunch")) return "Lunch";
+    else if (~name.indexOf("lunch") || ~name.indexOf("turkey")) return "Lunch";
     else return name;
   }
   function alternateGet() {
