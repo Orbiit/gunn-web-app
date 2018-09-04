@@ -96,6 +96,7 @@ window.addEventListener("load",e=>{
     weekwrapper.innerHTML=innerHTML;
     renderEvents();
   }
+  var altSchedRegex = /schedule|extended|holiday|no students|break/i;
   var eventsul=document.querySelector('#events'),events={},
   months="January February March April May June July August September October November December".split(' ');
   function renderEvents() {
@@ -127,19 +128,42 @@ window.addEventListener("load",e=>{
     else {
       ajax(
         `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString()}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime`,
-        e=>{
-          e=JSON.parse(e).items;
-          for (var i=0;i<e.length;i++) {
+        json=>{
+          json=JSON.parse(json).items;
+          var e = [];
+          for (var i=0;i<json.length;i++) {
             e[i]={
-              start:e[i].start.dateTime,
-              end:e[i].end.dateTime,
-              name:e[i].summary,
-              desc:e[i].description,
-              loc:e[i].location
+              start:json[i].start.dateTime,
+              end:json[i].end.dateTime,
+              name:json[i].summary,
+              desc:json[i].description,
+              loc:json[i].location
             };
           }
           events[offset]=e;
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
+          var alternateJSON = json.filter(ev => altSchedRegex.test(ev.summary));
+          var altSched = toAlternateSchedules(alternateJSON);
+          var ugwitaAltObj = {};
+          var change = false;
+          if (cookie.getItem('[gunn-web-app] lite.alts'))
+            ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
+          Object.keys(altSched).forEach(date => {
+            if (date) {
+              ugwitaAltObj[date] = altSched[date];
+              ugwaifyAlternates(alternates, date, altSched[date], alternateJSON[0].summary);
+              change = true;
+            } else if (ugwitaAltObj[date] !== undefined) {
+              delete ugwitaAltObj[date];
+              delete alternates[date.split('-').map(Number).join('-')];
+              change = true;
+            }
+          });
+          if (change) {
+            cookie.setItem('[gunn-web-app] lite.alts', JSON.stringify(ugwitaAltObj));
+            scheduleapp.offset = scheduleapp.offset;
+            makeWeekHappen();
+          }
         },
         e=>{
           events[offset]=[{name:'',desc:`${e}; couldn't get events; maybe you aren't connected to the internet?`,error:true}];
@@ -163,43 +187,46 @@ window.addEventListener("load",e=>{
     else if (~name.indexOf("lunch") || ~name.indexOf("turkey")) return "Lunch";
     else return name;
   }
+  var daynames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+  months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  function ugwaifyAlternates(altObj, dayString, ugwitaData, desc) {
+    var [month, day] = dayString.split('-').map(Number);
+    var date;
+    if (month > 6) date = new Date(2018, month - 1, day);
+    else date = new Date(2019, month - 1, day);
+    alternates[`${month}-${day}`] = {
+      dayname: daynames[date.getDay()],
+      day: date.getDay(),
+      monthname: months[month],
+      month: month,
+      date: day,
+      description: desc || 'good luck with our schedule lol',
+      periods: ugwitaData === null ? []
+        : ugwitaData.map(p => /collaboration|meeting/i.test(p.name)
+          ? null
+          : ({
+            name: identifyPeriod(p.name),
+            start: {
+              totalminutes: p.start,
+              hour: Math.floor(p.start / 60),
+              minute: p.start % 60
+            },
+            end: {
+              totalminutes: p.end,
+              hour: Math.floor(p.end / 60),
+              minute: p.end % 60
+            }
+          })).filter(a => a)
+    };
+  }
   function alternateGet() {
     if (cookie.getItem('[gunn-web-app] lite.alts')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
     else
       document.querySelector('#alternateerror').innerHTML=`You haven't loaded any alternate schedules! Go to <a href="./lite/#refreshalts">Ugwita</a> and click "Refresh alternate schedules."`,
       alternates={};
-    var days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-    months=["January","February","March","April","May","June","July","August","September","October","November","December"];
     for (var dayString in alternates) {
       if (dayString === 'lastGenerated') continue;
-      var [month, day] = dayString.split('-').map(Number);
-      var date;
-      if (month > 6) date = new Date(2018, month - 1, day);
-      else date = new Date(2019, month - 1, day);
-      alternates[`${month}-${day}`] = {
-        dayname: days[date.getDay()],
-        day: date.getDay(),
-        monthname: months[month],
-        month: month,
-        date: day,
-        description: 'good luck with our schedule lol',
-        periods: alternates[dayString] === null ? []
-          : alternates[dayString].map(p => /collaboration|meeting/i.test(p.name)
-            ? null
-            : ({
-              name: identifyPeriod(p.name),
-              start: {
-                totalminutes: p.start,
-                hour: Math.floor(p.start / 60),
-                minute: p.start % 60
-              },
-              end: {
-                totalminutes: p.end,
-                hour: Math.floor(p.end / 60),
-                minute: p.end % 60
-              }
-            })).filter(a => a)
-      };
+      ugwaifyAlternates(alternates, dayString, alternates[dayString]);
     }
     for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
     scheduleapp=scheduleApp({
@@ -213,6 +240,7 @@ window.addEventListener("load",e=>{
     makeWeekHappen();
   }
   alternateGet();
+  console.log(scheduleapp);
   var datepicker=new DatePicker({d:13,m:7,y:2018},{d:31,m:4,y:2019}),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};

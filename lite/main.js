@@ -27,7 +27,7 @@ function refreshAlts() {
 function getAlternateSchedules(callback) {
   let done = 0,
   alternateSchedules = {};
-  for (let i = 0; i < keywords.length - 1; i++) {
+  for (let i = 0; i < keywords.length; i++) {
     ajax(
       calendarURL + `&timeMin=${encodeURIComponent(firstDay)}&timeMax=${encodeURIComponent(lastDay)}&q=${keywords[i]}`,
       json => {
