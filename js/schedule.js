@@ -221,9 +221,7 @@ window.addEventListener("load",e=>{
   }
   function alternateGet() {
     if (cookie.getItem('[gunn-web-app] lite.alts')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
-    else
-      document.querySelector('#alternateerror').innerHTML=`You haven't loaded any alternate schedules! Go to <a href="./lite/#refreshalts">Ugwita</a> and click "Refresh alternate schedules."`,
-      alternates={};
+    else alternates={};
     for (var dayString in alternates) {
       if (dayString === 'lastGenerated') continue;
       ugwaifyAlternates(alternates, dayString, alternates[dayString]);
