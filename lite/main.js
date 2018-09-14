@@ -151,12 +151,14 @@ if ("serviceWorker" in navigator) {
 document.addEventListener("DOMContentLoaded", e => {
   function updateCalendar() {
     scheduleWrapper.innerHTML = generateScheduleHTML(viewingDate.year, viewingDate.month, viewingDate.date);
+    window.location.hash = `${viewingDate.year}-${viewingDate.month - 1}-${viewingDate.date}`;
   }
   let scheduleWrapper = document.getElementById("schedule"),
   offlineCheckbox = document.getElementById("offline"),
   themeCheckbox = document.getElementById("theme"),
   timeLeft = document.getElementById("timeleft"),
   yesterday = document.getElementById("yesterday"),
+  todayBtn = document.getElementById("today"),
   tomorrow = document.getElementById("tomorrow"),
   notes = document.getElementById("notesinput"),
 
@@ -185,9 +187,12 @@ document.addEventListener("DOMContentLoaded", e => {
     obj.dateString = ("0" + (obj.month + 1)).slice(-2) + "-" + ("0" + obj.date).slice(-2);
     obj.schedule = alternateSchedules[obj.dateString];
     if (obj.schedule === undefined) obj.schedule = normalSchedules[obj.day];
+    viewToday(obj);
+    return obj;
+  }
+  function viewToday(todayObj) {
     viewingDate = {year: obj.year, month: obj.month, date: obj.date};
     updateCalendar();
-    return obj;
   }
 
   document.getElementById("refreshalts").addEventListener("click", refreshAlts, false);
@@ -250,6 +255,9 @@ document.addEventListener("DOMContentLoaded", e => {
     viewingDate = offsetDate(viewingDate, -1);
     updateCalendar();
   }, false);
+  todayBtn.addEventListener("click", e => {
+    viewToday(today);
+  }, false);
   tomorrow.addEventListener("click", e => {
     viewingDate = offsetDate(viewingDate, 1);
     updateCalendar();
@@ -303,4 +311,15 @@ document.addEventListener("DOMContentLoaded", e => {
   window.addEventListener("storage", e => {
     notes.value = storage.getItem("[gunn-web-app] lite.notes") || "";
   }, false);
+  
+  function viewingDateFromHash() {
+    if (legalHashDate.test(window.location.hash)) {
+      const [year, month, date] = window.location.hash.slice(1).split('-').map(Number);
+      if (year === viewingDate.year && month - 1 === viewingDate.month && date === viewingDate.date) return;
+      viewingDate = offsetDate({year: year, month: month - 1, date: date}, 0);
+      updateCalendar();
+    }
+  }
+  window.addEventListener("onhashchange", viewingDateFromHash, false);
+  viewingDateFromHash();
 }, false);
