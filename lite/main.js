@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", e => {
     return obj;
   }
   function viewToday(todayObj) {
-    viewingDate = {year: obj.year, month: obj.month, date: obj.date};
+    viewingDate = {year: todayObj.year, month: todayObj.month, date: todayObj.date};
     updateCalendar();
   }
 
