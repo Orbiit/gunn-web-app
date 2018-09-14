@@ -313,7 +313,7 @@ document.addEventListener("DOMContentLoaded", e => {
   }, false);
   
   function viewingDateFromHash() {
-    if (legalHashDate.test(window.location.hash)) {
+    if (legalHashDateRegex.test(window.location.hash)) {
       const [year, month, date] = window.location.hash.slice(1).split('-').map(Number);
       if (year === viewingDate.year && month - 1 === viewingDate.month && date === viewingDate.date) return;
       viewingDate = offsetDate({year: year, month: month - 1, date: date}, 0);
