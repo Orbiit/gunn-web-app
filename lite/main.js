@@ -151,7 +151,7 @@ if ("serviceWorker" in navigator) {
 document.addEventListener("DOMContentLoaded", e => {
   function updateCalendar() {
     scheduleWrapper.innerHTML = generateScheduleHTML(viewingDate.year, viewingDate.month, viewingDate.date);
-    window.location.hash = `${viewingDate.year}-${viewingDate.month - 1}-${viewingDate.date}`;
+    window.location.hash = `${viewingDate.year}-${("0" + (viewingDate.month + 1)).slice(-2)}-${("0" + viewingDate.date).slice(-2)}`;
   }
   let scheduleWrapper = document.getElementById("schedule"),
   offlineCheckbox = document.getElementById("offline"),
@@ -320,6 +320,6 @@ document.addEventListener("DOMContentLoaded", e => {
       updateCalendar();
     }
   }
-  window.addEventListener("onhashchange", viewingDateFromHash, false);
+  window.addEventListener("hashchange", viewingDateFromHash, false);
   viewingDateFromHash();
 }, false);
