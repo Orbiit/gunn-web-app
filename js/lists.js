@@ -98,7 +98,7 @@ window.addEventListener("load",e=>{
       clubinfo.classList.add('show');
       var club=target.dataset.club;
       clubh1.innerHTML=club;
-      clubcontent.innerHTML=`<p><strong>Meeting day:</strong> ${clubs[club].day}</p><p><strong>Meeting time:</strong> ${clubs[club].time}</p><p><strong>Location:</strong> ${clubs[club].room}</p><p><strong>Description:</strong> ${clubs[club].desc}</p><p><strong>President(s):</strong> ${clubs[club].president}</p><p><strong>Teacher Advisor(s):</strong> ${clubs[club].teacher}</p><p><strong>Teacher Email:</strong> <a href="mailto:${clubs[club].email}" target="_blank" rel="noopener noreferrer">${clubs[club].email}</a></p>`;
+      clubcontent.innerHTML=`<p><strong>Meeting day:</strong> ${clubs[club].day}</p><p><strong>Meeting time:</strong> ${clubs[club].time}</p><p><strong>Location:</strong> ${clubs[club].room}</p><p><strong>Description:</strong> ${clubs[club].desc}</p><p><strong>President(s):</strong> ${clubs[club].president}</p><p><strong>Teacher Advisor(s):</strong> ${clubs[club].teacher}</p><p><strong>Teacher Email:</strong> <a href="mailto:${clubs[club].email}" target="_blank" rel="noopener noreferrer">${clubs[club].email}</a></p>${clubs[club].donation?`<p><strong>Suggested donation:</strong> ${clubs[club].donation}</p>`:''}`;
       var s=clubcontent.querySelectorAll('a:not([href])');
       for (var i=0;i<s.length;i++) s[i].href=s[i].textContent,s[i].setAttribute('target',"_blank"),s[i].setAttribute('rel',"noopener noreferrer");
     }
