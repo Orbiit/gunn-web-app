@@ -96,7 +96,7 @@ window.addEventListener("load",e=>{
     weekwrapper.innerHTML=innerHTML;
     renderEvents();
   }
-  var altSchedRegex = /schedule|extended|holiday|no students|break/i;
+  var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
   var eventsul=document.querySelector('#events'),events={},
   months="January February March April May June July August September October November December".split(' ');
   function renderEvents() {

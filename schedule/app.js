@@ -44,10 +44,13 @@ function scheduleApp(options={}) {
       if (sched.periods.length) {
         if (checkfuture) {
           for (var i=0;i<sched.periods.length;i++) if (totalminute<sched.periods[i].end.totalminutes) break;
-          if (i>=sched.periods.length) innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[sched.periods.length-1].name)} ended <strong>${getUsefulTimePhrase(totalminute-sched.periods[sched.periods.length-1].end.totalminutes)}</strong> ago.</p>`; // after school
-          else if (totalminute>=sched.periods[i].start.totalminutes) innerHTML+=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-sched.periods[i].start.totalminutes)/(sched.periods[i].end.totalminutes-sched.periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} ending in <strong>${getUsefulTimePhrase(sched.periods[i].end.totalminutes-totalminute)}</strong>.</p>`; // during a period
-          else if (i===0) innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[0].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[0].start.totalminutes-totalminute)}</strong>.</p>`; // before school
-          else innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[i].start.totalminutes-totalminute)}</strong>.</p>`; // passing period
+          var str;
+          if (i>=sched.periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[sched.periods.length-1].name)} ended <strong>${getUsefulTimePhrase(totalminute-sched.periods[sched.periods.length-1].end.totalminutes)}</strong> ago.</p>`; // after school
+          else if (totalminute>=sched.periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-sched.periods[i].start.totalminutes)/(sched.periods[i].end.totalminutes-sched.periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} ending in <strong>${getUsefulTimePhrase(sched.periods[i].end.totalminutes-totalminute)}</strong>.</p>`; // during a period
+          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[0].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[0].start.totalminutes-totalminute)}</strong>.</p>`; // before school
+          else str=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[i].start.totalminutes-totalminute)}</strong>.</p>`; // passing period
+          innerHTML += str;
+          document.title = str.replace(/<[^>]+>/g, '');
         }
         for (var period of sched.periods) {
           innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.name).colour};color:${getFontColour(getPeriod(period.name).colour)};"><span class="schedule-periodname">${getPeriod(period.name).label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))}</span>`;
@@ -65,10 +68,13 @@ function scheduleApp(options={}) {
       if (options.normal[day]&&options.normal[day].length) {
         if (checkfuture) {
           for (var i=0;i<options.normal[day].length;i++) if (totalminute<getTotalMinutes(options.normal[day][i].end)) break;
-          if (i>=options.normal[day].length) innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][options.normal[day].length-1].type)} ended <strong>${getUsefulTimePhrase(totalminute-getTotalMinutes(options.normal[day][options.normal[day].length-1].end))}</strong> ago.</p>`; // after school
-          else if (totalminute>=getTotalMinutes(options.normal[day][i].begin)) innerHTML+=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-getTotalMinutes(options.normal[day][i].begin))/(getTotalMinutes(options.normal[day][i].end)-getTotalMinutes(options.normal[day][i].begin))*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(options.normal[day][i].type)} ending in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].end)-totalminute)}</strong>.</p>`; // during a period
-          else if (i===0) innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][0].type)} starting in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][0].begin)-totalminute)}</strong>.</p>`; // before school
-          else innerHTML+=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][i].type)} starting in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].begin)-totalminute)}</strong>.</p>`; // passing period
+          var str;
+          if (i>=options.normal[day].length) str=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][options.normal[day].length-1].type)} ended <strong>${getUsefulTimePhrase(totalminute-getTotalMinutes(options.normal[day][options.normal[day].length-1].end))}</strong> ago.</p>`; // after school
+          else if (totalminute>=getTotalMinutes(options.normal[day][i].begin)) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-getTotalMinutes(options.normal[day][i].begin))/(getTotalMinutes(options.normal[day][i].end)-getTotalMinutes(options.normal[day][i].begin))*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(options.normal[day][i].type)} ending in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].end)-totalminute)}</strong>.</p>`; // during a period
+          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][0].type)} starting in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][0].begin)-totalminute)}</strong>.</p>`; // before school
+          else str=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][i].type)} starting in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].begin)-totalminute)}</strong>.</p>`; // passing period
+          innerHTML += str;
+          document.title = str.replace(/<[^>]+>/g, '');
         }
         for (var period of options.normal[day]) {
           innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="schedule-periodname">${getPeriod(period.type).label}</span><span>${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span>`;

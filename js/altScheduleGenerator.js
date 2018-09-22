@@ -6,8 +6,8 @@ const noNbspRegex = /&nbsp;/g;
 const timeGetterRegex = /\(?(1?[0-9]):([0-9]{2}) *(?:-|–) *(1?[0-9]):([0-9]{2}) *(pm)?\)?/;
 const newLineRegex = /\r?\n/g;
 
-const altScheduleRegex = /(schedule|extended)/i;
-const noSchoolRegex = /(holiday|no\sstudents|break)/i;
+const altScheduleRegex = /schedule|extended/i;
+const noSchoolRegex = /holiday|no\sstudents|break|development/i;
 
 function parseAlternate(summary, description) {
   if (altScheduleRegex.test(summary)) {
