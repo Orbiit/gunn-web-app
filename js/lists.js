@@ -56,7 +56,7 @@ window.addEventListener("load",e=>{
     }
   },false);
   staffsearch.addEventListener("input",e=>{
-    staffstyle.innerHTML=staffsearch.value?`#staff li:not([data-search*="${staffsearch.value.replace(/\\/g,'\\')}"i]){display:none}`:'';
+    staffstyle.innerHTML=staffsearch.value?`#staff li:not([data-search*="${staffsearch.value.replace(/\\/g,'\\\\')}"i]){display:none}`:'';
   },false);
   var clubs,
   clublist=document.querySelector('#clubs'),
@@ -104,6 +104,6 @@ window.addEventListener("load",e=>{
     }
   },false);
   clubsearch.addEventListener("input",e=>{
-    clubstyle.innerHTML=clubsearch.value?`#clubs li:not([data-search*="${clubsearch.value.replace(/\\/g,'\\')}"i]){display:none}`:'';
+    clubstyle.innerHTML=clubsearch.value?`#clubs li:not([data-search*="${clubsearch.value.replace(/\\/g,'\\\\')}"i]){display:none}`:'';
   },false);
 },false);
