@@ -11,7 +11,8 @@ function scheduleApp(options={}) {
   }
   function getHumanTime(messytime) {
     var hr=+messytime.slice(0,2)%24;
-    return `${(hr-1)%12+1}:${messytime.slice(2)}${hr<12?'a':'p'}m`;
+    if (options.h24) return `${hr}:${messytime.slice(2)}`;
+    else return `${(hr-1)%12+1}:${messytime.slice(2)}${hr<12?'a':'p'}m`;
   }
   function getFontColour(colour) {
     colourtoy.style.backgroundColor=colour;
@@ -21,8 +22,11 @@ function scheduleApp(options={}) {
     return Math.round(((parseInt(colour[0])*299)+(parseInt(colour[1])*587)+(parseInt(colour[2])*114))/1000)>150?'rgba(0,0,0,0.8)':'white';
   }
   function getUsefulTimePhrase(minutes) {
-    if (minutes<1) return 'less than a minute';
-    return (minutes>=120?Math.floor(minutes/60)+' hours':minutes>=60?'an hour':'')+(minutes%60===0?'':(minutes>=60?' and ':'')+(minutes%60===1?'a minute':(minutes%60)+' minutes'));
+    if (options.compact) return `${Math.floor(minutes/60)}:${('0'+minutes%60).slice(-2)}`
+    else {
+      if (minutes<1) return 'less than a minute';
+      return (minutes>=120?Math.floor(minutes/60)+' hours':minutes>=60?'an hour':'')+(minutes%60===0?'':(minutes>=60?' and ':'')+(minutes%60===1?'a minute':(minutes%60)+' minutes'));
+    }
   }
   function getTotalMinutes(messytime) {
     return (+messytime.slice(0,2))*60+(+messytime.slice(2));
@@ -45,12 +49,14 @@ function scheduleApp(options={}) {
         if (checkfuture) {
           for (var i=0;i<sched.periods.length;i++) if (totalminute<sched.periods[i].end.totalminutes) break;
           var str;
-          if (i>=sched.periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[sched.periods.length-1].name)} ended <strong>${getUsefulTimePhrase(totalminute-sched.periods[sched.periods.length-1].end.totalminutes)}</strong> ago.</p>`; // after school
-          else if (totalminute>=sched.periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-sched.periods[i].start.totalminutes)/(sched.periods[i].end.totalminutes-sched.periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} ending in <strong>${getUsefulTimePhrase(sched.periods[i].end.totalminutes-totalminute)}</strong>.</p>`; // during a period
-          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[0].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[0].start.totalminutes-totalminute)}</strong>.</p>`; // before school
-          else str=`<p class="schedule-endingin">${getPeriodSpan(sched.periods[i].name)} starting in <strong>${getUsefulTimePhrase(sched.periods[i].start.totalminutes-totalminute)}</strong>.</p>`; // passing period
+          var compactTime, period, compactStr;
+          if (i>=sched.periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(period=sched.periods[sched.periods.length-1].name)} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-sched.periods[sched.periods.length-1].end.totalminutes)}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
+          else if (totalminute>=sched.periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-sched.periods[i].start.totalminutes)/(sched.periods[i].end.totalminutes-sched.periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=sched.periods[i].name)} ending in <strong>${compactTime=getUsefulTimePhrase(sched.periods[i].end.totalminutes-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
+          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=sched.periods[0].name)} starting in <strong>${compactTime=getUsefulTimePhrase(sched.periods[0].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
+          else str=`<p class="schedule-endingin">${getPeriodSpan(period=sched.periods[i].name)} starting in <strong>${compactTime=getUsefulTimePhrase(sched.periods[i].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
           innerHTML += str;
-          document.title = str.replace(/<[^>]+>/g, '');
+          if (options.compact) document.title = compactStr;
+          else document.title = str.replace(/<[^>]+>/g, '');
         }
         for (var period of sched.periods) {
           innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.name).colour};color:${getFontColour(getPeriod(period.name).colour)};"><span class="schedule-periodname">${getPeriod(period.name).label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))}</span>`;
@@ -69,12 +75,14 @@ function scheduleApp(options={}) {
         if (checkfuture) {
           for (var i=0;i<options.normal[day].length;i++) if (totalminute<getTotalMinutes(options.normal[day][i].end)) break;
           var str;
-          if (i>=options.normal[day].length) str=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][options.normal[day].length-1].type)} ended <strong>${getUsefulTimePhrase(totalminute-getTotalMinutes(options.normal[day][options.normal[day].length-1].end))}</strong> ago.</p>`; // after school
-          else if (totalminute>=getTotalMinutes(options.normal[day][i].begin)) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-getTotalMinutes(options.normal[day][i].begin))/(getTotalMinutes(options.normal[day][i].end)-getTotalMinutes(options.normal[day][i].begin))*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(options.normal[day][i].type)} ending in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].end)-totalminute)}</strong>.</p>`; // during a period
-          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][0].type)} starting in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][0].begin)-totalminute)}</strong>.</p>`; // before school
-          else str=`<p class="schedule-endingin">${getPeriodSpan(options.normal[day][i].type)} starting in <strong>${getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].begin)-totalminute)}</strong>.</p>`; // passing period
+          var compactTime, period, compactStr;
+          if (i>=options.normal[day].length) str=`<p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][options.normal[day].length-1].type)} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-getTotalMinutes(options.normal[day][options.normal[day].length-1].end))}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
+          else if (totalminute>=getTotalMinutes(options.normal[day][i].begin)) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-getTotalMinutes(options.normal[day][i].begin))/(getTotalMinutes(options.normal[day][i].end)-getTotalMinutes(options.normal[day][i].begin))*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][i].type)} ending in <strong>${compactTime=getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].end)-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
+          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][0].type)} starting in <strong>${compactTime=getUsefulTimePhrase(getTotalMinutes(options.normal[day][0].begin)-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
+          else str=`<p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][i].type)} starting in <strong>${compactTime=getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].begin)-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
           innerHTML += str;
-          document.title = str.replace(/<[^>]+>/g, '');
+          if (options.compact) document.title = compactStr;
+          else document.title = str.replace(/<[^>]+>/g, '');
         }
         for (var period of options.normal[day]) {
           innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="schedule-periodname">${getPeriod(period.type).label}</span><span>${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span>`;

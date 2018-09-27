@@ -33,6 +33,13 @@ a {
 a:hover {
   text-decoration: underline;
 }
+hr {
+  border: none;
+  border-top: 1px solid CurrentColor;
+  opacity: 0.2;
+  width: 150px;
+  margin-left: 0;
+}
 button, select, textarea, input {
   font: inherit;
   -webkit-appearance: none;
@@ -82,6 +89,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .section h1 {
   font-size: 20px;
+  font-weight: normal;
+}
+.section h2 {
+  font-size: 16px;
   font-weight: normal;
 }
 .section p {

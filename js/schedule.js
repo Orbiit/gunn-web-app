@@ -1,6 +1,7 @@
 var options,
 letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
 VERSION=1, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+FORMATTING_VERSION='1',
 periodstyles={
   NO_SCHOOL:{label:"No school today!"},
   "Brunch":{label:"Brunch",colour:"#90a4ae"},
@@ -82,6 +83,12 @@ if (!options) {
 }
 window.addEventListener("load",e=>{
   /* SCHEDULE APP */
+  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full'];
+  if (formatOptions[0] !== FORMATTING_VERSION) {
+    // you should be worried
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full');
+    window.location.reload();
+  }
   var scheduleapp;
   var weekwrapper=document.querySelector('#weekwrapper');
   function makeWeekHappen() {
@@ -110,7 +117,8 @@ window.addEventListener("load",e=>{
           if (items[i].start) {
             var start=new Date(items[i].start),
             end=new Date(items[i].end);
-            timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
+            if (formatOptions[2]==='compact') timerange=`${start.getHours()}:${('0'+start.getMinutes()).slice(-2)} &ndash; ${end.getHours()}:${('0'+end.getMinutes()).slice(-2)}`;
+            else timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
           }
           if (items[i].loc) {
             if (timerange) timerange+=' &mdash; ';
@@ -233,12 +241,13 @@ window.addEventListener("load",e=>{
       normal:normalschedule,
       alternates:alternates,
       offset:0,
-      update:true
+      update:true,
+      h24: formatOptions[1] === '24',
+      compact: formatOptions[2] === 'compact'
     });
     makeWeekHappen();
   }
   alternateGet();
-  console.log(scheduleapp);
   var datepicker=new DatePicker({d:13,m:7,y:2018},{d:31,m:4,y:2019}),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
@@ -279,6 +288,8 @@ window.addEventListener("load",e=>{
     document.querySelector(`input[name=theme][value=${cookie.getItem('global.theme')}]`).checked=true;
   else
     document.querySelector('input[name=theme][value=light]').checked=true;
+  document.querySelector(`input[name=hour][value=h${formatOptions[1]}]`).checked=true;
+  document.querySelector(`input[name=format][value=${formatOptions[2]}]`).checked=true;
 
   /* CUSTOMISE PERIODS */
   var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
