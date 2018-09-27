@@ -117,7 +117,7 @@ window.addEventListener("load",e=>{
           if (items[i].start) {
             var start=new Date(items[i].start),
             end=new Date(items[i].end);
-            if (formatOptions[2]==='compact') timerange=`${start.getHours()}:${('0'+start.getMinutes()).slice(-2)} &ndash; ${end.getHours()}:${('0'+end.getMinutes()).slice(-2)}`;
+            if (formatOptions[1]==='24') timerange=`${start.getHours()}:${('0'+start.getMinutes()).slice(-2)} &ndash; ${end.getHours()}:${('0'+end.getMinutes()).slice(-2)}`;
             else timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
           }
           if (items[i].loc) {
