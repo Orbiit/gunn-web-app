@@ -139,11 +139,13 @@ if ("serviceWorker" in navigator) {
   if (storage.getItem("[gunn-web-app] lite.offline") === "on") {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register('sw.js').then(regis => {
-        reg.onupdatefound = () => {
-          const installingWorker = reg.installing;
+        regis.onupdatefound = () => {
+          const installingWorker = regis.installing;
           installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller)
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              console.log('new update! reloading...');
               window.location.reload();
+            }
           };
         };
       }, err => {
