@@ -34,7 +34,7 @@ function getAlternateSchedules(callback) {
       json => {
         done++;
         Object.assign(alternateSchedules, toAlternateSchedules(JSON.parse(json).items));
-        if (done === keywords.length - 1) callback(alternateSchedules);
+        if (done === keywords.length) callback(alternateSchedules);
       }
     );
   }
@@ -139,7 +139,13 @@ if ("serviceWorker" in navigator) {
   if (storage.getItem("[gunn-web-app] lite.offline") === "on") {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register('sw.js').then(regis => {
-        console.log('MUAHAHAHAHA I REGISTERED THE SERVICE WORKER! THE SCOPE IS:', regis.scope);
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
+          installingWorker.onstatechange = () => {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller)
+              window.location.reload();
+          };
+        };
       }, err => {
         console.log(':( couldnt register service worker', err);
       });
