@@ -21,7 +21,8 @@ function refreshAlts() {
     const today = new Date();
     alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
     storage.setItem("[gunn-web-app] lite.alts", JSON.stringify(alts));
-    window.location.reload();
+    if (window.location.search === '?genalts') window.location.replace('../');
+    else window.location.reload();
   });
 }
 function getAlternateSchedules(callback) {
@@ -118,6 +119,8 @@ try {
     removeItem: a => delete storage[a]
   }
 }
+
+if (window.location.search === '?genalts') refreshAlts();
 
 const startDate = {year: 2018, month: 5, date: 13},
 endDate = {year: 2019, month: 4, date: 31};
@@ -311,7 +314,7 @@ document.addEventListener("DOMContentLoaded", e => {
   window.addEventListener("storage", e => {
     notes.value = storage.getItem("[gunn-web-app] lite.notes") || "";
   }, false);
-  
+
   function viewingDateFromHash() {
     if (legalHashDateRegex.test(window.location.hash)) {
       const [year, month, date] = window.location.hash.slice(1).split('-').map(Number);

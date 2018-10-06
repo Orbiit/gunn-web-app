@@ -343,8 +343,8 @@ body.dark .notmaterial-input {
   display: block;
 }
 body.dark #mapimage {
-  -webkit-filter: hue-rotate(180deg) invert();
-  filter: hue-rotate(180deg) invert();
+  -webkit-filter: hue-rotate(180deg) invert(1);
+  filter: hue-rotate(180deg) invert(1);
 }
 .zoom-rotate {
   border-radius: 50%;
