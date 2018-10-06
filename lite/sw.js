@@ -1,4 +1,5 @@
-const CACHE_NAME = "ugwita-cache-v17", // change cache name to force update
+const VERSION = 18;
+const CACHE_NAME = "ugwita-cache-v" + VERSION, // change cache name to force update
 urlsToCache = [
   "./",
   "index.html",
@@ -13,6 +14,7 @@ self.addEventListener("install", e => {
 });
 self.addEventListener("fetch", e => {
   e.respondWith(caches.match(e.request).then(response => response || fetch(e.request)));
+  self.clients.matchAll().then(clients => clients.forEach(c => c.postMessage(VERSION)));
 });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(names => Promise.all(names.map(cache => CACHE_NAME !== cache ? caches.delete(cache) : undefined))));

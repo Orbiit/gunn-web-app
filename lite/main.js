@@ -144,12 +144,15 @@ if ("serviceWorker" in navigator) {
           installingWorker.onstatechange = () => {
             if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
               console.log('new update! redirecting away and back...');
-              window.location.replace('./updater.html');
+              window.location.replace('../lite-updater.html');
             }
           };
         };
       }, err => {
         console.log(':( couldnt register service worker', err);
+      });
+      navigator.serviceWorker.addEventListener('message', event => {
+        console.log('service worker version ' + event.data);
       });
     });
   } else {
