@@ -143,8 +143,8 @@ if ("serviceWorker" in navigator) {
           const installingWorker = regis.installing;
           installingWorker.onstatechange = () => {
             if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              console.log('new update! reloading...');
-              window.location.reload();
+              console.log('new update! redirecting away and back...');
+              window.location.replace('./updater.html');
             }
           };
         };
