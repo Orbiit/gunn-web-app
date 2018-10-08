@@ -12,7 +12,7 @@ window.addEventListener("load",e=>{
     e=>{
       staff=JSON.parse(e);
       staff["Aaryan Agrawal Person"]={game:true,jobTitle:"Supreme Leader",department:"Universe"};
-      staff["Josh Paley"].jobTitle="Blamed Teacher";
+      staff["Joshua Paley"].jobTitle="Blamed Teacher";
       staff["Christina Woznicki"].woznicki=true;
       staff["Casey O'Connell"].oc=true;
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
