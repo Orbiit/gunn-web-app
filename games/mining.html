@@ -21,11 +21,23 @@
         background: none;
         color: #888;
       }
+      table button {
+        font-size: 4em;
+        padding: 0 10px;
+      }
     </style>
   </head>
   <body>
     <canvas id="canvas" width="300" height="300"></canvas>
     <p><textarea id="output" rows="2" cols="60" readonly>ARROW KEYS TO MOVE/MINE. COLLECT OIL/MAGMA FOR FUEL. HELL HURTS AFTER PROLONGED EXPOSURE. YOU MAY HEAL IN HEAVEN.</textarea></p>
+    <table>
+      <tr>
+        <td></td><td><button onclick="player.orientation = 1; player.move();">^</button></td><td></td>
+      </tr>
+      <tr>
+        <td><button onclick="player.orientation = 0; player.move();">&lt;</button></td><td><button onclick="player.orientation = 3; player.move();">v</button></td><td><button onclick="player.orientation = 2; player.move();">&gt;</button></td>
+      </tr>
+    </table>
     <script>
 function loadImage(url) {
   return new Promise(resolve => {
@@ -44,18 +56,11 @@ function drawTile(tile, x, y) {
 }
 loadImage('./otherstuff.png').then(init);
 
-let lastKey = null;
 document.addEventListener('keydown', e => {
   if (e.keyCode >= 37 && e.keyCode <= 40) {
     player.orientation = e.keyCode - 37;
-    if (lastKey !== e.keyCode) {
-      player.move();
-    }
+    player.move();
   }
-  lastKey = e.keyCode;
-});
-document.addEventListener('keyup', e => {
-  lastKey = null;
 });
 
 const CANVAS_SIZE = 300;
