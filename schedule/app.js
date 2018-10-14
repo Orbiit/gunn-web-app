@@ -34,6 +34,9 @@ function scheduleApp(options={}) {
   function getPeriodSpan(period) {
     return `<span style="background-color:${getPeriod(period).colour};color:${getFontColour(getPeriod(period).colour)};" class="schedule-endinginperiod">${getPeriod(period).label}</span>`;
   }
+  function isSELFDay(month, date) {
+    return options.self && options.selfDays.includes(('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2));
+  }
   getFontColour('rgba(0,0,0,0.2)');
   var days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
   months=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -42,61 +45,44 @@ function scheduleApp(options={}) {
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
     day=days[d.getDay()];
     innerHTML=`<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date">${months[d.getMonth()]} ${d.getDate()}</h3>`;
+    var isSELF = isSELFDay(d.getMonth(), d.getDate());
+    var periods;
+    function getPeriodName(index) {
+      return periods[index].name === 'Flex' && isSELF ? 'SELF' : periods[index].name;
+    }
     if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
       var sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()];
       innerHTML+=`<span class="schedule-alternatemsg">This is an alternate schedule. The school says, "<strong>${sched.description}</strong>"</span>`;
-      if (sched.periods.length) {
+      periods = sched.periods;
+    } else if (options.normal[day]&&options.normal[day].length) {
+      periods = options.normal[day];
+    } else periods = [];
+    if (periods.length) {
+      if (checkfuture) {
+        for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;
+        var str;
+        var compactTime, period, compactStr;
+        if (i>=periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(periods.length-1))} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
+        else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} ending in <strong>${compactTime=getUsefulTimePhrase(periods[i].end.totalminutes-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
+        else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(0))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[0].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
+        else str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[i].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
+        innerHTML += str;
+        if (options.compact) document.title = compactStr;
+        else document.title = str.replace(/<[^>]+>/g, '');
+      }
+      for (var period of periods) {
+        var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
+        innerHTML+=`<div class="schedule-period" style="background-color:${periodName.colour};color:${getFontColour(periodName.colour)};"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))}</span>`;
         if (checkfuture) {
-          for (var i=0;i<sched.periods.length;i++) if (totalminute<sched.periods[i].end.totalminutes) break;
-          var str;
-          var compactTime, period, compactStr;
-          if (i>=sched.periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(period=sched.periods[sched.periods.length-1].name)} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-sched.periods[sched.periods.length-1].end.totalminutes)}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
-          else if (totalminute>=sched.periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-sched.periods[i].start.totalminutes)/(sched.periods[i].end.totalminutes-sched.periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=sched.periods[i].name)} ending in <strong>${compactTime=getUsefulTimePhrase(sched.periods[i].end.totalminutes-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
-          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=sched.periods[0].name)} starting in <strong>${compactTime=getUsefulTimePhrase(sched.periods[0].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
-          else str=`<p class="schedule-endingin">${getPeriodSpan(period=sched.periods[i].name)} starting in <strong>${compactTime=getUsefulTimePhrase(sched.periods[i].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
-          innerHTML += str;
-          if (options.compact) document.title = compactStr;
-          else document.title = str.replace(/<[^>]+>/g, '');
+          innerHTML+=`<span>`;
+          if (totalminute>=period.end.totalminutes) innerHTML+=`Ended <strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong> ago.`;
+          else if (totalminute<period.start.totalminutes) innerHTML+=`Starting in <strong>${getUsefulTimePhrase(period.start.totalminutes-totalminute)}</strong>.`;
+          else innerHTML+=`Ending in <strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>; started ${getUsefulTimePhrase(totalminute-period.start.totalminutes)} ago.`;
+          innerHTML+=`</span>`;
         }
-        for (var period of sched.periods) {
-          innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.name).colour};color:${getFontColour(getPeriod(period.name).colour)};"><span class="schedule-periodname">${getPeriod(period.name).label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))}</span>`;
-          if (checkfuture) {
-            innerHTML+=`<span>`;
-            if (totalminute>=period.end.totalminutes) innerHTML+=`Ended <strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong> ago.`;
-            else if (totalminute<period.start.totalminutes) innerHTML+=`Starting in <strong>${getUsefulTimePhrase(period.start.totalminutes-totalminute)}</strong>.`;
-            else innerHTML+=`Ending in <strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>; started ${getUsefulTimePhrase(totalminute-period.start.totalminutes)} ago.`;
-            innerHTML+=`</span>`;
-          }
-          innerHTML+=`</div>`;
-        }
-      } else innerHTML+=`<span class="schedule-noschool">${getPeriod("NO_SCHOOL").label}</span>`;
-    } else {
-      if (options.normal[day]&&options.normal[day].length) {
-        if (checkfuture) {
-          for (var i=0;i<options.normal[day].length;i++) if (totalminute<getTotalMinutes(options.normal[day][i].end)) break;
-          var str;
-          var compactTime, period, compactStr;
-          if (i>=options.normal[day].length) str=`<p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][options.normal[day].length-1].type)} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-getTotalMinutes(options.normal[day][options.normal[day].length-1].end))}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
-          else if (totalminute>=getTotalMinutes(options.normal[day][i].begin)) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-getTotalMinutes(options.normal[day][i].begin))/(getTotalMinutes(options.normal[day][i].end)-getTotalMinutes(options.normal[day][i].begin))*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][i].type)} ending in <strong>${compactTime=getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].end)-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
-          else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][0].type)} starting in <strong>${compactTime=getUsefulTimePhrase(getTotalMinutes(options.normal[day][0].begin)-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
-          else str=`<p class="schedule-endingin">${getPeriodSpan(period=options.normal[day][i].type)} starting in <strong>${compactTime=getUsefulTimePhrase(getTotalMinutes(options.normal[day][i].begin)-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
-          innerHTML += str;
-          if (options.compact) document.title = compactStr;
-          else document.title = str.replace(/<[^>]+>/g, '');
-        }
-        for (var period of options.normal[day]) {
-          innerHTML+=`<div class="schedule-period" style="background-color:${getPeriod(period.type).colour};color:${getFontColour(getPeriod(period.type).colour)};"><span class="schedule-periodname">${getPeriod(period.type).label}</span><span>${getHumanTime(period.begin)} &ndash; ${getHumanTime(period.end)}</span>`;
-          if (checkfuture) {
-            innerHTML+=`<span>`;
-            if (totalminute>=getTotalMinutes(period.end)) innerHTML+=`Ended <strong>${getUsefulTimePhrase(totalminute-getTotalMinutes(period.end))}</strong> ago.`;
-            else if (totalminute<getTotalMinutes(period.begin)) innerHTML+=`Starting in <strong>${getUsefulTimePhrase(getTotalMinutes(period.begin)-totalminute)}</strong>.`;
-            else innerHTML+=`Ending in <strong>${getUsefulTimePhrase(getTotalMinutes(period.end)-totalminute)}</strong>; started ${getUsefulTimePhrase(totalminute-getTotalMinutes(period.begin))} ago.`;
-            innerHTML+=`</span>`;
-          }
-          innerHTML+=`</div>`;
-        }
-      } else innerHTML+=`<span class="schedule-noschool">${getPeriod("NO_SCHOOL").label}</span>`;
-    }
+        innerHTML+=`</div>`;
+      }
+    } else innerHTML+=`<span class="schedule-noschool">${getPeriod("NO_SCHOOL").label}</span>`;
     return innerHTML;
   }
   if (!options.offset) options.offset=0;
@@ -133,13 +119,14 @@ function scheduleApp(options={}) {
       for (var i=0;i<7;i++) {
         var d=new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay()+i),
         day=[];
+        var isSELF = isSELFDay(d.getMonth(), d.getDate());
+        var sched;
         if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
-          var sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()];
-          if (sched.periods.length) for (var period of sched.periods) day.push(getPeriod(period.name));
+          sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()].periods;
         } else {
-          var periods=options.normal[['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]];
-          if (periods&&periods.length) for (var period of periods) day.push(getPeriod(period.type));
+          sched=options.normal[['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]] || [];
         }
+        if (sched.length) for (var period of sched) day.push(getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name));
         if (options.offset===0&&actualtoday.getDay()===i) day.today=true;
         week.push(day);
       }

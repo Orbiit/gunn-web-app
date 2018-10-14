@@ -44,7 +44,7 @@ const normalSchedules = [
 
 const firstDay = "2018-08-13T00:00:00.000-07:00";
 const lastDay = "2019-05-31T23:59:59.999-07:00";
-const keywords = ["schedule", "extended", "holiday", "no students", "break", "development"];
+const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

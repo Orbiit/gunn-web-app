@@ -1,12 +1,13 @@
 var options,
-letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch'],
-VERSION=1, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
-FORMATTING_VERSION='1',
+letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF'],
+VERSION=2, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+FORMATTING_VERSION='2',
 periodstyles={
   NO_SCHOOL:{label:"No school today!"},
   "Brunch":{label:"Brunch",colour:"#90a4ae"},
   "Lunch":{label:"Lunch",colour:"#90a4ae"},
   "Flex":{label:"Flex",colour:"#455a64"},
+  "SELF":{label:"SELF",colour:"#455a64"},
   "A":{label:"Period A",colour:"#f44336"},
   "B":{label:"Period B",colour:"#2196F3"},
   "C":{label:"Period C",colour:"#FFEB3B"},
@@ -17,59 +18,58 @@ periodstyles={
 },
 normalschedule={
   Monday:[
-    {type:'A',begin:'0825',end:'0945'},
-    {type:'Brunch',begin:'0945',end:'0950'},
-    {type:'B',begin:'1000',end:'1115'},
-    {type:'C',begin:'1125',end:'1240'},
-    {type:'Lunch',begin:'1240',end:'1310'},
-    {type:'F',begin:'1320',end:'1435'}
+    {name:'A',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
+    {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
+    {name:'B',start:{hour:10,minute:0,totalminutes:600},end:{hour:11,minute:15,totalminutes:675}},
+    {name:'C',start:{hour:11,minute:25,totalminutes:685},end:{hour:12,minute:40,totalminutes:760}},
+    {name:'Lunch',start:{hour:12,minute:40,totalminutes:760},end:{hour:13,minute:10,totalminutes:790}},
+    {name:'F',start:{hour:13,minute:20,totalminutes:800},end:{hour:14,minute:35,totalminutes:875}}
   ],
   Tuesday:[
-    {type:'D',begin:'0825',end:'0945'},
-    {type:'Brunch',begin:'0945',end:'0950'},
-    {type:'Flex',begin:'1000',end:'1050'},
-    {type:'E',begin:'1100',end:'1215'},
-    {type:'Lunch',begin:'1215',end:'1245'},
-    {type:'A',begin:'1255',end:'1415'},
-    {type:'G',begin:'1425',end:'1540'}
+    {name:'D',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
+    {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
+    {name:'Flex',start:{hour:10,minute:0,totalminutes:600},end:{hour:10,minute:50,totalminutes:650}},
+    {name:'E',start:{hour:11,minute:0,totalminutes:660},end:{hour:12,minute:15,totalminutes:735}},
+    {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
+    {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:15,totalminutes:855}},
+    {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:40,totalminutes:940}}
   ],
   Wednesday:[
-    {type:'B',begin:'0825',end:'0950'},
-    {type:'Brunch',begin:'0950',end:'0955'},
-    {type:'C',begin:'1005',end:'1125'},
-    {type:'D',begin:'1135',end:'1255'},
-    {type:'Lunch',begin:'1255',end:'1325'},
-    {type:'F',begin:'1335',end:'1455'},
+    {name:'B',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
+    {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
+    {name:'C',start:{hour:10,minute:5,totalminutes:605},end:{hour:11,minute:25,totalminutes:685}},
+    {name:'D',start:{hour:11,minute:35,totalminutes:695},end:{hour:12,minute:55,totalminutes:775}},
+    {name:'Lunch',start:{hour:12,minute:55,totalminutes:775},end:{hour:13,minute:25,totalminutes:805}},
+    {name:'F',start:{hour:13,minute:35,totalminutes:815},end:{hour:14,minute:55,totalminutes:895}},
   ],
   Thursday:[
-    {type:'E',begin:'0825',end:'0950'},
-    {type:'Brunch',begin:'0950',end:'0955'},
-    {type:'Flex',begin:'1005',end:'1055'},
-    {type:'B',begin:'1105',end:'1215'},
-    {type:'Lunch',begin:'1215',end:'1245'},
-    {type:'A',begin:'1255',end:'1405'},
-    {type:'G',begin:'1415',end:'1535'},
+    {name:'E',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
+    {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
+    {name:'Flex',start:{hour:10,minute:5,totalminutes:605},end:{hour:10,minute:55,totalminutes:655}},
+    {name:'B',start:{hour:11,minute:5,totalminutes:665},end:{hour:12,minute:15,totalminutes:735}},
+    {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
+    {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:5,totalminutes:845}},
+    {name:'G',start:{hour:14,minute:15,totalminutes:855},end:{hour:15,minute:35,totalminutes:935}},
   ],
   Friday:[
-    {type:'C',begin:'0825',end:'0940'},
-    {type:'Brunch',begin:'0940',end:'0945'},
-    {type:'D',begin:'0955',end:'1105'},
-    {type:'E',begin:'1115',end:'1225'},
-    {type:'Lunch',begin:'1225',end:'1255'},
-    {type:'F',begin:'1305',end:'1415'},
-    {type:'G',begin:'1425',end:'1535'}
+    {name:'C',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:40,totalminutes:580}},
+    {name:'Brunch',start:{hour:9,minute:40,totalminutes:580},end:{hour:9,minute:45,totalminutes:585}},
+    {name:'D',start:{hour:9,minute:55,totalminutes:595},end:{hour:11,minute:5,totalminutes:665}},
+    {name:'E',start:{hour:11,minute:15,totalminutes:675},end:{hour:12,minute:25,totalminutes:745}},
+    {name:'Lunch',start:{hour:12,minute:25,totalminutes:745},end:{hour:12,minute:55,totalminutes:775}},
+    {name:'F',start:{hour:13,minute:5,totalminutes:785},end:{hour:14,minute:15,totalminutes:855}},
+    {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:35,totalminutes:935}}
   ]
 };
 if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
 if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
   options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
   if (options[0]!==VERSION) {
-    if (typeof options[0]!=='string') {
-      options.splice(0,0,VERSION);
-      options.push([periodstyles.Flex.label,periodstyles.Flex.colour]);
-      options.push([periodstyles.Brunch.label,periodstyles.Brunch.colour]);
-      options.push([periodstyles.Lunch.label,periodstyles.Lunch.colour]);
-    } else switch (options[0]) {
+    switch (options[0]) {
+      case 1:
+        options[0] = 2;
+        options.push([periodstyles.SELF.label,periodstyles.SELF.colour]);
+        break;
       default:
         options=null;
     }
@@ -83,17 +83,22 @@ if (!options) {
 }
 window.addEventListener("load",e=>{
   /* SCHEDULE APP */
-  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full'];
+  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0'];
+  if (formatOptions[0] === '1') {
+    formatOptions[0] = '2';
+    formatOptions[3] = '0';
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
+  }
   if (formatOptions[0] !== FORMATTING_VERSION) {
     // you should be worried
-    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full');
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full.0');
     window.location.reload();
   }
   var scheduleapp;
   var weekwrapper=document.querySelector('#weekwrapper');
   function makeWeekHappen() {
     var innerHTML='',
-    days=['S','M','T','W','&theta;','F','S'],
+    days=['S','M','T','W','&Theta;','F','S'],
     week=scheduleapp.getWeek();
     for (var i=0;i<7;i++) {
       innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
@@ -104,6 +109,8 @@ window.addEventListener("load",e=>{
     renderEvents();
   }
   var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
+  var selfRegex = /self/i;
+  var selfDays;
   var eventsul=document.querySelector('#events'),events={},
   months="January February March April May June July August September October November December".split(' ');
   function renderEvents() {
@@ -156,6 +163,15 @@ window.addEventListener("load",e=>{
           var change = false;
           if (cookie.getItem('[gunn-web-app] lite.alts'))
             ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
+          var selfDay = json.find(ev => selfRegex.test(ev.summary));
+          if (selfDay) {
+            var date = (selfDay.start.dateTime || selfDay.start.date).slice(5, 10);
+            if (!selfDays.includes(date)) {
+              selfDays.push(date);
+              change = true;
+              ugwitaAltObj.self = selfDays;
+            }
+          }
           Object.keys(altSched).forEach(date => {
             if (date) {
               ugwitaAltObj[date] = altSched[date];
@@ -186,8 +202,8 @@ window.addEventListener("load",e=>{
       let letter = /\b[a-g]\b/.exec(name);
       if (letter) return letter[0].toUpperCase();
     }
-    if (~name.indexOf("flex")
-        || ~name.indexOf("self")
+    if (~name.indexOf("self")) return "SELF";
+    else if (~name.indexOf("flex")
         || ~name.indexOf("assembly")
         || ~name.indexOf("tutorial"))
       return "Flex";
@@ -230,8 +246,9 @@ window.addEventListener("load",e=>{
   function alternateGet() {
     if (cookie.getItem('[gunn-web-app] lite.alts')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
     else alternates={};
+    selfDays = alternates.self || [];
     for (var dayString in alternates) {
-      if (dayString === 'lastGenerated') continue;
+      if (!dayString.includes('-')) continue;
       ugwaifyAlternates(alternates, dayString, alternates[dayString]);
     }
     for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
@@ -240,10 +257,12 @@ window.addEventListener("load",e=>{
       periods:periodstyles,
       normal:normalschedule,
       alternates:alternates,
+      selfDays: selfDays,
       offset:0,
       update:true,
       h24: formatOptions[1] === '24',
-      compact: formatOptions[2] === 'compact'
+      compact: formatOptions[2] === 'compact',
+      self: +formatOptions[3]
     });
     makeWeekHappen();
   }
@@ -290,6 +309,7 @@ window.addEventListener("load",e=>{
     document.querySelector('input[name=theme][value=light]').checked=true;
   document.querySelector(`input[name=hour][value=h${formatOptions[1]}]`).checked=true;
   document.querySelector(`input[name=format][value=${formatOptions[2]}]`).checked=true;
+  document.querySelector(`input[name=self][value=${['hide','show'][formatOptions[3]]}]`).checked=true;
 
   /* CUSTOMISE PERIODS */
   var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
@@ -393,7 +413,7 @@ window.addEventListener("load",e=>{
     return period;
   }
   var periodCustomisers=document.createDocumentFragment();
-  addPeriodCustomisers(periodCustomisers)
+  var customiserAdder = addPeriodCustomisers(periodCustomisers)
     ('Period A','A',options[1][1],options[1][0])
     ('Period B','B',options[2][1],options[2][0])
     ('Period C','C',options[3][1],options[3][0])
@@ -401,8 +421,9 @@ window.addEventListener("load",e=>{
     ('Period E','E',options[5][1],options[5][0])
     ('Period F','F',options[6][1],options[6][0])
     ('Period G','G',options[7][1],options[7][0])
-    ('Flex','Flex',options[8][1],options[8][0])
-    ('Brunch','Brunch',options[9][1],options[9][0])
+    ('Flex','Flex',options[8][1],options[8][0]);
+  if (+formatOptions[3]) customiserAdder = customiserAdder('SELF','SELF',options[11][1],options[11][0]);
+  customiserAdder('Brunch','Brunch',options[9][1],options[9][0])
     ('Lunch','Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
 },false);

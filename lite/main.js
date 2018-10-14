@@ -26,18 +26,16 @@ function refreshAlts() {
   });
 }
 function getAlternateSchedules(callback) {
-  let done = 0,
-  alternateSchedules = {};
-  for (let i = 0; i < keywords.length; i++) {
-    ajax(
-      calendarURL + `&timeMin=${encodeURIComponent(firstDay)}&timeMax=${encodeURIComponent(lastDay)}&q=${keywords[i]}`,
-      json => {
-        done++;
-        Object.assign(alternateSchedules, toAlternateSchedules(JSON.parse(json).items));
-        if (done === keywords.length) callback(alternateSchedules);
-      }
-    );
-  }
+  Promise.all(keywords.map(keyword => fetch(calendarURL
+      + `&timeMin=${encodeURIComponent(firstDay)}&timeMax=${encodeURIComponent(lastDay)}&q=${keyword}`)
+    .then(res => res.json())))
+  .then(results => {
+    let alternateSchedules = {};
+    results.slice(1).forEach(events => Object.assign(alternateSchedules, toAlternateSchedules(events.items)));
+    const selfDays = results[0].items.map(day => day.start.dateTime.slice(5, 10));
+    alternateSchedules.self = selfDays;
+    callback(alternateSchedules);
+  });
 }
 function toTrumpTimeFormat(minutes) {
   let hour = Math.floor(minutes / 60);
