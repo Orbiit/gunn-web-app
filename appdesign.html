@@ -65,7 +65,7 @@
       <p>Click/tap on the barcode to edit.</p>
       <ul id='barcode'><li class="center"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
       <h1>Map</h1>
-      <p class="center" id="maptoggle">Loading</p>
+      <p class="center" id="maptoggle"></p>
       <p><strong>For the image:</strong> You can use a finger to pan, or two to rotate, zoom, and pan. You can use your mouse to drag, or scroll to zoom or right-click to rotate.</p>
       <p><strong>For Google Maps:</strong> It doesn't seem to work properly on the first load, but reloading the page might help. Also, it'll only work when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.</p>
       <img src="images/gunnmap.svg" id='mapimage' alt="The map image failed to load :(">
@@ -164,6 +164,5 @@
         <button class="material red close">OK</button>
       </div>
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap" charset="utf-8" onerror="window.googleMapsFailed=event;"></script>
   </body>
 </html>

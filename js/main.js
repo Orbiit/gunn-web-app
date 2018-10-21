@@ -78,35 +78,41 @@ window.addEventListener("load",e=>{
   );
   zoomImage(document.querySelector('#mapimage'));
   var maptoggle=document.querySelector('#maptoggle');
-  if (window.googleMapsFailed) {
-    maptoggle.innerHTML=`Google Maps not loading! Maybe you aren't connected to the internet?`;
-  } else {
-    maptoggle.innerHTML='';
-    var btn=document.createElement("button"),
-    img=document.querySelector('#mapimage'),
-    google=document.querySelector('#mapgoogle'),
-    usingGoogle=false,
-    btncontent=document.createTextNode('');
-    img.style.display='block',
-    google.style.display='none',
-    btncontent.nodeValue='use google maps';
-    btn.classList.add('material');
-    ripple(btn);
-    btn.addEventListener("click",e=>{
-      usingGoogle=!usingGoogle;
-      if (usingGoogle) {
-        img.style.display='none',
-        google.style.display='block',
-        btncontent.nodeValue='use the image';
-      } else {
-        img.style.display='block',
-        google.style.display='none',
-        btncontent.nodeValue='use google maps';
+  var btn=document.createElement("button"),
+  img=document.querySelector('#mapimage'),
+  google=document.querySelector('#mapgoogle'),
+  usingGoogle=false,
+  googleLoaded = false,
+  btncontent=document.createTextNode('');
+  img.style.display='block',
+  google.style.display='none',
+  btncontent.nodeValue='use google maps';
+  btn.classList.add('material');
+  ripple(btn);
+  btn.addEventListener("click",e=>{
+    usingGoogle=!usingGoogle;
+    if (usingGoogle) {
+      img.style.display='none',
+      google.style.display='block',
+      btncontent.nodeValue='use the image';
+      if (!googleLoaded) {
+        googleLoaded = true;
+        var script = document.createElement('script');
+        script.onerror = () => {
+          if (usingGoogle) btn.click();
+          maptoggle.innerHTML=`Google Maps not loading! Maybe you aren't connected to the internet?`;
+        };
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap';
+        document.body.appendChild(script);
       }
-    },false);
-    btn.appendChild(btncontent);
-    maptoggle.appendChild(btn);
-  }
+    } else {
+      img.style.display='block',
+      google.style.display='none',
+      btncontent.nodeValue='use google maps';
+    }
+  },false);
+  btn.appendChild(btncontent);
+  maptoggle.appendChild(btn);
   window.applicationCache.addEventListener('updateready',e=>{
     if (window.applicationCache.status===window.applicationCache.UPDATEREADY) window.location.reload();
   },false);
