@@ -127,7 +127,7 @@ function scheduleApp(options={}) {
           sched=options.normal[['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]] || [];
         }
         if (sched.length) for (var period of sched) day.push(getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name));
-        if (options.offset===0&&actualtoday.getDay()===i) day.today=true;
+        if (today.getDay()===i) day.today=true;
         week.push(day);
       }
       return week;

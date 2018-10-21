@@ -43,22 +43,6 @@ window.addEventListener("load",e=>{
       cookie.setItem('global.theme','dark');
     }
   },false));
-  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0'];
-  toEach('input[name=hour]',t=>t.addEventListener("click",e=>{
-    formatOptions[1] = e.target.value==='h12' ? '12' : '24';
-    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
-    window.location.reload();
-  },false));
-  toEach('input[name=format]',t=>t.addEventListener("click",e=>{
-    formatOptions[2] = e.target.value==='full' ? 'full' : 'compact';
-    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
-    window.location.reload();
-  },false));
-  toEach('input[name=self]',t=>t.addEventListener("click",e=>{
-    formatOptions[3] = e.target.value==='hide' ? '0' : '1';
-    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
-    window.location.reload();
-  },false));
   var secondsCounter=document.querySelector('#seconds');
   function updateSeconds() {
     var d=new Date();
