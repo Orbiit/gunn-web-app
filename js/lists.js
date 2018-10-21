@@ -1,4 +1,26 @@
 window.addEventListener("load",e=>{
+  var listDisable = document.querySelector('#disable-lists');
+  if (cookie.getItem("[gunn-web-app] scheduleapp.loadLists") === null)
+    cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "yes");
+  var loadLists = cookie.getItem("[gunn-web-app] scheduleapp.loadLists") === "yes";
+  if (loadLists) {
+    listDisable.addEventListener('click', e => {
+      cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "no");
+      window.location.reload();
+    }, false);
+  } else {
+    listDisable.textContent = 'Enable club/staff lists';
+    listDisable.addEventListener('click', e => {
+      cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "yes");
+      window.location.reload();
+    }, false);
+    toEach('.lists-enabled button', t => t.addEventListener('click', e => {
+      cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "yes");
+      window.location.reload();
+    }, false))
+    toEach('.lists-enabled', t => t.classList.remove('lists-enabled'))
+    return;
+  }
   var staff,
   stafflist=document.querySelector('#staff'),
   staffcontact=document.querySelector('#staffcontact'),

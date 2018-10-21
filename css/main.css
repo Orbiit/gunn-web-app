@@ -375,3 +375,7 @@ body.dark .zoom-rotate {
 #mapgoogle {
   height: calc(100vh - 96px);
 }
+
+.lists-enabled {
+  display: none;
+}
