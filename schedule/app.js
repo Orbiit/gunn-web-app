@@ -1,5 +1,5 @@
 function scheduleApp(options={}) {
-  var elem,container=document.createElement("div"),colourtoy=document.createElement("div");
+  var elem,container=document.createElement("div"),colourtoy=document.createElement("div"),favicon=new window.Favico();
   if (options.element) elem=options.element;
   else elem=document.createElement("div");
   container.classList.add('schedule-container');
@@ -62,10 +62,19 @@ function scheduleApp(options={}) {
         for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;
         var str;
         var compactTime, period, compactStr;
-        if (i>=periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(periods.length-1))} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
-        else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} ending in <strong>${compactTime=getUsefulTimePhrase(periods[i].end.totalminutes-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
-        else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(0))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[0].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
-        else str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[i].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
+        if (i>=periods.length) { // after school
+          str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(periods.length-1))} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)';
+          favicon.reset();
+        } else if (totalminute>=periods[i].start.totalminutes) { // during a period
+          str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} ending in <strong>${compactTime=getUsefulTimePhrase(periods[i].end.totalminutes-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left';
+          favicon.badge(periods[i].end.totalminutes-totalminute);
+        } else if (i===0) { // before school
+          str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(0))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[0].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label;
+          favicon.badge(periods[0].start.totalminutes-totalminute);
+        } else { // passing period
+          str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[i].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label;
+          favicon.badge(periods[i].start.totalminutes-totalminute);
+        }
         innerHTML += str;
         if (options.compact) document.title = compactStr;
         else document.title = str.replace(/<[^>]+>/g, '');
