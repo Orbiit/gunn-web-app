@@ -32,7 +32,7 @@ function getAlternateSchedules(callback) {
   .then(results => {
     let alternateSchedules = {};
     results.slice(1).forEach(events => Object.assign(alternateSchedules, toAlternateSchedules(events.items)));
-    const selfDays = results[0].items.map(day => day.start.dateTime.slice(5, 10));
+    const selfDays = results[0].items.map(day => (day.start.dateTime || day.start.date).slice(5, 10));
     alternateSchedules.self = selfDays;
     callback(alternateSchedules);
   });
@@ -163,7 +163,7 @@ if ("serviceWorker" in navigator) {
 document.addEventListener("DOMContentLoaded", e => {
   function updateCalendar() {
     scheduleWrapper.innerHTML = generateScheduleHTML(viewingDate.year, viewingDate.month, viewingDate.date);
-    window.location.hash = `${viewingDate.year}-${("0" + (viewingDate.month + 1)).slice(-2)}-${("0" + viewingDate.date).slice(-2)}`;
+    // window.location.hash = `${viewingDate.year}-${("0" + (viewingDate.month + 1)).slice(-2)}-${("0" + viewingDate.date).slice(-2)}`;
   }
   let scheduleWrapper = document.getElementById("schedule"),
   offlineCheckbox = document.getElementById("offline"),
