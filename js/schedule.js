@@ -219,7 +219,7 @@ window.addEventListener("load",e=>{
     }
     if (~name.indexOf("self")) return "SELF";
     else if (~name.indexOf("flex")
-        || ~name.indexOf("assembly")
+        || ~name.indexOf("assembl")
         || ~name.indexOf("tutorial"))
       return "Flex";
     else if (~name.indexOf("brunch") || ~name.indexOf("break")) return "Brunch";
