@@ -50,6 +50,7 @@ function parseAlternate(summary, description) {
     });
     return periods;
   } else if (noSchoolRegex.test(summary)) {
+    if (description) return undefined;
     return null;
   }
 }
