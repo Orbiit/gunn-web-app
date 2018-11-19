@@ -190,9 +190,12 @@ window.addEventListener("load",e=>{
           Object.keys(altSched).forEach(date => {
             if (date) {
               ugwitaAltObj[date] = altSched[date];
-              ugwaifyAlternates(alternates, date, altSched[date], alternateJSON[0].summary);
-              change = true;
-            } else if (ugwitaAltObj[date] !== undefined) {
+              if (ugwaifyAlternates(alternates, date, altSched[date], alternateJSON[0].summary)) {
+                change = true;
+                return;
+              }
+            }
+            if (ugwitaAltObj[date] !== undefined) {
               delete ugwitaAltObj[date];
               delete alternates[date.split('-').map(Number).join('-')];
               change = true;
@@ -229,6 +232,7 @@ window.addEventListener("load",e=>{
   var daynames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
   months=["January","February","March","April","May","June","July","August","September","October","November","December"];
   function ugwaifyAlternates(altObj, dayString, ugwitaData, desc) {
+    if (ugwitaData === undefined) return true;
     var [month, day] = dayString.split('-').map(Number);
     var date;
     if (month > 6) date = new Date(2018, month - 1, day);
@@ -257,6 +261,7 @@ window.addEventListener("load",e=>{
             }
           })).filter(a => a)
     };
+    return true;
   }
   function alternateGet() {
     if (cookie.getItem('[gunn-web-app] lite.alts')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
