@@ -130,7 +130,8 @@ try {
   storage.setItem("[gunn-web-app] lite.alts", "");
   alternateSchedules = {};
 }
-if (!storage.getItem("[gunn-web-app] lite.alts")) {
+if (!storage.getItem("[gunn-web-app] lite.alts") || !alternateSchedules.lastGenerated
+    || Date.now() - new Date(...alternateSchedules.lastGenerated).getTime() > 2592000000) { // 30 days
   refreshAlts();
 }
 if ("serviceWorker" in navigator) {

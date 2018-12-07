@@ -76,6 +76,47 @@ window.addEventListener("load",e=>{
       document.querySelector('#psa').innerHTML=`<p>${e}; couldn't get last PSA; maybe you aren't connected to the internet?</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
     }
   );
+  var gradeCalc = {
+    current: document.getElementById('current-grade'),
+    worth: document.getElementById('finals-worth'),
+    minimum: document.getElementById('minimum-grade'),
+    output: document.getElementById('grade-output')
+  };
+  function setOutput() {
+    var current = (+gradeCalc.current.value || 0) / 100,
+    worth = (+gradeCalc.worth.value || 0) / 100,
+    minimum = (+gradeCalc.minimum.value || 0) / 100,
+    result = Math.round((minimum - current * (1 - worth)) / worth * 10000) / 100;
+    if (result < 0) {
+      gradeCalc.output.innerHTML = `You <strong>don't need to study</strong>; even if you score 0%, you'll be above your threshold.`;
+    } else if (worth === 0 || isNaN(result)) {
+      gradeCalc.output.innerHTML = `Please don't enter so many zeroes.`;
+    } else {
+      gradeCalc.output.innerHTML = `You'll need to score at least <strong>${result}%</strong> to keep your parents happy.`;
+      if (result > 100) gradeCalc.output.innerHTML += ` If there's no extra credit, you're screwed.`;
+    }
+  }
+  setOutput();
+  var badChars = /[^0-9.]|\.(?=[^.]*\.)/g;
+  [gradeCalc.current, gradeCalc.worth, gradeCalc.minimum].forEach(input => {
+    input.addEventListener("keypress", e=>{
+      let char = String.fromCharCode(e.charCode);
+      if (!'0123456789.'.includes(char)) {
+        e.preventDefault();
+        return false;
+      }
+    }, false);
+    input.addEventListener("input", e=>{
+      if (badChars.test(input.value)) {
+        input.value = +input.value.replace(badChars, '') || 0;
+      }
+      setOutput();
+    }, false);
+    input.addEventListener('change', e => {
+      input.value = +input.value.replace(badChars, '') || 0;
+      setOutput();
+    });
+  });
   zoomImage(document.querySelector('#mapimage'));
   var maptoggle=document.querySelector('#maptoggle');
   var btn=document.createElement("button"),

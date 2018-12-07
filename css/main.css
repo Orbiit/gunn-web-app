@@ -379,3 +379,26 @@ body.dark .zoom-rotate {
 .lists-enabled {
   display: none;
 }
+.block-of-text {
+  line-height: 1.8;
+}
+.block-of-text p {
+  margin: 0.5em 0;
+}
+.percent-wrapper {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 14px;
+  background-color: rgba(255,255,255,0.12);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.percent-wrapper input {
+  width: 6ch;
+  text-align: right;
+  padding: 0;
+  border: 0;
+  color: white;
+  background: none;
+  text-overflow: ellipsis;
+}
