@@ -105,6 +105,9 @@
     <div class="section options">
       <h1>Last PSA</h1>
       <div class="material-card" id="psa">loading</div>
+      <p>You are using the <strong>{VERSION}</strong> version.</p>
+      <p>iOS Safari is reportedly bad at updating UGWA; if you think this version is not up to date, press the following button:</p>
+      <button class="material ripple-light raised" id="force-update">force update</button>
       <h1>Theme</h1>
       <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>Light theme</label></p>
       <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>Dark theme</label></p>
@@ -121,7 +124,10 @@
       <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>Hide SELF</label></p>
       <div class="block-of-text">
         <h1>Add UGWA to your home screen</h1>
-        <p><strong>Desktop</strong> users can bookmark this page or pin this tab (right click on the tab and select "Pin tab"). <strong>Chromebook</strong> users can also pin this page to the shelf (menu > more tools > add to shelf). <strong>iOS</strong> users can tap on the share icon and select "add to home screen." <strong>Android</strong> users can tap on the menu and select "add to home screen."</p>
+        <p><strong>Desktop</strong> users can bookmark this page or pin this tab (right click on the tab and select "Pin tab").</p>
+        <p><strong>Chromebook</strong> users can also pin this page to the shelf (menu > more tools > add to shelf).</p>
+        <p><strong>iOS</strong> users can tap on the share icon and select "add to home screen."</p>
+        <p><strong>Android</strong> users can tap on the menu and select "add to home screen."</p>
         <h1>Bug reports</h1>
         <p>You can <a href="https://github.com/Orbiit/gunn-web-app/issues/new" target="_blank" rel="noopener noreferrer">make a new issue on GitHub</a> or email <a href="mailto:sy24484@pausd.us" target="_blank" rel="noopener noreferrer">sy24484@pausd.us</a> to make a feature request or bug report.</p>
         <p>UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.</p>
@@ -137,6 +143,7 @@
         <p>Many features based on the original Gunn App.</p>
         <p>Design based on <a href="https://material.io/" target="_blank" rel="noopener noreferrer">Material Design</a>'s icons, colours, and specifications.</p>
       </div>
+      <div class="center"><button class="material ripple-light raised" id="reload">Restart UGWA</button></div>
     </div>
     <div id="footer">
       <ul>

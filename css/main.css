@@ -393,12 +393,15 @@ body.dark .zoom-rotate {
   padding: 5px 10px;
   border-radius: 5px;
 }
+body.light .percent-wrapper {
+  background-color: rgba(0,0,0,0.12);
+}
 .percent-wrapper input {
   width: 6ch;
   text-align: right;
   padding: 0;
   border: 0;
-  color: white;
+  color: inherit;
   background: none;
   text-overflow: ellipsis;
 }

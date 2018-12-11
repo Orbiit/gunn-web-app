@@ -11,6 +11,14 @@ function readFile(path) {
   });
 }
 
+const date = new Date().toDateString();
+readFile('./cache.appcache').then(cache => {
+  fs.writeFile('./cache.appcache', cache.replace(/# \d+/, '# ' + Date.now()), console.log);
+});
+readFile('./psa.html').then(html => {
+  fs.writeFile('./psa.html', html.replace(/(<strong data-version>).*?(<\/strong>)/, `$1${date}$2`), console.log);
+});
+
 readFile('./appdesign.html').then(html => {
   const css = [];
   html.replace(/<link rel="stylesheet" href="(.+)">/g, (_, url) => css.push('./' + url));
@@ -25,7 +33,8 @@ readFile('./appdesign.html').then(html => {
           .replace('<html', '<html manifest="cache.appcache"')
           .replace(/<!-- STYLES [^]* \/STYLES -->/, `<style>${css}</style>`)
           .replace(/<!-- SCRIPTS [^]* \/SCRIPTS -->/, `<script>${js}</script>`)
-          .replace(/<!-- NOAPPDESIGN [^]* \/NOAPPDESIGN -->/, ''),
+          .replace(/<!-- NOAPPDESIGN [^]* \/NOAPPDESIGN -->/, '')
+          .replace(/\{VERSION\}/, date),
         {
           collapseBooleanAttributes: true,
           collapseWhitespace: true,

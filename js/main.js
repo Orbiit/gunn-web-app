@@ -154,7 +154,15 @@ window.addEventListener("load",e=>{
   },false);
   btn.appendChild(btncontent);
   maptoggle.appendChild(btn);
-  window.applicationCache.addEventListener('updateready',e=>{
-    if (window.applicationCache.status===window.applicationCache.UPDATEREADY) window.location.reload();
-  },false);
+  try {
+    window.applicationCache.addEventListener('updateready',e=>{
+      if (window.applicationCache.status===window.applicationCache.UPDATEREADY) window.location.reload();
+    },false);
+  } catch (e) {}
+  document.getElementById('force-update').addEventListener('click', e => {
+    window.applicationCache.update();
+  });
+  document.getElementById('reload').addEventListener('click', e => {
+    window.location.reload();
+  });
 },false);
