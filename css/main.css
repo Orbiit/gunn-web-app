@@ -11,6 +11,12 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 0;
   transition: all .2s;
+  animation: fade-in .66s;
+}
+@keyframes fade-in {
+  0% {opacity: 0;}
+  25% {opacity: 0;}
+  100% {opacity:1;}
 }
 body.light {
   background-color: #fafafa;
@@ -404,4 +410,31 @@ body.light .percent-wrapper {
   color: inherit;
   background: none;
   text-overflow: ellipsis;
+}
+
+#ugwa-ga {
+  position: relative;
+  background-color: #f44336;
+  padding-right: 80.67px;
+}
+#ugwa-ga-ok {
+  position: absolute;
+  right: 24px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+}
+@media (max-width: 360px) {
+
+  #ugwa-ga {
+    padding-right: 24px;
+    text-align: center;
+    padding-bottom: 4px;
+  }
+
+  #ugwa-ga-ok {
+    position: relative;
+    right: 0;
+  }
+
 }

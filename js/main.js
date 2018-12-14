@@ -168,4 +168,11 @@ window.addEventListener("load",e=>{
   document.getElementById('reload').addEventListener('click', e => {
     window.location.reload();
   });
+  if (window === window.parent) {
+    document.getElementById('ugwa-ga').style.display = 'none';
+  } else {
+    document.getElementById('ugwa-ga-ok').addEventListener('click', e => {
+      window.parent.location.replace('.');
+    });
+  }
 },false);
