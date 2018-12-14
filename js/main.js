@@ -66,14 +66,16 @@ window.addEventListener("load",e=>{
         if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')) {
           psa.innerHTML=e;
           psa.parentNode.classList.add("show");
-        }
-        document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
+          document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
+            localStorage.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
+          }, {once: true});
+        } else {
           localStorage.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
-        }, {once: true});
+        }
       }
     },
     e=>{
-      document.querySelector('#psa').innerHTML=`<p>${e}; couldn't get last PSA; maybe you aren't connected to the internet?</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
+      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}; couldn't get last PSA; maybe you aren't connected to the internet?</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
     }
   );
   var gradeCalc = {
@@ -161,6 +163,7 @@ window.addEventListener("load",e=>{
   } catch (e) {}
   document.getElementById('force-update').addEventListener('click', e => {
     window.applicationCache.update();
+    setTimeout(() => window.location.reload(), 1000);
   });
   document.getElementById('reload').addEventListener('click', e => {
     window.location.reload();

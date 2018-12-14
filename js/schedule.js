@@ -157,7 +157,7 @@ window.addEventListener("load",e=>{
     if (events[offset]) actuallyRenderEvents(events[offset]);
     else {
       ajax(
-        `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString()}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime`,
+        `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString()}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
         json=>{
           json=JSON.parse(json).items;
           var e = [];

@@ -379,10 +379,10 @@ body.dark .zoom-rotate {
 .lists-enabled {
   display: none;
 }
-.block-of-text {
+.block-of-text, #psadialog>.content {
   line-height: 1.8;
 }
-.block-of-text p {
+.block-of-text p, #psadialog>.content p {
   margin: 0.5em 0;
 }
 .percent-wrapper {

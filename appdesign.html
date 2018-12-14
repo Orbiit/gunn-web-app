@@ -51,10 +51,11 @@
   <body>
     <!-- NOAPPDESIGN -->
     <script type="text/javascript">
-      if (window.location.protocol !== 'file:') window.location.replace('.');
+      if (window.location.protocol.slice(0, 4) === 'http') window.location.replace('.');
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
+      if (window !== parent) parent.location.replace('.');
       if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
       if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
       if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
@@ -104,7 +105,7 @@
     </div>
     <div class="section options">
       <h1>Last PSA</h1>
-      <div class="material-card" id="psa">loading</div>
+      <div class="material-card block-of-text" id="psa">loading</div>
       <p>You are using the <strong>{VERSION}</strong> version.</p>
       <p>iOS Safari is reportedly bad at updating UGWA; if you think this version is not up to date, press the following button:</p>
       <button class="material ripple-light raised" id="force-update">force update</button>
@@ -170,7 +171,7 @@
     </div>
     <div id="psadialog" class="material-dialog">
       <h1>From the Creators</h1>
-      <div class="content"></div>
+      <div class="content block-of-text"></div>
       <div class="buttons">
         <button class="material red close">OK</button>
       </div>
