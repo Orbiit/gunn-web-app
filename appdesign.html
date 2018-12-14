@@ -55,7 +55,7 @@
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
-      if (window !== parent) parent.location.replace('.');
+      // if (window !== parent) parent.location.replace('.');
       if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
       if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
       if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
