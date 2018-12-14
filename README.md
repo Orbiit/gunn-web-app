@@ -5,9 +5,10 @@ The **Unofficial Gunn Web App** (abbrev. UGWA, pronounced `/ˈuːɡwə/`) aims t
 
 ## Versions
 and their faults:
-- [**Gunn Schedule**](https://orbiit.github.io/gunn-web-app/schedule/) — doesn't work offline, uses jQuery and Materialize, only shows normal schedule, only light theme
-- [**Unofficial Gunn Web App**](https://orbiit.github.io/gunn-web-app/) — suboptimal scrolling on iOS, hard to manage
-- [**Ugwita** / UGWA Lite](https://orbiit.github.io/gunn-web-app/lite/) — only shows normal and alternate schedules, doesn't work offline on iOS, ugly
+- [**Gunn Schedule**](https://orbiit.github.io/gunn-web-app/schedule/) — doesn't work offline, uses jQuery and Materialize, no alternate schedules, only light theme
+- [**Unofficial Gunn Web App** / UGWA](https://orbiit.github.io/gunn-web-app/) — doesn't use service workers
+- [**Ugwita** / UGWA Lite](https://orbiit.github.io/gunn-web-app/lite/) — only shows schedule, ugly
 - [**Ugwa 2**](https://orbiit.github.io/ugwa2/) — "not done"
+- [**Ugwisha**](https://orbiit.github.io/ugwisha/) — not as featureful as UGWA
 
 Please give us your ideas/suggestions! :D
