@@ -38,7 +38,9 @@ function parseAlternate(summary, description) {
 
       const duplicatePeriod = periods.findIndex(p => p.start === startTime);
       if (~duplicatePeriod) {
-        periods[duplicatePeriod].original += "\n" + name;
+        periods[duplicatePeriod].name += "\n" + name;
+        if (endTime > periods[duplicatePeriod].end)
+          periods[duplicatePeriod].end = endTime;
       } else {
         // customise your format here
         periods.push({
@@ -58,16 +60,16 @@ function parseAlternate(summary, description) {
 function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
   let altSchedules = {};
   for (let i = eventItems.length; i--;) {
+    const schedule = parseAlternate(eventItems[i].summary, eventItems[i].description);
+    if (schedule === undefined) continue;
     if (eventItems[i].start.date) {
-      const schedule = parseAlternate(eventItems[i].summary, eventItems[i].description);
       const dateObj = new Date(eventItems[i].start.date);
       while (dateObj.toISOString().slice(5, 10) !== eventItems[i].end.date.slice(5, 10)) {
         altSchedules[dateObj.toISOString().slice(5, 10)] = schedule;
         dateObj.setUTCDate(dateObj.getUTCDate() + 1);
       }
     } else {
-      altSchedules[eventItems[i].start.dateTime.slice(5, 10)]
-        = parseAlternate(eventItems[i].summary, eventItems[i].description);
+      altSchedules[eventItems[i].start.dateTime.slice(5, 10)] = schedule;
     }
   }
   return altSchedules;

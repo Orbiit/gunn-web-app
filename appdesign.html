@@ -111,8 +111,6 @@
       <h1>Last PSA</h1>
       <div class="material-card block-of-text" id="psa">loading</div>
       <p>You are using the <strong>{VERSION}</strong> version.</p>
-      <p>iOS Safari is reportedly bad at updating UGWA; if you think this version is not up to date, press the following button:</p>
-      <button class="material ripple-light raised" id="force-update">force update</button>
       <h1>Theme</h1>
       <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>Light theme</label></p>
       <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>Dark theme</label></p>
@@ -148,7 +146,13 @@
         <p>Many features based on the original Gunn App.</p>
         <p>Design based on <a href="https://material.io/" target="_blank" rel="noopener noreferrer">Material Design</a>'s icons, colours, and specifications.</p>
       </div>
-      <div class="center"><button class="material ripple-light raised" id="reload">Restart UGWA</button></div>
+      <h1>Control Centre</h1>
+      <p>If UGWA isn't updating, try these buttons.</p>
+      <p class="center">
+        <button class="material ripple-light raised" id="force-update">attempt update</button>
+        <button class="material ripple-light raised" id="reload">Restart UGWA</button>
+        <button class="material ripple-light raised" id="trick-cache">trick the cache</button>
+      </p>
     </div>
     <div id="footer">
       <ul>

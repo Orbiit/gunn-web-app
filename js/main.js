@@ -158,15 +158,21 @@ window.addEventListener("load",e=>{
   maptoggle.appendChild(btn);
   try {
     window.applicationCache.addEventListener('updateready',e=>{
-      if (window.applicationCache.status===window.applicationCache.UPDATEREADY) window.location.reload();
+      if (window.applicationCache.status===window.applicationCache.UPDATEREADY) {
+        try {applicationCache.swapCache();} catch (e) {}
+        window.location.reload();
+      }
     },false);
   } catch (e) {}
   document.getElementById('force-update').addEventListener('click', e => {
     window.applicationCache.update();
-    setTimeout(() => window.location.reload(), 1000);
+    // setTimeout(() => window.location.reload(), 1000);
   });
   document.getElementById('reload').addEventListener('click', e => {
     window.location.reload();
+  });
+  document.getElementById('trick-cache').addEventListener('click', e => {
+    window.location = '?' + Date.now();
   });
   if (window === window.parent) {
     document.getElementById('ugwa-ga').style.display = 'none';
