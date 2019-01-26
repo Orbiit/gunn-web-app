@@ -68,6 +68,9 @@ body.light button.material:not(.red):not(.raised) {
 body.dark button.material:not(.red):not(.raised) {
   color: white;
 }
+.tab-focus button.material:focus {
+  box-shadow: 0 0 0 5px rgba(255, 89, 76, 0.3);
+}
 .material-switch {
   display: inline-block;
   margin: 0;
@@ -211,6 +214,9 @@ ul.material-list li {
   position: relative;
   vertical-align: top;
 }
+.tab-focus ul.material-list li:focus {
+  background-color: rgba(255, 89, 76, 0.2);
+}
 ul.material-list.clickables li {
   cursor: pointer;
 }
@@ -276,6 +282,7 @@ ul.material-list li.error, .get-error {
   pointer-events: none;
   transform: translateY(-5px);
   transition: all .2s;
+  z-index: 2;
 }
 .material-dialog.show {
   opacity: 1;

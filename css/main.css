@@ -32,11 +32,14 @@ label {
 .center {
   text-align: center;
 }
+.right {
+  text-align: right;
+}
 a {
   color: #FF594C;
   text-decoration: none;
 }
-a:hover {
+a:hover, .tab-focus a:focus {
   text-decoration: underline;
 }
 hr {
@@ -92,6 +95,7 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
+  z-index: 1;
 }
 .section h1 {
   font-size: 20px;
@@ -162,6 +166,9 @@ body.light #footer ul li {
 }
 body.dark #footer ul li {
   color: rgba(255,255,255,0.7);
+}
+.tab-focus #footer ul li:focus {
+  background-color: rgba(255, 89, 76, 0.2);
 }
 body #footer ul li.active {
   color: #FF594C;
@@ -273,7 +280,7 @@ body.dark .notmaterial-input {
   padding: 0;
   list-style: none;
 }
-#barcode li:not(.center) {
+#barcode li:not(.right) {
   display: flex;
   margin-bottom: 10px;
 }
@@ -282,13 +289,17 @@ body.dark .notmaterial-input {
   position: relative;
 }
 #barcode canvas {
+  position: absolute;
   background-color: white;
   padding: 20px;
   box-sizing: border-box;
   height: 102px;
   width: 100%;
-  border-radius: 5px;
   box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 5px;
 }
 #barcode canvas.viewbarcode {
   position: fixed;
@@ -312,27 +323,30 @@ body.dark .notmaterial-input {
   }
 }
 #barcode input {
-  font-size: 50px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: calc(100% - 40px);
-  height: calc(100% - 40px);
+  width: 100%;
   border: none;
   background: none;
-  padding: 0;
   text-align: center;
   font-family: monospace;
-  color: transparent;
   cursor: pointer;
-  margin: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+#barcode .barcode-student-id {
+  font-size: 50px;
+  background-color: rgba(255,255,255,0.8);
+  padding: 20px;
+  height: 102px;
+  color: black;
+}
+#barcode .barcode-student-name {
+  font-size: 16px;
+  padding: 0;
+  padding-top: 10px;
+  color: inherit;
 }
 #barcode input:focus {
-  color: black;
   cursor: text;
-  background-color: rgba(255,255,255,0.8);
 }
 #barcode div {
   font-size: 0;

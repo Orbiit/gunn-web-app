@@ -60,11 +60,20 @@
       if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
       if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
     </script>
+    <div id="footer">
+      <ul>
+        <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>Utilities</span></li>
+        <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>Clubs</span></li>
+        <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>Schedule</span></li>
+        <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>Staff</span></li>
+        <li data-section="options" tabindex="0"><i class="material-icons">&#xE8B8;</i><span>Options</span></li>
+      </ul>
+    </div>
     <div class="section utilities">
       <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised">PAUSD Login Page</button></a></p>
       <h1>Barcode</h1>
-      <p>Click/tap on the barcode to edit.</p>
-      <ul id='barcode'><li class="center"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
+      <p>Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on <a href="https://en.wikipedia.org/wiki/Code_39">Wikipedia</a>.</p>
+      <ul id='barcode'><li class="right"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
       <h1>Minimum finals score calculator</h1>
       <p>Current grade: <span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span></p>
       <p>Portion of grade the final determines: <span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
@@ -73,7 +82,7 @@
       <h1>Map</h1>
       <p class="center" id="maptoggle"></p>
       <p><strong>For the image:</strong> You can use a finger to pan, or two to rotate, zoom, and pan. You can use your mouse to drag, or scroll to zoom or right-click to rotate.</p>
-      <p><strong>For Google Maps:</strong> It doesn't seem to work properly on the first load, but reloading the page might help. Also, it'll only work when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.</p>
+      <p><strong>For Google Maps:</strong> Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.</p>
       <img src="images/gunnmap.svg" id='mapimage' alt="The map image failed to load :(">
       <div id="mapgoogle"></div>
     </div>
@@ -122,6 +131,7 @@
       <p class='radio-wrapper'><input type="radio" name="format" value="compact" class="material-radio"><label>Numbers only</label></p>
       <div class="center"><button class="material ripple-light raised" id="disable-lists">Disable club/staff lists</button></div>
       <h1>Periods</h1>
+      <p>Click on the coloured square to change period colour.</p>
       <a id="periodcustomisermarker"></a>
       <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>Show SELF</label></p>
       <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>Hide SELF</label></p>
@@ -153,15 +163,6 @@
         <button class="material ripple-light raised" id="reload">Restart UGWA</button>
         <button class="material ripple-light raised" id="trick-cache">trick the cache</button>
       </p>
-    </div>
-    <div id="footer">
-      <ul>
-        <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>Utilities</span></li>
-        <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>Clubs</span></li>
-        <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>Schedule</span></li>
-        <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>Staff</span></li>
-        <li data-section="options" tabindex="0"><i class="material-icons">&#xE8B8;</i><span>Options</span></li>
-      </ul>
     </div>
     <div id="staffcontact" class="material-dialog">
       <h1>Staff name</h1>

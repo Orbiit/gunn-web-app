@@ -1,15 +1,17 @@
 window.addEventListener("load",e=>{
   var barcodeul=document.querySelector('#barcode'),
   add=document.querySelector('#addbarcode'),
-  barcodes=["95012345"],
+  barcodes=[['You', "95012345"]],
   barcodeelems=[];
-  if (cookie.getItem('[gunn-web-app] barcode.ids')) {
-    barcodes=cookie.getItem('[gunn-web-app] barcode.ids').split(',');
+  let code = cookie.getItem('[gunn-web-app] barcode.ids');
+  if (code) {
+    if (code[0] === 'A') barcodes = JSON.parse(code.slice(1));
+    else barcodes=code.split(',').map((a, i) => ['Student #' + i, a]);
   }
   function updateSave() {
-    cookie.setItem('[gunn-web-app] barcode.ids',barcodeelems.map(a=>a.value).join(','));
+    cookie.setItem('[gunn-web-app] barcode.ids', 'A' + JSON.stringify(barcodeelems.map(([a, b])=>[a.value, b.value])));
   }
-  function newBarcodeLi(code="95012345") {
+  function newBarcodeLi([name = 'Intellectual student', code = "95012345"] = []) {
     var li=document.createElement("li"),
     divcanvas=document.createElement("div"),
     input=document.createElement("input"),
@@ -18,14 +20,21 @@ window.addEventListener("load",e=>{
     removebtn=document.createElement("button"),
     viewbtn=document.createElement("button");
     divcanvas.classList.add('canvas');
-    input.type='number';
+    const studentNameInput = document.createElement('input');
+    studentNameInput.value = name;
+    studentNameInput.placeholder = "Who's ID is this?";
+    studentNameInput.classList.add('barcode-student-name');
+    studentNameInput.addEventListener("input",e=>{
+      updateSave();
+    },false);
+    divcanvas.appendChild(studentNameInput);
+    //input.type='number';
     input.value=code;
+    input.classList.add('barcode-student-id');
     input.addEventListener("input",e=>{
       code39(input.value,canvas);
       updateSave();
     },false);
-    barcodeelems.push(input);
-    updateSave();
     divcanvas.appendChild(input);
     code39(code,canvas);
     canvas.addEventListener("click",e=>{
@@ -53,6 +62,7 @@ window.addEventListener("load",e=>{
     viewbtn.innerHTML=`<i class="material-icons">&#xE8F4;</i>`;
     divbtn.appendChild(viewbtn);
     li.appendChild(divbtn);
+    barcodeelems.push([studentNameInput, input]);
     return li;
   }
   var t=document.createDocumentFragment();
@@ -63,4 +73,5 @@ window.addEventListener("load",e=>{
   add.addEventListener("click",e=>{
     barcodeul.insertBefore(newBarcodeLi(),add.parentNode);
   },false);
+  updateSave();
 },false);

@@ -30,6 +30,23 @@ function initMap() {
 }
 window.addEventListener("load",e=>{
   ripple("#footer > ul > li, button.material");
+  let tabFocus = false;
+  document.addEventListener('keydown', e => {
+  	if (e.keyCode === 9 || e.keyCode === 13) {
+    	document.body.classList.add('tab-focus');
+      tabFocus = true;
+    }
+  });
+  document.addEventListener('keyup', e => {
+  	if (e.keyCode === 9 || e.keyCode === 13) {
+      tabFocus = false;
+    }
+  });
+  document.addEventListener('focusin', e => {
+  	if (!tabFocus) {
+      document.body.classList.remove('tab-focus');
+    }
+  });
   toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
     if (e.target.value==='light') {
       document.body.classList.remove('dark');

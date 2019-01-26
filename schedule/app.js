@@ -72,7 +72,7 @@ function scheduleApp(options={}) {
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
-        innerHTML+=`<div class="schedule-period" style="background-color:${periodName.colour};color:${getFontColour(periodName.colour)};"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))}</span>`;
+        innerHTML+=`<div class="schedule-period" style="background-color:${periodName.colour};color:${getFontColour(periodName.colour)};"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)} long</span>`;
         if (checkfuture) {
           innerHTML+=`<span>`;
           if (totalminute>=period.end.totalminutes) innerHTML+=`Ended <strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong> ago.`;
