@@ -1,4 +1,4 @@
-const VERSION = 25;
+const VERSION = 26;
 const CACHE_NAME = "ugwita-cache-v" + VERSION, // change cache name to force update
 urlsToCache = [
   "./",

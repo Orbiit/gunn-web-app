@@ -124,7 +124,6 @@ window.addEventListener("load",e=>{
     renderEvents();
   }
   var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
-  var selfRegex = /self/i;
   var selfDays;
   var eventsul=document.querySelector('#events'),events={},
   months="January February March April May June July August September October November December".split(' ');
@@ -156,8 +155,9 @@ window.addEventListener("load",e=>{
     }
     if (events[offset]) actuallyRenderEvents(events[offset]);
     else {
+      const dateDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString();
       ajax(
-        `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString()}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
+        `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${dateDate}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
         json=>{
           json=JSON.parse(json).items;
           var e = [];
@@ -178,11 +178,18 @@ window.addEventListener("load",e=>{
           var change = false;
           if (cookie.getItem('[gunn-web-app] lite.alts'))
             ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
-          var selfDay = json.find(ev => selfRegex.test(ev.summary));
+          var selfDay = json.find(ev => ev.summary.includes('SELF'));
           if (selfDay) {
             var date = (selfDay.start.dateTime || selfDay.start.date).slice(5, 10);
             if (!selfDays.includes(date)) {
               selfDays.push(date);
+              change = true;
+              ugwitaAltObj.self = selfDays;
+            }
+          } else {
+            const index = selfDays.indexOf(dateDate.slice(5, 10));
+            if (~index) {
+              selfDays.splice(index, 1);
               change = true;
               ugwitaAltObj.self = selfDays;
             }

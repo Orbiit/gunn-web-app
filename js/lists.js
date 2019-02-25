@@ -35,7 +35,7 @@ window.addEventListener("load",e=>{
       staff=JSON.parse(e);
       staff["Aaryan Agrawal Person"]={game:true,jobTitle:"Supreme Leader",department:"Universe"};
       staff["Joshua Paley"].jobTitle="Blamed Teacher";
-      staff["Christina Woznicki"].woznicki=true;
+      // staff["Christina Woznicki"].woznicki=true;
       staff["Casey O'Connell"].oc=true;
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
       innerHTML=``;
@@ -73,7 +73,7 @@ window.addEventListener("load",e=>{
         staffcontent.appendChild(btn);
         staffcontent.appendChild(clicks);
       } else {
-        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>Basement:</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">OC's Basement</a></p>`:''}${staff[person].woznicki?`<p><i>Behind that blush and smile<br>Lies <a href="https://www.urbandictionary.com/define.php?term=woznicki">Woznicki</a>'s brain and bile<br>Her auntie's knee<br>Is bent 'round like a tree<br>And she won't get unblocked for a while</i></p>`:''}`;
+        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>Basement:</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">OC's Basement</a></p>`:''}`;
       }
     }
   },false);
