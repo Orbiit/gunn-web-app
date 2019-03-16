@@ -238,12 +238,45 @@ window.addEventListener("load",e=>{
   }
   var daynames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
   months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  function toTraditionalUGWATime(minutes) {
+    return {
+      totalminutes: minutes,
+      hour: Math.floor(minutes / 60),
+      minute: minutes % 60
+    };
+  }
+  const PASSING_LENGTH = 10;
   function ugwaifyAlternates(altObj, dayString, ugwitaData, desc) {
     if (ugwitaData === undefined) return true;
     var [month, day] = dayString.split('-').map(Number);
     var date;
     if (month > 6) date = new Date(2018, month - 1, day);
     else date = new Date(2019, month - 1, day);
+    const periods = [];
+    if (ugwitaData !== null) {
+      ugwitaData.forEach(p => {
+        if (!/collaboration|meeting/i.test(p.name)) {
+          const pd = identifyPeriod(p.name);
+          if (pd === 'Flex' && p.end - p.start === 80) {
+            periods.push({
+              name: pd,
+              start: toTraditionalUGWATime(p.start),
+              end: toTraditionalUGWATime(p.start + 35)
+            }, {
+              name: pd,
+              start: toTraditionalUGWATime(p.end - 35),
+              end: toTraditionalUGWATime(p.end)
+            });
+          } else {
+            periods.push({
+              name: pd,
+              start: toTraditionalUGWATime(p.start),
+              end: toTraditionalUGWATime(p.end)
+            });
+          }
+        }
+      });
+    }
     alternates[`${month}-${day}`] = {
       dayname: daynames[date.getDay()],
       day: date.getDay(),
@@ -251,22 +284,7 @@ window.addEventListener("load",e=>{
       month: month,
       date: day,
       description: desc || 'good luck with our schedule lol',
-      periods: ugwitaData === null ? []
-        : ugwitaData.map(p => /collaboration|meeting/i.test(p.name)
-          ? null
-          : ({
-            name: identifyPeriod(p.name),
-            start: {
-              totalminutes: p.start,
-              hour: Math.floor(p.start / 60),
-              minute: p.start % 60
-            },
-            end: {
-              totalminutes: p.end,
-              hour: Math.floor(p.end / 60),
-              minute: p.end % 60
-            }
-          })).filter(a => a)
+      periods: periods
     };
     return true;
   }

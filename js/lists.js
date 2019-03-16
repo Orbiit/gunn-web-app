@@ -34,9 +34,9 @@ window.addEventListener("load",e=>{
     e=>{
       staff=JSON.parse(e);
       staff["Aaryan Agrawal Person"]={game:true,jobTitle:"Supreme Leader",department:"Universe"};
-      staff["Joshua Paley"].jobTitle="Blamed Teacher";
+      // staff["Joshua Paley"].jobTitle="Blamed Teacher";
       // staff["Christina Woznicki"].woznicki=true;
-      staff["Casey O'Connell"].oc=true;
+      // staff["Casey O'Connell"].oc=true;
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
       innerHTML=``;
       for (var i=0,arr=staffnames,len=arr.length,person=arr[i];i<len;i++,person=arr[i]) {
