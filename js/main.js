@@ -200,10 +200,10 @@ window.addEventListener("load",e=>{
     window.location = '?' + Date.now();
   });
   if (window !== window.parent) {
-    window.parent.location.replace('.');
     document.addEventListener('click', e => {
       window.parent.location.replace('.');
     });
     setInterval(() => window.parent.location.replace('.'), 100);
+    window.parent.location.replace('.');
   }
 },false);
