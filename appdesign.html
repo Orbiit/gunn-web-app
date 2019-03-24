@@ -33,6 +33,10 @@
     <link rel="stylesheet" href="css/periodcustomisation.css">
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- /STYLES -->
+    <script type="text/javascript">
+      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+      if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
+    </script>
     <!-- SCRIPTS -->
     <script src="js/l10n.js" charset="utf-8"></script>
     <script src="js/main.js" charset="utf-8"></script>
@@ -56,9 +60,6 @@
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
-      // if (window !== parent) parent.location.replace('.');
-      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
-      if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
       if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
     </script>
     <div id="footer">

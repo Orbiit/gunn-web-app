@@ -200,8 +200,18 @@ langs.en = {
   }
 };
 
-const availableLangs = ['en', 'test'];
-let currentLang = 'en-gt';
+const availableLangs = ['en', 'test', 'en-gt'];
+if (!availableLangs.includes(cookie.getItem('[gunn-web-app] language'))) {
+  let lang = 'en';
+  if (navigator.languages) {
+    lang = navigator.languages.find(lang => availableLangs.includes(lang)) || lang;
+  } else {
+    const userLang = navigator.language || navigator.userLanguage;
+    if (availableLangs.includes(userLang)) lang = userLang;
+  }
+  cookie.setItem('[gunn-web-app] language', lang);
+}
+let currentLang = cookie.getItem('[gunn-web-app] language');
 function localize(id) {
   return langs[currentLang].other[id] || langs.en.other[id] || `{{${id}}}`;
 }
