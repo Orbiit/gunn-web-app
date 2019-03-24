@@ -200,6 +200,7 @@ window.addEventListener("load",e=>{
     window.location = '?' + Date.now();
   });
   if (window !== window.parent) {
+    document.body.classList.add('anti-ugwaga');
     document.addEventListener('click', e => {
       window.parent.location.replace('.');
     });

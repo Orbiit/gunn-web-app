@@ -426,30 +426,23 @@ body.light .percent-wrapper {
   text-overflow: ellipsis;
 }
 
-#ugwa-ga {
-  position: relative;
-  background-color: #f44336;
-  padding-right: 80.67px;
-  color: white;
-}
-#ugwa-ga-ok {
-  position: absolute;
-  right: 24px;
+#anti-ugwaga {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   bottom: 0;
-  margin: auto 0;
+  cursor: pointer;
 }
-@media (max-width: 360px) {
-
-  #ugwa-ga {
-    padding-right: 24px;
-    text-align: center;
-    padding-bottom: 4px;
-  }
-
-  #ugwa-ga-ok {
-    position: relative;
-    right: 0;
-  }
-
+#anti-ugwaga span {
+  font-size: 30px;
+}
+.anti-ugwaga > *:not(#anti-ugwaga) {
+  display: none !important;
+}
+.anti-ugwaga #anti-ugwaga {
+  display: flex;
 }
