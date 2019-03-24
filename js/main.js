@@ -36,6 +36,7 @@ function initMap() {
   );
   historicalOverlay.setMap(map);
 }
+let currentLang = 'en';
 window.addEventListener("DOMContentLoaded",e=>{
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga');
@@ -207,4 +208,18 @@ window.addEventListener("DOMContentLoaded",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
+  function getString(id) {
+    return langs[currentLang].strings[id] || langs.en.strings[id];
+  }
+  const langStringRegex = /\{\{([a-z0-9\-]+)\}\}/;
+  const textNodes = [];
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()) {
+    const exec = langStringRegex.exec(walker.currentNode.nodeValue);
+    if (exec) {
+      textNodes.push(exec[1], walker.currentNode);
+      walker.currentNode.nodeValue = getString(exec[1]);
+    }
+  }
+  console.log(textNodes);
 },false);

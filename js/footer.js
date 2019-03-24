@@ -11,7 +11,7 @@ window.addEventListener("load",e=>{
     var t=ul.querySelector('.active');
     if (t) {
       t.classList.remove('active');
-      document.body.classList.remove('footer-'+t.children[1].textContent.toLowerCase());
+      document.body.classList.remove('footer-'+t.dataset.section);
     }
     document.querySelector(`#footer > ul > li[data-section="${section}"]`).classList.add('active');
     document.body.classList.add('footer-'+section);
@@ -27,7 +27,7 @@ window.addEventListener("load",e=>{
     if (e.target!==ul&&ul.contains(e.target)) {
       var n=e.target;
       while (n.tagName!=="LI") n=e.target.parentNode;
-      setSection(n.children[1].textContent.toLowerCase());
+      setSection(n.dataset.section);
     }
   }
   ul.addEventListener("click",ulclick,false);
