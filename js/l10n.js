@@ -19,7 +19,7 @@ const en = {
     'for-image': 'For the image:',
     'image-instruct': ' You can use a finger to pan, or two to rotate, zoom, and pan. You can use your mouse to drag, or scroll to zoom or right-click to rotate.',
     'for-gmaps': 'For Google Maps:',
-    'gmaps-construct': " Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
+    'gmaps-instruct': " Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
     'club-list': 'Club list',
     'clubs-disclaimer-before-link': 'Please note that club information was taken from their ',
     'clubs-disclaimer-link': 'chartered club list as of February 2nd, 2019',
@@ -126,11 +126,12 @@ const en = {
     staff: 'Search staff'
   },
   times: {
-    duration(minutes) {
+    duration({T: minutes}) {
       if (minutes < 1) return 'less than a minute';
       return (minutes >= 120 ? Math.floor(minutes / 60) + ' hours' : minutes >= 60 ? 'an hour' : '')
         + (minutes % 60 === 0 ? '' : (minutes >= 60 ? ' and ' : '') + (minutes % 60 === 1 ? 'a minute' : (minutes % 60) + ' minutes'));
     },
+    date: '{M} {D}',
     ended: '{P} ended {T} ago.',
     ending: '{P} ending in {T}.',
     'ending-short': '{T} left',
