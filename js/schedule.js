@@ -2,19 +2,20 @@ var options,
 letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF'],
 VERSION=2, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 FORMATTING_VERSION='2',
+letterPdFormat = localize('periodx'),
 periodstyles={
-  NO_SCHOOL:{label:"No school today!"},
-  "Brunch":{label:"Brunch",colour:"#90a4ae"},
-  "Lunch":{label:"Lunch",colour:"#90a4ae"},
-  "Flex":{label:"Flex",colour:"#455a64"},
-  "SELF":{label:"SELF",colour:"#455a64"},
-  "A":{label:"Period A",colour:"#f44336"},
-  "B":{label:"Period B",colour:"#2196F3"},
-  "C":{label:"Period C",colour:"#FFEB3B"},
-  "D":{label:"Period D",colour:"#795548"},
-  "E":{label:"Period E",colour:"#FF9800"},
-  "F":{label:"Period F",colour:"#9C27B0"},
-  "G":{label:"Period G",colour:"#4CAF50"}
+  NO_SCHOOL:{label:localize('no-school')},
+  "Brunch":{label:localize('brunch'),colour:"#90a4ae"},
+  "Lunch":{label:localize('lunch'),colour:"#90a4ae"},
+  "Flex":{label:localize('flex'),colour:"#455a64"},
+  "SELF":{label:localize('self'),colour:"#455a64"},
+  "A":{label:letterPdFormat.replace('{X}', "A"),colour:"#f44336"},
+  "B":{label:letterPdFormat.replace('{X}', "B"),colour:"#2196F3"},
+  "C":{label:letterPdFormat.replace('{X}', "C"),colour:"#FFEB3B"},
+  "D":{label:letterPdFormat.replace('{X}', "D"),colour:"#795548"},
+  "E":{label:letterPdFormat.replace('{X}', "E"),colour:"#FF9800"},
+  "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
+  "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
 },
 normalschedule={
   Monday:[
@@ -113,7 +114,7 @@ window.addEventListener("load",e=>{
   var weekwrapper=document.querySelector('#weekwrapper');
   function makeWeekHappen() {
     var innerHTML='',
-    days=['S','M','T','W','&Theta;','F','S'],
+    days=localize('ds').split('  '),
     week=scheduleapp.getWeek();
     for (var i=0;i<7;i++) {
       innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
@@ -126,10 +127,10 @@ window.addEventListener("load",e=>{
   var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
   var selfDays;
   var eventsul=document.querySelector('#events'),events={},
-  months="January February March April May June July August September October November December".split(' ');
+  months=localize('months').split(' ');
   function renderEvents() {
     var offset=scheduleapp.offset,d=new Date();
-    eventsul.innerHTML=`<li><span class="secondary center">Loading</span></li>`;
+    eventsul.innerHTML=`<li><span class="secondary center">${localize('loading')}</span></li>`;
     function actuallyRenderEvents(items) {
       var innerHTML=``;
       if (items.length) {
@@ -149,7 +150,7 @@ window.addEventListener("load",e=>{
           innerHTML+=`<li><span class="primary">${items[i].name}</span><span class="secondary${items[i].error?' get-error':''}">${items[i].desc||""}</span>${timerange}</li>`;
         }
       } else {
-        innerHTML=`<li><span class="secondary center">No events today :(</span></li>`;
+        innerHTML=`<li><span class="secondary center">${localize('no-events')}</span></li>`;
       }
       eventsul.innerHTML=innerHTML;
     }
@@ -215,7 +216,7 @@ window.addEventListener("load",e=>{
           }
         },
         e=>{
-          events[offset]=[{name:'',desc:`${e}; couldn't get events; maybe you aren't connected to the internet?`,error:true}];
+          events[offset]=[{name:'',desc:`${e}${localize('events-error')}`,error:true}];
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
         }
       );
@@ -236,8 +237,7 @@ window.addEventListener("load",e=>{
     else if (~name.indexOf("lunch") || ~name.indexOf("turkey")) return "Lunch";
     else return name;
   }
-  var daynames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-  months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var daynames=localize('days').split('  ');
   function toTraditionalUGWATime(minutes) {
     return {
       totalminutes: minutes,
@@ -283,7 +283,7 @@ window.addEventListener("load",e=>{
       monthname: months[month],
       month: month,
       date: day,
-      description: desc || 'good luck with our schedule lol',
+      description: desc || localize('default-alt-msg'),
       periods: periods
     };
     return true;
@@ -373,7 +373,7 @@ window.addEventListener("load",e=>{
     label.classList.add('customiser-label');
     label.innerHTML=labeltext;
     input.classList.add('customiser-input');
-    input.setAttribute('aria-label','Set label for '+labeltext);
+    input.setAttribute('aria-label',localize('period-name-label')+labeltext);
     input.addEventListener("change",e=>{
       if (input.value) inputwrapper.classList.add('filled');
       else inputwrapper.classList.remove('filled');
