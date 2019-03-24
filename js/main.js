@@ -131,8 +131,8 @@ window.addEventListener("DOMContentLoaded",e=>{
     } else if (worth === 0 || isNaN(result)) {
       gradeCalc.output.innerHTML = localize('zero-error');
     } else {
-      gradeCalc.output.innerHTML = `${localize('minscore-before-emph')}<strong>${result}%</strong> to keep your parents happy.`;
-      if (result > 100) gradeCalc.output.innerHTML += ` If there's no extra credit, you're screwed.`;
+      gradeCalc.output.innerHTML = `${localize('minscore-before-emph')}<strong>${result}%</strong>${localize('minscore-after-emph')}`;
+      if (result > 100) gradeCalc.output.innerHTML += localize('minscore-too-high-addendum');
     }
   }
   setOutput();
@@ -166,7 +166,7 @@ window.addEventListener("DOMContentLoaded",e=>{
   btncontent=document.createTextNode('');
   img.style.display='block',
   google.style.display='none',
-  btncontent.nodeValue='use google maps';
+  btncontent.nodeValue=localize('gmaps');
   btn.classList.add('material');
   ripple(btn);
   btn.addEventListener("click",e=>{
@@ -174,13 +174,13 @@ window.addEventListener("DOMContentLoaded",e=>{
     if (usingGoogle) {
       img.style.display='none',
       google.style.display='block',
-      btncontent.nodeValue='use the image';
+      btncontent.nodeValue=localize('image');
       if (!googleLoaded) {
         googleLoaded = true;
         var script = document.createElement('script');
         script.onerror = () => {
           if (usingGoogle) btn.click();
-          maptoggle.innerHTML=`Google Maps not loading! Maybe you aren't connected to the internet?`;
+          maptoggle.innerHTML=localize('gmaps-error');
         };
         script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap';
         document.body.appendChild(script);
@@ -188,7 +188,7 @@ window.addEventListener("DOMContentLoaded",e=>{
     } else {
       img.style.display='block',
       google.style.display='none',
-      btncontent.nodeValue='use google maps';
+      btncontent.nodeValue=localize('gmaps');
     }
   },false);
   btn.appendChild(btncontent);
