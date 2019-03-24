@@ -9,7 +9,7 @@ window.addEventListener("load",e=>{
       window.location.reload();
     }, false);
   } else {
-    listDisable.textContent = 'Enable club/staff lists';
+    listDisable.textContent = localize('enable-lists');
     listDisable.addEventListener('click', e => {
       cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "yes");
       window.location.reload();
@@ -33,8 +33,8 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/staff.json',
     e=>{
       staff=JSON.parse(e);
-      staff["Aaryan Agrawal Person"]={game:true,jobTitle:"Supreme Leader",department:"Universe"};
-      // staff["Joshua Paley"].jobTitle="Blamed Teacher";
+      staff["Aaryan Agrawal Person"]={game:true,jobTitle:localize('supreme-leader'),department:localize('universe')};
+      // staff["Joshua Paley"].jobTitle=localize('blamed-teacher');
       // staff["Christina Woznicki"].woznicki=true;
       // staff["Casey O'Connell"].oc=true;
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
@@ -46,7 +46,7 @@ window.addEventListener("load",e=>{
       ripple('#staff li');
     },
     e=>{
-      stafflist.innerHTML=`<li class="error">${e}; couldn't get staff data; maybe you aren't connected to the internet?</li>`;
+      stafflist.innerHTML=`<li class="error">${e}${localize('staff-error')}</li>`;
     }
   );
   stafflist.addEventListener("click",e=>{
@@ -73,7 +73,7 @@ window.addEventListener("load",e=>{
         staffcontent.appendChild(btn);
         staffcontent.appendChild(clicks);
       } else {
-        staffcontent.innerHTML=`<p><strong>Title:</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>Department:</strong> ${staff[person].department}</p>`:''}<p><strong>Email:</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>Phone:</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>Website:</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>Basement:</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">OC's Basement</a></p>`:''}`;
+        staffcontent.innerHTML=`<p><strong>${localize('title')}</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>${localize('department')}</strong> ${staff[person].department}</p>`:''}<p><strong>${localize('email')}</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>${localize('phone')}</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>${localize('website')}</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>${localize('basement')}</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">${localize('oc-basement')}</a></p>`:''}`;
       }
     }
   },false);
@@ -98,14 +98,14 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/clubs.json',
     e=>{
       clubs=JSON.parse(e);
-      clubs["Sophomore Club"]={
-        "desc":"A club to commemorate the class of 2021, the first class to undergo SELF, with one of the best attendance rates. All grades welcome!",
-        "day":"Thursday",
-        "time":"Flex",
-        "room":"Any room",
-        "president":"Tara Firenzi",
-        "teacher":"Courtney Carlomagno",
-        "email":"ccarlomagno@pausd.org"
+      clubs[localize('sophomore-club')]={
+        "desc":localize('soph-desc'),
+        "day":localize('soph-day'),
+        "time":localize('soph-time'),
+        "room":localize('soph-room'),
+        "president":localize('soph-prez'),
+        "teacher":localize('soph-teacher'),
+        "email":localize('soph-email')
       };
       var clubnames=Object.keys(clubs).sort(),
       innerHTML=``;
@@ -116,7 +116,7 @@ window.addEventListener("load",e=>{
       ripple('#clubs li');
     },
     e=>{
-      clublist.innerHTML=`<li class="error">${e}; couldn't get club data; maybe you aren't connected to the internet?</li>`;
+      clublist.innerHTML=`<li class="error">${e}${localize('club-error')}</li>`;
     }
   );
   clublist.addEventListener("click",e=>{
@@ -126,7 +126,7 @@ window.addEventListener("load",e=>{
       clubinfo.classList.add('show');
       var club=target.dataset.club;
       clubh1.innerHTML=club;
-      clubcontent.innerHTML=`<p><strong>Meeting day:</strong> ${clubs[club].day}</p><p><strong>Meeting time:</strong> ${clubs[club].time}</p><p><strong>Location:</strong> ${clubs[club].room}</p><p><strong>Description:</strong> ${clubs[club].desc}</p><p><strong>President(s):</strong> ${clubs[club].president}</p><p><strong>Teacher Advisor(s):</strong> ${clubs[club].teacher}</p><p><strong>Teacher Email:</strong> <a href="mailto:${clubs[club].email}" target="_blank" rel="noopener noreferrer">${clubs[club].email}</a></p>${clubs[club].donation?`<p><strong>Suggested donation:</strong> ${clubs[club].donation}</p>`:''}`;
+      clubcontent.innerHTML=`<p><strong>${localize('day')}</strong> ${clubs[club].day}</p><p><strong>${localize('time')}</strong> ${clubs[club].time}</p><p><strong>${localize('location')}</strong> ${clubs[club].room}</p><p><strong>${localize('desc')}</strong> ${clubs[club].desc}</p><p><strong>${localize('presidents')}</strong> ${clubs[club].president}</p><p><strong>${localize('advisors')}</strong> ${clubs[club].teacher}</p><p><strong>${localize('teacher-email')}</strong> <a href="mailto:${clubs[club].email}" target="_blank" rel="noopener noreferrer">${clubs[club].email}</a></p>${clubs[club].donation?`<p><strong>${localize('donation')}</strong> ${clubs[club].donation}</p>`:''}`;
       var s=clubcontent.querySelectorAll('a:not([href])');
       for (var i=0;i<s.length;i++) s[i].href=s[i].textContent,s[i].setAttribute('target',"_blank"),s[i].setAttribute('rel',"noopener noreferrer");
     }
