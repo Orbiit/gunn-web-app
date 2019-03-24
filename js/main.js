@@ -37,10 +37,13 @@ function initMap() {
   historicalOverlay.setMap(map);
 }
 let currentLang = 'en';
+function localize(id) {
+  return langs[currentLang].other[id] || langs.en.other[id] || `{{${id}}}`;
+}
 window.addEventListener("DOMContentLoaded",e=>{
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga');
-    document.body.innerHTML += `<div id="anti-ugwaga"><span>Click/tap to continue to the Unofficial Gunn Web App</span></div>`;
+    document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize('anti-ugwaga')}</span></div>`;
     document.addEventListener('click', e => {
       window.parent.location.replace('.');
     });
@@ -109,7 +112,7 @@ window.addEventListener("DOMContentLoaded",e=>{
       }
     },
     e=>{
-      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}; couldn't get last PSA; maybe you aren't connected to the internet?</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
+      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}${localize('psa-error')}</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
     }
   );
   var gradeCalc = {
@@ -124,11 +127,11 @@ window.addEventListener("DOMContentLoaded",e=>{
     minimum = (+gradeCalc.minimum.value || 0) / 100,
     result = Math.round((minimum - current * (1 - worth)) / worth * 10000) / 100;
     if (result < 0) {
-      gradeCalc.output.innerHTML = `You <strong>don't need to study</strong>; even if you score 0%, you'll be above your threshold.`;
+      gradeCalc.output.innerHTML = `${localize('no-study-before-emph')}<strong>${localize('no-study-emph')}</strong>${localize('no-study-after-emph')}`;
     } else if (worth === 0 || isNaN(result)) {
-      gradeCalc.output.innerHTML = `Please don't enter so many zeroes.`;
+      gradeCalc.output.innerHTML = localize('zero-error');
     } else {
-      gradeCalc.output.innerHTML = `You'll need to score at least <strong>${result}%</strong> to keep your parents happy.`;
+      gradeCalc.output.innerHTML = `${localize('minscore-before-emph')}<strong>${result}%</strong> to keep your parents happy.`;
       if (result > 100) gradeCalc.output.innerHTML += ` If there's no extra credit, you're screwed.`;
     }
   }
@@ -208,8 +211,8 @@ window.addEventListener("DOMContentLoaded",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
-  function getString(id) {
-    return langs[currentLang].strings[id] || langs.en.strings[id];
+  function getHTMLString(id) {
+    return langs[currentLang].html[id] || langs.en.html[id];
   }
   const langStringRegex = /\{\{([a-z0-9\-]+)\}\}/;
   const textNodes = [];
@@ -218,7 +221,7 @@ window.addEventListener("DOMContentLoaded",e=>{
     const exec = langStringRegex.exec(walker.currentNode.nodeValue);
     if (exec) {
       textNodes.push(exec[1], walker.currentNode);
-      walker.currentNode.nodeValue = getString(exec[1]);
+      walker.currentNode.nodeValue = getHTMLString(exec[1]);
     }
   }
   console.log(textNodes);

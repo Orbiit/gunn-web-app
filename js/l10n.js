@@ -1,5 +1,5 @@
 const en = {
-  strings: {
+  html: {
     utilities: 'Utilities',
     clubs: 'Clubs',
     schedule: 'Schedule',
@@ -56,6 +56,15 @@ const en = {
     'club-name': 'Club name',
     psa: 'From the Creators',
     ok: 'OK'
+  },
+  other: {
+    'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
+    'psa-error': "; couldn't get last PSA; maybe you aren't connected to the internet?",
+    'no-study-before-emph': 'You ',
+    'no-study-emph': "don't need to study",
+    'no-study-after-emph': "; even if you score 0%, you'll be above your threshold.",
+    'zero-error': "Please don't enter so many zeroes.",
+    'minscore-before-emph': "You'll need to score at least "
   }
 };
 
