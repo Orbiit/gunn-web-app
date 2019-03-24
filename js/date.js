@@ -5,8 +5,8 @@ class DatePicker {
     this.end=end;
     this.selectedelem=null;
     this.selected=null;
-    var days='S M T W &theta; F S'.split(' '),
-    months='jan feb mar apr may jun jul aug sep oct nov dec'.split(' ');
+    var days=localize('ds').split('  '),
+    months=localize('mos').split('  ');
     elem?this.wrapper=elem:this.wrapper=document.createElement("div");
     if (!/(absolute|fixed)/.test(window.getComputedStyle(this.wrapper).position)) this.wrapper.style.position='relative';
     this.wrapper.classList.add('datepicker-wrapper');
