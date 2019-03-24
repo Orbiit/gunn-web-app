@@ -203,7 +203,5 @@ window.addEventListener("load",e=>{
     document.addEventListener('click', e => {
       window.parent.location.replace('.');
     });
-    setInterval(() => window.parent.location.replace('.'), 100);
-    window.parent.location.replace('.');
   }
 },false);
