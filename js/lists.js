@@ -1,4 +1,7 @@
 window.addEventListener("load",e=>{
+  function localizePlaceholder(id) {
+    return langs[currentLang].placeholders[id] || langs.en.placeholders[id] || `{{${id}}}`;
+  }
   var listDisable = document.querySelector('#disable-lists');
   if (cookie.getItem("[gunn-web-app] scheduleapp.loadLists") === null)
     cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "yes");
@@ -86,6 +89,7 @@ window.addEventListener("load",e=>{
     doStaffSearch();
   }
   staffsearch.addEventListener("input", doStaffSearch,false);
+  staffsearch.placeholder = localizePlaceholder('staff');
   var clubs,
   clublist=document.querySelector('#clubs'),
   clubinfo=document.querySelector('#clubinfo'),
@@ -140,4 +144,5 @@ window.addEventListener("load",e=>{
     doClubSearch();
   }
   clubsearch.addEventListener("input", doClubSearch,false);
+  clubsearch.placeholder = localizePlaceholder('clubs');
 },false);
