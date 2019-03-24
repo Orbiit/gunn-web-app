@@ -36,7 +36,15 @@ function initMap() {
   );
   historicalOverlay.setMap(map);
 }
-window.addEventListener("load",e=>{
+window.addEventListener("DOMContentLoaded",e=>{
+  if (window !== window.parent) {
+    document.body.classList.add('anti-ugwaga');
+    document.body.innerHTML += `<div id="anti-ugwaga"><span>Click/tap to continue to the Unofficial Gunn Web App</span></div>`;
+    document.addEventListener('click', e => {
+      window.parent.location.replace('.');
+    });
+    return;
+  }
   ripple("#footer > ul > li, button.material");
   let tabFocus = false;
   document.addEventListener('keydown', e => {
@@ -199,10 +207,4 @@ window.addEventListener("load",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
-  if (window !== window.parent) {
-    document.body.classList.add('anti-ugwaga');
-    document.addEventListener('click', e => {
-      window.parent.location.replace('.');
-    });
-  }
 },false);

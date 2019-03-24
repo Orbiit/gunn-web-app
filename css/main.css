@@ -430,18 +430,23 @@ body.light .percent-wrapper {
   display: none;
   align-items: center;
   justify-content: center;
+  text-align: center;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   cursor: pointer;
+  z-index: 100;
 }
 #anti-ugwaga span {
+  display: inline-block;
+  max-width: 400px;
   font-size: 30px;
 }
 .anti-ugwaga > *:not(#anti-ugwaga) {
-  display: none !important;
+  pointer-events: none;
+  filter: blur(10px);
 }
 .anti-ugwaga #anti-ugwaga {
   display: flex;

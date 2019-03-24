@@ -51,7 +51,7 @@
   <body>
     <!-- NOAPPDESIGN -->
     <script type="text/javascript">
-      if (window.location.protocol.slice(0, 4) === 'http') window.location.replace('.');
+      if (window.location.protocol.slice(0, 4) === 'http' && window.location.hostname !== 'localhost') window.location.replace('.');
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
@@ -181,9 +181,6 @@
       <div class="buttons">
         <button class="material red close">OK</button>
       </div>
-    </div>
-    <div id="anti-ugwaga">
-      <span>Click/tap to start UGWA</span>
     </div>
   </body>
 </html>
