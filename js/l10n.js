@@ -79,7 +79,7 @@ const en = {
     brunch: 'Brunch',
     lunch: 'Lunch',
     self: 'SELF',
-    periodx: 'Period X',
+    periodx: 'Period {X}',
     months: 'January  February  March  April  May  June  July  August  September  October  November  December',
     loading: 'Loading',
     'no-events': 'No events today :(',
@@ -119,6 +119,25 @@ const en = {
     'before-alt-msg': 'This is an alternate schedule. The school says, "',
     'after-alt-msg': '"',
     appname: 'Unofficial Gunn Web App (UGWA)'
+  },
+  placeholders: {
+    clubs: 'Search clubs',
+    staff: 'Search staff'
+  },
+  times: {
+    duration(minutes) {
+      if (minutes < 1) return 'less than a minute';
+      return (minutes >= 120 ? Math.floor(minutes / 60) + ' hours' : minutes >= 60 ? 'an hour' : '')
+        + (minutes % 60 === 0 ? '' : (minutes >= 60 ? ' and ' : '') + (minutes % 60 === 1 ? 'a minute' : (minutes % 60) + ' minutes'));
+    },
+    ended: '{P} ended {T} ago.',
+    ending: '{P} ending in {T}.',
+    'ending-short': '{T} left',
+    starting: '{P} starting in {T}.',
+    'starting-short': '{T} until {P}',
+    'self-ended': 'Ended {T} ago.',
+    'self-starting': 'Starting in {T}.',
+    'self-ending': 'Ending in {T1}; started {T2} ago.'
   }
 };
 
