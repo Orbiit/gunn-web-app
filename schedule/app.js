@@ -23,13 +23,7 @@ function scheduleApp(options={}) {
   }
   function getUsefulTimePhrase(minutes) {
     if (options.compact) return `${Math.floor(minutes/60)}:${('0'+minutes%60).slice(-2)}`
-    else {
-      if (minutes<1) return 'less than a minute';
-      return (minutes>=120?Math.floor(minutes/60)+' hours':minutes>=60?'an hour':'')+(minutes%60===0?'':(minutes>=60?' and ':'')+(minutes%60===1?'a minute':(minutes%60)+' minutes'));
-    }
-  }
-  function getTotalMinutes(messytime) {
-    return (+messytime.slice(0,2))*60+(+messytime.slice(2));
+    else return toLongDuration(minutes);
   }
   function getPeriodSpan(period) {
     return `<span style="background-color:${getPeriod(period).colour};color:${getFontColour(getPeriod(period).colour)};" class="schedule-endinginperiod">${getPeriod(period).label}</span>`;
@@ -38,8 +32,12 @@ function scheduleApp(options={}) {
     return options.self && options.selfDays.includes(('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2));
   }
   getFontColour('rgba(0,0,0,0.2)');
-  var days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-  months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var days=localize('days').split('  '),
+  months=localize('months').split('  ');
+  function localizeTime(id) {
+    return langs[currentLang].times[id] || langs.en.times[id] || `{{${id}}}`;
+  }
+  const toLongDuration = localizeTime('duration');
   function generateDay(offset=0) {
     var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
@@ -63,22 +61,33 @@ function scheduleApp(options={}) {
         for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;
         var str;
         var compactTime, period, compactStr;
-        if (i>=periods.length) str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(periods.length-1))} ended <strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong> ago.</p>`,compactStr='Unofficial Gunn Web App (UGWA)'; // after school
-        else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} ending in <strong>${compactTime=getUsefulTimePhrase(periods[i].end.totalminutes-totalminute)}</strong>.</p>`,compactStr=compactTime + ' left'; // during a period
-        else if (i===0) str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(0))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[0].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // before school
-        else str=`<p class="schedule-endingin">${getPeriodSpan(period=getPeriodName(i))} starting in <strong>${compactTime=getUsefulTimePhrase(periods[i].start.totalminutes-totalminute)}</strong>.</p>`,compactStr = compactTime + ' until ' + getPeriod(period).label; // passing period
+        if (i>=periods.length) str=`<p class="schedule-endingin">${
+          localizeTime('ended')
+            .replace('{P}', getPeriodSpan(period=getPeriodName(periods.length-1)))
+            .replace('{T}', `<strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong>`)
+        }</p>`,compactStr=localize('appname'); // after school
+        else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${
+          localizeTime('ending')
+            .replace('{P}', getPeriodSpan(period=getPeriodName(i)))
+            .replace('{T}', `<strong>${compactTime=getUsefulTimePhrase(periods[i].end.totalminutes-totalminute)}</strong>`)
+        }</p>`,compactStr=localizeTime('ending-short').replace('{T}', compactTime); // during a period
+        else str=`<p class="schedule-endingin">${
+          localizeTime('starting')
+            .replace('{P}', getPeriodSpan(period=getPeriodName(i)))
+            .replace('{T}', `<strong>${compactTime=getUsefulTimePhrase(periods[i].start.totalminutes-totalminute)}</strong>`)
+        }</p>`,compactStr = localizeTime('starting-short').replace('{T}', compactTime).replace('{P}', getPeriod(period).label); // passing period or before school
         innerHTML += str;
         if (options.compact) document.title = compactStr;
         else document.title = str.replace(/<[^>]+>/g, '');
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
-        innerHTML+=`<div class="schedule-period" style="background-color:${periodName.colour};color:${getFontColour(periodName.colour)};"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)} long</span>`;
+        innerHTML+=`<div class="schedule-period" style="background-color:${periodName.colour};color:${getFontColour(periodName.colour)};"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${localizeTime('long').replace('{T}', getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes))}</span>`;
         if (checkfuture) {
           innerHTML+=`<span>`;
-          if (totalminute>=period.end.totalminutes) innerHTML+=`Ended <strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong> ago.`;
-          else if (totalminute<period.start.totalminutes) innerHTML+=`Starting in <strong>${getUsefulTimePhrase(period.start.totalminutes-totalminute)}</strong>.`;
-          else innerHTML+=`Ending in <strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>; started ${getUsefulTimePhrase(totalminute-period.start.totalminutes)} ago.`;
+          if (totalminute>=period.end.totalminutes) innerHTML+=localizeTime('self-ended').replace('{T}', `<strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong>`);
+          else if (totalminute<period.start.totalminutes) innerHTML+=localizeTime('self-starting').replace('{T}', `<strong>${getUsefulTimePhrase(period.start.totalminutes-totalminute)}</strong>`);
+          else innerHTML+=localizeTime('self-starting').replace('{T1}', `<strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>`).replace('{T2}', getUsefulTimePhrase(totalminute-period.start.totalminutes));
           innerHTML+=`</span>`;
         }
         innerHTML+=`</div>`;
@@ -125,7 +134,7 @@ function scheduleApp(options={}) {
         if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
           sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()].periods;
         } else {
-          sched=options.normal[['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]] || [];
+          sched=options.normal[days[d.getDay()]] || [];
         }
         if (sched.length) for (var period of sched) day.push(getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name));
         if (today.getDay()===i) day.today=true;
