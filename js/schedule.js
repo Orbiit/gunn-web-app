@@ -17,16 +17,16 @@ periodstyles={
   "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
   "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
 },
-normalschedule={
-  Monday:[
+normalschedule=[
+  null,
+  [
     {name:'A',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
     {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
     {name:'B',start:{hour:10,minute:0,totalminutes:600},end:{hour:11,minute:15,totalminutes:675}},
     {name:'C',start:{hour:11,minute:25,totalminutes:685},end:{hour:12,minute:40,totalminutes:760}},
     {name:'Lunch',start:{hour:12,minute:40,totalminutes:760},end:{hour:13,minute:10,totalminutes:790}},
     {name:'F',start:{hour:13,minute:20,totalminutes:800},end:{hour:14,minute:35,totalminutes:875}}
-  ],
-  Tuesday:[
+  ], [
     {name:'D',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
     {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
     {name:'Flex',start:{hour:10,minute:0,totalminutes:600},end:{hour:10,minute:50,totalminutes:650}},
@@ -34,16 +34,14 @@ normalschedule={
     {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
     {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:15,totalminutes:855}},
     {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:40,totalminutes:940}}
-  ],
-  Wednesday:[
+  ], [
     {name:'B',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
     {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
     {name:'C',start:{hour:10,minute:5,totalminutes:605},end:{hour:11,minute:25,totalminutes:685}},
     {name:'D',start:{hour:11,minute:35,totalminutes:695},end:{hour:12,minute:55,totalminutes:775}},
     {name:'Lunch',start:{hour:12,minute:55,totalminutes:775},end:{hour:13,minute:25,totalminutes:805}},
     {name:'F',start:{hour:13,minute:35,totalminutes:815},end:{hour:14,minute:55,totalminutes:895}},
-  ],
-  Thursday:[
+  ], [
     {name:'E',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
     {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
     {name:'Flex',start:{hour:10,minute:5,totalminutes:605},end:{hour:10,minute:55,totalminutes:655}},
@@ -51,8 +49,7 @@ normalschedule={
     {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
     {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:5,totalminutes:845}},
     {name:'G',start:{hour:14,minute:15,totalminutes:855},end:{hour:15,minute:35,totalminutes:935}},
-  ],
-  Friday:[
+  ], [
     {name:'C',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:40,totalminutes:580}},
     {name:'Brunch',start:{hour:9,minute:40,totalminutes:580},end:{hour:9,minute:45,totalminutes:585}},
     {name:'D',start:{hour:9,minute:55,totalminutes:595},end:{hour:11,minute:5,totalminutes:665}},
@@ -60,8 +57,9 @@ normalschedule={
     {name:'Lunch',start:{hour:12,minute:25,totalminutes:745},end:{hour:12,minute:55,totalminutes:775}},
     {name:'F',start:{hour:13,minute:5,totalminutes:785},end:{hour:14,minute:15,totalminutes:855}},
     {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:35,totalminutes:935}}
-  ]
-};
+  ],
+  null
+];
 if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
 if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
   options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
@@ -465,16 +463,16 @@ window.addEventListener("load",e=>{
   }
   var periodCustomisers=document.createDocumentFragment();
   var customiserAdder = addPeriodCustomisers(periodCustomisers)
-    ('Period A','A',options[1][1],options[1][0])
-    ('Period B','B',options[2][1],options[2][0])
-    ('Period C','C',options[3][1],options[3][0])
-    ('Period D','D',options[4][1],options[4][0])
-    ('Period E','E',options[5][1],options[5][0])
-    ('Period F','F',options[6][1],options[6][0])
-    ('Period G','G',options[7][1],options[7][0])
-    ('Flex','Flex',options[8][1],options[8][0]);
-  if (+formatOptions[3]) customiserAdder = customiserAdder('SELF','SELF',options[11][1],options[11][0]);
-  customiserAdder('Brunch','Brunch',options[9][1],options[9][0])
-    ('Lunch','Lunch',options[10][1],options[10][0]);
+    (letterPdFormat.replace('{X}', 'A'),'A',options[1][1],options[1][0])
+    (letterPdFormat.replace('{X}', 'B'),'B',options[2][1],options[2][0])
+    (letterPdFormat.replace('{X}', 'C'),'C',options[3][1],options[3][0])
+    (letterPdFormat.replace('{X}', 'D'),'D',options[4][1],options[4][0])
+    (letterPdFormat.replace('{X}', 'E'),'E',options[5][1],options[5][0])
+    (letterPdFormat.replace('{X}', 'F'),'F',options[6][1],options[6][0])
+    (letterPdFormat.replace('{X}', 'G'),'G',options[7][1],options[7][0])
+    (localize('flex'),'Flex',options[8][1],options[8][0]);
+  if (+formatOptions[3]) customiserAdder = customiserAdder(localize('self'),'SELF',options[11][1],options[11][0]);
+  customiserAdder(localize('brunch'),'Brunch',options[9][1],options[9][0])
+    (localize('lunch'),'Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
 },false);
