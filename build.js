@@ -1,22 +1,26 @@
 const UglifyJS = require("uglify-es");
 const minify = require('html-minifier').minify;
 const fs = require('fs');
+const path = require('path');
 
-function readFile(path) {
+function readFile(file) {
   return new Promise((res, rej) => {
-    fs.readFile(path, 'utf8', (err, data) => {
+    fs.readFile(path.resolve(__dirname, file), 'utf8', (err, data) => {
       if (err) rej(err);
       else res(data);
     });
   });
 }
+function writeFile(file, contents) {
+  fs.writeFile(path.resolve(__dirname, file), contents, console.log);
+}
 
 const date = new Date().toDateString();
 readFile('./cache.appcache').then(cache => {
-  fs.writeFile('./cache.appcache', cache.replace(/# \d+/, '# ' + Date.now()), console.log);
+  writeFile('./cache.appcache', cache.replace(/# \d+/, '# ' + Date.now()));
 });
 readFile('./psa.html').then(html => {
-  fs.writeFile('./psa.html', html.replace(/(<strong data-version>).*?(<\/strong>)/, `$1${date}$2`), console.log);
+  writeFile('./psa.html', html.replace(/(<strong data-version>).*?(<\/strong>)/, `$1${date}$2`));
 });
 
 readFile('./appdesign.html').then(html => {
@@ -79,7 +83,7 @@ readFile('./appdesign.html').then(html => {
           useShortDoctype: true
         }
       );
-      fs.writeFile('./index.html', result, console.log);
+      writeFile('./index.html', result);
     });
   });
 });

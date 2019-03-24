@@ -18,20 +18,10 @@ window.addEventListener("load",e=>{
     cookie.setItem('[gunn-web-app] section',section);
   }
   if (window.location.search) {
-    const params = {};
-    window.location.search.slice(1).split('&').forEach(pair => {
-      const [key, value] = pair.split('=');
-      params[key] = value;
-    });
-    if (params.section) {
-      setSection(params.section);
+    const section = /(?:\?|&)section=([^&]+)/.exec(window.location.search);
+    if (section) {
+      setSection(section[1]);
     }
-    // if (params.clubSearch) {
-    //   document.querySelector('#clubsearch').value = params.clubSearch;
-    // }
-    // if (params.staffSearch) {
-    //   document.querySelector('#staffsearch').value = params.staffSearch;
-    // }
   }
   function ulclick(e) {
     if (e.target!==ul&&ul.contains(e.target)) {

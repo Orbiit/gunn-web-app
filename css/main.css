@@ -430,6 +430,7 @@ body.light .percent-wrapper {
   position: relative;
   background-color: #f44336;
   padding-right: 80.67px;
+  color: white;
 }
 #ugwa-ga-ok {
   position: absolute;

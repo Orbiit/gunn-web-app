@@ -77,9 +77,15 @@ window.addEventListener("load",e=>{
       }
     }
   },false);
-  staffsearch.addEventListener("input",e=>{
+  function doStaffSearch() {
     staffstyle.innerHTML=staffsearch.value?`#staff li:not([data-search*="${staffsearch.value.replace(/\\/g,'\\\\')}"i]){display:none}`:'';
-  },false);
+  }
+  const staffSearchValue = /(?:\?|&)staff-search=([^&]+)/.exec(window.location.search);
+  if (staffSearchValue) {
+    staffsearch.value = staffSearchValue[1];
+    doStaffSearch();
+  }
+  staffsearch.addEventListener("input", doStaffSearch,false);
   var clubs,
   clublist=document.querySelector('#clubs'),
   clubinfo=document.querySelector('#clubinfo'),
@@ -125,7 +131,13 @@ window.addEventListener("load",e=>{
       for (var i=0;i<s.length;i++) s[i].href=s[i].textContent,s[i].setAttribute('target',"_blank"),s[i].setAttribute('rel',"noopener noreferrer");
     }
   },false);
-  clubsearch.addEventListener("input",e=>{
+  function doClubSearch() {
     clubstyle.innerHTML=clubsearch.value?`#clubs li:not([data-search*="${clubsearch.value.replace(/\\/g,'\\\\')}"i]){display:none}`:'';
-  },false);
+  }
+  const clubSearchValue = /(?:\?|&)club-search=([^&]+)/.exec(window.location.search);
+  if (clubSearchValue) {
+    clubsearch.value = clubSearchValue[1];
+    doClubSearch();
+  }
+  clubsearch.addEventListener("input", doClubSearch,false);
 },false);

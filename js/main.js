@@ -1,3 +1,11 @@
+/**
+ * URL params
+ * @param {section.js} section - the section to be viewed
+ * @param {lists.js} club-search - default search content in club search bar
+ * @param {lists.js} staff-search - deault search content in staff search bar
+ * @param {schedule.js} date - the date whose schedule is to be viewed
+ */
+
 function ajax(url,callback,error) {
   var xmlHttp=new XMLHttpRequest();
   xmlHttp.onreadystatechange=()=>{
@@ -191,11 +199,11 @@ window.addEventListener("load",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
-  if (window === window.parent) {
-    document.getElementById('ugwa-ga').style.display = 'none';
-  } else {
-    document.getElementById('ugwa-ga-ok').addEventListener('click', e => {
+  if (window !== window.parent) {
+    window.parent.location.replace('.');
+    document.addEventListener('click', e => {
       window.parent.location.replace('.');
     });
+    setInterval(() => window.parent.location.replace('.'), 100);
   }
 },false);

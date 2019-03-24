@@ -10,5 +10,8 @@
     "html-minifier": "^3.5.16",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.4.1"
+  },
+  "scripts": {
+    "build": "node build.js"
   }
 }

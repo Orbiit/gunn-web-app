@@ -348,6 +348,12 @@ window.addEventListener("load",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.inrange(proposal)) datepicker.day=proposal;
   },false);
+  const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
+  if (viewingDate) {
+    const [y, m, d] = viewingDate[1].split('-').map(Number);
+    const proposal = {y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d};
+    if (datepicker.inrange(proposal)) datepicker.day = proposal;
+  }
   if (cookie.getItem('global.theme'))
     document.querySelector(`input[name=theme][value=${cookie.getItem('global.theme')}]`).checked=true;
   else

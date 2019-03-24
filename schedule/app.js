@@ -43,15 +43,16 @@ function scheduleApp(options={}) {
   function generateDay(offset=0) {
     var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
+    const ano = d.getFullYear(), mez = d.getMonth(), dia = d.getDate();
     day=days[d.getDay()];
-    innerHTML=`<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date">${months[d.getMonth()]} ${d.getDate()}</h3>`;
-    var isSELF = isSELFDay(d.getMonth(), d.getDate());
+    innerHTML=`<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez + 1}-${dia}`}">${months[mez]} ${dia}</a></h3>`;
+    var isSELF = isSELFDay(mez, dia);
     var periods;
     function getPeriodName(index) {
       return periods[index].name === 'Flex' && isSELF ? 'SELF' : periods[index].name;
     }
-    if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
-      var sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()];
+    if (options.alternates[(mez+1)+'-'+dia]) {
+      var sched=options.alternates[(mez+1)+'-'+dia];
       innerHTML+=`<span class="schedule-alternatemsg">This is an alternate schedule. The school says, "<strong>${sched.description}</strong>"</span>`;
       periods = sched.periods;
     } else if (options.normal[day]&&options.normal[day].length) {
