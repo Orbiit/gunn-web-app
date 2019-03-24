@@ -6,7 +6,7 @@ window.addEventListener("load",e=>{
   let code = cookie.getItem('[gunn-web-app] barcode.ids');
   if (code) {
     if (code[0] === 'A') barcodes = JSON.parse(code.slice(1));
-    else barcodes=code.split(',').map((a, i) => ['Student #' + i, a]);
+    else barcodes=code.split(',').map((a, i) => [localize('barcode-legacy-default').replace('{N}', i), a]);
   }
   function updateSave() {
     cookie.setItem('[gunn-web-app] barcode.ids', 'A' + JSON.stringify(barcodeelems.map(([a, b])=>[a.value, b.value])));
@@ -72,6 +72,7 @@ window.addEventListener("load",e=>{
   barcodeul.insertBefore(t,add.parentNode);
   add.addEventListener("click",e=>{
     barcodeul.insertBefore(newBarcodeLi(),add.parentNode);
+    updateSave();
   },false);
   updateSave();
 },false);

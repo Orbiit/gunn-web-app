@@ -80,13 +80,13 @@ function scheduleApp(options={}) {
             P: getPeriodSpan(period=getPeriodName(i)),
             T: `<strong>${compactTime=getUsefulTimePhrase(periods[i].end.totalminutes-totalminute)}</strong>`
           })
-        }</p>`,compactStr=localizeTime('ending-short').replace('{T}', compactTime); // during a period
+        }</p>`,compactStr=localizeTime('ending-short', {T: compactTime}); // during a period
         else str=`<p class="schedule-endingin">${
           localizeTime('starting', {
             P: getPeriodSpan(period=getPeriodName(i)),
             T: `<strong>${compactTime=getUsefulTimePhrase(periods[i].start.totalminutes-totalminute)}</strong>`
           })
-        }</p>`,compactStr = localizeTime('starting-short').replace('{T}', compactTime).replace('{P}', getPeriod(period).label); // passing period or before school
+        }</p>`,compactStr = localizeTime('starting-short', {T: compactTime, P: getPeriod(period).label}); // passing period or before school
         innerHTML += str;
         if (options.compact) document.title = compactStr;
         else document.title = str.replace(/<[^>]+>/g, '');
@@ -98,7 +98,7 @@ function scheduleApp(options={}) {
           innerHTML+=`<span>`;
           if (totalminute>=period.end.totalminutes) innerHTML+=localizeTime('self-ended', {T: `<strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong>`});
           else if (totalminute<period.start.totalminutes) innerHTML+=localizeTime('self-starting', {T: `<strong>${getUsefulTimePhrase(period.start.totalminutes-totalminute)}</strong>`});
-          else innerHTML+=localizeTime('self-starting', {T1: `<strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>`, T2: getUsefulTimePhrase(totalminute-period.start.totalminutes)});
+          else innerHTML+=localizeTime('self-ending', {T1: `<strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>`, T2: getUsefulTimePhrase(totalminute-period.start.totalminutes)});
           innerHTML+=`</span>`;
         }
         innerHTML+=`</div>`;

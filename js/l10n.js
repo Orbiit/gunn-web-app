@@ -1,4 +1,6 @@
-const en = {
+const langs = {};
+
+langs.en = {
   html: {
     utilities: 'Utilities',
     clubs: 'Clubs',
@@ -55,7 +57,60 @@ const en = {
     close: 'Close',
     'club-name': 'Club name',
     psa: 'From the Creators',
-    ok: 'OK'
+    ok: 'OK',
+    'add-ugwa': 'To add UGWA to your home screen',
+    desktop: 'Desktop',
+    'desktop-instruct': ' — bookmark this page or pin this tab (right click on the tab and select "Pin tab")',
+    chromebook: 'Chromebook',
+    'chromebook-instruct': ' — pin this page to the shelf (menu > more tools > add to shelf)',
+    ios: 'iOS',
+    'ios-instruct': ' — tap on the share icon and select "add to home screen"',
+    android: 'Android',
+    'android-instruct': ' — tap on the menu and select "add to home screen"',
+    bugs: 'Bug reports',
+    'before-gh-link': 'You can ',
+    'gh-link': 'make a new issue on GitHub',
+    'inter-link': ' or email ',
+    'sean-email': 'sy24484@pausd.us',
+    'after-email': ' to make a feature request or bug report.',
+    browsers: 'UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.',
+    about: 'About',
+    intent: 'The app was originally made to make the features of TheGunnApp available to Chromebook users.',
+    'before-source-link': 'UGWA is open sourced on ',
+    github: 'GitHub',
+    'after-source-link': '.',
+    'other-versions': 'Other versions: ',
+    'gunn-schedule': 'Gunn Schedule',
+    'inter-link-1': ' (no alternate schedules) · ',
+    ugwita: 'Ugwita',
+    'inter-link-2': ' (ugly) · ',
+    ugwa2: 'Ugwa 2',
+    'inter-link-3': ' (not done) · ',
+    ugwisha: 'Ugwisha',
+    'after-links': '',
+    lonely: 'UGWA is lonely and needs friends! You should make your own schedule app.',
+    'other-apps': 'Gunn apps made by other people: ',
+    'tga-ios': 'TheGunnApp',
+    'inter-link-4': ' by the iOS App Development club · ',
+    'tga-android': 'TheGunnApp',
+    'inter-link-5': ' by David C. · ',
+    nugwa: 'Not UGWA',
+    'after-apps': ' by Tomer S.',
+    credits: 'Credits',
+    sean: 'Sean',
+    'sean-creds': ' made most of the app.',
+    henry: 'Henry',
+    'henry-creds': ' made the Google Maps overlay.',
+    search: 'Google Search',
+    'inter-comma': ', ',
+    so: 'Stack Overflow',
+    'inter-and': ', and ',
+    mdn: 'MDN',
+    'service-creds': ' helped.',
+    'feature-based': 'Many features based on the original Gunn App.',
+    'before-material': 'Design based on ',
+    material: 'Material Design',
+    'after-material': "'s icons, colours, and specifications."
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -71,6 +126,7 @@ const en = {
     image: 'use the image',
     'gmaps-error': "Google Maps not loading! Maybe you aren't connected to the internet?",
     you: 'You',
+    'barcode-legacy-default': 'Student #{N}',
     'barcode-default': 'Intellectual student',
     'barcode-student-placeholder': "Whose ID is this?",
     ds: 'S  M  T  W  &Theta;  F  S',
@@ -144,4 +200,13 @@ const en = {
   }
 };
 
-const langs = {en: en};
+const availableLangs = ['en', 'test'];
+let currentLang = 'en-gt';
+function localize(id) {
+  return langs[currentLang].other[id] || langs.en.other[id] || `{{${id}}}`;
+}
+if (currentLang !== 'en') {
+  const script = document.createElement('script');
+  script.src = `./js/languages/${currentLang}.js`;
+  document.head.appendChild(script);
+}

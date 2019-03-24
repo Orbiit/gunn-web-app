@@ -36,11 +36,8 @@ function initMap() {
   );
   historicalOverlay.setMap(map);
 }
-let currentLang = 'en';
-function localize(id) {
-  return langs[currentLang].other[id] || langs.en.other[id] || `{{${id}}}`;
-}
 window.addEventListener("DOMContentLoaded",e=>{
+  document.title = localize('appname');
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga');
     document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize('anti-ugwaga')}</span></div>`;
