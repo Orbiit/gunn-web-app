@@ -36,10 +36,11 @@ function initMap() {
   );
   historicalOverlay.setMap(map);
 }
-window.addEventListener("DOMContentLoaded",e=>{
+window.addEventListener("load",e=>{
+  document.title = localize('appname');
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga');
-    document.body.innerHTML += `<div id="anti-ugwaga"><span>Click/tap to continue to the Unofficial Gunn Web App</span></div>`;
+    document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize('anti-ugwaga')}</span></div>`;
     document.addEventListener('click', e => {
       window.parent.location.replace('.');
     });
@@ -64,17 +65,10 @@ window.addEventListener("DOMContentLoaded",e=>{
     }
   });
   toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
-    if (e.target.value==='light') {
-      document.body.classList.remove('dark');
-      document.body.classList.add('light');
-      document.querySelector('input[name=theme][value=light]').checked=true;
-      cookie.setItem('global.theme','light');
-    } else {
-      document.body.classList.remove('light');
-      document.body.classList.add('dark');
-      document.querySelector('input[name=theme][value=dark]').checked=true;
-      cookie.setItem('global.theme','dark');
-    }
+    document.body.classList.remove(cookie.getItem('global.theme')||'light');
+    document.body.classList.add(e.target.value);
+    t.checked = true;
+    cookie.setItem('global.theme',e.target.value);
   },false));
   var secondsCounter=document.querySelector('#seconds');
   function updateSeconds() {
@@ -108,7 +102,7 @@ window.addEventListener("DOMContentLoaded",e=>{
       }
     },
     e=>{
-      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}; couldn't get last PSA; maybe you aren't connected to the internet?</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
+      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}${localize('psa-error')}</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
     }
   );
   var gradeCalc = {
@@ -123,12 +117,12 @@ window.addEventListener("DOMContentLoaded",e=>{
     minimum = (+gradeCalc.minimum.value || 0) / 100,
     result = Math.round((minimum - current * (1 - worth)) / worth * 10000) / 100;
     if (result < 0) {
-      gradeCalc.output.innerHTML = `You <strong>don't need to study</strong>; even if you score 0%, you'll be above your threshold.`;
+      gradeCalc.output.innerHTML = `${localize('no-study-before-emph')}<strong>${localize('no-study-emph')}</strong>${localize('no-study-after-emph')}`;
     } else if (worth === 0 || isNaN(result)) {
-      gradeCalc.output.innerHTML = `Please don't enter so many zeroes.`;
+      gradeCalc.output.innerHTML = localize('zero-error');
     } else {
-      gradeCalc.output.innerHTML = `You'll need to score at least <strong>${result}%</strong> to keep your parents happy.`;
-      if (result > 100) gradeCalc.output.innerHTML += ` If there's no extra credit, you're screwed.`;
+      gradeCalc.output.innerHTML = `${localize('minscore-before-emph')}<strong>${result}%</strong>${localize('minscore-after-emph')}`;
+      if (result > 100) gradeCalc.output.innerHTML += localize('minscore-too-high-addendum');
     }
   }
   setOutput();
@@ -162,7 +156,7 @@ window.addEventListener("DOMContentLoaded",e=>{
   btncontent=document.createTextNode('');
   img.style.display='block',
   google.style.display='none',
-  btncontent.nodeValue='use google maps';
+  btncontent.nodeValue=localize('gmaps');
   btn.classList.add('material');
   ripple(btn);
   btn.addEventListener("click",e=>{
@@ -170,13 +164,13 @@ window.addEventListener("DOMContentLoaded",e=>{
     if (usingGoogle) {
       img.style.display='none',
       google.style.display='block',
-      btncontent.nodeValue='use the image';
+      btncontent.nodeValue=localize('image');
       if (!googleLoaded) {
         googleLoaded = true;
         var script = document.createElement('script');
         script.onerror = () => {
           if (usingGoogle) btn.click();
-          maptoggle.innerHTML=`Google Maps not loading! Maybe you aren't connected to the internet?`;
+          maptoggle.innerHTML=localize('gmaps-error');
         };
         script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap';
         document.body.appendChild(script);
@@ -184,7 +178,7 @@ window.addEventListener("DOMContentLoaded",e=>{
     } else {
       img.style.display='block',
       google.style.display='none',
-      btncontent.nodeValue='use google maps';
+      btncontent.nodeValue=localize('gmaps');
     }
   },false);
   btn.appendChild(btncontent);
@@ -207,4 +201,40 @@ window.addEventListener("DOMContentLoaded",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
+  function getHTMLString(id) {
+    return langs[currentLang].html[id] || langs.en.html[id] || id;
+  }
+  const langStringRegex = /\{\{([a-z0-9\-]+)\}\}/;
+  const textNodes = [];
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()) {
+    const exec = langStringRegex.exec(walker.currentNode.nodeValue);
+    if (exec) {
+      textNodes.push(exec[1], walker.currentNode);
+      walker.currentNode.nodeValue = getHTMLString(exec[1]);
+    }
+  }
+  const fragment = document.createDocumentFragment();
+  Object.keys(availableLangs).forEach(lang => {
+    const p = document.createElement('p');
+    p.classList.add('radio-wrapper');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'language';
+    input.value = lang;
+    input.className = 'material-radio';
+    if (lang === currentLang) input.checked = true;
+    else {
+      input.addEventListener('click', e => {
+        cookie.setItem('[gunn-web-app] language', lang);
+        window.location.reload();
+      });
+    }
+    p.appendChild(input);
+    const label = document.createElement('label');
+    label.textContent = availableLangs[lang];
+    p.appendChild(label);
+    fragment.appendChild(p);
+  });
+  document.getElementById('langs').appendChild(fragment);
 },false);

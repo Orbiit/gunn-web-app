@@ -33,7 +33,12 @@
     <link rel="stylesheet" href="css/periodcustomisation.css">
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- /STYLES -->
+    <script type="text/javascript">
+      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+      if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
+    </script>
     <!-- SCRIPTS -->
+    <script src="js/l10n.js" charset="utf-8"></script>
     <script src="js/main.js" charset="utf-8"></script>
     <script src="js/date.js" charset="utf-8"></script>
     <script src="js/colour.min.js" charset="utf-8"></script>
@@ -55,131 +60,131 @@
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
-      // if (window !== parent) parent.location.replace('.');
-      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
-      if (!cookie.getItem('[gunn-web-app] lite.alts')) window.location.replace('./lite/?genalts');
-      if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
+      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
     </script>
     <div id="footer">
       <ul>
-        <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>Utilities</span></li>
-        <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>Clubs</span></li>
-        <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>Schedule</span></li>
-        <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>Staff</span></li>
-        <li data-section="options" tabindex="0"><i class="material-icons">&#xE8B8;</i><span>Options</span></li>
+        <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>{{utilities}}</span></li>
+        <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>{{clubs}}</span></li>
+        <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>{{schedule}}</span></li>
+        <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>{{staff}}</span></li>
+        <li data-section="options" tabindex="0"><i class="material-icons">&#xE8B8;</i><span>{{options}}</span></li>
       </ul>
     </div>
     <div class="section utilities">
-      <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised">PAUSD Login Page</button></a></p>
-      <h1>Barcode</h1>
-      <p>Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on <a href="https://en.wikipedia.org/wiki/Code_39">Wikipedia</a>.</p>
-      <ul id='barcode'><li class="right"><button class="material" id='addbarcode'>Add barcode</button></li></ul>
-      <h1>Minimum finals score calculator</h1>
-      <p>Current grade: <span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span></p>
-      <p>Portion of grade the final determines: <span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
-      <p>Minimum acceptable grade: <span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
+      <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised">{{pausd-login}}</button></a></p>
+      <h1>{{barcode}}</h1>
+      <p>{{barcode-desc-before-link}}<a href="https://en.wikipedia.org/wiki/Code_39">{{wikipedia}}</a>{{barcode-desc-after-link}}</p>
+      <ul id='barcode'><li class="right"><button class="material" id='addbarcode'>{{add-barcode}}</button></li></ul>
+      <h1>{{minscore}}</h1>
+      <p>{{current-grade}}<span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span></p>
+      <p>{{finals-worth}}<span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
+      <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
       <p id="grade-output"></p>
-      <h1>Map</h1>
+      <h1>{{map}}</h1>
       <p class="center" id="maptoggle"></p>
-      <p><strong>For the image:</strong> You can use a finger to pan, or two to rotate, zoom, and pan. You can use your mouse to drag, or scroll to zoom or right-click to rotate.</p>
-      <p><strong>For Google Maps:</strong> Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.</p>
+      <p><strong>{{for-image}}</strong>{{image-instruct}}</p>
+      <p><strong>{{for-gmaps}}</strong>{{gmaps-instruct}}</p>
       <img src="images/gunnmap.svg" id='mapimage' alt="The map image failed to load :(">
       <div id="mapgoogle"></div>
     </div>
     <div class="section clubs">
-      <h1>Clubs<input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"></h1>
-      <p>Please note that club information was taken from their <a href="https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/">chartered club list as of February 2nd, 2019</a>. Apparently some of their information turned out to be inaccurate, so blame them, not us.</p>
+      <h1>{{clubs}}<input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"></h1>
+      <p>{{clubs-disclaimer-before-link}}<a href="https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/">{{clubs-disclaimer-link}}</a>{{clubs-disclaimer-after-link}}</p>
       <ul class="material-list three-line short clickables" id='clubs'></ul>
       <div class="lists-enabled center">
-        <p>You've disabled the club and staff lists</p>
-        <button class="material ripple-light raised">Turn back on</button>
+        <p>{{lists-disabled}}</p>
+        <button class="material ripple-light raised">{{turn-back-on}}</button>
       </div>
     </div>
     <div class="section schedule">
       <span id='seconds'></span>
-      <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button><button class='material' id="datepicker">select date</button><button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button></p>
+      <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button><button class='material' id="datepicker">{{select-date}}</button><button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button></p>
       <p class="center get-error" id="alternateerror"></p>
       <div id="schedulewrapper"></div>
       <div id="weekwrapper"></div>
-      <h1 class="center">Events</h1>
+      <h1 class="center">{{events}}</h1>
       <ul class="material-list two-line" id='events'></ul>
     </div>
     <div class="section staff">
-      <h1>Staff list<input type="search" id='staffsearch' placeholder="Search staff" class="notmaterial-input"></h1>
+      <h1>{{staff-list}}<input type="search" id='staffsearch' placeholder="Search staff" class="notmaterial-input"></h1>
       <ul class="material-list three-line short clickables" id='staff'></ul>
       <div class="lists-enabled center">
-        <p>You've disabled the club and staff lists</p>
-        <button class="material ripple-light raised">Turn back on</button>
+        <p>{{lists-disabled}}</p>
+        <button class="material ripple-light raised">{{turn-back-on}}</button>
       </div>
     </div>
     <div class="section options">
-      <h1>Last PSA</h1>
+      <h1>{{last-psa}}</h1>
       <div class="material-card block-of-text" id="psa">loading</div>
-      <p>You are using the <strong>{VERSION}</strong> version.</p>
-      <h1>Theme</h1>
-      <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>Light theme</label></p>
-      <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>Dark theme</label></p>
-      <h1>Time formatting</h1>
-      <p class='radio-wrapper'><input type="radio" name="hour" value="h12" class="material-radio"><label>12-hour</label></p>
-      <p class='radio-wrapper'><input type="radio" name="hour" value="h24" class="material-radio"><label>24-hour</label></p>
-      <h2>Tab title compactness</h2>
-      <p class='radio-wrapper'><input type="radio" name="format" value="full" class="material-radio"><label>Units included</label></p>
-      <p class='radio-wrapper'><input type="radio" name="format" value="compact" class="material-radio"><label>Numbers only</label></p>
-      <div class="center"><button class="material ripple-light raised" id="disable-lists">Disable club/staff lists</button></div>
-      <h1>Periods</h1>
-      <p>Click on the coloured square to change period colour.</p>
+      <p>{{before-version}}<strong>{VERSION}</strong>{{after-version}}</p>
+      <h1>{{theme}}</h1>
+      <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>{{light-theme}}</label></p>
+      <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>{{dark-theme}}</label></p>
+      <p class='radio-wrapper'><input type="radio" name="theme" value="neither" class="material-radio"><label>{{neither-theme}}</label></p>
+      <h1>{{time-formatting}}</h1>
+      <p class='radio-wrapper'><input type="radio" name="hour" value="h12" class="material-radio"><label>{{12h}}</label></p>
+      <p class='radio-wrapper'><input type="radio" name="hour" value="h24" class="material-radio"><label>{{24h}}</label></p>
+      <h2>{{title-compact}}</h2>
+      <p class='radio-wrapper'><input type="radio" name="format" value="full" class="material-radio"><label>{{units}}</label></p>
+      <p class='radio-wrapper'><input type="radio" name="format" value="compact" class="material-radio"><label>{{numbers}}</label></p>
+      <div class="center"><button class="material ripple-light raised" id="disable-lists">{{disable-lists}}</button></div>
+      <h1>{{periods}}</h1>
+      <p>{{periods-desc}}</p>
       <a id="periodcustomisermarker"></a>
-      <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>Show SELF</label></p>
-      <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>Hide SELF</label></p>
+      <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>{{show-self}}</label></p>
+      <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>{{hide-self}}</label></p>
+      <h1>{{languages}}</h1>
+      <div id="langs"></div>
       <div class="block-of-text">
-        <h1>To add UGWA to your home screen</h1>
-        <p><strong>Desktop</strong> &mdash; bookmark this page or pin this tab (right click on the tab and select "Pin tab")</p>
-        <p><strong>Chromebook</strong> &mdash; pin this page to the shelf (menu > more tools > add to shelf)</p>
-        <p><strong>iOS</strong> &mdash; tap on the share icon and select "add to home screen"</p>
-        <p><strong>Android</strong> &mdash; tap on the menu and select "add to home screen"</p>
-        <h1>Bug reports</h1>
-        <p>You can <a href="https://github.com/Orbiit/gunn-web-app/issues/new" target="_blank" rel="noopener noreferrer">make a new issue on GitHub</a> or email <a href="mailto:sy24484@pausd.us" target="_blank" rel="noopener noreferrer">sy24484@pausd.us</a> to make a feature request or bug report.</p>
-        <p>UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.</p>
-        <h1>About</h1>
-        <p>The app was originally made to make the features of TheGunnApp available to Chromebook users.</p>
-        <p>UGWA is open sourced on <a href="https://github.com/Orbiit/gunn-web-app" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
-        <p>Other versions: <a href="https://orbiit.github.io/gunn-web-app/schedule/">Gunn Schedule</a> (no alternate schedules) &middot; <a href="https://orbiit.github.io/gunn-web-app/lite/">Ugwita</a> (ugly) &middot; <a href="https://orbiit.github.io/ugwa2/">Ugwa 2</a> (not done) &middot; <a href="https://orbiit.github.io/ugwisha/">Ugwisha</a></p>
-        <p>UGWA is lonely and needs friends! You should make your own schedule app.</p>
-        <p>Gunn apps made by other people: <a href="https://itunes.apple.com/us/app/thegunnapp/id1141159201">TheGunnApp</a> by the iOS App Development club &middot; <a href="https://play.google.com/store/apps/details?id=xyz.dchen.thegunnapp">TheGunnApp</a> by David C. &middot; <a href="https://nugwa.nuns.cf/">Not UGWA</a> by Tomer S.</p>
-        <h1>Credits</h1>
-        <p><a href="https://sheeptester.github.io/" target="_blank" rel="noopener noreferrer">Sean</a> made most of the app.</p>
-        <p><a href="https://poolehenry.github.io/" target="_blank" rel="noopener noreferrer">Henry</a> made the Google Maps overlay.</p>
-        <p><a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Google Search</a>, <a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">Stack Overflow</a>, and <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">MDN</a> helped.</p>
-        <p>Many features based on the original Gunn App.</p>
-        <p>Design based on <a href="https://material.io/" target="_blank" rel="noopener noreferrer">Material Design</a>'s icons, colours, and specifications.</p>
+        <h1>{{add-ugwa}}</h1>
+        <p><strong>{{desktop}}</strong>{{desktop-instruct}}</p>
+        <p><strong>{{chromebook}}</strong>{{chromebook-instruct}}</p>
+        <p><strong>{{ios}}</strong>{{ios-instruct}}</p>
+        <p><strong>{{android}}</strong>{{android-instruct}}</p>
+        <h1>{{bugs}}</h1>
+        <p>{{before-gh-link}}<a href="https://github.com/Orbiit/gunn-web-app/issues/new" target="_blank" rel="noopener noreferrer">{{gh-link}}</a>{{inter-link}}<a href="mailto:sy24484@pausd.us" target="_blank" rel="noopener noreferrer">{{sean-email}}</a>{{after-email}}</p>
+        <p>{{browsers}}</p>
+        <h1>{{about}}</h1>
+        <p>{{intent}}</p>
+        <p>{{before-source-link}}<a href="https://github.com/Orbiit/gunn-web-app" target="_blank" rel="noopener noreferrer">{{github}}</a>{{after-source-link}}</p>
+        <p>{{other-versions}}<a href="https://orbiit.github.io/gunn-web-app/schedule/">{{gunn-schedule}}</a>{{inter-link-1}}<a href="https://orbiit.github.io/gunn-web-app/lite/">{{ugwita}}</a>{{inter-link-2}}<a href="https://orbiit.github.io/ugwa2/">{{ugwa2}}</a>{{inter-link-3}}<a href="https://orbiit.github.io/ugwisha/">{{ugwisha}}</a>{{after-links}}</p>
+        <p>{{lonely}}</p>
+        <p>{{other-apps}}<a href="https://itunes.apple.com/us/app/thegunnapp/id1141159201">{{tga-ios}}</a>{{inter-link-4}}<a href="https://play.google.com/store/apps/details?id=xyz.dchen.thegunnapp">{{tga-android}}</a>{{inter-link-5}}<a href="https://nugwa.nuns.cf/">{{nugwa}}</a>{{after-apps}}</p>
+        <h1>{{credits}}</h1>
+        <p><a href="https://sheeptester.github.io/" target="_blank" rel="noopener noreferrer">{{sean}}</a>{{sean-creds}}</p>
+        <p><a href="https://poolehenry.github.io/" target="_blank" rel="noopener noreferrer">{{henry}}</a>{{henry-creds}}</p>
+        <p><a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">{{search}}</a>{{inter-comma}}<a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">{{so}}</a>{{inter-and}}<a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">{{mdn}}</a>{{service-creds}}</p>
+        <p>{{feature-based}}</p>
+        <p>{{before-material}}<a href="https://material.io/" target="_blank" rel="noopener noreferrer">{{material}}</a>{{after-material}}</p>
       </div>
-      <h1>Control Centre</h1>
-      <p>If UGWA isn't updating, try these buttons.</p>
+      <h1>{{control-centre}}</h1>
+      <p>{{control-centre-desc}}</p>
       <p class="center">
-        <button class="material ripple-light raised" id="force-update">attempt update</button>
-        <button class="material ripple-light raised" id="reload">Restart UGWA</button>
-        <button class="material ripple-light raised" id="trick-cache">trick the cache</button>
+        <button class="material ripple-light raised" id="force-update">{{attempt-update}}</button>
+        <button class="material ripple-light raised" id="reload">{{reload}}</button>
+        <button class="material ripple-light raised" id="trick-cache">{{trick-cache}}</button>
       </p>
     </div>
     <div id="staffcontact" class="material-dialog">
-      <h1>Staff name</h1>
+      <h1>{{staff-name}}</h1>
       <div class="content"></div>
       <div class="buttons">
-        <button class="material red close">Close</button>
+        <button class="material red close">{{close}}</button>
       </div>
     </div>
     <div id="clubinfo" class="material-dialog">
-      <h1>Club name</h1>
+      <h1>{{club-name}}</h1>
       <div class="content"></div>
       <div class="buttons">
-        <button class="material red close">Close</button>
+        <button class="material red close">{{close}}</button>
       </div>
     </div>
     <div id="psadialog" class="material-dialog">
-      <h1>From the Creators</h1>
+      <h1>{{psa}}</h1>
       <div class="content block-of-text"></div>
       <div class="buttons">
-        <button class="material red close">OK</button>
+        <button class="material red close">{{ok}}</button>
       </div>
     </div>
   </body>

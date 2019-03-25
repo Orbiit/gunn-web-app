@@ -2,30 +2,16 @@ var options,
 letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF'],
 VERSION=2, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 FORMATTING_VERSION='2',
-periodstyles={
-  NO_SCHOOL:{label:"No school today!"},
-  "Brunch":{label:"Brunch",colour:"#90a4ae"},
-  "Lunch":{label:"Lunch",colour:"#90a4ae"},
-  "Flex":{label:"Flex",colour:"#455a64"},
-  "SELF":{label:"SELF",colour:"#455a64"},
-  "A":{label:"Period A",colour:"#f44336"},
-  "B":{label:"Period B",colour:"#2196F3"},
-  "C":{label:"Period C",colour:"#FFEB3B"},
-  "D":{label:"Period D",colour:"#795548"},
-  "E":{label:"Period E",colour:"#FF9800"},
-  "F":{label:"Period F",colour:"#9C27B0"},
-  "G":{label:"Period G",colour:"#4CAF50"}
-},
-normalschedule={
-  Monday:[
+normalschedule=[
+  null,
+  [
     {name:'A',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
     {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
     {name:'B',start:{hour:10,minute:0,totalminutes:600},end:{hour:11,minute:15,totalminutes:675}},
     {name:'C',start:{hour:11,minute:25,totalminutes:685},end:{hour:12,minute:40,totalminutes:760}},
     {name:'Lunch',start:{hour:12,minute:40,totalminutes:760},end:{hour:13,minute:10,totalminutes:790}},
     {name:'F',start:{hour:13,minute:20,totalminutes:800},end:{hour:14,minute:35,totalminutes:875}}
-  ],
-  Tuesday:[
+  ], [
     {name:'D',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
     {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
     {name:'Flex',start:{hour:10,minute:0,totalminutes:600},end:{hour:10,minute:50,totalminutes:650}},
@@ -33,16 +19,14 @@ normalschedule={
     {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
     {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:15,totalminutes:855}},
     {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:40,totalminutes:940}}
-  ],
-  Wednesday:[
+  ], [
     {name:'B',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
     {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
     {name:'C',start:{hour:10,minute:5,totalminutes:605},end:{hour:11,minute:25,totalminutes:685}},
     {name:'D',start:{hour:11,minute:35,totalminutes:695},end:{hour:12,minute:55,totalminutes:775}},
     {name:'Lunch',start:{hour:12,minute:55,totalminutes:775},end:{hour:13,minute:25,totalminutes:805}},
     {name:'F',start:{hour:13,minute:35,totalminutes:815},end:{hour:14,minute:55,totalminutes:895}},
-  ],
-  Thursday:[
+  ], [
     {name:'E',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
     {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
     {name:'Flex',start:{hour:10,minute:5,totalminutes:605},end:{hour:10,minute:55,totalminutes:655}},
@@ -50,8 +34,7 @@ normalschedule={
     {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
     {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:5,totalminutes:845}},
     {name:'G',start:{hour:14,minute:15,totalminutes:855},end:{hour:15,minute:35,totalminutes:935}},
-  ],
-  Friday:[
+  ], [
     {name:'C',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:40,totalminutes:580}},
     {name:'Brunch',start:{hour:9,minute:40,totalminutes:580},end:{hour:9,minute:45,totalminutes:585}},
     {name:'D',start:{hour:9,minute:55,totalminutes:595},end:{hour:11,minute:5,totalminutes:665}},
@@ -59,8 +42,9 @@ normalschedule={
     {name:'Lunch',start:{hour:12,minute:25,totalminutes:745},end:{hour:12,minute:55,totalminutes:775}},
     {name:'F',start:{hour:13,minute:5,totalminutes:785},end:{hour:14,minute:15,totalminutes:855}},
     {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:35,totalminutes:935}}
-  ]
-};
+  ],
+  null
+];
 if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
 if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
   options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
@@ -82,6 +66,21 @@ if (!options) {
   }
 }
 window.addEventListener("load",e=>{
+  var letterPdFormat = localize('periodx'),
+  periodstyles={
+    NO_SCHOOL:{label:localize('no-school')},
+    "Brunch":{label:localize('brunch'),colour:"#90a4ae"},
+    "Lunch":{label:localize('lunch'),colour:"#90a4ae"},
+    "Flex":{label:localize('flex'),colour:"#455a64"},
+    "SELF":{label:localize('self'),colour:"#455a64"},
+    "A":{label:letterPdFormat.replace('{X}', "A"),colour:"#f44336"},
+    "B":{label:letterPdFormat.replace('{X}', "B"),colour:"#2196F3"},
+    "C":{label:letterPdFormat.replace('{X}', "C"),colour:"#FFEB3B"},
+    "D":{label:letterPdFormat.replace('{X}', "D"),colour:"#795548"},
+    "E":{label:letterPdFormat.replace('{X}', "E"),colour:"#FF9800"},
+    "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
+    "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
+  };
   /* SCHEDULE APP */
   var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0'];
   if (formatOptions[0] === '1') {
@@ -113,7 +112,7 @@ window.addEventListener("load",e=>{
   var weekwrapper=document.querySelector('#weekwrapper');
   function makeWeekHappen() {
     var innerHTML='',
-    days=['S','M','T','W','&Theta;','F','S'],
+    days=localize('ds').split('  '),
     week=scheduleapp.getWeek();
     for (var i=0;i<7;i++) {
       innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
@@ -126,10 +125,10 @@ window.addEventListener("load",e=>{
   var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
   var selfDays;
   var eventsul=document.querySelector('#events'),events={},
-  months="January February March April May June July August September October November December".split(' ');
+  months=localize('months').split(' ');
   function renderEvents() {
     var offset=scheduleapp.offset,d=new Date();
-    eventsul.innerHTML=`<li><span class="secondary center">Loading</span></li>`;
+    eventsul.innerHTML=`<li><span class="secondary center">${localize('loading')}</span></li>`;
     function actuallyRenderEvents(items) {
       var innerHTML=``;
       if (items.length) {
@@ -149,7 +148,7 @@ window.addEventListener("load",e=>{
           innerHTML+=`<li><span class="primary">${items[i].name}</span><span class="secondary${items[i].error?' get-error':''}">${items[i].desc||""}</span>${timerange}</li>`;
         }
       } else {
-        innerHTML=`<li><span class="secondary center">No events today :(</span></li>`;
+        innerHTML=`<li><span class="secondary center">${localize('no-events')}</span></li>`;
       }
       eventsul.innerHTML=innerHTML;
     }
@@ -215,7 +214,7 @@ window.addEventListener("load",e=>{
           }
         },
         e=>{
-          events[offset]=[{name:'',desc:`${e}; couldn't get events; maybe you aren't connected to the internet?`,error:true}];
+          events[offset]=[{name:'',desc:`${e}${localize('events-error')}`,error:true}];
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
         }
       );
@@ -236,8 +235,7 @@ window.addEventListener("load",e=>{
     else if (~name.indexOf("lunch") || ~name.indexOf("turkey")) return "Lunch";
     else return name;
   }
-  var daynames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-  months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var daynames=localize('days').split('  ');
   function toTraditionalUGWATime(minutes) {
     return {
       totalminutes: minutes,
@@ -283,7 +281,7 @@ window.addEventListener("load",e=>{
       monthname: months[month],
       month: month,
       date: day,
-      description: desc || 'good luck with our schedule lol',
+      description: desc || localize('default-alt-msg'),
       periods: periods
     };
     return true;
@@ -373,7 +371,7 @@ window.addEventListener("load",e=>{
     label.classList.add('customiser-label');
     label.innerHTML=labeltext;
     input.classList.add('customiser-input');
-    input.setAttribute('aria-label','Set label for '+labeltext);
+    input.setAttribute('aria-label',localize('period-name-label')+labeltext);
     input.addEventListener("change",e=>{
       if (input.value) inputwrapper.classList.add('filled');
       else inputwrapper.classList.remove('filled');
@@ -465,16 +463,16 @@ window.addEventListener("load",e=>{
   }
   var periodCustomisers=document.createDocumentFragment();
   var customiserAdder = addPeriodCustomisers(periodCustomisers)
-    ('Period A','A',options[1][1],options[1][0])
-    ('Period B','B',options[2][1],options[2][0])
-    ('Period C','C',options[3][1],options[3][0])
-    ('Period D','D',options[4][1],options[4][0])
-    ('Period E','E',options[5][1],options[5][0])
-    ('Period F','F',options[6][1],options[6][0])
-    ('Period G','G',options[7][1],options[7][0])
-    ('Flex','Flex',options[8][1],options[8][0]);
-  if (+formatOptions[3]) customiserAdder = customiserAdder('SELF','SELF',options[11][1],options[11][0]);
-  customiserAdder('Brunch','Brunch',options[9][1],options[9][0])
-    ('Lunch','Lunch',options[10][1],options[10][0]);
+    (letterPdFormat.replace('{X}', 'A'),'A',options[1][1],options[1][0])
+    (letterPdFormat.replace('{X}', 'B'),'B',options[2][1],options[2][0])
+    (letterPdFormat.replace('{X}', 'C'),'C',options[3][1],options[3][0])
+    (letterPdFormat.replace('{X}', 'D'),'D',options[4][1],options[4][0])
+    (letterPdFormat.replace('{X}', 'E'),'E',options[5][1],options[5][0])
+    (letterPdFormat.replace('{X}', 'F'),'F',options[6][1],options[6][0])
+    (letterPdFormat.replace('{X}', 'G'),'G',options[7][1],options[7][0])
+    (localize('flex'),'Flex',options[8][1],options[8][0]);
+  if (+formatOptions[3]) customiserAdder = customiserAdder(localize('self'),'SELF',options[11][1],options[11][0]);
+  customiserAdder(localize('brunch'),'Brunch',options[9][1],options[9][0])
+    (localize('lunch'),'Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
 },false);

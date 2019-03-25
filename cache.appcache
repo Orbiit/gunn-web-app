@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 1553396313009
+# 1553491651226
 CACHE:
 index.html
 images/gunnmap.svg
@@ -20,6 +20,7 @@ favicon/browserconfig.xml
 favicon/mstile-150x150.png
 json/clubs.json
 json/staff.json
+js/languages/en-gt.js
 
 NETWORK:
 *

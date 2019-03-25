@@ -1,17 +1,17 @@
 window.addEventListener("load",e=>{
   var barcodeul=document.querySelector('#barcode'),
   add=document.querySelector('#addbarcode'),
-  barcodes=[['You', "95012345"]],
+  barcodes=[[localize('you'), "95012345"]],
   barcodeelems=[];
   let code = cookie.getItem('[gunn-web-app] barcode.ids');
   if (code) {
     if (code[0] === 'A') barcodes = JSON.parse(code.slice(1));
-    else barcodes=code.split(',').map((a, i) => ['Student #' + i, a]);
+    else barcodes=code.split(',').map((a, i) => [localize('barcode-legacy-default').replace('{N}', i), a]);
   }
   function updateSave() {
     cookie.setItem('[gunn-web-app] barcode.ids', 'A' + JSON.stringify(barcodeelems.map(([a, b])=>[a.value, b.value])));
   }
-  function newBarcodeLi([name = 'Intellectual student', code = "95012345"] = []) {
+  function newBarcodeLi([name = localize('barcode-default'), code = "95012345"] = []) {
     var li=document.createElement("li"),
     divcanvas=document.createElement("div"),
     input=document.createElement("input"),
@@ -22,7 +22,7 @@ window.addEventListener("load",e=>{
     divcanvas.classList.add('canvas');
     const studentNameInput = document.createElement('input');
     studentNameInput.value = name;
-    studentNameInput.placeholder = "Who's ID is this?";
+    studentNameInput.placeholder = localize('barcode-student-placeholder');
     studentNameInput.classList.add('barcode-student-name');
     studentNameInput.addEventListener("input",e=>{
       updateSave();
@@ -72,6 +72,7 @@ window.addEventListener("load",e=>{
   barcodeul.insertBefore(t,add.parentNode);
   add.addEventListener("click",e=>{
     barcodeul.insertBefore(newBarcodeLi(),add.parentNode);
+    updateSave();
   },false);
   updateSave();
 },false);
