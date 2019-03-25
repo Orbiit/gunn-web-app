@@ -37,6 +37,7 @@ langs.en = {
     theme: 'Theme',
     'light-theme': 'Light theme',
     'dark-theme': 'Dark theme',
+    'neither-theme': 'Neither theme',
     'time-formatting': 'Time formatting',
     '12h': '12-hour',
     '24h': '24-hour',

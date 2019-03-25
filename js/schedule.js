@@ -2,21 +2,6 @@ var options,
 letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF'],
 VERSION=2, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 FORMATTING_VERSION='2',
-letterPdFormat = localize('periodx'),
-periodstyles={
-  NO_SCHOOL:{label:localize('no-school')},
-  "Brunch":{label:localize('brunch'),colour:"#90a4ae"},
-  "Lunch":{label:localize('lunch'),colour:"#90a4ae"},
-  "Flex":{label:localize('flex'),colour:"#455a64"},
-  "SELF":{label:localize('self'),colour:"#455a64"},
-  "A":{label:letterPdFormat.replace('{X}', "A"),colour:"#f44336"},
-  "B":{label:letterPdFormat.replace('{X}', "B"),colour:"#2196F3"},
-  "C":{label:letterPdFormat.replace('{X}', "C"),colour:"#FFEB3B"},
-  "D":{label:letterPdFormat.replace('{X}', "D"),colour:"#795548"},
-  "E":{label:letterPdFormat.replace('{X}', "E"),colour:"#FF9800"},
-  "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
-  "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
-},
 normalschedule=[
   null,
   [
@@ -81,6 +66,21 @@ if (!options) {
   }
 }
 window.addEventListener("load",e=>{
+  var letterPdFormat = localize('periodx'),
+  periodstyles={
+    NO_SCHOOL:{label:localize('no-school')},
+    "Brunch":{label:localize('brunch'),colour:"#90a4ae"},
+    "Lunch":{label:localize('lunch'),colour:"#90a4ae"},
+    "Flex":{label:localize('flex'),colour:"#455a64"},
+    "SELF":{label:localize('self'),colour:"#455a64"},
+    "A":{label:letterPdFormat.replace('{X}', "A"),colour:"#f44336"},
+    "B":{label:letterPdFormat.replace('{X}', "B"),colour:"#2196F3"},
+    "C":{label:letterPdFormat.replace('{X}', "C"),colour:"#FFEB3B"},
+    "D":{label:letterPdFormat.replace('{X}', "D"),colour:"#795548"},
+    "E":{label:letterPdFormat.replace('{X}', "E"),colour:"#FF9800"},
+    "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
+    "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
+  };
   /* SCHEDULE APP */
   var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0'];
   if (formatOptions[0] === '1') {

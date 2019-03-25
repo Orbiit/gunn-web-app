@@ -59,7 +59,7 @@ readFile('./appdesign.html').then(html => {
                 bare_returns: inline
               },
               mangle: {
-                reserved: ['initMap']
+                reserved: ['initMap', 'langs']
               },
               toplevel: true
             });
