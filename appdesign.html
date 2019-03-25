@@ -60,7 +60,7 @@
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
-      if (document&&document.body) document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
+      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
     </script>
     <div id="footer">
       <ul>
@@ -121,6 +121,7 @@
       <h1>{{theme}}</h1>
       <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>{{light-theme}}</label></p>
       <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>{{dark-theme}}</label></p>
+      <p class='radio-wrapper'><input type="radio" name="theme" value="neither" class="material-radio"><label>{{neither-theme}}</label></p>
       <h1>{{time-formatting}}</h1>
       <p class='radio-wrapper'><input type="radio" name="hour" value="h12" class="material-radio"><label>{{12h}}</label></p>
       <p class='radio-wrapper'><input type="radio" name="hour" value="h24" class="material-radio"><label>{{24h}}</label></p>
@@ -133,6 +134,8 @@
       <a id="periodcustomisermarker"></a>
       <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>{{show-self}}</label></p>
       <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>{{hide-self}}</label></p>
+      <h1>{{languages}}</h1>
+      <div id="langs"></div>
       <div class="block-of-text">
         <h1>{{add-ugwa}}</h1>
         <p><strong>{{desktop}}</strong>{{desktop-instruct}}</p>

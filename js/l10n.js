@@ -200,20 +200,24 @@ langs.en = {
   }
 };
 
-const availableLangs = ['en', 'test', 'en-gt'];
-if (!availableLangs.includes(cookie.getItem('[gunn-web-app] language'))) {
+const availableLangs = {
+  'en': 'English',
+  'en-gt': 'English (Google Translated through Chinese)',
+  // 'es': 'español'
+};
+if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   let lang = 'en';
   if (navigator.languages) {
-    lang = navigator.languages.find(lang => availableLangs.includes(lang)) || lang;
+    lang = navigator.languages.find(lang => availableLangs[lang]) || lang;
   } else {
     const userLang = navigator.language || navigator.userLanguage;
-    if (availableLangs.includes(userLang)) lang = userLang;
+    if (availableLangs[userLang]) lang = userLang;
   }
   cookie.setItem('[gunn-web-app] language', lang);
 }
 let currentLang = cookie.getItem('[gunn-web-app] language');
 function localize(id) {
-  return langs[currentLang].other[id] || langs.en.other[id] || `{{${id}}}`;
+  return langs[currentLang].other[id] || langs.en.other[id] || id;
 }
 if (currentLang !== 'en') {
   const script = document.createElement('script');

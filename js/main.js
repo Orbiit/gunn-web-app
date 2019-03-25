@@ -36,7 +36,7 @@ function initMap() {
   );
   historicalOverlay.setMap(map);
 }
-window.addEventListener("DOMContentLoaded",e=>{
+window.addEventListener("load",e=>{
   document.title = localize('appname');
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga');
@@ -65,17 +65,10 @@ window.addEventListener("DOMContentLoaded",e=>{
     }
   });
   toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
-    if (e.target.value==='light') {
-      document.body.classList.remove('dark');
-      document.body.classList.add('light');
-      document.querySelector('input[name=theme][value=light]').checked=true;
-      cookie.setItem('global.theme','light');
-    } else {
-      document.body.classList.remove('light');
-      document.body.classList.add('dark');
-      document.querySelector('input[name=theme][value=dark]').checked=true;
-      cookie.setItem('global.theme','dark');
-    }
+    document.body.classList.remove(cookie.getItem('global.theme')||'light');
+    document.body.classList.add(e.target.value);
+    t.checked = true;
+    cookie.setItem('global.theme',e.target.value);
   },false));
   var secondsCounter=document.querySelector('#seconds');
   function updateSeconds() {
@@ -209,7 +202,7 @@ window.addEventListener("DOMContentLoaded",e=>{
     window.location = '?' + Date.now();
   });
   function getHTMLString(id) {
-    return langs[currentLang].html[id] || langs.en.html[id];
+    return langs[currentLang].html[id] || langs.en.html[id] || id;
   }
   const langStringRegex = /\{\{([a-z0-9\-]+)\}\}/;
   const textNodes = [];
@@ -221,5 +214,27 @@ window.addEventListener("DOMContentLoaded",e=>{
       walker.currentNode.nodeValue = getHTMLString(exec[1]);
     }
   }
-  console.log(textNodes);
+  const fragment = document.createDocumentFragment();
+  Object.keys(availableLangs).forEach(lang => {
+    const p = document.createElement('p');
+    p.classList.add('radio-wrapper');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'language';
+    input.value = lang;
+    input.className = 'material-radio';
+    if (lang === currentLang) input.checked = true;
+    else {
+      input.addEventListener('click', e => {
+        cookie.setItem('[gunn-web-app] language', lang);
+        window.location.reload();
+      });
+    }
+    p.appendChild(input);
+    const label = document.createElement('label');
+    label.textContent = availableLangs[lang];
+    p.appendChild(label);
+    fragment.appendChild(p);
+  });
+  document.getElementById('langs').appendChild(fragment);
 },false);
