@@ -45,26 +45,6 @@ normalschedule=[
   ],
   null
 ];
-if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
-if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
-  options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
-  if (options[0]!==VERSION) {
-    switch (options[0]) {
-      case 1:
-        options[0] = 2;
-        options.push([periodstyles.SELF.label,periodstyles.SELF.colour]);
-        break;
-      default:
-        options=null;
-    }
-  }
-}
-if (!options) {
-  options=[VERSION];
-  for (var i=0,arr=letras,len=arr.length,l=arr[i];i<len;i++,l=arr[i]) if (l!==0) {
-    options.push([periodstyles[l].label,periodstyles[l].colour]);
-  }
-}
 window.addEventListener("load",e=>{
   var letterPdFormat = localize('periodx'),
   periodstyles={
@@ -81,6 +61,25 @@ window.addEventListener("load",e=>{
     "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
     "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
   };
+  if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
+    options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
+    if (options[0]!==VERSION) {
+      switch (options[0]) {
+        case 1:
+          options[0] = 2;
+          options.push([periodstyles.SELF.label,periodstyles.SELF.colour]);
+          break;
+        default:
+          options=null;
+      }
+    }
+  }
+  if (!options) {
+    options=[VERSION];
+    for (var i=0,arr=letras,len=arr.length,l=arr[i];i<len;i++,l=arr[i]) if (l!==0) {
+      options.push([periodstyles[l].label,periodstyles[l].colour]);
+    }
+  }
   /* SCHEDULE APP */
   var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0'];
   if (formatOptions[0] === '1') {

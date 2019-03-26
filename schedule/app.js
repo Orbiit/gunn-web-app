@@ -35,7 +35,7 @@ function scheduleApp(options={}) {
   var days=localize('days').split('  '),
   months=localize('months').split('  ');
   function localizeTime(id, params = {}) {
-    let entry = langs[currentLang].times[id] || langs.en.times[id] || id;
+    let entry = localize(id, 'times');
     if (typeof entry === 'function') {
       return entry(params);
     } else {

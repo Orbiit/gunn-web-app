@@ -111,7 +111,8 @@ langs.en = {
     'feature-based': 'Many features based on the original Gunn App.',
     'before-material': 'Design based on ',
     material: 'Material Design',
-    'after-material': "'s icons, colours, and specifications."
+    'after-material': "'s icons, colours, and specifications.",
+    languages: 'Languages'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -217,8 +218,24 @@ if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   cookie.setItem('[gunn-web-app] language', lang);
 }
 let currentLang = cookie.getItem('[gunn-web-app] language');
-function localize(id) {
-  return langs[currentLang].other[id] || langs.en.other[id] || id;
+function localize(id, src = 'other') {
+  if (!langs[currentLang]) {
+    console.warn(`Language ${currentLang} not loaded.`);
+    langs[currentLang] = {};
+  }
+  if (!langs[currentLang][src]) {
+    langs[currentLang][src] = {};
+  }
+  if (langs[currentLang][src][id] !== undefined) return langs[currentLang][src][id];
+  if (!langs.en[src]) {
+    console.warn(`Source ${src} does not exist.`);
+    return id;
+  }
+  if (langs.en[src][id] === undefined) {
+    console.warn(`Nothing set for ${src}/${id}`);
+    return id;
+  }
+  return langs.en[src][id];
 }
 if (currentLang !== 'en') {
   const script = document.createElement('script');

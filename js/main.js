@@ -202,7 +202,7 @@ window.addEventListener("load",e=>{
     window.location = '?' + Date.now();
   });
   function getHTMLString(id) {
-    return langs[currentLang].html[id] || langs.en.html[id] || id;
+    return localize(id, 'html');
   }
   const langStringRegex = /\{\{([a-z0-9\-]+)\}\}/;
   const textNodes = [];

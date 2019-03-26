@@ -108,7 +108,9 @@ langs['en-gt'] = {
     'feature-based': 'Xu many Work can base to original beginning of Gunn should use Cheng sequence .',
     'before-material': 'base to of Assume meter',
     material: 'material material Assume meter',
-    'after-material': "of Figure Standard , Yan color with regulation grid ."
+    'after-material': "of Figure Standard , Yan color with regulation grid .",
+    languages: 'language Word',
+    'neither-theme': 'Both Do not Yes the Lord question'
   },
   other: {
     'anti-ugwaga': 'single hit / point hit Following Continued To Unofficial Gunn Web App',

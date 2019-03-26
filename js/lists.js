@@ -1,6 +1,6 @@
 window.addEventListener("load",e=>{
   function localizePlaceholder(id) {
-    return langs[currentLang].placeholders[id] || langs.en.placeholders[id] || id;
+    return localize(id, 'placeholders');
   }
   var listDisable = document.querySelector('#disable-lists');
   if (cookie.getItem("[gunn-web-app] scheduleapp.loadLists") === null)
