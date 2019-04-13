@@ -8,6 +8,8 @@ window.addEventListener("load",e=>{
     if (code[0] === 'A') barcodes = JSON.parse(code.slice(1));
     else barcodes=code.split(',').map((a, i) => [localize('barcode-legacy-default').replace('{N}', i), a]);
   }
+  const showingBarcodeParam = /(?:\?|&)barcode=([^&]+)/.exec(window.location.search);
+  const showingBarcode = showingBarcodeParam && decodeURIComponent(showingBarcodeParam[1]);
   function updateSave() {
     cookie.setItem('[gunn-web-app] barcode.ids', 'A' + JSON.stringify(barcodeelems.map(([a, b])=>[a.value, b.value])));
   }
@@ -39,6 +41,7 @@ window.addEventListener("load",e=>{
     code39(code,canvas);
     canvas.addEventListener("click",e=>{
       canvas.classList.remove('viewbarcode');
+      window.history.replaceState({}, '', './');
     },false);
     divcanvas.appendChild(canvas);
     li.appendChild(divcanvas);
@@ -58,7 +61,9 @@ window.addEventListener("load",e=>{
     ripple(viewbtn);
     viewbtn.addEventListener("click",e=>{
       canvas.classList.add('viewbarcode');
+      window.history.replaceState({}, '', '?barcode=' + encodeURIComponent(code));
     },false);
+    if (code === showingBarcode) canvas.classList.add('viewbarcode');
     viewbtn.innerHTML=`<i class="material-icons">&#xE8F4;</i>`;
     divbtn.appendChild(viewbtn);
     li.appendChild(divbtn);

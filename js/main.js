@@ -4,6 +4,7 @@
  * @param {lists.js} club-search - default search content in club search bar
  * @param {lists.js} staff-search - deault search content in staff search bar
  * @param {schedule.js} date - the date whose schedule is to be viewed
+ * @param {barcodes.js} barcode - the barcode to display
  */
 
 function ajax(url,callback,error) {
