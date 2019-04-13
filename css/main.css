@@ -259,14 +259,27 @@ body.light #seconds {
 body.dark #seconds {
   border-color: rgba(255,255,255,0.12);
 }
+.search-wrapper {
+  display: inline-block;
+  margin: 0 15px;
+  position: relative;
+}
+.search-wrapper .material-icons {
+  font-size: 16px;
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  margin: 5.5px 6px;
+}
 .notmaterial-input {
   border: none;
   background: none;
   color: inherit;
   font-size: 14px;
-  margin: 0 15px;
   vertical-align: top;
-  padding: 5px 10px;
+  padding: 5px;
+  padding-left: 25px;
   border-radius: 5px;
 }
 body.light .notmaterial-input {

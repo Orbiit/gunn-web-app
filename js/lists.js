@@ -2,6 +2,19 @@ window.addEventListener("load",e=>{
   function localizePlaceholder(id) {
     return localize(id, 'placeholders');
   }
+  function containsString(pattern) {
+    if (!pattern) return () => true;
+    if (pattern.slice(0, 2) === 'r/') {
+      try {
+        const regex = new RegExp(pattern.slice(2), 'i');
+        return str => regex.test(str);
+      } catch (e) {
+        //
+      }
+    }
+    pattern = pattern.toLowerCase();
+    return str => str.toLowerCase().includes(pattern);
+  }
   var listDisable = document.querySelector('#disable-lists');
   if (cookie.getItem("[gunn-web-app] scheduleapp.loadLists") === null)
     cookie.setItem("[gunn-web-app] scheduleapp.loadLists", "yes");
@@ -29,9 +42,7 @@ window.addEventListener("load",e=>{
   staffcontact=document.querySelector('#staffcontact'),
   staffh1=document.querySelector('#staffcontact h1'),
   staffcontent=document.querySelector('#staffcontact .content'),
-  staffsearch=document.querySelector('#staffsearch'),
-  staffstyle=document.createElement("style");
-  document.body.appendChild(staffstyle);
+  staffsearch=document.querySelector('#staffsearch');
   ajax(
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/staff.json',
     e=>{
@@ -47,6 +58,7 @@ window.addEventListener("load",e=>{
       }
       stafflist.innerHTML=innerHTML;
       ripple('#staff li');
+      if (staffsearch.value) doStaffSearch();
     },
     e=>{
       stafflist.innerHTML=`<li class="error">${e}${localize('staff-error')}</li>`;
@@ -81,12 +93,15 @@ window.addEventListener("load",e=>{
     }
   },false);
   function doStaffSearch() {
-    staffstyle.innerHTML=staffsearch.value?`#staff li:not([data-search*="${staffsearch.value.replace(/\\/g,'\\\\')}"i]){display:none}`:'';
+    const contains = containsString(staffsearch.value);
+    for (let i = 0; i < stafflist.children.length; i++) {
+      const li = stafflist.children[i];
+      li.style.display = contains(li.dataset.search) ? null : 'none';
+    }
   }
   const staffSearchValue = /(?:\?|&)staff-search=([^&]+)/.exec(window.location.search);
   if (staffSearchValue) {
     staffsearch.value = staffSearchValue[1];
-    doStaffSearch();
   }
   staffsearch.addEventListener("input", doStaffSearch,false);
   staffsearch.placeholder = localizePlaceholder('staff');
@@ -95,9 +110,7 @@ window.addEventListener("load",e=>{
   clubinfo=document.querySelector('#clubinfo'),
   clubh1=document.querySelector('#clubinfo h1'),
   clubcontent=document.querySelector('#clubinfo .content'),
-  clubsearch=document.querySelector('#clubsearch'),
-  clubstyle=document.createElement("style");
-  document.body.appendChild(clubstyle);
+  clubsearch=document.querySelector('#clubsearch');
   ajax(
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/clubs.json',
     e=>{
@@ -118,6 +131,7 @@ window.addEventListener("load",e=>{
       }
       clublist.innerHTML=innerHTML;
       ripple('#clubs li');
+      if (clubsearch.value) doClubSearch();
     },
     e=>{
       clublist.innerHTML=`<li class="error">${e}${localize('club-error')}</li>`;
@@ -136,12 +150,17 @@ window.addEventListener("load",e=>{
     }
   },false);
   function doClubSearch() {
-    clubstyle.innerHTML=clubsearch.value?`#clubs li:not([data-search*="${clubsearch.value.replace(/\\/g,'\\\\')}"i]){display:none}`:'';
+    const contains = containsString(clubsearch.value);
+    for (let i = 0; i < clublist.children.length; i++) {
+      const li = clublist.children[i];
+      li.style.display = contains(li.dataset.search) ? null : 'none';
+    }
   }
   const clubSearchValue = /(?:\?|&)club-search=([^&]+)/.exec(window.location.search);
   if (clubSearchValue) {
     clubsearch.value = clubSearchValue[1];
-    doClubSearch();
+  } else {
+    clubsearch.value = ['', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', ''][new Date().getDay()];
   }
   clubsearch.addEventListener("input", doClubSearch,false);
   clubsearch.placeholder = localizePlaceholder('clubs');
