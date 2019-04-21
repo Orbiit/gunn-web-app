@@ -64,6 +64,7 @@ window.addEventListener("load",e=>{
       stafflist.innerHTML=`<li class="error">${e}${localize('staff-error')}</li>`;
     }
   );
+  let timerStarted = false;
   stafflist.addEventListener("click",e=>{
     var target=e.target;
     if (target.tagName==='SPAN') target=target.parentNode;
@@ -72,21 +73,177 @@ window.addEventListener("load",e=>{
       var person=target.dataset.person;
       staffh1.innerHTML=person;
       if (staff[person].game) {
-        staffcontent.innerHTML=``;
-        var btn=document.createElement("button"),
-        clicks=document.createElement("p"),
-        count=+localStorage.getItem('[gunn-web-app] scheduleapp.clicks')||0;
-        btn.innerHTML="click me";
-        btn.className="material ripple-light raised";
+        staffcontent.innerHTML=`
+        <div style="display: flex; align-items: center;">
+          <div class="center" style="flex: auto;">
+            <style>.egg-snake:focus {box-shadow: 0 0 3px #FF594C;}</style>
+            <canvas class="egg-snake" width="20" height="20" tabindex="0" style="height: 100px; image-rendering: pixelated; cursor: pointer; border: 1px solid currentColor;"></canvas>
+          </div>
+          <div class="center">
+            <div><button class="material icon egg-arrow-up"><i class="material-icons">keyboard_arrow_up</i></button></div>
+            <div>
+              <button class="material icon egg-arrow-left"><i class="material-icons">keyboard_arrow_left</i></button>
+              <button class="material icon egg-arrow-play"><i class="material-icons">play_arrow</i></button>
+              <button class="material icon egg-arrow-right"><i class="material-icons">keyboard_arrow_right</i></button>
+            </div>
+            <div><button class="material icon egg-arrow-down"><i class="material-icons">keyboard_arrow_down</i></button></div>
+          </div>
+        </div>
+        <p>Score: <span class="egg-score">[press play to start]</span>; personal high score: <span class="egg-hscore"></span></p>
+        <p>Click on the box to give it focus so you can use arrow keys.</p>
+        <p><button class="material ripple-light raised egg-btn">click me</button> <span class="egg-count"></span> click(s)</p>
+        <p><button class="material ripple-light raised egg-buy-btn">extra click per click</button> <span class="egg-power"></span> click(s) per click (price: <span class="egg-price">50</span> clicks)</p>
+        <p><button class="material ripple-light raised egg-buy-t-btn">extra click per second</button> <span class="egg-extra"></span> click(s) per second (price: <span class="egg-t-price">100</span> clicks; note: this resets when UGWA is refreshed)</p>
+        `;
+        // snake game
+        const canvas = staffcontent.querySelector('.egg-snake');
+        const c = canvas.getContext('2d');
+        const playBtn = staffcontent.querySelector('.egg-arrow-play');
+        const leftBtn = staffcontent.querySelector('.egg-arrow-left');
+        const upBtn = staffcontent.querySelector('.egg-arrow-up');
+        const rightBtn = staffcontent.querySelector('.egg-arrow-right');
+        const downBtn = staffcontent.querySelector('.egg-arrow-down');
+        const scoreDisplay = staffcontent.querySelector('.egg-score');
+        const highScoreDisplay = staffcontent.querySelector('.egg-hscore');
+        [playBtn, leftBtn, upBtn, rightBtn, downBtn].forEach(ripple);
+        let direction = [0, 1];
+        leftBtn.onclick = e => direction = [-1, 0];
+        upBtn.onclick = e => direction = [0, -1];
+        rightBtn.onclick = e => direction = [1, 0];
+        downBtn.onclick = e => direction = [0, 1];
+        canvas.onkeydown = e => {
+          switch (e.keyCode) {
+            case 37: leftBtn.click(); break;
+            case 38: upBtn.click(); break;
+            case 39: rightBtn.click(); break;
+            case 40: downBtn.click(); break;
+            default: return;
+          }
+          e.preventDefault();
+        };
+        function getApplePos() {
+          let proposal;
+          do {
+            proposal = [Math.random() * 20 >> 0, Math.random() * 20 >> 0];
+          } while (inSnake(proposal));
+          return proposal;
+        }
+        function inSnake(loc) {
+          for (const [x, y] of snake) {
+            if (loc[0] === x && loc[1] === y) return true;
+          }
+          return false;
+        }
+        function render() {
+          c.clearRect(0, 0, 20, 20);
+          c.fillStyle = '#FF594C';
+          snake.forEach(([x, y]) => {
+            c.fillRect(x, y, 1, 1);
+          });
+          c.fillStyle = document.body.classList.contains('dark') ? 'white' : 'black';
+          c.fillRect(apple[0], apple[1], 1, 1);
+        }
+        let playing = false, score, snake, apple, idealLength;
+        let highScore = +cookie.getItem('[gunn-web-app] scheduleapp.snakeHighScore') || 0;
+        highScoreDisplay.textContent = highScore;
+        playBtn.onclick = e => {
+          scoreDisplay.textContent = score = 0;
+          snake = [[9, 9]];
+          apple = getApplePos();
+          idealLength = 3;
+          playing = setInterval(() => {
+            if (!document.body.contains(canvas)) {
+              clearInterval(playing);
+              playing = false;
+            }
+            const lastPos = snake[snake.length - 1];
+            const newPos = [lastPos[0] + direction[0], lastPos[1] + direction[1]];
+            if (newPos[0] < 0 || newPos[0] >= 20 || newPos[1] < 0 || newPos[1] >= 20 || inSnake(newPos)) {
+              clearInterval(playing);
+              playing = false;
+              scoreDisplay.textContent = score + ` (GAME OVER${score > highScore ? ' - NEW HIGH SCORE' : ''})`;
+              if (score > highScore) {
+                highScore = score;
+                highScoreDisplay.textContent = highScore;
+                cookie.setItem('[gunn-web-app] scheduleapp.snakeHighScore', highScore);
+              }
+            } else if (newPos[0] === apple[0] && newPos[1] === apple[1]) {
+              apple = getApplePos();
+              idealLength++;
+              scoreDisplay.textContent = ++score;
+            }
+            snake.push(newPos);
+            if (snake.length > idealLength) snake.splice(0, 1);
+            render();
+          }, 200);
+          console.log(snake);
+          render();
+        };
+        // clicker game
+        var btn=staffcontent.querySelector('.egg-btn'),
+        buyBtn=staffcontent.querySelector('.egg-buy-btn'),
+        clicks=staffcontent.querySelector('.egg-count'),
+        priceDisplay=staffcontent.querySelector('.egg-price'),
+        powerDisplay=staffcontent.querySelector('.egg-power'),
+        buyTBtn=staffcontent.querySelector('.egg-buy-t-btn'),
+        priceTDisplay=staffcontent.querySelector('.egg-t-price'),
+        extraDisplay=staffcontent.querySelector('.egg-extra'),
+        stats = timerStarted || {
+          count: +cookie.getItem('[gunn-web-app] scheduleapp.clicks')||0,
+          power: +cookie.getItem('[gunn-web-app] scheduleapp.clickPower')||1,
+          extra: 0
+        };
+        stats.clicks = clicks;
         ripple(btn);
-        clicks.innerHTML=`${count} click(s)`;
+        ripple(buyBtn);
+        ripple(buyTBtn);
+        clicks.textContent=stats.count;
         btn.addEventListener("click",e=>{
-          count++;
-          localStorage.setItem('[gunn-web-app] scheduleapp.clicks',count);
-          clicks.innerHTML=`${count} click(s)`;
+          stats.count += stats.power;
+          cookie.setItem('[gunn-web-app] scheduleapp.clicks',stats.count);
+          clicks.textContent=stats.count;
         },false);
-        staffcontent.appendChild(btn);
-        staffcontent.appendChild(clicks);
+        priceDisplay.textContent = (stats.power + 1) * 25;
+        powerDisplay.textContent = stats.power;
+        buyBtn.addEventListener("click",e=>{
+          const price = (stats.power + 1) * 25;
+          if (stats.count < price) {
+            priceDisplay.textContent = price + ' (which is too many for you)';
+          } else {
+            stats.count -= price;
+            clicks.textContent=stats.count;
+            cookie.setItem('[gunn-web-app] scheduleapp.clicks',stats.count);
+
+            stats.power++;
+            powerDisplay.textContent = stats.power;
+            cookie.setItem('[gunn-web-app] scheduleapp.clickPower',stats.power);
+            priceDisplay.textContent = (stats.power + 1) * 25;
+          }
+        },false);
+        priceTDisplay.textContent = stats.extra * 150 + 100;
+        extraDisplay.textContent = stats.extra;
+        buyTBtn.addEventListener("click",e=>{
+          const price = stats.extra * 150 + 100;
+          if (stats.count < price) {
+            priceTDisplay.textContent = price + ' (which is too many for you)';
+          } else {
+            stats.count -= price;
+            clicks.textContent=stats.count;
+            cookie.setItem('[gunn-web-app] scheduleapp.clicks',stats.count);
+
+            stats.extra++;
+            extraDisplay.textContent = stats.extra;
+            priceTDisplay.textContent = stats.extra * 150 + 100;
+          }
+        },false);
+        if (!timerStarted) {
+          timerStarted = stats;
+          setInterval(() => {
+            stats.count += stats.extra;
+            timerStarted.clicks.textContent=stats.count;
+            cookie.setItem('[gunn-web-app] scheduleapp.clicks',stats.count);
+          }, 1000);
+        }
       } else {
         staffcontent.innerHTML=`<p><strong>${localize('title')}</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>${localize('department')}</strong> ${staff[person].department}</p>`:''}<p><strong>${localize('email')}</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>${localize('phone')}</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>${localize('website')}</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>${localize('basement')}</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">${localize('oc-basement')}</a></p>`:''}`;
       }

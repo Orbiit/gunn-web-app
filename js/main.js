@@ -90,20 +90,20 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+"psa.html",
     e=>{
       document.querySelector('#psa').innerHTML=e;
-      if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')!==e+'v1') {
-        if (localStorage.getItem('[gunn-web-app] scheduleapp.psa')) {
+      if (cookie.getItem('[gunn-web-app] scheduleapp.psa')!==e+'v1') {
+        if (cookie.getItem('[gunn-web-app] scheduleapp.psa')) {
           psa.innerHTML=e;
           psa.parentNode.classList.add("show");
           document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
-            localStorage.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
+            cookie.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
           }, {once: true});
         } else {
-          localStorage.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
+          cookie.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
         }
       }
     },
     e=>{
-      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}${localize('psa-error')}</p>`+localStorage.getItem('[gunn-web-app] scheduleapp.psa');
+      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}${localize('psa-error')}</p>`+cookie.getItem('[gunn-web-app] scheduleapp.psa');
     }
   );
   var gradeCalc = {
