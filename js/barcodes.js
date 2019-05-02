@@ -1,7 +1,9 @@
 window.addEventListener("load",e=>{
+  const DEFAULT_BARCODE = "95000000"; // more obvious that this is the default since it looks funny
+  
   var barcodeul=document.querySelector('#barcode'),
   add=document.querySelector('#addbarcode'),
-  barcodes=[[localize('you'), "95012345"]],
+  barcodes=[[localize('you'), DEFAULT_BARCODE]],
   barcodeelems=[];
   let code = cookie.getItem('[gunn-web-app] barcode.ids');
   if (code) {
@@ -13,7 +15,7 @@ window.addEventListener("load",e=>{
   function updateSave() {
     cookie.setItem('[gunn-web-app] barcode.ids', 'A' + JSON.stringify(barcodeelems.map(([a, b])=>[a.value, b.value])));
   }
-  function newBarcodeLi([name = localize('barcode-default'), code = "95012345"] = []) {
+  function newBarcodeLi([name = localize('barcode-default'), code = DEFAULT_BARCODE] = []) {
     var li=document.createElement("li"),
     divcanvas=document.createElement("div"),
     input=document.createElement("input"),
