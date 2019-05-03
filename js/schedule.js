@@ -45,7 +45,7 @@ normalschedule=[
   ],
   null
 ];
-window.addEventListener("load",e=>{
+function initSchedule() {
   var letterPdFormat = localize('periodx'),
   periodstyles={
     NO_SCHOOL:{label:localize('no-school')},
@@ -475,4 +475,4 @@ window.addEventListener("load",e=>{
   customiserAdder(localize('brunch'),'Brunch',options[9][1],options[9][0])
     (localize('lunch'),'Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
-},false);
+}

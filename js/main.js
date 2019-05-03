@@ -37,6 +37,40 @@ function initMap() {
   );
   historicalOverlay.setMap(map);
 }
+
+// BEGIN MASSIVE PASTE FROM UGWITA
+const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
+  + encodeURIComponent("u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com")
+  + "/events?singleEvents=true&fields="
+  + encodeURIComponent("items(description,end(date,dateTime),start(date,dateTime),summary)")
+  + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o";
+const firstDay = "2018-08-13T00:00:00.000-07:00";
+const lastDay = "2019-05-31T23:59:59.999-07:00";
+const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
+function refreshAlts() {
+  return getAlternateSchedules().then(alts => {
+    const today = new Date();
+    alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
+    cookie.setItem("[gunn-web-app] lite.alts", JSON.stringify(alts));
+  });
+}
+function getAlternateSchedules() {
+  return Promise.all(keywords.map(keyword => fetch(calendarURL
+      + `&timeMin=${encodeURIComponent(firstDay)}&timeMax=${encodeURIComponent(lastDay)}&q=${keyword}`)
+    .then(res => res.json())))
+  .then(results => {
+    let alternateSchedules = {};
+    results.slice(1).forEach(events => Object.assign(alternateSchedules, toAlternateSchedules(events.items)));
+    const selfDays = results[0].items
+      .filter(day => day.summary.includes('SELF'))
+      .map(day => (day.start.dateTime || day.start.date).slice(5, 10));
+    alternateSchedules.self = selfDays;
+    return alternateSchedules;
+  });
+}
+const schedulesReady = cookie.getItem('[gunn-web-app] lite.alts') ? Promise.resolve() : refreshAlts();
+// END MASSIVE PASTE FROM UGWITA
+
 window.addEventListener("load",e=>{
   document.title = localize('appname');
   if (window !== window.parent) {
@@ -47,6 +81,7 @@ window.addEventListener("load",e=>{
     });
     return;
   }
+  schedulesReady.then(initSchedule);
   ripple("#footer > ul > li, button.material");
   let tabFocus = false;
   document.addEventListener('keydown', e => {
