@@ -46,6 +46,7 @@ function scheduleApp(options={}) {
       return entry;
     }
   }
+  let setTitle = false;
   function generateDay(offset=0) {
     var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
@@ -88,8 +89,10 @@ function scheduleApp(options={}) {
           })
         }</p>`,compactStr = localizeTime('starting-short', {T: compactTime, P: getPeriod(period).label}); // passing period or before school
         innerHTML += str;
-        if (options.compact) document.title = compactStr;
-        else document.title = str.replace(/<[^>]+>/g, '');
+        if (setTitle) {
+          if (options.compact) document.title = compactStr;
+          else document.title = str.replace(/<[^>]+>/g, '');
+        }
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
@@ -110,6 +113,12 @@ function scheduleApp(options={}) {
   function refocus() {
     if (options.update) container.innerHTML=generateDay(options.offset);
   }
+  function onBlur() {
+    setTitle = true;
+    generateDay(options.offset);
+    window.removeEventListener('blur', onBlur, false);
+  }
+  window.addEventListener('blur', onBlur, false);
   var returnval={
     element:elem,
     update() {
