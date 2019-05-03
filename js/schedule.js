@@ -228,6 +228,7 @@ window.addEventListener("load",e=>{
     if (~name.indexOf("self")) return "SELF";
     else if (~name.indexOf("flex")
         || ~name.indexOf("assembl")
+        || ~name.indexOf("attend") // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
         || ~name.indexOf("tutorial"))
       return "Flex";
     else if (~name.indexOf("brunch") || ~name.indexOf("break")) return "Brunch";
