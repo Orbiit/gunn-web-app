@@ -321,6 +321,12 @@ function initSchedule() {
       makeWeekHappen();
     }
   };
+  scheduleapp.options.onEndOfDay = () => {
+    Promise.resolve().then(() => {
+      var proposal={d:d.getDate()+1,m:d.getMonth(),y:d.getFullYear()};
+      if (datepicker.inrange(proposal)) datepicker.day=proposal;
+    });
+  };
   datepicker.wrapper.classList.add('hide');
   datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);

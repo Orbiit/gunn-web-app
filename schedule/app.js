@@ -75,7 +75,7 @@ function scheduleApp(options={}) {
             P: getPeriodSpan(period=getPeriodName(periods.length-1)),
             T: `<strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong>`
           })
-        }</p>`,compactStr=localize('appname'); // after school
+        }</p>`,compactStr=localize('appname'),options.onEndOfDay&&options.onEndOfDay(options.onEndOfDay = null); // after school
         else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${
           localizeTime('ending', {
             P: getPeriodSpan(period=getPeriodName(i)),
@@ -120,6 +120,7 @@ function scheduleApp(options={}) {
   }
   window.addEventListener('blur', onBlur, false);
   var returnval={
+    options,
     element:elem,
     update() {
       options.update=true;
