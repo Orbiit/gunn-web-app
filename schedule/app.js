@@ -47,6 +47,46 @@ function scheduleApp(options={}) {
     }
   }
   let setTitle = false;
+  const aps = {
+    '5-6': {
+      afternoon: 'Chinese Language & Culture (Library, G5, & F5), Environmental Science (Bow Gym)'
+    },
+    '5-7': {
+      morning: 'Spanish Language & Culture (Library, H1, H2, H3)',
+      afternoon: 'Japanese Language & Culture (F5), Physics 1: Algebra-based (Bow Gym)'
+    },
+    '5-8': {
+      morning: 'English Literature & Composition (Bow Gym)',
+      afternoon: 'French Language & Culture (Library)'
+    },
+    '5-9': {
+      morning: 'Chemistry (Library), Spanish Literature & Culture (G5)',
+      afternoon: 'German Language & Culture (Library), Psychology (Bow Gym)'
+    },
+    '5-10': {
+      morning: 'United States History (Bow Gym)',
+      afternoon: 'Computer Science Principles (Library)'
+    },
+
+    '5-13': {
+      morning: 'Biology (Library)',
+      afternoon: 'Physics C: Mechanics (12-2PM) (Bow Gym), Physics C: Electricity & Magnetism (2-4PM) (Bow Gym)'
+    },
+    '5-14': {
+      morning: 'Calculus AB (Bow Gym), Calculus BC (Bow Bym and Library)',
+      afternoon: 'Art History (V17)'
+    },
+    '5-15': {
+      afternoon: 'Macroeconomics (Bow Gym)'
+    },
+    '5-16': {
+      afternoon: 'Statistics (Bow Gym)'
+    },
+    '5-17': {
+      morning: 'Microeconomics (Bow Gym), Music Theory (Library or Possibly Music Room)',
+      afternoon: 'Computer Science A (Library)'
+    }
+  };
   function generateDay(offset=0) {
     var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
@@ -65,6 +105,21 @@ function scheduleApp(options={}) {
     } else if (options.normal[weekday]&&options.normal[weekday].length) {
       periods = options.normal[weekday];
     } else periods = [];
+    if (aps[(mez+1)+'-'+dia]) {
+      const ap = aps[(mez+1)+'-'+dia];
+      innerHTML += `<div class="material-card ap-card"><h1>AP exams today</h1>`;
+      if (ap.morning) {
+        const current = checkfuture && totalminute >= 8 * 60 && totalminute < 12 * 60;
+        innerHTML += `<span class="small-heading">Morning &mdash; 8:00 am &ndash; 12:00 pm</span>`;
+        innerHTML += `<span class="${current ? 'ap-current' : ''}">${ap.morning}${current ? ' &mdash; ongoing' : ''}</span>`;
+      }
+      if (ap.afternoon) {
+        const current = checkfuture && totalminute >= 12 * 60 && totalminute < 16 * 60;
+        innerHTML += `<span class="small-heading">Afternoon &mdash; 12:00 pm &ndash; 4:00 pm</span>`;
+        innerHTML += `<span class="${current ? 'ap-current' : ''}">${ap.afternoon}${current ? ' &mdash; ongoing' : ''}</span>`;
+      }
+      innerHTML += `</div>`;
+    }
     if (periods.length) {
       if (checkfuture) {
         for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;

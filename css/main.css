@@ -464,3 +464,20 @@ body.light .percent-wrapper {
 .anti-ugwaga #anti-ugwaga {
   display: flex;
 }
+
+/* TEMP: AP */
+.ap-card h1 {
+  margin-top: 0;
+}
+.small-heading {
+  font-size: 0.8em;
+  opacity: 0.7;
+  text-transform: uppercase;
+  display: block;
+}
+.small-heading:not(:first-child) {
+  margin-top: 10px;
+}
+.ap-current {
+  font-weight: bold;
+}
