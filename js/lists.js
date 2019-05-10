@@ -1,4 +1,3 @@
-let showClub = null;
 window.addEventListener("load",e=>{
   function localizePlaceholder(id) {
     return localize(id, 'placeholders');
@@ -297,7 +296,7 @@ window.addEventListener("load",e=>{
     }
   );
   let currentClub = null;
-  showClub = clubName => {
+  window.showClub = clubName => {
     clubinfo.classList.add('show');
     clubh1.innerHTML=clubName;
     currentClub = clubName;
