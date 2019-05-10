@@ -105,21 +105,6 @@ function scheduleApp(options={}) {
     } else if (options.normal[weekday]&&options.normal[weekday].length) {
       periods = options.normal[weekday];
     } else periods = [];
-    if (aps[(mez+1)+'-'+dia]) {
-      const ap = aps[(mez+1)+'-'+dia];
-      innerHTML += `<div class="material-card ap-card"><h1>AP exams today</h1>`;
-      if (ap.morning) {
-        const current = checkfuture && totalminute >= 8 * 60 && totalminute < 12 * 60;
-        innerHTML += `<span class="small-heading">Morning &mdash; 8:00 am &ndash; 12:00 pm</span>`;
-        innerHTML += `<span class="${current ? 'ap-current' : ''}">${ap.morning}${current ? ' &mdash; ongoing' : ''}</span>`;
-      }
-      if (ap.afternoon) {
-        const current = checkfuture && totalminute >= 12 * 60 && totalminute < 16 * 60;
-        innerHTML += `<span class="small-heading">Afternoon &mdash; 12:00 pm &ndash; 4:00 pm</span>`;
-        innerHTML += `<span class="${current ? 'ap-current' : ''}">${ap.afternoon}${current ? ' &mdash; ongoing' : ''}</span>`;
-      }
-      innerHTML += `</div>`;
-    }
     if (periods.length) {
       if (checkfuture) {
         for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;
@@ -148,6 +133,21 @@ function scheduleApp(options={}) {
           if (options.compact) document.title = compactStr;
           else document.title = str.replace(/<[^>]+>/g, '');
         }
+      }
+      if (aps[(mez+1)+'-'+dia]) {
+        const ap = aps[(mez+1)+'-'+dia];
+        innerHTML += `<div class="material-card ap-card"><h1>AP exams today</h1>`;
+        if (ap.morning) {
+          const current = checkfuture && totalminute >= 8 * 60 && totalminute < 12 * 60;
+          innerHTML += `<span class="small-heading">Morning &mdash; 8:00 am &ndash; 12:00 pm</span>`;
+          innerHTML += `<span class="${current ? 'ap-current' : ''}">${ap.morning}${current ? ' &mdash; ongoing' : ''}</span>`;
+        }
+        if (ap.afternoon) {
+          const current = checkfuture && totalminute >= 12 * 60 && totalminute < 16 * 60;
+          innerHTML += `<span class="small-heading">Afternoon &mdash; 12:00 pm &ndash; 4:00 pm</span>`;
+          innerHTML += `<span class="${current ? 'ap-current' : ''}">${ap.afternoon}${current ? ' &mdash; ongoing' : ''}</span>`;
+        }
+        innerHTML += `</div>`;
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
