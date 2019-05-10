@@ -87,6 +87,7 @@ function scheduleApp(options={}) {
       afternoon: 'Computer Science A (Library)'
     }
   };
+  const dayToPrime = {1: 2, 2: 3, 3: 5, 4: 7, 5: 11};
   function generateDay(offset=0) {
     var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
@@ -159,6 +160,18 @@ function scheduleApp(options={}) {
           else innerHTML+=localizeTime('self-ending', {T1: `<strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>`, T2: getUsefulTimePhrase(totalminute-period.start.totalminutes)});
           innerHTML+=`</span>`;
         }
+        if (period.name === 'Lunch' && dayToPrime[weekday]) {
+          const clubs = [];
+          Object.keys(savedClubs).forEach(clubName => {
+            if (savedClubs[clubName] % dayToPrime[weekday] === 0) {
+              clubs.push(clubName);
+            }
+          });
+          if (clubs.length) {
+            innerHTML += `<span class="small-heading">${localize('lunch-clubs')}</span>`
+              + clubs.map(club => `<a class="club-link" href="#" onclick="showClub(\`${club}\`);event.preventDefault()">${club}</a>`).join('');
+          }
+        }
         innerHTML+=`</div>`;
       }
     } else innerHTML+=`<span class="schedule-noschool">${getPeriod("NO_SCHOOL").label}</span>`;
@@ -183,6 +196,7 @@ function scheduleApp(options={}) {
       clearTimeout(timeout);
       timeout=setTimeout(returnval.update,(60-new Date().getSeconds())*1000);
       window.addEventListener("focus",refocus,false);
+      onSavedClubsUpdate = refocus;
     },
     stopupdate() {
       options.update=false;

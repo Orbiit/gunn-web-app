@@ -1,3 +1,4 @@
+let showClub = null;
 window.addEventListener("load",e=>{
   function localizePlaceholder(id) {
     return localize(id, 'placeholders');
@@ -267,7 +268,8 @@ window.addEventListener("load",e=>{
   clubinfo=document.querySelector('#clubinfo'),
   clubh1=document.querySelector('#clubinfo h1'),
   clubcontent=document.querySelector('#clubinfo .content'),
-  clubsearch=document.querySelector('#clubsearch');
+  clubsearch=document.querySelector('#clubsearch'),
+  clubAddList = document.getElementById('club-add-list');
   ajax(
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/clubs.json',
     e=>{
@@ -294,18 +296,51 @@ window.addEventListener("load",e=>{
       clublist.innerHTML=`<li class="error">${e}${localize('club-error')}</li>`;
     }
   );
+  let currentClub = null;
+  showClub = clubName => {
+    clubinfo.classList.add('show');
+    clubh1.innerHTML=clubName;
+    currentClub = clubName;
+    const club = clubs[clubName];
+    clubAddList.textContent = savedClubs[clubName] ? localize('remove-from-list') : localize('add-to-list');
+    clubAddList.style.display = /lunch/i.test(club.time) ? null : 'none';
+    let innerHTML = '';
+    innerHTML += `<p><strong>${localize('day')}</strong> ${club.day}</p>`;
+    innerHTML += `<p><strong>${localize('time')}</strong> ${club.time}</p>`;
+    innerHTML += `<p><strong>${localize('location')}</strong> ${club.room}</p>`;
+    innerHTML += `<p><strong>${localize('desc')}</strong> ${club.desc}</p>`;
+    innerHTML += `<p><strong>${localize('presidents')}</strong> ${club.president}</p>`;
+    innerHTML += `<p><strong>${localize('advisors')}</strong> ${club.teacher}</p>`;
+    innerHTML += `<p><strong>${localize('teacher-email')}</strong> <a href="mailto:${club.email}" target="_blank" rel="noopener noreferrer">${club.email}</a></p>`;
+    if (club.donation) innerHTML += `<p><strong>${localize('donation')}</strong> ${club.donation}</p>`;
+    clubcontent.innerHTML=innerHTML;
+    var s=clubcontent.querySelectorAll('a:not([href])');
+    for (var i=0;i<s.length;i++) s[i].href=s[i].textContent,s[i].setAttribute('target',"_blank"),s[i].setAttribute('rel',"noopener noreferrer");
+  }
   clublist.addEventListener("click",e=>{
     var target=e.target;
     if (target.tagName==='SPAN') target=target.parentNode;
     if (target.tagName==='LI'&&!target.classList.contains('error')) {
-      clubinfo.classList.add('show');
-      var club=target.dataset.club;
-      clubh1.innerHTML=club;
-      clubcontent.innerHTML=`<p><strong>${localize('day')}</strong> ${clubs[club].day}</p><p><strong>${localize('time')}</strong> ${clubs[club].time}</p><p><strong>${localize('location')}</strong> ${clubs[club].room}</p><p><strong>${localize('desc')}</strong> ${clubs[club].desc}</p><p><strong>${localize('presidents')}</strong> ${clubs[club].president}</p><p><strong>${localize('advisors')}</strong> ${clubs[club].teacher}</p><p><strong>${localize('teacher-email')}</strong> <a href="mailto:${clubs[club].email}" target="_blank" rel="noopener noreferrer">${clubs[club].email}</a></p>${clubs[club].donation?`<p><strong>${localize('donation')}</strong> ${clubs[club].donation}</p>`:''}`;
-      var s=clubcontent.querySelectorAll('a:not([href])');
-      for (var i=0;i<s.length;i++) s[i].href=s[i].textContent,s[i].setAttribute('target',"_blank"),s[i].setAttribute('rel',"noopener noreferrer");
+      showClub(target.dataset.club);
     }
   },false);
+  clubAddList.addEventListener('click', e => {
+    if (!currentClub) return;
+    if (savedClubs[currentClub]) {
+      delete savedClubs[currentClub];
+      clubAddList.childNodes[0].nodeValue = localize('add-to-list');
+    } else {
+      savedClubs[currentClub] = 1;
+      const days = clubs[currentClub].day;
+      if (/monday/i.test(days)) savedClubs[currentClub] *= 2;
+      if (/tuesday/i.test(days)) savedClubs[currentClub] *= 3;
+      if (/wednesday/i.test(days)) savedClubs[currentClub] *= 5;
+      if (/thursday/i.test(days)) savedClubs[currentClub] *= 7;
+      if (/friday/i.test(days)) savedClubs[currentClub] *= 11;
+      clubAddList.childNodes[0].nodeValue = localize('remove-from-list');
+    }
+    saveSavedClubs();
+  });
   function doClubSearch() {
     const contains = containsString(clubsearch.value);
     for (let i = 0; i < clublist.children.length; i++) {

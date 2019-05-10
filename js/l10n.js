@@ -177,7 +177,10 @@ langs.en = {
     donation: 'Suggested donation:',
     'before-alt-msg': 'This is an alternate schedule. The school says, "',
     'after-alt-msg': '"',
-    appname: 'Unofficial Gunn Web App (UGWA)'
+    appname: 'Unofficial Gunn Web App (UGWA)',
+    'add-to-list': 'Add to my clubs',
+    'remove-from-list': 'Remove from my clubs',
+    'lunch-clubs': 'Clubs'
   },
   placeholders: {
     clubs: 'Search clubs',

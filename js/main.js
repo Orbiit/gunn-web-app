@@ -71,6 +71,17 @@ function getAlternateSchedules() {
 const schedulesReady = cookie.getItem('[gunn-web-app] lite.alts') ? Promise.resolve() : refreshAlts();
 // END MASSIVE PASTE FROM UGWITA
 
+let savedClubs = {}, onSavedClubsUpdate = null;
+if (cookie.getItem('[gunn-web-app] club-list.spring18-19')) {
+  try {
+    savedClubs = JSON.parse(cookie.getItem('[gunn-web-app] club-list.spring18-19'));
+  } catch (e) {}
+}
+function saveSavedClubs() {
+  cookie.setItem('[gunn-web-app] club-list.spring18-19', JSON.stringify(savedClubs));
+  if (onSavedClubsUpdate) onSavedClubsUpdate();
+}
+
 window.addEventListener("load",e=>{
   document.title = localize('appname');
   if (window !== window.parent) {
