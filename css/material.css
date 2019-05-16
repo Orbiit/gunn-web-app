@@ -197,6 +197,25 @@ body.dark .material-radio:not(:checked) {
   transform: scale(4);
   opacity: 0.1;
 }
+.is-joke {
+  overflow: hidden;
+  margin: 0;
+  max-height: 0;
+  transition: all .2s;
+}
+.radios-wrapper:hover .is-joke {
+  margin: 1em 0;
+  max-height: 17px;
+}
+.joke-explanation {
+  margin-left: 5px;
+  opacity: 0;
+  transition: all .2s;
+}
+.is-joke:hover .joke-explanation {
+  margin-left: 15px;
+  opacity: 0.5;
+}
 ul.material-list {
   margin: 0;
   padding: 0;

@@ -93,7 +93,7 @@ function initSchedule() {
     window.location.reload();
   }
   toEach('input[name=hour]',t=>t.addEventListener("click",e=>{
-    formatOptions[1] = e.target.value==='h12' ? '12' : '24';
+    formatOptions[1] = e.target.value==='h12' ? '12' : e.target.value==='h0' ? '0' : '24';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     window.location.reload();
   },false));
@@ -136,7 +136,8 @@ function initSchedule() {
           if (items[i].start) {
             var start=new Date(items[i].start),
             end=new Date(items[i].end);
-            if (formatOptions[1]==='24') timerange=`${start.getHours()}:${('0'+start.getMinutes()).slice(-2)} &ndash; ${end.getHours()}:${('0'+end.getMinutes()).slice(-2)}`;
+            if (formatOptions[1]==='0') timerange = `${start.getMinutes()} &ndash; ${end.getMinutes()}`;
+            else if (formatOptions[1]==='24') timerange=`${start.getHours()}:${('0'+start.getMinutes()).slice(-2)} &ndash; ${end.getHours()}:${('0'+end.getMinutes()).slice(-2)}`;
             else timerange=`${(start.getHours()-1)%12+1}:${('0'+start.getMinutes()).slice(-2)}${start.getHours()<12?'a':'p'}m &ndash; ${(end.getHours()-1)%12+1}:${('0'+end.getMinutes()).slice(-2)}${end.getHours()<12?'a':'p'}m`;
           }
           if (items[i].loc) {
@@ -304,6 +305,7 @@ function initSchedule() {
       offset:0,
       update:true,
       h24: formatOptions[1] === '24',
+      h0Joke: formatOptions[1] === '0',
       compact: formatOptions[2] === 'compact',
       self: +formatOptions[3]
     });

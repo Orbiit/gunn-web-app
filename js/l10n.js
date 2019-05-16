@@ -112,7 +112,9 @@ langs.en = {
     'before-material': 'Design based on ',
     material: 'Material Design',
     'after-material': "'s icons, colours, and specifications.",
-    languages: 'Languages'
+    languages: 'Languages',
+    'this-is-joke': '(This is a joke.)',
+    'no-hour': 'No hours'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

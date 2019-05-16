@@ -11,7 +11,8 @@ function scheduleApp(options={}) {
   }
   function getHumanTime(messytime) {
     var hr=+messytime.slice(0,2)%24;
-    if (options.h24) return `${hr}:${messytime.slice(2)}`;
+    if (options.h0Joke) return +messytime.slice(2) + '';
+    else if (options.h24) return `${hr}:${messytime.slice(2)}`;
     else return `${(hr-1)%12+1}:${messytime.slice(2)}${hr<12?'a':'p'}m`;
   }
   function getFontColour(colour) {
