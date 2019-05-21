@@ -70,9 +70,10 @@ window.addEventListener("load",e=>{
     if (target.tagName==='SPAN') target=target.parentNode;
     if (target.tagName==='LI'&&!target.classList.contains('error')) {
       staffcontact.classList.add('show');
-      var person=target.dataset.person;
-      staffh1.innerHTML=person;
-      if (staff[person].game) {
+      var personName=target.dataset.person;
+      staffh1.innerHTML=personName;
+      const person = staff[personName];
+      if (person.game) {
         staffcontent.innerHTML=`
         <div style="display: flex; align-items: center;">
           <div class="center" style="flex: auto;">
@@ -245,7 +246,14 @@ window.addEventListener("load",e=>{
           }, 1000);
         }
       } else {
-        staffcontent.innerHTML=`<p><strong>${localize('title')}</strong> ${staff[person].jobTitle}</p>${staff[person].department?`<p><strong>${localize('department')}</strong> ${staff[person].department}</p>`:''}<p><strong>${localize('email')}</strong> <a href="mailto:${staff[person].email}" target="_blank" rel="noopener noreferrer">${staff[person].email}</a></p><p><strong>${localize('phone')}</strong> ${staff[person].phone}</p>${staff[person].webpage?`<p><strong>${localize('website')}</strong> <a href="${staff[person].webpage}" target="_blank" rel="noopener noreferrer">${staff[person].webpage}</a></p>`:''}${staff[person].oc?`<p><strong>${localize('basement')}</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">${localize('oc-basement')}</a></p>`:''}`;
+        let innerHTML = '';
+        innerHTML += `<p><strong>${localize('title')}</strong> ${person.jobTitle}</p>`;
+        innerHTML += `<p><strong>${localize('department')}</strong> ${person.department}</p>`;
+        innerHTML += `<p><strong>${localize('email')}</strong> <a href="mailto:${person.email}" target="_blank" rel="noopener noreferrer">${person.email}</a></p>`;
+        if (person.phone) innerHTML += `<p><strong>${localize('phone')}</strong> ${person.phone}</p>`;
+        if (person.webpage) innerHTML += `<p><strong>${localize('website')}</strong> <a href="${person.webpage}" target="_blank" rel="noopener noreferrer">${person.webpage}</a></p>`;
+        if (person.oc) innerHTML += `<p><strong>${localize('basement')}</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">${localize('oc-basement')}</a></p>`;
+        staffcontent.innerHTML=innerHTML;
       }
     }
   },false);
