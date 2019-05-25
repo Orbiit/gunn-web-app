@@ -163,7 +163,7 @@ window.addEventListener("load",e=>{
     worth = (+gradeCalc.worth.value || 0) / 100,
     minimum = (+gradeCalc.minimum.value || 0) / 100,
     result = Math.round((minimum - current * (1 - worth)) / worth * 10000) / 100;
-    if (result < 0) {
+    if (result <= 0) {
       gradeCalc.output.innerHTML = `${localize('no-study-before-emph')}<strong>${localize('no-study-emph')}</strong>${localize('no-study-after-emph')}`;
     } else if (worth === 0 || isNaN(result)) {
       gradeCalc.output.innerHTML = localize('zero-error');
