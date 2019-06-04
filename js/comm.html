@@ -35,7 +35,9 @@ function getMessages() {
     nextMessageGetTimeoutID = null;
   }
   fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
+    const isAtBottom = output.scrollHeight - output.scrollTop === output.clientHeight;
     output.value = Object.values(messages).map(m => m.replace(illegalChars, '')).join('\n');
+    if (isAtBottom) output.scrollTop = output.scrollHeight;
     nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
   });
 }
