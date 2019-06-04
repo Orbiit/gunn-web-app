@@ -12,6 +12,7 @@
   <body>
     <textarea id="messages" rows="8" cols="80"></textarea>
     <p><input id="messager" placeholder="Send a message"></p>
+    <p>Only consonants, numbers, and a few punctuation marks are allowed.</p>
     <script>
 const params = new URL(location).searchParams;
 const FETCH_DELAY = +params.get('fetch-delay') || 1000;
@@ -35,7 +36,7 @@ function getMessages() {
   }
   fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
     output.value = Object.values(messages).map(m => m.replace(illegalChars, '')).join('\n');
-    // nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
+    nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
   });
 }
 getMessages();
