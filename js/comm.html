@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Interstudent Comm.</title>
+    <meta name="description" content="Indirectly suggested by someone who wrote on the board in the AP CS classroom."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      /**/
+    </style>
+  </head>
+  <body>
+    <textarea id="messages" rows="8" cols="80"></textarea>
+    <p><input id="messager" placeholder="Send a message"></p>
+    <script>
+const params = new URL(location).searchParams;
+const FETCH_DELAY = +params.get('fetch-delay') || 1000;
+const jsonStore = params.get('json-store') || 'https://www.jsonstore.io/7f1880d826cfd2c1a617d0ebb33638d52d31111dd392d4ecd0aab6213d3d221b';
+const username = params.get('name');
+const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?<>0-9\-=[\];'/~#%^&*(){}|":+]/gi;
+if (!username) {
+  params.set('name', prompt('Username:').replace(illegalChars, ''));
+  window.location.replace('?' + params);
+}
+function genID() {
+  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+}
+const output = document.getElementById('messages');
+const input = document.getElementById('messager');
+let nextMessageGetTimeoutID = null;
+function getMessages() {
+  if (nextMessageGetTimeoutID) {
+    clearTimeout(nextMessageGetTimeoutID);
+    nextMessageGetTimeoutID = null;
+  }
+  fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
+    output.value = Object.values(messages).map(m => m.replace(illegalChars, '')).join('\n');
+    // nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
+  });
+}
+getMessages();
+input.addEventListener('keydown', e => {
+  if (e.keyCode === 13) {
+    input.value = input.value.replace(illegalChars, '');
+    if (input.value) {
+      fetch(jsonStore + '/' + genID(), {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify(`[${username}] ${input.value}`)
+      }).then(getMessages);
+      input.value = '';
+    }
+  }
+});
+    </script>
+  </body>
+</html>
