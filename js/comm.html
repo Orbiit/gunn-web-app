@@ -15,10 +15,13 @@
         font-weight: normal;
         text-decoration: line-through;
       }
+      .note {
+        font-weight: normal;
+      }
     </style>
   </head>
   <body>
-    <textarea id="messages" rows="8" cols="80"></textarea>
+    <textarea id="messages" rows="8" cols="80" readonly></textarea>
     <p><input id="messager" placeholder="Send a message"></p>
     <p id="preview"></p>
     <p>Only consonants, numbers, and a few punctuation marks are allowed.</p>
@@ -26,6 +29,7 @@
 const params = new URL(location).searchParams;
 const FETCH_DELAY = +params.get('fetch-delay') || 1000;
 const jsonStore = params.get('json-store') || 'https://www.jsonstore.io/7f1880d826cfd2c1a617d0ebb33638d52d31111dd392d4ecd0aab6213d3d221b';
+const MAX_LENGTH = 50;
 const username = params.get('name');
 const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?<>0-9\-=[\];'/~#%^&*(){}|":+]|\s+$|^\s+|\s+(?=\s)/gi;
 if (!username) {
@@ -54,7 +58,7 @@ function getMessages() {
 getMessages();
 input.addEventListener('keydown', e => {
   if (e.keyCode === 13) {
-    input.value = input.value.replace(illegalChars, '');
+    input.value = input.value.slice(0, MAX_LENGTH).replace(illegalChars, '');
     if (input.value) {
       fetch(jsonStore + '/' + genID(), {
         method: 'POST',
@@ -81,6 +85,10 @@ input.addEventListener('input', e => {
     preview.appendChild(strike);
   }
   preview.appendChild(document.createTextNode(input.value.slice(i)));
+  const note = document.createElement('span');
+  note.classList.add('note');
+  note.textContent = ` (${input.value.length} / ${MAX_LENGTH})`;
+  preview.appendChild(note);
 });
     </script>
   </body>
