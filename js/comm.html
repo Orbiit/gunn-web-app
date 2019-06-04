@@ -6,19 +6,28 @@
     <meta name="description" content="Indirectly suggested by someone who wrote on the board in the AP CS classroom."/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
-      /**/
+      #preview {
+        font-weight: bold;
+        white-space: pre-wrap;
+      }
+      .strikethrough {
+        color: red;
+        font-weight: normal;
+        text-decoration: line-through;
+      }
     </style>
   </head>
   <body>
     <textarea id="messages" rows="8" cols="80"></textarea>
     <p><input id="messager" placeholder="Send a message"></p>
+    <p id="preview"></p>
     <p>Only consonants, numbers, and a few punctuation marks are allowed.</p>
     <script>
 const params = new URL(location).searchParams;
 const FETCH_DELAY = +params.get('fetch-delay') || 1000;
 const jsonStore = params.get('json-store') || 'https://www.jsonstore.io/7f1880d826cfd2c1a617d0ebb33638d52d31111dd392d4ecd0aab6213d3d221b';
 const username = params.get('name');
-const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?<>0-9\-=[\];'/~#%^&*(){}|":+]/gi;
+const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?<>0-9\-=[\];'/~#%^&*(){}|":+]|\s+$|^\s+|\s+(?=\s)/gi;
 if (!username) {
   params.set('name', prompt('Username:').replace(illegalChars, ''));
   window.location.replace('?' + params);
@@ -28,6 +37,7 @@ function genID() {
 }
 const output = document.getElementById('messages');
 const input = document.getElementById('messager');
+const preview = document.getElementById('preview');
 let nextMessageGetTimeoutID = null;
 function getMessages() {
   if (nextMessageGetTimeoutID) {
@@ -52,8 +62,25 @@ input.addEventListener('keydown', e => {
         body: JSON.stringify(`[${username}] ${input.value}`)
       }).then(getMessages);
       input.value = '';
+      clearChildren(preview);
     }
   }
+});
+function clearChildren(elem) {
+  while (elem.firstChild) elem.removeChild(elem.firstChild);
+}
+input.addEventListener('input', e => {
+  clearChildren(preview);
+  let match, i = 0;
+  while (match = illegalChars.exec(input.value)) {
+    preview.appendChild(document.createTextNode(input.value.slice(i, match.index)));
+    const strike = document.createElement('span');
+    strike.classList.add('strikethrough');
+    i = match.index + match[0].length;
+    strike.appendChild(document.createTextNode(input.value.slice(match.index, i)));
+    preview.appendChild(strike);
+  }
+  preview.appendChild(document.createTextNode(input.value.slice(i)));
 });
     </script>
   </body>
