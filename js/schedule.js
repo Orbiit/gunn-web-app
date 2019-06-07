@@ -175,8 +175,8 @@ function initSchedule() {
           var altSched = toAlternateSchedules(alternateJSON);
           var ugwitaAltObj = {};
           var change = false;
-          if (cookie.getItem('[gunn-web-app] lite.alts'))
-            ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
+          if (cookie.getItem('[gunn-web-app] alts.2019-20'))
+            ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
           var selfDay = json.find(ev => ev.summary.includes('SELF'));
           if (selfDay) {
             var date = (selfDay.start.dateTime || selfDay.start.date).slice(5, 10);
@@ -208,7 +208,7 @@ function initSchedule() {
             }
           });
           if (change) {
-            cookie.setItem('[gunn-web-app] lite.alts', JSON.stringify(ugwitaAltObj));
+            cookie.setItem('[gunn-web-app] alts.2019-20', JSON.stringify(ugwitaAltObj));
             scheduleapp.offset = scheduleapp.offset;
             makeWeekHappen();
           }
@@ -249,8 +249,8 @@ function initSchedule() {
     if (ugwitaData === undefined) return true;
     var [month, day] = dayString.split('-').map(Number);
     var date;
-    if (month > 6) date = new Date(2018, month - 1, day);
-    else date = new Date(2019, month - 1, day);
+    if (month > 6) date = new Date(2019, month - 1, day);
+    else date = new Date(2020, month - 1, day);
     const periods = [];
     if (ugwitaData !== null) {
       ugwitaData.forEach(p => {
@@ -288,7 +288,7 @@ function initSchedule() {
     return true;
   }
   function alternateGet() {
-    if (cookie.getItem('[gunn-web-app] lite.alts')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] lite.alts'));
+    if (cookie.getItem('[gunn-web-app] alts.2019-20')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
     else alternates={};
     selfDays = alternates.self || [];
     for (var dayString in alternates) {
@@ -312,7 +312,7 @@ function initSchedule() {
     makeWeekHappen();
   }
   alternateGet();
-  var datepicker=new DatePicker({d:13,m:7,y:2018},{d:31,m:4,y:2019}),
+  var datepicker=new DatePicker({d:13,m:7,y:2019},{d:4,m:5,y:2020}),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   datepicker.onchange=e=>{
@@ -329,6 +329,8 @@ function initSchedule() {
       if (datepicker.inrange(proposal)) datepicker.day=proposal;
     });
   };
+  scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
+  makeWeekHappen(); // rerender week preview in case it's summer and isSummer has just been defined
   datepicker.wrapper.classList.add('hide');
   datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);

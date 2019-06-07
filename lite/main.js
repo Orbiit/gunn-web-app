@@ -20,7 +20,7 @@ function refreshAlts() {
   getAlternateSchedules(alts => {
     const today = new Date();
     alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
-    storage.setItem("[gunn-web-app] lite.alts", JSON.stringify(alts));
+    storage.setItem("[gunn-web-app] lite.alts19-20", JSON.stringify(alts));
     if (window.location.search === '?genalts') window.location.replace('../');
     else window.location.reload();
   });
@@ -122,17 +122,17 @@ try {
 
 if (window.location.search === '?genalts') refreshAlts();
 
-const startDate = {year: 2018, month: 5, date: 13},
-endDate = {year: 2019, month: 4, date: 31};
+const startDate = {year: 2019, month: 7, date: 13},
+endDate = {year: 2020, month: 5, date: 4};
 
 let alternateSchedules;
 try {
-  alternateSchedules = JSON.parse(storage.getItem("[gunn-web-app] lite.alts") || false);
+  alternateSchedules = JSON.parse(storage.getItem("[gunn-web-app] lite.alts19-20") || false);
 } catch (e) {
-  storage.setItem("[gunn-web-app] lite.alts", "");
+  storage.setItem("[gunn-web-app] lite.alts19-20", "");
   alternateSchedules = {};
 }
-if (!storage.getItem("[gunn-web-app] lite.alts") || !alternateSchedules.lastGenerated
+if (!storage.getItem("[gunn-web-app] lite.alts19-20") || !alternateSchedules.lastGenerated
     || Date.now() - new Date(...alternateSchedules.lastGenerated).getTime() > 2592000000) { // 30 days
   refreshAlts();
 }

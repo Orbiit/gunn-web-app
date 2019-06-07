@@ -5,6 +5,7 @@ const noHTMLRegex = /<.*?>/g;
 const noNbspRegex = /&nbsp;/g;
 const timeGetterRegex = /\(?(1?[0-9]):([0-9]{2}) *(?:-|–) *(1?[0-9]):([0-9]{2}) *(pm)?\)?/;
 const newLineRegex = /\r?\n/g;
+const noNewLineBeforeTimeRegex = /\n\(/g; // hack for 2019-09-06 schedule
 
 const altScheduleRegex = /schedule|extended|lunch/i;
 const noSchoolRegex = /holiday|no\sstudents|break|development/i;
@@ -12,7 +13,11 @@ const noSchoolRegex = /holiday|no\sstudents|break|development/i;
 function parseAlternate(summary, description) {
   if (altScheduleRegex.test(summary)) {
     if (!description) return undefined;
-    description = "\n" + description.replace(HTMLnewlineRegex, "\n").replace(noHTMLRegex, "").replace(noNbspRegex, " ");
+    description = "\n" + description
+      .replace(noNewLineBeforeTimeRegex, '(')
+      .replace(HTMLnewlineRegex, "\n")
+      .replace(noHTMLRegex, "")
+      .replace(noNbspRegex, " ");
     let periods = [];
     description.split(newLineRegex).map(str => {
       let times;

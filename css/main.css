@@ -470,19 +470,9 @@ body.light .percent-wrapper {
   opacity: 0.7;
   text-transform: uppercase;
   display: block;
+  margin-top: 10px;
 }
 .club-link {
   display: table;
   color: inherit;
-}
-
-/* TEMP: AP */
-.ap-card h1 {
-  margin-top: 0;
-}
-.small-heading:not(:first-child) {
-  margin-top: 10px;
-}
-.ap-current {
-  font-weight: bold;
 }

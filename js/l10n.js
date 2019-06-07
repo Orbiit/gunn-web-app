@@ -182,7 +182,8 @@ langs.en = {
     appname: 'Unofficial Gunn Web App (UGWA)',
     'add-to-list': 'Add to my clubs',
     'remove-from-list': 'Remove from my clubs',
-    'lunch-clubs': 'Clubs'
+    'lunch-clubs': 'Clubs',
+    'summer': 'Enjoy your summer!'
   },
   placeholders: {
     clubs: 'Search clubs',
