@@ -60,7 +60,9 @@ function scheduleApp(options={}) {
     function getPeriodName(index) {
       return periods[index].name === 'Flex' && isSELF ? 'SELF' : periods[index].name;
     }
-    if (options.isSummer && options.isSummer(ano, mez, dia)) {
+    if (options.customSchedule) periods = options.customSchedule(d, ano, mez, dia, weekday);
+    if (periods);
+    else if (options.isSummer && options.isSummer(ano, mez, dia)) {
       return innerHTML + `<span class="schedule-noschool">${localize("summer")}</span>`;
     } else if (options.alternates[(mez+1)+'-'+dia]) {
       var sched=options.alternates[(mez+1)+'-'+dia];
