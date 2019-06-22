@@ -249,6 +249,100 @@ window.addEventListener("load",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
+  const MAX_LENGTH = 50;
+  const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?0-9\-;'/~#%&()":]|\s+$|^\s+|\s+(?=\s)/gi;
+  const trim = /\s+$|^\s+|\s+(?=\s)/g;
+  const output = document.getElementById('chat');
+  const input = document.getElementById('msg-content');
+  const sendInput = document.getElementById('send');
+  const preview = document.getElementById('preview');
+  const FETCH_DELAY = 5000;
+  let username, getInput, jsonStore;
+  input.placeholder = localize('send-msg', 'placeholders');
+  document.getElementById('open-chat').addEventListener('click', e => {
+    document.body.classList.add('chat-enabled');
+    output.value = 'Loading...\n';
+    fetch('./chats.txt?v=' + Date.now()).then(r => r.text()).then(urls => {
+      urls = urls.split(/\r?\n/);
+      jsonStore = urls.find(url => url[0] === 'h');
+      if (!jsonStore) return Promise.reject('No current chat open.');
+      let newInput;
+      getInput = new Promise(res => newInput = res);
+      sendInput.addEventListener('click', e => {
+        newInput(input.value.replace(illegalChars, '').slice(0, MAX_LENGTH).replace(trim, ''));
+        getInput = new Promise(res => newInput = res);
+        input.value = '';
+        preview.textContent = '';
+      });
+      input.addEventListener('keydown', e => {
+        if (e.keyCode === 13) sendInput.click();
+      });
+      input.addEventListener('input', e => {
+        preview.textContent = '';
+        if (!input.value) return;
+        let match, i = 0;
+        while (match = illegalChars.exec(input.value)) {
+          preview.appendChild(document.createTextNode(input.value.slice(i, match.index)));
+          const strike = document.createElement('span');
+          strike.classList.add('strikethrough');
+          i = match.index + match[0].length;
+          strike.appendChild(document.createTextNode(input.value.slice(match.index, i)));
+          preview.appendChild(strike);
+        }
+        preview.appendChild(document.createTextNode(input.value.slice(i)));
+        const note = document.createElement('span');
+        note.classList.add('chat-input-length');
+        note.textContent = ` (${input.value.replace(illegalChars, '').length} / ${MAX_LENGTH})`;
+        preview.appendChild(note);
+      });
+    }).then(async () => {
+      username = cookie.getItem('[gunn-web-app] chat.username');
+      while (!username) {
+        output.value += 'Enter your name:\n';
+        username = await getInput;
+        output.value += username + '\n';
+      }
+      cookie.setItem('[gunn-web-app] chat.username', username);
+    }).then(async () => {
+      let nextMessageGetTimeoutID = null;
+      function getMessages() {
+        if (nextMessageGetTimeoutID) {
+          clearTimeout(nextMessageGetTimeoutID);
+          nextMessageGetTimeoutID = null;
+        }
+        fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
+          const isAtBottom = output.scrollHeight - output.scrollTop === output.clientHeight;
+          output.value = Object.values(messages || {}).map(m => {
+            const [username, msg] = m
+              .split('|')
+              .map(p => p
+                .replace(illegalChars, '')
+                .slice(0, MAX_LENGTH)
+                .replace(trim, ''));
+            return `[${username || 's-lf pr-gr-m'}] ${msg || 'y--t'}`;
+          }).join('\n');
+          if (isAtBottom) output.scrollTop = output.scrollHeight;
+          if (nextMessageGetTimeoutID) clearTimeout(nextMessageGetTimeoutID);
+          nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
+        });
+      }
+      getMessages();
+      while (true) {
+        let message = await getInput;
+        if (message) {
+          fetch(jsonStore + '/' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2), {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(`${username}|${message}`)
+          }).then(getMessages);
+        }
+      }
+    }).catch(e => {
+      output.value += 'Could not load chat.\n' + e;
+      input.disabled = true;
+      sendInput.disabled = true;
+    });
+  });
   function getHTMLString(id) {
     return localize(id, 'html');
   }

@@ -114,7 +114,12 @@ langs.en = {
     'after-material': "'s icons, colours, and specifications.",
     languages: 'Languages',
     'this-is-joke': '(This is a joke.)',
-    'no-hour': 'No hours'
+    'no-hour': 'No hours',
+    'comm': 'Interstudent communication',
+    'prev-chats': 'Previous chats',
+    'open-chat': 'Join chat',
+    'send': 'Send',
+    'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed.'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -187,7 +192,8 @@ langs.en = {
   },
   placeholders: {
     clubs: 'Search clubs',
-    staff: 'Search staff'
+    staff: 'Search staff',
+    'send-msg': 'Send a message'
   },
   times: {
     duration({T: minutes}) {

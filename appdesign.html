@@ -80,6 +80,14 @@
       <p>{{finals-worth}}<span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
       <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
       <p id="grade-output"></p>
+      <h1>{{comm}}<a href="./prev-chats.html" target="_blank" rel="noopener noreferrer" class="chat-history"><button class="material">{{prev-chats}}</button></a></h1>
+      <textarea id="chat" readonly></textarea>
+      <button class="material ripple-light raised" id="open-chat">{{open-chat}}</button>
+      <div id="chatter">
+        <p class="send-msg-wrapper"><input type="text" placeholder="..." id="msg-content"><button class="material" id="send">{{send}}</button></p>
+        <p id="preview"></p>
+        <p>{{msg-note}}</p>
+      </div>
       <h1>{{map}}</h1>
       <p class="center" id="maptoggle"></p>
       <p><strong>{{for-image}}</strong>{{image-instruct}}</p>

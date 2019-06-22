@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Previous chats</title>
+    <meta name="description" content="An unsecure archive of chats for UGWA's Interstudent Communication"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+      :focus {
+        outline: none;
+      }
+      body {
+        margin: 20px;
+        font-family: monospace;
+        font-size: 14px;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+      }
+      body.light {
+        background-color: #fafafa;
+        color: rgba(0,0,0,0.87);
+      }
+      body.dark {
+        background-color: #303030;
+        color: white;
+      }
+      a {
+        -webkit-tap-highlight-color: transparent;
+        color: #FF594C;
+        text-decoration: none;
+      }
+      a:hover, .tab-focus a:focus {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+
+document.body.className = cookie.getItem('global.theme') || 'light';
+document.body.textContent = 'Loading...';
+
+const params = new URL(location).searchParams;
+const chat = params.get('chat');
+if (chat) {
+  fetch(chat).then(r => r.json()).then(({result: messages}) => {
+    document.body.textContent = Object.values(messages || {}).map(m => {
+      // more lax because why not
+      const [username, ...msg] = m.split('|');
+      return `[${username}] ${msg.join('|')}`;
+    }).join('\n');
+  });
+} else {
+  fetch('./chats.txt').then(r => r.text()).then(urls => {
+    urls = urls.split(/\r?\n/).filter(url => url[0] === 'h');
+    document.body.textContent = '';
+    urls.forEach(url => {
+      params.set('chat', url);
+      const link = document.createElement('a');
+      link.href = '?' + params;
+      link.textContent = url;
+      document.body.appendChild(link);
+      document.body.appendChild(document.createTextNode('\n'));
+    });
+  });
+  let tabFocus = false;
+  document.addEventListener('keydown', e => {
+  	if (e.keyCode === 9 || e.keyCode === 13) {
+    	document.body.classList.add('tab-focus');
+      tabFocus = true;
+    }
+  });
+  document.addEventListener('keyup', e => {
+  	if (e.keyCode === 9 || e.keyCode === 13) {
+      tabFocus = false;
+    }
+  });
+  document.addEventListener('focusin', e => {
+  	if (!tabFocus) {
+      document.body.classList.remove('tab-focus');
+    }
+  });
+}
+    </script>
+  </body>
+</html>
