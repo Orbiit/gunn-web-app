@@ -310,6 +310,11 @@ window.addEventListener("load",e=>{
           clearTimeout(nextMessageGetTimeoutID);
           nextMessageGetTimeoutID = null;
         }
+        // only load messages when viewing utilities section
+        if (cookie.getItem('[gunn-web-app] section') !== 'utilities') {
+          nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
+          return;
+        }
         fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
           const isAtBottom = output.scrollHeight - output.scrollTop === output.clientHeight;
           output.value = Object.values(messages || {}).map(m => {
