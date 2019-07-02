@@ -304,7 +304,7 @@ window.addEventListener("load",e=>{
       }
       cookie.setItem('[gunn-web-app] chat.username', username);
     }).then(async () => {
-      let nextMessageGetTimeoutID = null;
+      let nextMessageGetTimeoutID = null, ratelimitTimeoutID = null;
       function getMessages() {
         if (nextMessageGetTimeoutID) {
           clearTimeout(nextMessageGetTimeoutID);
@@ -332,14 +332,25 @@ window.addEventListener("load",e=>{
         });
       }
       getMessages();
+      let lastMessage, messages = 0;
       while (true) {
         let message = await getInput;
-        if (message) {
+        if (message && message !== lastMessage) {
           fetch(jsonStore + '/' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2), {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
-            body: JSON.stringify(`${username}|${message}`)
+            body: JSON.stringify(`${new Date().toISOString().slice(5, 16).replace('T', ' ')} - ${username}|${message}`)
           }).then(getMessages);
+          lastMessage = message;
+          messages++;
+          if (messages >= 5) sendInput.disabled = true;
+          if (!ratelimitTimeoutID) {
+            ratelimitTimeoutID = setTimeout(() => {
+              ratelimitTimeoutID = null;
+              messages = 0;
+              sendInput.disabled = false;
+            }, 10000);
+          }
         }
       }
     }).catch(e => {

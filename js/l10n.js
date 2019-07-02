@@ -119,7 +119,7 @@ langs.en = {
     'prev-chats': 'Previous chats',
     'open-chat': 'Join chat',
     'send': 'Send',
-    'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed.'
+    'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed. 5 messages per 10 seconds.'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

@@ -1,4 +1,7 @@
 # Current
+https://www.jsonstore.io/62d8ff3df9d4eea4de17ab5554cc462991a2accf812d133b3cbdb5315fdd90e7
+
+# First release
 https://www.jsonstore.io/1d5ed351ea55c1c757f5941a565032f1b8dbb8362040483eda40c017769686f1
 
 # Old test
