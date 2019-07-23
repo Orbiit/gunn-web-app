@@ -307,20 +307,8 @@ function initSchedule() {
       h24: formatOptions[1] === '24',
       h0Joke: formatOptions[1] === '0',
       compact: formatOptions[2] === 'compact',
-      self: +formatOptions[3],
-      customSchedule(date, y, m, d, wd) {
-        if (wd > 0 && wd < 6) {
-          if (y === 2019 && (m === 5 && d >= 10 || m === 6 && d <= 19)) {
-            return [
-              {name:'1',start:{hour:8,minute:30,totalminutes:510},end:{hour:10,minute:0,totalminutes:600}},
-              {name:'Brunch',start:{hour:10,minute:0,totalminutes:600},end:{hour:10,minute:15,totalminutes:615}},
-              {name:'2',start:{hour:10,minute:15,totalminutes:615},end:{hour:12,minute:15,totalminutes:735}},
-              {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
-              {name:'3',start:{hour:12,minute:45,totalminutes:765},end:{hour:14,minute:0,totalminutes:840}}
-            ];
-          }
-        }
-      }
+      self: +formatOptions[3]
+      // customSchedule(date, y, m, d, wd)
     });
     makeWeekHappen();
   }
