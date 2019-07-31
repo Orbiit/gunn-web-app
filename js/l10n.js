@@ -119,7 +119,19 @@ langs.en = {
     'prev-chats': 'Previous chats',
     'open-chat': 'Join chat',
     'send': 'Send',
-    'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed. 5 messages per 10 seconds.'
+    'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed. 5 messages per 10 seconds.',
+    'want-ugwa-normal': 'Want to install UGWA like a normal app?',
+    'safari-only': 'This can only be done in the Safari app!',
+    'b4-share-icon': 'Tap on the share button ',
+    'b4-add-home': ', select "',
+    'add-home': 'Add to Home Screen',
+    'b4-add-home-img': '" in the bottom row,',
+    'b4-add': 'then tap "',
+    add: 'Add',
+    'after-add': '."',
+    'use-safari': "Open UGWA in Safari first; this can't be done anywhere else.",
+    naw: 'No thanks',
+    heaucques: 'OK.'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
