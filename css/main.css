@@ -619,8 +619,10 @@ body.light .percent-wrapper {
   background-size: contain;
   background-repeat: no-repeat;
 }
+/* these paths won't work in appdesign, but that's fine;
+they'll work when UGWA is built */
 .show .ios-share-icon {
-  background-image: url('../images/ios7share.png');
+  background-image: url('./images/ios7share.png');
   height: 20px;
   width: 16px;
   display: inline-block;
@@ -629,7 +631,7 @@ body.light .percent-wrapper {
   display: block;
   width: 60px;
   height: 60px;
-  background-image: url('../images/add-to-home-screen.jpg');
+  background-image: url('./images/add-to-home-screen.jpg');
   border-radius: 15px;
   margin: 5px auto;
 }
