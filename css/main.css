@@ -548,3 +548,132 @@ body.light .percent-wrapper {
   opacity: 0.5;
   pointer-events: none;
 }
+
+.ios-cover, .ios-not-safari, .ios-ok, .not-ios-safari .ios-safari, .ok .ios-dialog {
+  display: none;
+}
+.ios-cover.show {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.ios-dialog {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0 20px;
+  border-radius: 20px;
+  bottom: 40px;
+  left: 20px;
+  right: 20px;
+  text-align: center;
+  color: black;
+  margin: 0 auto;
+  max-width: 500px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.ios-dialog::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 50%;
+  margin-right: -15px;
+  border-top: 15px solid rgba(255, 255, 255, 0.9);
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}
+@media (min-width: 550px) {
+  .ipad .ios-dialog {
+    bottom: auto;
+    left: auto;
+    right: 20px;
+    top: 20px;
+  }
+  .ipad .ios-dialog::after {
+    top: auto;
+    bottom: 100%;
+    right: 121px;
+    border-top: none;
+    border-bottom: 15px solid rgba(255, 255, 255, 0.9);
+  }
+}
+.ios-dialog h1 {
+  font-size: 18px;
+  margin: 0;
+  margin-top: 20px;
+}
+.ios-dialog p {
+  font-size: 15px;
+  margin: 0;
+  margin-top: 10px;
+}
+.ios-dialog .ios-small {
+  font-size: 12px;
+}
+.ios-img {
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.show .ios-share-icon {
+  background-image: url('../images/ios7share.png');
+  height: 20px;
+  width: 16px;
+  display: inline-block;
+}
+.show .ios-add-home {
+  display: block;
+  width: 60px;
+  height: 60px;
+  background-image: url('../images/add-to-home-screen.jpg');
+  border-radius: 15px;
+  margin: 5px auto;
+}
+#ios-no-thanks {
+  color: #007AFF;
+}
+.ios-add {
+  color: #007AFF;
+  font-weight: bold;
+}
+.ios-button-div {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0 -20px;
+  margin-top: 10px;
+  padding: 5px;
+}
+.not-ios-safari .ios-dialog {
+  top: 50%;
+  bottom: auto;
+  left: 20px;
+  right: 20px;
+  margin: auto;
+  transform: translateY(-50%);
+}
+.not-ios-safari .ios-dialog::after {
+  display: none;
+}
+.not-ios-safari .ios-not-safari {
+  display: block;
+}
+.ios-cover.ok {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  pointer-events: none;
+  animation: fade-out 2s 1s forwards;
+}
+@keyframes fade-out {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+.ok .ios-ok {
+  display: block;
+  font-size: 80px;
+  color: black;
+}

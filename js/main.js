@@ -359,6 +359,17 @@ window.addEventListener("load",e=>{
       sendInput.disabled = true;
     });
   });
+  const ua = navigator.userAgent;
+  if (/iPad|iPhone|iPod/.test(ua) && !navigator.standalone && !cookie.getItem('[gunn-web-app] no-thx-ios')) {
+    const theThing = document.getElementById('ios-add-to-home-screen');
+    theThing.classList.add('show');
+    if (!ua.includes('Version/')) theThing.classList.add('not-ios-safari');
+    if (ua.includes('iPad')) theThing.classList.add('ipad');
+    document.getElementById('ios-no-thanks').addEventListener('click', e => {
+      theThing.classList.add('ok');
+      cookie.setItem('[gunn-web-app] no-thx-ios', true);
+    });
+  }
   function getHTMLString(id) {
     return localize(id, 'html');
   }
