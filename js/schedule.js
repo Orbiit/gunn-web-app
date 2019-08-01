@@ -351,11 +351,11 @@ function initSchedule() {
   },false);
   document.querySelector('#plihieraux').addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
-    if (datepicker.inrange(proposal)) datepicker.day=proposal;
+    if (datepicker.compare(proposal, datepicker.start) >= 0) datepicker.day=proposal;
   },false);
   document.querySelector('#plimorgaux').addEventListener("click",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
-    if (datepicker.inrange(proposal)) datepicker.day=proposal;
+    if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
   },false);
   const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
   if (viewingDate) {

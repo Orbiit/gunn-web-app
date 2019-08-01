@@ -2,7 +2,9 @@ class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor(start,end,elem) {
     this.start=start;
+    this.min = new Date(this.start.y,this.start.m,this.start.d).getTime();
     this.end=end;
+    this.max = new Date(this.end.y,this.end.m,this.end.d).getTime();
     this.selectedelem=null;
     this.selected=null;
     var days=localize('ds').split('  '),
@@ -73,16 +75,18 @@ class DatePicker {
       day=DatePicker.purify(day);
       this.selectedelem=this.dates.querySelector(`.datepicker-day[data-date="${day.d}"][data-month="${day.m}"][data-year="${day.y}"]`);
       this.selectedelem.classList.add('datepicker-selected');
-      this.selected=day;
     } else {
       this.selectedelem=null;
-      this.selected=null;
     }
+    this.selected=day;
     if (this.onchange) this.onchange(day);
   }
   inrange(day) {
     var d=new Date(day.y,day.m,day.d).getTime();
-    return !(d<new Date(this.start.y,this.start.m,this.start.d).getTime()||d>new Date(this.end.y,this.end.m,this.end.d).getTime());
+    return !(d<this.min||d>this.max);
+  }
+  compare(d1, d2) {
+    return new Date(d1.y,d1.m,d1.d).getTime() - new Date(d2.y,d2.m,d2.d).getTime();
   }
   static purify(day) {
     var d=new Date(day.y,day.m,day.d);
