@@ -120,8 +120,8 @@ langs.en = {
     'open-chat': 'Join chat',
     'send': 'Send',
     'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed. 5 messages per 10 seconds.',
-    'want-ugwa-normal': 'Want to install UGWA like a normal app?',
-    'safari-only': 'This can only be done in the Safari app!',
+    'want-ugwa-normal': 'To install UGWA like a normal app:',
+    'safari-only': '(this can only be done in the Safari app)',
     'b4-share-icon': 'Tap the share button ',
     'b4-add-home': ', select "',
     'add-home': 'Add to Home Screen',
@@ -130,7 +130,7 @@ langs.en = {
     add: 'Add',
     'after-add': '."',
     'use-safari': "Open UGWA in Safari first; this can't be done anywhere else.",
-    naw: 'No thanks',
+    naw: 'Thanks but no thanks',
     heaucques: 'OK.'
   },
   other: {
