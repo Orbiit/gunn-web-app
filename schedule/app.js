@@ -34,7 +34,7 @@ function scheduleApp(options={}) {
     else return localizeTime('duration', {T: minutes});
   }
   function getPeriodSpan(period) {
-    return `<span style="background-color:${getPeriod(period).colour};color:${getFontColour(getPeriod(period).colour)};" class="schedule-endinginperiod">${getPeriod(period).label}</span>`;
+    return `<span style="${getCSS(getPeriod(period).colour, period)}" class="schedule-endinginperiod">${getPeriod(period).label}</span>`;
   }
   function isSELFDay(month, date) {
     return options.self && options.selfDays.includes(('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2));

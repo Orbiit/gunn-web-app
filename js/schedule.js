@@ -336,6 +336,7 @@ function initSchedule() {
   };
   scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
   makeWeekHappen(); // rerender week preview in case it's summer and isSummer has just been defined
+  scheduleapp.update();
   datepicker.wrapper.classList.add('hide');
   datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);
