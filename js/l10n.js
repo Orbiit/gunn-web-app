@@ -51,7 +51,6 @@ langs.en = {
     'hide-self': 'Hide SELF',
     'control-centre': 'Control Centre',
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",
-    'attempt-update': 'attempt update',
     reload: 'Restart UGWA',
     'trick-cache': 'trick the cache',
     'staff-name': 'Staff name',

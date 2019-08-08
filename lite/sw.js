@@ -16,3 +16,12 @@ self.addEventListener("fetch", e => {
   e.respondWith(caches.match(e.request).then(response => response || fetch(e.request)));
   self.clients.matchAll().then(clients => clients.forEach(c => c.postMessage(VERSION)));
 });
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys()
+    // delete old ugwita-cache-v* caches
+    .then(names => Promise.all(names
+      .map(cache => CACHE_NAME !== cache && cache.slice(0, 14) === 'ugwita-cache-v'
+        ? caches.delete(cache)
+        : null)))
+    .then(() => self.clients.claim()));
+});

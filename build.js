@@ -16,8 +16,8 @@ function writeFile(file, contents) {
 }
 
 const date = new Date().toDateString();
-readFile('./cache.appcache').then(cache => {
-  writeFile('./cache.appcache', cache.replace(/# \d+/, '# ' + Date.now()));
+readFile('./sw.js').then(cache => {
+  writeFile('./sw.js', cache.replace(/ugwa-sw-\d+/, 'ugwa-sw-' + Date.now()));
 });
 readFile('./psa.html').then(html => {
   writeFile('./psa.html', html.replace(/(<strong data-version>).*?(<\/strong>)/, `$1${date}$2`));
@@ -29,12 +29,11 @@ readFile('./appdesign.html').then(html => {
   const js = [];
   html.replace(/<script src="(.+)" charset="utf-8"><\/script>/g, (_, url) => js.push('./' + url));
   Promise.all(css.map(c => readFile(c))).then(css => {
-    css = css.join('\n');
+    css = css.join('\n').replace(/url\(('|")\.\./g, 'url($1.');
     Promise.all(js.map(j => readFile(j))).then(js => {
       js = js.join('\n');
       const result = minify(
         html
-          .replace('<html', '<html manifest="cache.appcache"')
           .replace(/<!-- STYLES [^]* \/STYLES -->/, `<style>${css}</style>`)
           .replace(/<!-- SCRIPTS [^]* \/SCRIPTS -->/, `<script>${js}</script>`)
           .replace(/<!-- NOAPPDESIGN [^]* \/NOAPPDESIGN -->/, '')

@@ -137,15 +137,15 @@ window.addEventListener("load",e=>{
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+"psa.html",
     e=>{
       document.querySelector('#psa').innerHTML=e;
-      if (cookie.getItem('[gunn-web-app] scheduleapp.psa')!==e+'v1') {
+      if (cookie.getItem('[gunn-web-app] scheduleapp.psa')!==e) {
         if (cookie.getItem('[gunn-web-app] scheduleapp.psa')) {
           psa.innerHTML=e;
           psa.parentNode.classList.add("show");
           document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
-            cookie.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
+            cookie.setItem('[gunn-web-app] scheduleapp.psa',e);
           }, {once: true});
         } else {
-          cookie.setItem('[gunn-web-app] scheduleapp.psa',e+'v1');
+          cookie.setItem('[gunn-web-app] scheduleapp.psa',e);
         }
       }
     },
@@ -231,18 +231,6 @@ window.addEventListener("load",e=>{
   },false);
   btn.appendChild(btncontent);
   maptoggle.appendChild(btn);
-  try {
-    window.applicationCache.addEventListener('updateready',e=>{
-      if (window.applicationCache.status===window.applicationCache.UPDATEREADY) {
-        try {applicationCache.swapCache();} catch (e) {}
-        window.location.reload();
-      }
-    },false);
-  } catch (e) {}
-  document.getElementById('force-update').addEventListener('click', e => {
-    window.applicationCache.update();
-    // setTimeout(() => window.location.reload(), 1000);
-  });
   document.getElementById('reload').addEventListener('click', e => {
     window.location.reload();
   });
@@ -406,4 +394,17 @@ window.addEventListener("load",e=>{
     fragment.appendChild(p);
   });
   document.getElementById('langs').appendChild(fragment);
+  navigator.serviceWorker.register('./sw.js').then(regis => {
+    regis.onupdatefound = () => {
+      const installingWorker = regis.installing;
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          console.log('New update! Redirecting you away and back');
+          window.location.replace('/ugwa-updater.html' + window.location.search);
+        }
+      };
+    };
+  }, err => {
+    console.log(':( Couldn\'t register service worker', err);
+  });
 },false);
