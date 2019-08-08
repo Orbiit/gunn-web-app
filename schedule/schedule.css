@@ -72,6 +72,8 @@ body.dark .schedule-container .schedule-periodprogress > div {
   border-radius: 2px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
   font-size: 14px;
+  background-size: cover;
+  background-position: center;
 }
 .schedule-container .schedule-period span {
   display: block;

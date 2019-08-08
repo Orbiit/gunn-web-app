@@ -115,7 +115,11 @@ function initSchedule() {
     week=scheduleapp.getWeek();
     for (var i=0;i<7;i++) {
       innerHTML+=`<div${week[i].today?' class="today"':''}><h1>${days[i]}</h1>`;
-      for (var j=0,arr=week[i],len=arr.length,period=arr[j];j<len;j++,period=arr[j]) innerHTML+=`<span style="background-color:${period.colour};" title="${period.label}"></span>`;
+      for (var j=0,arr=week[i],len=arr.length,period=arr[j];j<len;j++,period=arr[j]) innerHTML+=`<span style="${
+        period.colour[0] === '#'
+          ? `background-color:${period.colour};`
+          : `background-image: url(./.period-images/${period.id}?${encodeURIComponent(period.colour)});`
+      }" title="${period.label}"></span>`;
       innerHTML+=`</div>`;
     }
     weekwrapper.innerHTML=innerHTML;
@@ -410,11 +414,14 @@ function initSchedule() {
       line:line
     };
   }
+  const IMAGE_CACHE = 'ugwa-img-cache-YEET';
   function addPeriodCustomisers(elem) {
     function period(name,id,colour='#FF594C',val='') {
+      let isImage = colour[0] !== '#';
       var div=document.createElement("div"),
       pickertrigger=document.createElement("button"),
       picker=new ColourPicker(e=>{
+        if (isImage) return;
         pickertrigger.style.backgroundColor=e;
         if (scheduleapp) scheduleapp.setPeriod(id,'',e);
         options[letras.indexOf(id)][1]=e;
@@ -432,10 +439,11 @@ function initSchedule() {
       ripple(pickertrigger);
       pickertrigger.classList.add('material');
       pickertrigger.classList.add('customiser-colour');
+      if (isImage) pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
       pickertrigger.addEventListener("click",e=>{
         picker.trigger(pickertrigger);
       },false);
-      picker.colour=colour;
+      picker.colour=isImage ? '#FF594C' : colour;
       div.appendChild(pickertrigger);
       if (val) {
         input.input.value=val;
@@ -468,6 +476,63 @@ function initSchedule() {
       },false);
       t.appendChild(s);
       picker.window.appendChild(t);
+      const imageInput = document.createElement('input');
+      imageInput.classList.add('customiser-image');
+      imageInput.classList.add('notmaterial-input');
+      imageInput.placeholder = localize('image-url');
+      if (isImage) {
+        imageInput.value = colour;
+      }
+      imageInput.addEventListener('change', e => {
+        imageInput.disabled = true;
+        if (imageInput.value) {
+          Promise.all([
+            caches.open(IMAGE_CACHE),
+            fetch(imageInput.value, {mode: 'no-cors', cache: 'no-cache'})
+          ])
+            .then(([cache, res]) => cache.put(`./.period-images/${id}`, res))
+            .then(() => {
+              imageInput.disabled = false;
+              isImage = true;
+              // intentionally not resetting backgroundColor because transparency meh
+              pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+              if (scheduleapp) scheduleapp.setPeriod(id,'',imageInput.value);
+              options[letras.indexOf(id)][1]=imageInput.value;
+              cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
+              pickertrigger.classList.add('ripple-dark');
+              pickertrigger.classList.remove('ripple-light');
+            })
+            .catch(err => {
+              imageInput.disabled = false;
+              console.log(err);
+              alert(localize('cannot'));
+            });
+        } else {
+          caches.open(IMAGE_CACHE)
+            .then(cache => {
+              imageInput.disabled = false;
+              cache.delete(`./.period-images/${id}`);
+              isImage = false;
+              pickertrigger.style.backgroundColor = picker.colour;
+              pickertrigger.style.backgroundImage = null;
+              if (scheduleapp) scheduleapp.setPeriod(id,'',picker.colour);
+              options[letras.indexOf(id)][1]=picker.colour;
+              cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
+              if (picker.darkness()>125) {
+                pickertrigger.classList.add('ripple-dark');
+                pickertrigger.classList.remove('ripple-light');
+              } else {
+                pickertrigger.classList.add('ripple-light');
+                pickertrigger.classList.remove('ripple-dark');
+              }
+            })
+            .catch(err => {
+              imageInput.disabled = false;
+              console.log(err);
+            });
+        }
+      });
+      picker.window.appendChild(imageInput);
       return period;
     }
     return period;

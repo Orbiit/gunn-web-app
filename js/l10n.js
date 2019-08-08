@@ -199,7 +199,9 @@ langs.en = {
     'add-to-list': 'Add to my clubs',
     'remove-from-list': 'Remove from my clubs',
     'lunch-clubs': 'Clubs',
-    'summer': 'Enjoy your summer!'
+    summer: 'Enjoy your summer!',
+    'image-url': 'Image URL',
+    cannot: 'There was a problem fetching the image.'
   },
   placeholders: {
     clubs: 'Search clubs',

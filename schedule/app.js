@@ -22,6 +22,13 @@ function scheduleApp(options={}) {
     // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
     return Math.round(((parseInt(colour[0])*299)+(parseInt(colour[1])*587)+(parseInt(colour[2])*114))/1000)>150?'rgba(0,0,0,0.8)':'white';
   }
+  function getCSS(colour, id) {
+    if (colour[0] === '#') {
+      return `background-color:${colour};color:${getFontColour(colour)};`;
+    } else {
+      return `background-image: url(./.period-images/${id}?${encodeURIComponent(colour)}); color: white; text-shadow: 0 0 10px black;`
+    }
+  }
   function getUsefulTimePhrase(minutes) {
     if (options.compact) return `${Math.floor(minutes/60)}:${('0'+minutes%60).slice(-2)}`;
     else return localizeTime('duration', {T: minutes});
@@ -102,7 +109,7 @@ function scheduleApp(options={}) {
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
-        innerHTML+=`<div class="schedule-period" style="background-color:${periodName.colour};color:${getFontColour(periodName.colour)};"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${localizeTime('long', {T: getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)})}</span>`;
+        innerHTML+=`<div class="schedule-period" style="${getCSS(periodName.colour, period.name)}"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${localizeTime('long', {T: getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)})}</span>`;
         if (checkfuture) {
           innerHTML+=`<span>`;
           if (totalminute>=period.end.totalminutes) innerHTML+=localizeTime('self-ended', {T: `<strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong>`});
@@ -178,7 +185,13 @@ function scheduleApp(options={}) {
         } else {
           sched=options.normal[d.getDay()] || [];
         }
-        if (sched.length) for (var period of sched) day.push(getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name));
+        if (sched.length) for (var period of sched) {
+          // q stands for 'quick' because I'm too lazy to make a variable name
+          // but I am not lazy enough to make a comment explaining it
+          const q = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
+          q.id = period.name;
+          day.push(q);
+        }
         if (today.getDay()===i) day.today=true;
         week.push(day);
       }

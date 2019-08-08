@@ -2,8 +2,10 @@
   display: flex;
   margin: 20px 0;
 }
-.customiser-colour {
+button.customiser-colour {
   width: 36px;
+  background-size: cover;
+  background-position: center;
 }
 .customiser-inputwrapper {
   position: relative;
@@ -95,4 +97,13 @@ body.light .customiser-materialcolour.customiser-blackwhite {
 }
 body.dark .customiser-materialcolour.customiser-blackwhite {
   background-color: white;
+}
+
+.customiser-image {
+  -webkit-appearance: none;
+  padding-left: 5px;
+  width: 0;
+  min-width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
 }
