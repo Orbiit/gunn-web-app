@@ -130,7 +130,20 @@ langs.en = {
     'after-add': '."',
     'use-safari': "Open UGWA in Safari first; this can't be done anywhere else.",
     naw: 'Thanks but no thanks',
-    heaucques: 'OK.'
+    heaucques: 'OK.',
+    assignments: 'Assignments',
+    'asgn-display': 'Upcoming assignments position',
+    'asgn-before': 'Before the schedule',
+    'asgn-after': 'After the schedule',
+    'asgn-none': 'New Zealand',
+    'asgn-sort': 'Sorting method',
+    'asgn-chrono-primero': 'By due date',
+    'asgn-important-importance': 'By priority',
+    'asgn-algorithms': 'By use of A L G O R I T H M S',
+    'edit-asgn': 'Assignment properties',
+    'delete-asgn': 'Delete',
+    'cancel-asgn': 'Cancel',
+    'save-asgn': 'Save'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -201,7 +214,13 @@ langs.en = {
     'lunch-clubs': 'Clubs',
     summer: 'Enjoy your summer!',
     'image-url': 'Image URL',
-    cannot: 'There was a problem fetching the image.'
+    cannot: 'There was a problem fetching the image.',
+    'add-asgn': 'Add assignment',
+    asgn: 'Upcoming assignments',
+    overdue: 'overdue',
+    doneify: 'Mark as done',
+    undoneify: 'Unmark as done',
+    due: 'due'
   },
   placeholders: {
     clubs: 'Search clubs',

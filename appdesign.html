@@ -45,6 +45,7 @@
     <script src="js/material.js" charset="utf-8"></script>
     <script src="js/footer.js" charset="utf-8"></script>
     <script src="js/schedule.js" charset="utf-8"></script>
+    <script src="js/assignments.js" charset="utf-8"></script>
     <script src="js/lists.js" charset="utf-8"></script>
     <script src="js/barcodes.js" charset="utf-8"></script>
     <script src="js/altScheduleGenerator.js" charset="utf-8"></script>
@@ -106,10 +107,12 @@
     </div>
     <div class="section schedule">
       <span id='seconds'></span>
+      <span id="asgn-sec-ins-before-pt"></span>
       <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button><button class='material' id="datepicker">{{select-date}}</button><button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button></p>
       <p class="center get-error" id="alternateerror"></p>
       <div id="schedulewrapper"></div>
       <div id="weekwrapper"></div>
+      <span id="asgn-sec-ins-after-pt"></span>
       <h1 class="center">{{events}}</h1>
       <ul class="material-list two-line" id='events'></ul>
     </div>
@@ -148,6 +151,19 @@
       <a id="periodcustomisermarker"></a>
       <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>{{show-self}}</label></p>
       <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>{{hide-self}}</label></p>
+      <h1>{{assignments}}</h1>
+      <h2>{{asgn-display}}</h2>
+      <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="asgn-display" value="before" class="material-radio"><label>{{asgn-before}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="asgn-display" value="after" class="material-radio"><label>{{asgn-after}}</label></p>
+        <p class='radio-wrapper is-joke'><input type="radio" name="asgn-display" value="none" class="material-radio"><label>{{asgn-none}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
+      </div>
+      <h2>{{asgn-sort}}</h2>
+      <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="chrono-primero" class="material-radio"><label>{{asgn-chrono-primero}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="important-importance" class="material-radio"><label>{{asgn-important-importance}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="aLgOriThMs" class="material-radio"><label>{{asgn-algorithms}}</label></p>
+      </div>
       <h1>{{languages}}</h1>
       <div id="langs"></div>
       <div class="block-of-text">
@@ -199,6 +215,17 @@
       <div class="content block-of-text"></div>
       <div class="buttons">
         <button class="material red close">{{ok}}</button>
+      </div>
+    </div>
+    <div id="asgn-editor" class="material-dialog">
+      <h1>{{edit-asgn}}</h1>
+      <div class="content">
+        <textarea class="asgn-text-edit"></textarea>
+      </div>
+      <div class="buttons">
+        <button class="material red" id="asgn-delete">{{delete-asgn}}</button>
+        <button class="material red close" id="asgn-cancel">{{cancel-asgn}}</button>
+        <button class="material red close" id="asgn-save">{{save-asgn}}</button>
       </div>
     </div>
     <div class="ios-cover" id="ios-add-to-home-screen">

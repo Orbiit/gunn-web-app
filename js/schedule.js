@@ -1,7 +1,7 @@
 var options,
 letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF'],
 VERSION=2, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
-FORMATTING_VERSION='2',
+FORMATTING_VERSION='3',
 normalschedule=[
   null,
   [
@@ -81,15 +81,21 @@ function initSchedule() {
     }
   }
   /* SCHEDULE APP */
-  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0'];
+  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0', 'after', 'chrono-primero'];
   if (formatOptions[0] === '1') {
     formatOptions[0] = '2';
     formatOptions[3] = '0';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
   }
+  if (formatOptions[0] === '2') {
+    formatOptions[0] = '3';
+    formatOptions[4] = 'after';
+    formatOptions[5] = 'chrono-primero';
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
+  }
   if (formatOptions[0] !== FORMATTING_VERSION) {
     // you should be worried
-    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full.0');
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full.0.after.chrono-primero');
     window.location.reload();
   }
   toEach('input[name=hour]',t=>t.addEventListener("click",e=>{
@@ -107,6 +113,54 @@ function initSchedule() {
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     window.location.reload();
   },false));
+  toEach('input[name=asgn-display]',t=>t.addEventListener("click",e=>{
+    formatOptions[4] = e.target.value;
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
+    asgnThing.displaySection(e.target.value);
+  },false));
+  toEach('input[name=asgn-sort]',t=>t.addEventListener("click",e=>{
+    formatOptions[5] = e.target.value;
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
+    asgnThing.todayIs(null, e.target.value);
+  },false));
+
+  const editorDialog = document.getElementById('asgn-editor');
+  const asgn_deleteBtn = document.getElementById('asgn-delete');
+  const asgn_cancelBtn = document.getElementById('asgn-cancel');
+  const asgn_saveBtn = document.getElementById('asgn-save');
+  let currentCancelFn, onDeleteClick, onSaveClick;
+  asgn_deleteBtn.addEventListener('click', e => { if (onDeleteClick) onDeleteClick(); });
+  asgn_cancelBtn.addEventListener('click', e => { if (currentCancelFn) currentCancelFn(); });
+  asgn_saveBtn.addEventListener('click', e => { if (onSaveClick) onSaveClick(); });
+  function asgnEditor({text, category, importance, dueObj, period}) {
+    if (currentCancelFn) currentCancelFn();
+    editorDialog.classList.add('show');
+    let onSave, onDelete, onFinish;
+    currentCancelFn = () => {
+      onDeleteClick = onSaveClick = currentCancelFn = null;
+      editorDialog.classList.remove('show');
+    };
+    onDeleteClick = () => {
+      currentCancelFn();
+      if (onDelete) onDelete();
+      if (onFinish) onFinish();
+    };
+    onSaveClick = () => {
+      currentCancelFn();
+      if (onSave) onSave({});
+      if (onFinish) onFinish();
+    }
+    const thing = {
+      onSave(fn) { onSave = fn; return thing; },
+      onDelete(fn) { onDelete = fn; return thing; },
+      onFinish(fn) { onFinish = fn; return thing; }
+    };
+    return thing;
+  }
+  const asgnThing = initAssignments(asgnEditor, cookie.getItem('[gunn-web-app] assignments'));
+  asgnThing.todayIs(new Date(), formatOptions[5]);
+  asgnThing.displaySection(formatOptions[4]);
+
   var scheduleapp;
   var weekwrapper=document.querySelector('#weekwrapper');
   function makeWeekHappen() {
@@ -119,7 +173,7 @@ function initSchedule() {
         period.colour[0] === '#'
           ? `background-color:${period.colour};`
           : `background-image: url(./.period-images/${period.id}?${encodeURIComponent(period.colour)});`
-      }" title="${period.label}"></span>`;
+      }" title="${escapeHTML(period.label)}"></span>`;
       innerHTML+=`</div>`;
     }
     weekwrapper.innerHTML=innerHTML;
@@ -375,6 +429,8 @@ function initSchedule() {
   document.querySelector(`input[name=hour][value=h${formatOptions[1]}]`).checked=true;
   document.querySelector(`input[name=format][value=${formatOptions[2]}]`).checked=true;
   document.querySelector(`input[name=self][value=${['hide','show'][formatOptions[3]]}]`).checked=true;
+  document.querySelector(`input[name=asgn-display][value=${formatOptions[4]}]`).checked=true;
+  document.querySelector(`input[name=asgn-sort][value=${formatOptions[5]}]`).checked=true;
 
   /* CUSTOMISE PERIODS */
   var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');

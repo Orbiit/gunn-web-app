@@ -1,3 +1,17 @@
+var days=localize('days').split('  '),
+months=localize('months').split('  ');
+function localizeTime(id, params = {}) {
+  let entry = localize(id, 'times');
+  if (typeof entry === 'function') {
+    return entry(params);
+  } else {
+    entry = entry + '';
+    Object.keys(params).forEach(id => {
+      entry = entry.replace(`{${id}}`, params[id]);
+    });
+    return entry;
+  }
+}
 function scheduleApp(options={}) {
   var elem,container=document.createElement("div"),colourtoy=document.createElement("div");
   if (options.element) elem=options.element;
@@ -34,26 +48,12 @@ function scheduleApp(options={}) {
     else return localizeTime('duration', {T: minutes});
   }
   function getPeriodSpan(period) {
-    return `<span style="${getCSS(getPeriod(period).colour, period)}" class="schedule-endinginperiod">${getPeriod(period).label}</span>`;
+    return `<span style="${getCSS(getPeriod(period).colour, period)}" class="schedule-endinginperiod">${escapeHTML(getPeriod(period).label)}</span>`;
   }
   function isSELFDay(month, date) {
     return options.self && options.selfDays.includes(('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2));
   }
   getFontColour('rgba(0,0,0,0.2)');
-  var days=localize('days').split('  '),
-  months=localize('months').split('  ');
-  function localizeTime(id, params = {}) {
-    let entry = localize(id, 'times');
-    if (typeof entry === 'function') {
-      return entry(params);
-    } else {
-      entry = entry + '';
-      Object.keys(params).forEach(id => {
-        entry = entry.replace(`{${id}}`, params[id]);
-      });
-      return entry;
-    }
-  }
   let setTitle = false;
   const dayToPrime = {1: 2, 2: 3, 3: 5, 4: 7, 5: 11};
   function generateDay(offset=0) {
@@ -109,7 +109,7 @@ function scheduleApp(options={}) {
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
-        innerHTML+=`<div class="schedule-period" style="${getCSS(periodName.colour, period.name)}"><span class="schedule-periodname">${periodName.label}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${localizeTime('long', {T: getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)})}</span>`;
+        innerHTML+=`<div class="schedule-period" style="${getCSS(periodName.colour, period.name)}"><span class="schedule-periodname">${escapeHTML(periodName.label)}</span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${localizeTime('long', {T: getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)})}</span>`;
         if (checkfuture) {
           innerHTML+=`<span>`;
           if (totalminute>=period.end.totalminutes) innerHTML+=localizeTime('self-ended', {T: `<strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong>`});
@@ -196,7 +196,8 @@ function scheduleApp(options={}) {
         week.push(day);
       }
       return week;
-    }
+    },
+    getPeriodSpan
   };
   var timeout;
   if (options.update) returnval.update();

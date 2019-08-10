@@ -19,6 +19,9 @@ function toEach(query,fn) {
   var elems=document.querySelectorAll(query);
   for (var i=0,len=elems.length;i<len;i++) fn(elems[i],i);
 }
+function escapeHTML(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 function initMap() {
   var map=new google.maps.Map(document.getElementById('mapgoogle'), {
     zoom:18,
