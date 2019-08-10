@@ -8,6 +8,7 @@ div.ripple {
   pointer-events: none;
   border-radius: 50%;
   /*z-index: -1;*/
+  background-color: var(--ripple);
 }
 div.ripple.ripple-focus {
   margin: auto;
@@ -17,22 +18,11 @@ div.ripple.ripple-focus {
   bottom: 0;
   transform: scale(1);
   animation: pulse 1s ease-in-out infinite alternate;
+  background-color: var(--ripple-focus);
 }
 @keyframes pulse {
   from {transform: scale(1.05);}
   to {transform: scale(0.95);}
-}
-body.light div.ripple:not(.ripple-light), body div.ripple.ripple-dark {
-  background-color: rgba(0,0,0,0.2);
-}
-body.dark div.ripple:not(.ripple-dark), body div.ripple.ripple-light {
-  background-color: rgba(255,255,255,0.3);
-}
-body.light div.ripple.ripple-focus:not(.ripple-light), body div.ripple.ripple-dark.ripple-focus {
-  background-color: rgba(0,0,0,0.05);
-}
-body.dark div.ripple.ripple-focus:not(.ripple-dark), body div.ripple.ripple-light.ripple-focus {
-  background-color: rgba(255,255,255,0.05);
 }
 button.material {
   text-transform: uppercase;
@@ -48,7 +38,7 @@ button.material {
   font-weight: bold;
   padding: 0 16px;
   vertical-align: bottom;
-  color: #FF594C;
+  color: var(--colour);
 }
 button.material.icon {
   width: 36px;
@@ -57,19 +47,16 @@ button.material.icon {
   text-align: center;
   font-size: 0;
 }
+button.material.red {
+  color: var(--theme);
+}
 button.material.raised {
-  background-color: #FF594C;
+  background-color: var(--theme);
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
 }
-body.light button.material:not(.red):not(.raised) {
-  color: rgba(0,0,0,0.87);
-}
-body.dark button.material:not(.red):not(.raised) {
-  color: white;
-}
 .tab-focus button.material:focus {
-  box-shadow: 0 0 0 5px rgba(255, 89, 76, 0.3);
+  box-shadow: 0 0 0 5px var(--focus);
 }
 .material-switch {
   display: inline-block;
@@ -82,12 +69,7 @@ body.dark button.material:not(.red):not(.raised) {
   cursor: pointer;
   position: relative;
   transition: all .2s;
-}
-body.light .material-switch:not(.checked) {
-  background-color: rgba(0,0,0,0.38);
-}
-body.dark .material-switch:not(.checked) {
-  background-color: rgba(255,255,255,0.3);
+  background-color: var(--off-switch-back);
 }
 .material-switch.checked {
   background-color: rgba(255,89,76,0.5);
@@ -103,19 +85,14 @@ body.dark .material-switch:not(.checked) {
   border-radius: 50%;
   transition: all .2s;
   left: 0;
+  background-color: var(--pure-contrast);
 }
 .material-switch:focus::before {
   opacity: 0.1;
   transform: scale(4);
 }
-body.light .material-switch:not(.checked)::before {
-  background-color: black;
-}
-body.dark .material-switch:not(.checked)::before {
-  background-color: white;
-}
 .material-switch.checked::before {
-  background-color: #FF594C;
+  background-color: var(--theme);
   left: calc(100% - 14px);
 }
 .material-switch::after {
@@ -130,15 +107,10 @@ body.dark .material-switch:not(.checked)::before {
   left: 0;
   transition: all .2s;
   box-shadow: 0 1px 5px rgba(0,0,0,0.3);
-}
-body.light .material-switch:not(.checked)::after {
-  background-color: #FAFAFA;
-}
-body.dark .material-switch:not(.checked)::after {
-  background-color: #BDBDBD;
+  background-color: var(--off-switch-other-thing);
 }
 .material-switch.checked::after {
-  background-color: #FF594C;
+  background-color: var(--theme);
   left: calc(100% - 20px);
   margin-left: 3px;
 }
@@ -159,6 +131,7 @@ body.dark .material-switch:not(.checked)::after {
   border: 2px solid black;
   margin-right: 15px;
   transition: all .2s;
+  border-color: var(--secondary);
 }
 .material-radio::before, .material-radio::after {
   content: '';
@@ -167,7 +140,7 @@ body.dark .material-switch:not(.checked)::after {
   width: 8px;
   position: absolute;
   transform: scale(0);
-  background: #FF594C;
+  background: var(--theme);
   top: 2px;
   left: 2px;
   transition: all .2s;
@@ -181,14 +154,8 @@ body.dark .material-switch:not(.checked)::after {
   height: 10px;
   width: 10px;
 }
-body.light .material-radio:not(:checked) {
-  border-color: rgba(0,0,0,0.54);
-}
-body.dark .material-radio:not(:checked) {
-  border-color: rgba(255,255,255,0.7);
-}
 .material-radio:checked {
-  border-color: #FF594C;
+  border-color: var(--theme);
 }
 .material-radio:checked::after {
   transform: scale(1);
@@ -234,7 +201,7 @@ ul.material-list li {
   vertical-align: top;
 }
 .tab-focus ul.material-list li:focus {
-  background-color: rgba(255, 89, 76, 0.2);
+  background-color: var(--focus);
 }
 ul.material-list.clickables li {
   cursor: pointer;
@@ -269,11 +236,8 @@ ul.material-list span.primary {
 ul.material-list span.secondary {
   font-size: 14px;
 }
-body.light ul.material-list span.secondary, body.light ul.material-list li.error, body.light .get-error {
-  color: rgba(0,0,0,0.54);
-}
-body.dark ul.material-list span.secondary, body.dark ul.material-list li.error, body.dark .get-error {
-  color: rgba(255,255,255,0.7);
+ul.material-list span.secondary, ul.material-list li.error, body.light .get-error {
+  color: var(--secondary);
 }
 ul.material-list li.error, .get-error {
   width: 100%;
@@ -308,11 +272,8 @@ ul.material-list li.error, .get-error {
   pointer-events: all;
   transform: translateY(0);
 }
-body.light .material-dialog, body.light .material-card {
-  background-color: #FFFFFF;
-}
-body.dark .material-dialog, body.dark .material-card {
-  background-color: #424242;
+.material-dialog, .material-card {
+  background-color: var(--card);
 }
 .material-dialog > h1 {
   position: absolute;
@@ -325,12 +286,7 @@ body.dark .material-dialog, body.dark .material-card {
   line-height: 1;
   width: 100%;
   box-sizing: border-box;
-}
-body.light .material-dialog > h1 {
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.05);
-}
-body.dark .material-dialog > h1 {
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1);
+  box-shadow: inset 0 -1px 0 var(--light-border);
 }
 .material-dialog > .content {
   font-size: 14px;
@@ -349,12 +305,7 @@ body.dark .material-dialog > h1 {
   left: 0;
   width: 100%;
   text-align: right;
-}
-body.light .material-dialog > .buttons {
-  box-shadow: inset 0 1px 0 rgba(0,0,0,0.05);
-}
-body.dark .material-dialog > .buttons {
-  box-shadow: inset 0 1px 0 rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 0 var(--light-border);
 }
 .material-card {
   margin: 14px 0;

@@ -6,12 +6,7 @@
   transition: all .2s;
   font-size: 0;
   z-index: 2;
-}
-body.light .colourpicker-window {
-  background-color: #FFFFFF;
-}
-body.dark .colourpicker-window {
-  background-color: #424242;
+  background-color: var(--card);
 }
 .colourpicker-input {
   display: block;

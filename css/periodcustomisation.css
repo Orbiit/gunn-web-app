@@ -20,12 +20,7 @@ button.customiser-colour {
   height: 1em;
   transition: all .2s;
   pointer-events: none;
-}
-body.light .customiser-label {
-  color: rgba(0,0,0,0.54);
-}
-body.dark .customiser-label {
-  color: rgba(255,255,255,0.7);
+  color: var(--secondary);
 }
 .customiser-inputwrapper.filled .customiser-label {
   font-size: 12px;
@@ -33,7 +28,7 @@ body.dark .customiser-label {
 }
 .customiser-inputwrapper.focus .customiser-label {
   font-size: 12px;
-  color: #FF594C;
+  color: var(--theme);
   top: -4px;
 }
 body.light .customiser-inputwrapper.focus .customiser-label {
@@ -58,25 +53,15 @@ body.light .customiser-inputwrapper.focus .customiser-label {
   width: 100%;
   transition: all .2s;
   pointer-events: none;
-}
-body.light .customiser-line {
-  background-color: rgba(0,0,0,0.42);
-}
-body.dark .customiser-line {
-  background-color: rgba(255,255,255,0.7);
+  background-color: var(--input-line);
 }
 .customiser-inputwrapper.hover .customiser-line {
   height: 2px;
-}
-body.light .customiser-inputwrapper.hover:not(.focus) .customiser-line {
-  background-color: rgba(0,0,0,0.87);
-}
-body.dark .customiser-inputwrapper.hover:not(.focus) .customiser-line {
-  background-color: white;
+  background-color: var(--colour);
 }
 .customiser-inputwrapper.focus .customiser-line {
   height: 2px;
-  background-color: #FF594C;
+  background-color: var(--theme);
 }
 .customiser-colourwrapper {
   width: 133.75px;
@@ -91,12 +76,7 @@ body.dark .customiser-inputwrapper.hover:not(.focus) .customiser-line {
   width: 20px;
   border-radius: 50%;
   cursor: pointer;
-}
-body.light .customiser-materialcolour.customiser-blackwhite {
-  background-color: black;
-}
-body.dark .customiser-materialcolour.customiser-blackwhite {
-  background-color: white;
+  background-color: var(--pure-contrast);
 }
 
 .customiser-image {
