@@ -143,7 +143,15 @@ langs.en = {
     'edit-asgn': 'Assignment properties',
     'delete-asgn': 'Delete',
     'cancel-asgn': 'Cancel',
-    'save-asgn': 'Save'
+    'save-asgn': 'Save',
+    'asgn-before-pd': 'Due by ',
+    'asgn-between-pd-date': ' on ',
+    'asgn-after-date': '.',
+    category: 'Category:',
+    importance: 'Priority:',
+    low: 'low',
+    medium: 'medium',
+    high: 'high'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
