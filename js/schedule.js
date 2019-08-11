@@ -503,11 +503,12 @@ function initSchedule() {
   var datepicker=new DatePicker(...datePickerRange),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
-  datepicker.day.d--;
-  yesterdayer.disabled = datepicker.compare(datepicker.day, datepicker.start) < 0;
-  datepicker.day.d += 2;
-  tomorrower.disabled = datepicker.compare(datepicker.day, datepicker.end) > 0;
-  datepicker.day.d--;
+  const tempD = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
+  tempD.d--;
+  yesterdayer.disabled = datepicker.compare(tempD, datepicker.start) < 0;
+  tempD.d += 2;
+  tomorrower.disabled = datepicker.compare(tempD, datepicker.end) > 0;
+  tempD.d--;
   datepicker.onchange=e=>{
     e.d--;
     yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
@@ -528,6 +529,21 @@ function initSchedule() {
     });
   };
   scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
+  function isSchoolDay(d) {
+    if (scheduleapp.options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
+      return false;
+    } else if (alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
+      return alternates[(d.getMonth()+1)+'-'+d.getDate()].periods.length;
+    } else {
+      return normalschedule[d.getDay()];
+    }
+  }
+  let offset = scheduleapp.offset;
+  while (datepicker.compare({d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}, datepicker.end) <= 0 && !isSchoolDay(d)) {
+    d.setDate(d.getDate() + 1);
+    offset++;
+  }
+  scheduleapp.offset = offset;
   makeWeekHappen(); // rerender week preview in case it's summer and isSummer has just been defined
   scheduleapp.update();
   datepicker.wrapper.classList.add('hide');
@@ -652,6 +668,7 @@ function initSchedule() {
       input.input.addEventListener("change",e=>{
         if (scheduleapp) scheduleapp.setPeriod(id,input.input.value);
         options[letras.indexOf(id)][0]=input.input.value;
+        if (periodstyles[id].update) periodstyles[id].update();
         cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
       },false);
       div.appendChild(input.wrapper);
