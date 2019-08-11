@@ -1,3 +1,7 @@
+:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
 div.ripple {
   position: absolute;
   height: 20px;

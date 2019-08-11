@@ -498,10 +498,22 @@ function initSchedule() {
     asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
   }
   alternateGet();
+  const yesterdayer = document.querySelector('#plihieraux');
+  const tomorrower = document.querySelector('#plimorgaux');
   var datepicker=new DatePicker(...datePickerRange),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
+  datepicker.day.d--;
+  yesterdayer.disabled = datepicker.compare(datepicker.day, datepicker.start) < 0;
+  datepicker.day.d += 2;
+  tomorrower.disabled = datepicker.compare(datepicker.day, datepicker.end) > 0;
+  datepicker.day.d--;
   datepicker.onchange=e=>{
+    e.d--;
+    yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
+    e.d += 2;
+    tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
+    e.d--;
     if (e!==null) {
       var d=new Date(e.y,e.m,e.d).getTime(),
       today=new Date().getTime();
@@ -535,11 +547,11 @@ function initSchedule() {
       },0);
     }
   },false);
-  document.querySelector('#plihieraux').addEventListener("click",e=>{
+  yesterdayer.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.start) >= 0) datepicker.day=proposal;
   },false);
-  document.querySelector('#plimorgaux').addEventListener("click",e=>{
+  tomorrower.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
   },false);
