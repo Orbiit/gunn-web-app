@@ -12,9 +12,17 @@ button.material.icon.asgn-done-btn {
   vertical-align: middle;
   margin-left: -16px;
   color: inherit;
+  text-shadow: inherit;
+}
+.schedule-container .asgn-done-btn {
+  transition: background-color .2s;
+}
+.schedule-container .asgn-done-btn:hover {
+  background-color: var(--ripple);
 }
 .asgn-done-btn .material-icons {
   pointer-events: none;
+  padding: 10px; /* otherwise the text shadow gets clipped */
 }
 .asgn-line {
   font-size: 14px;
@@ -35,7 +43,7 @@ button.material.icon.asgn-done-btn {
   text-decoration: line-through;
   opacity: 0.5;
 }
-.asgn-is-done button.material.icon.asgn-done-btn {
+.asgn-upcoming .asgn-is-done button.material.icon.asgn-done-btn {
   color: var(--theme);
 }
 .asgn-text:hover, .tab-focus .asgn-text:focus {

@@ -502,7 +502,6 @@ function initSchedule() {
   const tomorrower = document.querySelector('#plimorgaux');
   var datepicker=new DatePicker(...datePickerRange),
   d=new Date();
-  datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   const tempD = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   tempD.d--;
   yesterdayer.disabled = datepicker.compare(tempD, datepicker.start) < 0;
@@ -544,6 +543,7 @@ function initSchedule() {
     offset++;
   }
   scheduleapp.offset = offset;
+  datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   makeWeekHappen(); // rerender week preview in case it's summer and isSummer has just been defined
   scheduleapp.update();
   datepicker.wrapper.classList.add('hide');
