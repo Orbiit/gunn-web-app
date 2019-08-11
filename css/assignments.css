@@ -85,7 +85,7 @@ button.material.icon.asgn-done-btn {
 }
 .asgn-category-homework { background-color: #8abeb7; color: black; }
 .asgn-category-preparation { background-color: #b294bb; color: black; }
-.asgn-category-worksheet { background-color: #ffffff; color: black; }
+.asgn-category-worksheet { background-color: #ffffff; color: black; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
 .asgn-category-reading { background-color: #cc6666; color: black; }
 .asgn-category-quiz { background-color: #b5bd68; color: black; }
 .asgn-category-test { background-color: #81a2be; color: black; }
