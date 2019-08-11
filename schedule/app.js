@@ -12,8 +12,16 @@ function localizeTime(id, params = {}) {
     return entry;
   }
 }
+const colourtoy=document.createElement("div");
+function getFontColour(colour) {
+  colourtoy.style.backgroundColor=colour;
+  colour=colourtoy.style.backgroundColor;
+  colour=colour.slice(colour.indexOf('(')+1,colour.indexOf(')')).split(/,\s*/).map(a=>+a);
+  // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
+  return Math.round(((parseInt(colour[0])*299)+(parseInt(colour[1])*587)+(parseInt(colour[2])*114))/1000)>150?'rgba(0,0,0,0.8)':'white';
+}
 function scheduleApp(options={}) {
-  var elem,container=document.createElement("div"),colourtoy=document.createElement("div");
+  var elem,container=document.createElement("div");
   if (options.element) elem=options.element;
   else elem=document.createElement("div");
   container.classList.add('schedule-container');
@@ -29,18 +37,11 @@ function scheduleApp(options={}) {
     else if (options.h24) return `${hr}:${messytime.slice(2)}`;
     else return `${(hr-1)%12+1}:${messytime.slice(2)}${hr<12?'a':'p'}m`;
   }
-  function getFontColour(colour) {
-    colourtoy.style.backgroundColor=colour;
-    colour=colourtoy.style.backgroundColor;
-    colour=colour.slice(colour.indexOf('(')+1,colour.indexOf(')')).split(/,\s*/).map(a=>+a);
-    // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
-    return Math.round(((parseInt(colour[0])*299)+(parseInt(colour[1])*587)+(parseInt(colour[2])*114))/1000)>150?'rgba(0,0,0,0.8)':'white';
-  }
   function getCSS(colour, id) {
     if (colour[0] === '#') {
       return `background-color:${colour};color:${getFontColour(colour)};`;
     } else {
-      return `background-image: url(./.period-images/${id}?${encodeURIComponent(colour)}); color: white; text-shadow: 0 0 10px black;`
+      return `background-image: url('./.period-images/${id}?${encodeURIComponent(colour)}'); color: white; text-shadow: 0 0 10px black;`
     }
   }
   function getUsefulTimePhrase(minutes) {
@@ -62,6 +63,10 @@ function scheduleApp(options={}) {
     const ano = d.getFullYear(), mez = d.getMonth(), dia = d.getDate(), weekday = d.getDay();
     day=days[weekday];
     innerHTML=`<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez + 1}-${dia}`}">${localizeTime('date', {M: months[mez], D: dia})}</a></h3>`;
+    const assignments = options.getAssignments(d);
+    if (assignments.noPeriod) {
+      innerHTML += assignments.noPeriod;
+    }
     var isSELF = isSELFDay(mez, dia);
     var periods;
     function getPeriodName(index) {
@@ -116,6 +121,9 @@ function scheduleApp(options={}) {
           else if (totalminute<period.start.totalminutes) innerHTML+=localizeTime('self-starting', {T: `<strong>${getUsefulTimePhrase(period.start.totalminutes-totalminute)}</strong>`});
           else innerHTML+=localizeTime('self-ending', {T1: `<strong>${getUsefulTimePhrase(period.end.totalminutes-totalminute)}</strong>`, T2: getUsefulTimePhrase(totalminute-period.start.totalminutes)});
           innerHTML+=`</span>`;
+        }
+        if (assignments[period.name]) {
+          innerHTML += assignments[period.name];
         }
         if (period.name === 'Lunch' && dayToPrime[weekday]) {
           const clubs = [];

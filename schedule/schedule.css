@@ -39,7 +39,7 @@ body.dark .schedule-container .schedule-alternatemsg, body.dark .schedule-contai
 .schedule-container .schedule-endingin {
   font-size: 14px;
 }
-.schedule-container .schedule-endinginperiod {
+.schedule-endinginperiod {
   padding: 5px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
   border-radius: 2px;
@@ -77,7 +77,7 @@ body.dark .schedule-container .schedule-periodprogress > div {
   background-size: cover;
   background-position: center;
 }
-.schedule-container .schedule-period span {
+.schedule-container .schedule-period > span {
   display: block;
 }
 .schedule-container .schedule-periodname {

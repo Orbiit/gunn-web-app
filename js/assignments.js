@@ -1,6 +1,7 @@
 // asgn = assignment
 
 const IMPORTANCE_ALGORITHMIC_WEIGHT = 1;
+const NADA = () => null;
 
 const assignmentsById = {};
 let currentId = 0;
@@ -39,8 +40,14 @@ class Assignment {
     ));
   }
 
+  // finished assignments are less important than unfinished ones
+  get sortableImportance() {
+    return this.done ? -1 : this.importance;
+  }
+
+  // lower is better
   get algorithmicValue() {
-    return this.due + this.importance * IMPORTANCE_ALGORITHMIC_WEIGHT;
+    return this.due - this.sortableImportance * IMPORTANCE_ALGORITHMIC_WEIGHT;
   }
 
   remove() {
@@ -58,17 +65,20 @@ class Assignment {
   }
 
   // used with the periods
-  toHTML({isOverdue = false} = {}) {
-    return html`
-    <div class="asgn-line asgn-importance-${this.importance}" data-asgn-id="${this.id}">
-      <button class="asgn-done-btn" aria-label="${localize(this.done ? 'undoneify' : 'doneify')}">
+  toHTML({today} = {}) {
+    return `
+    <div class="asgn-line asgn-importance-${this.importance}${this.done ? ' asgn-is-done' : ''}" data-asgn-id="${this.id}">
+      <button class="asgn-done-btn material icon" aria-label="${localize(this.done ? 'undoneify' : 'doneify')}"><i class="material-icons">${this.done ? '&#xe834;' : '&#xe835;'}</i></button>
       <span class="asgn-due">${localize('due')}</span>
+      <span class="asgn-category asgn-category-${this.category}">${localize('asgn-cat-' + this.category)}</span>
+      ${today > this.due ? `<span class="asgn-overdue">${localize('overdue')}</span>`: ''}
       <span class="asgn-text" tabindex="0">${escapeHTML(this.text)}</span>
+    </div>
     `;
   }
 
   // used in the upcoming assignments section
-  toElem({isOverdue = false, getPeriodSpan = null} = {}) {
+  toElem({today, getPeriodSpan = null} = {}) {
     const wrapper = document.createElement('div');
     wrapper.classList.add('asgn-line');
     wrapper.classList.add('asgn-importance-' + this.importance);
@@ -77,16 +87,23 @@ class Assignment {
 
     const doneBtn = document.createElement('button');
     doneBtn.classList.add('asgn-done-btn');
+    doneBtn.classList.add('material');
+    doneBtn.classList.add('icon');
     doneBtn.setAttribute('aria-label', localize(this.done ? 'undoneify' : 'doneify'));
+    ripple(doneBtn);
+    const icon = document.createElement('i');
+    icon.classList.add('material-icons');
+    icon.innerHTML = this.done ? '&#xe834;' : '&#xe835;';
+    doneBtn.appendChild(icon);
     wrapper.appendChild(doneBtn);
 
     const categoryBadge = document.createElement('span');
     categoryBadge.classList.add('asgn-category');
     categoryBadge.classList.add('asgn-category-' + this.category);
-    categoryBadge.textContent = this.category;
+    categoryBadge.textContent = localize('asgn-cat-' + this.category);
     wrapper.appendChild(categoryBadge);
 
-    if (isOverdue) {
+    if (today > this.due) {
       const overdueBadge = document.createElement('span');
       overdueBadge.classList.add('asgn-overdue');
       overdueBadge.textContent = localize('overdue');
@@ -124,6 +141,11 @@ class Assignment {
     };
   }
 
+  // for debugging purposes
+  toString() {
+    return `D${this.due} I${this.importance} C-${this.category} ${this.text}`;
+  }
+
   // UGWA uses local time zone to represent dates
   static dateObjToDayInt(dateObj) {
     const minutes = dateObj.getTime() / 1000 / 60 - dateObj.getTimezoneOffset();
@@ -146,10 +168,13 @@ class AssignmentsManager {
     return this.assignments.filter(({due}) => due === day);
   }
 
-  // can use this for both generating "upcoming assignments" and deleting old
-  // assignments
+  // for deleting old assignments
   getAssignmentsBefore(day) {
     return this.assignments.filter(({due}) => due <= day);
+  }
+
+  getAssignmentsToDoFor(day) {
+    return this.assignments.filter(({due, done}) => !done || day <= due);
   }
 
   sortAssignmentsBy(mode = 'chrono-primero') {
@@ -157,15 +182,17 @@ class AssignmentsManager {
       case 'chrono-primero':
         this.assignments.sort((a, b) =>
           a.due === b.due
-            ? b.importance - a.importance
-            : b.due - a.due);
+            ? b.sortableImportance - a.sortableImportance
+            : a.due - b.due);
+        break;
       case 'important-importance':
         this.assignments.sort((a, b) =>
           a.importance === b.importance
-            ? b.due - a.due
-            : b.importance - a.importance);
+            ? a.due - b.due
+            : b.sortableImportance - a.sortableImportance);
+        break;
       case 'aLgOriThMs':
-        this.assignments.sort((a, b) => b.algorithmicValue - a.algorithmicValue);
+        this.assignments.sort((a, b) => a.algorithmicValue - b.algorithmicValue);
         break;
       default:
         throw new Error('idk how to do that');
@@ -179,7 +206,13 @@ class AssignmentsManager {
 
 }
 
-function initAssignments(editor, loadJSON = '') {
+function initAssignments({
+  editor = NADA,
+  save = NADA,
+  rerender = NADA,
+  getDefaultDate = NADA,
+  loadJSON = ''
+}) {
   try {
     loadJSON = JSON.parse(loadJSON);
     if (!Array.isArray(loadJSON)) throw 'something';
@@ -196,6 +229,7 @@ function initAssignments(editor, loadJSON = '') {
 
   const addBtn = document.createElement('button');
   addBtn.classList.add('material');
+  addBtn.classList.add('add-asgn');
   addBtn.textContent = localize('add-asgn');
   ripple(addBtn);
   addBtn.addEventListener('click', e => {
@@ -207,40 +241,58 @@ function initAssignments(editor, loadJSON = '') {
   wrapper.classList.add('asgn-wrapper');
   section.appendChild(wrapper);
 
-  const openEditor = (asgn = new Assignment({dueObj: {
+  const openEditor = (asgn = new Assignment({dueObj: getDefaultDate() || {
     y: lastToday.getFullYear(),
     m: lastToday.getMonth(),
     d: lastToday.getDate()
   }})) => {
     editor(asgn)
-      .onSave(props => asgn.setProps(props))
+      .onSave(props => {
+        asgn.setProps(props);
+        if (!asgn.manager) {
+          manager.addAssignment(asgn);
+        }
+      })
       .onDelete(() => asgn.remove())
       .onFinish(() => {
-        methods.todayIs(lastToday, lastSort);
+        methods.todayIs();
+        rerender();
       });
   };
 
   document.addEventListener('click', e => {
-    const asgnLine = e.target.closest('asgn');
+    const asgnLine = e.target.closest('.asgn-line');
     if (asgnLine) {
       const assignment = assignmentsById[asgnLine.dataset.asgnId];
       if (e.target.classList.contains('asgn-done-btn')) {
-        //
+        assignment.done = !assignment.done;
+        if (assignment.done) asgnLine.classList.add('asgn-is-done');
+        else asgnLine.classList.remove('asgn-is-done');
+        e.target.setAttribute('aria-label', localize(assignment.done ? 'undoneify' : 'doneify'));
+        e.target.children[0].innerHTML = assignment.done ? '&#xe834;' : '&#xe835;';
+        save();
       } else if (e.target.classList.contains('asgn-text')) {
         openEditor(assignment);
       }
     }
   });
 
-  let lastToday, lastSort;
+  let lastToday, lastSort, lastGetPeriodSpan;
   const methods = {
-    todayIs(date, sort = 'chrono-primero') {
+    todayIs(getPeriodSpan = lastGetPeriodSpan, date = lastToday, sort = lastSort) {
       const today = Assignment.dateObjToDayInt(date || lastToday);
       wrapper.innerHTML = '';
       manager
         .sortAssignmentsBy(sort)
-        .getAssignmentsBefore(today)
-        .forEach(asgn => wrapper.appendChild(asgn.toElem()));
+        .getAssignmentsToDoFor(today)
+        .forEach(asgn => wrapper.appendChild(asgn.toElem({
+          today,
+          getPeriodSpan
+        })));
+      manager
+        .getAssignmentsBefore(today - 3)
+        .forEach(asgn => asgn.remove());
+      lastGetPeriodSpan = getPeriodSpan;
       lastToday = date;
       lastSort = sort;
     },
@@ -252,12 +304,24 @@ function initAssignments(editor, loadJSON = '') {
         insertPoint.parentNode.insertBefore(section, insertPoint);
       }
     },
-    getScheduleAsgns(day) {
+    getScheduleAsgns(date, getPeriodSpan) {
+      const today = Assignment.dateObjToDayInt(lastToday);
       const byPeriod = {};
-      manager.getAssignmentsFor(day).forEach(asgn => {
-        byPeriod[asgn.period || 'noPeriod'] = asgn.toHTML();
-      });
+      manager
+        .sortAssignmentsBy('important-importance')
+        .getAssignmentsFor(Assignment.dateObjToDayInt(date))
+        .forEach(asgn => {
+          if (!byPeriod[asgn.period || 'noPeriod']) {
+            byPeriod[asgn.period || 'noPeriod'] = '';
+          }
+          byPeriod[asgn.period || 'noPeriod'] += asgn.toHTML({
+            today
+          });
+        });
       return byPeriod;
+    },
+    getSaveable() {
+      return JSON.stringify(manager);
     }
   };
   return methods;

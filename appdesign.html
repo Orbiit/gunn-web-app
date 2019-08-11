@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/colourpicker.css">
     <link rel="stylesheet" href="css/datepicker.css">
     <link rel="stylesheet" href="css/periodcustomisation.css">
+    <link rel="stylesheet" href="css/assignments.css">
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- /STYLES -->
     <script type="text/javascript">
@@ -113,7 +114,7 @@
       <div id="schedulewrapper"></div>
       <div id="weekwrapper"></div>
       <span id="asgn-sec-ins-after-pt"></span>
-      <h1 class="center">{{events}}</h1>
+      <h1>{{events}}</h1>
       <ul class="material-list two-line" id='events'></ul>
     </div>
     <div class="section staff">
@@ -220,10 +221,10 @@
     <div id="asgn-editor" class="material-dialog">
       <h1>{{edit-asgn}}</h1>
       <div class="content">
-        <textarea class="asgn-text-edit"></textarea>
-        <p>{{asgn-before-pd}}<div class="material-dropdown"></div>{{asgn-between-pd-date}}<button class="material" id="date"></button>{{asgn-after-date}}</p>
-        <p>{{category}}<div class="material-dropdown"></div></p>
-        <p>{{importance}}<button class="material" id="low-imp">{{low}}</button><button class="material" id="medium-imp">{{medium}}</button><button class="material" id="high-imp">{{high}}</button></p>
+        <textarea class="asgn-text-edit" id="asgn-content"></textarea>
+        <p>{{asgn-before-pd}}<span class="material-dropdown" id="period-drop"></span>{{asgn-between-pd-date}}<button class="material" id="date"></button>{{asgn-after-date}}</p>
+        <p>{{category}}<span class="material-dropdown" id="cat-drop"></span></p>
+        <p class="importance">{{importance}}<button class="material" id="low-imp">{{low}}</button><button class="material" id="medium-imp">{{medium}}</button><button class="material" id="high-imp">{{high}}</button></p>
       </div>
       <div class="buttons">
         <button class="material red" id="asgn-delete">{{delete-asgn}}</button>

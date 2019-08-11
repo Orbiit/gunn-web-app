@@ -223,17 +223,28 @@ langs.en = {
     summer: 'Enjoy your summer!',
     'image-url': 'Image URL',
     cannot: 'There was a problem fetching the image.',
-    'add-asgn': 'Add assignment',
+    'add-asgn': 'Add',
     asgn: 'Upcoming assignments',
     overdue: 'overdue',
     doneify: 'Mark as done',
     undoneify: 'Unmark as done',
-    due: 'due'
+    due: 'due',
+    'asgn-cat-homework': 'homework',
+    'asgn-cat-preparation': 'preparation',
+    'asgn-cat-worksheet': 'worksheet',
+    'asgn-cat-reading': 'reading',
+    'asgn-cat-quiz': 'quiz',
+    'asgn-cat-test': 'test',
+    'asgn-cat-exam': 'exam',
+    'asgn-cat-presentation': 'presentation',
+    'asgn-cat-materials': 'materials',
+    'asgn-cat-other': 'other'
   },
   placeholders: {
     clubs: 'Search clubs',
     staff: 'Search staff',
-    'send-msg': 'Send a message'
+    'send-msg': 'Send a message',
+    assignment: 'Assignment'
   },
   times: {
     duration({T: minutes}) {
@@ -250,7 +261,10 @@ langs.en = {
     long: '{T} long',
     'self-ended': 'Ended {T} ago.',
     'self-starting': 'Starting in {T}.',
-    'self-ending': 'Ending in {T1}; started {T2} ago.'
+    'self-ending': 'Ending in {T1}; started {T2} ago.',
+    'due-date'({P: periodSpan, D: dateStr}) {
+      return 'due by ' + (periodSpan ? periodSpan + ' on ' : '') + dateStr;
+    }
   }
 };
 

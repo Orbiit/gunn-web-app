@@ -45,6 +45,7 @@ normalschedule=[
   ],
   null
 ];
+const datePickerRange = [{d:13,m:7,y:2019},{d:4,m:5,y:2020}]; // change for new school year, months are 0-indexed
 function initSchedule() {
   var letterPdFormat = localize('periodx'),
   periodstyles={
@@ -121,8 +122,95 @@ function initSchedule() {
   toEach('input[name=asgn-sort]',t=>t.addEventListener("click",e=>{
     formatOptions[5] = e.target.value;
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
-    asgnThing.todayIs(null, e.target.value);
+    asgnThing.todayIs(getPeriodSpan, new Date(), e.target.value);
   },false));
+
+  function getPeriodSpan(pd) { // yay hoisting (see three lines above)
+    let css, colour = periodstyles[pd].colour;
+    if (colour[0] === '#') {
+      css = `background-color:${colour};color:${getFontColour(colour)};`;
+    } else {
+      css = `background-image: url('./.period-images/${pd}?${encodeURIComponent(colour)}'); color: white; text-shadow: 0 0 10px black;`
+    }
+    return `<span style="${css}" class="schedule-endinginperiod">${escapeHTML(periodstyles[pd].label)}</span>`;
+  }
+  const categoryList = [
+    'homework', 'preparation',
+    'worksheet', 'reading', 'quiz', 'test', 'exam', 'presentation', 'materials',
+    'other'
+  ];
+  const contentInput = document.getElementById('asgn-content');
+  const dueDateTrigger = document.getElementById('date');
+  const importanceBtns = [
+    document.getElementById('low-imp'),
+    document.getElementById('medium-imp'),
+    document.getElementById('high-imp')
+  ];
+  const catDropdown = makeDropdown(
+    document.getElementById('cat-drop'),
+    categoryList.map(cat => {
+      const categoryBadge = document.createElement('span');
+      categoryBadge.classList.add('asgn-category');
+      categoryBadge.classList.add('asgn-category-' + cat);
+      categoryBadge.textContent = localize('asgn-cat-' + cat);
+      return [cat, categoryBadge];
+    })
+  );
+  const pdDropdown = makeDropdown(
+    document.getElementById('period-drop'),
+    [
+      [null, 'the day'],
+      ...letras.slice(1).map(pd => {
+        const span = document.createElement('span');
+        span.classList.add('schedule-endinginperiod');
+        (periodstyles[pd].update = () => {
+          span.textContent = periodstyles[pd].label;
+          if (periodstyles[pd].colour[0] === '#') {
+            span.style.backgroundColor = periodstyles[pd].colour;
+            span.style.color = getFontColour(periodstyles[pd].colour);
+            span.style.textShadow = null;
+          } else {
+            span.style.backgroundImage = `url('./.period-images/${pd}?${encodeURIComponent(periodstyles[pd].colour)}')`;
+            span.style.color = 'white';
+            span.style.textShadow = '0 0 10px black';
+          }
+        })();
+        return [pd, span];
+      })
+    ]
+  );
+  const dueDate = new DatePicker(...datePickerRange);
+  function closeDueDatePicker() {
+    dueDate.wrapper.classList.add('hide');
+    document.removeEventListener('click', closeDueDatePicker);
+  }
+  dueDateTrigger.addEventListener('click', e => {
+    dueDate.wrapper.classList.remove('hide');
+    document.addEventListener('click', closeDueDatePicker);
+    e.stopPropagation();
+  });
+  dueDate.onchange = date => {
+    dueDateTrigger.textContent = localizeTime('date', {
+      M: months[date.m],
+      D: date.d
+    });
+  };
+  dueDate.wrapper.classList.add('hide');
+  dueDate.wrapper.style.position='absolute';
+  contentInput.placeholder = localize('assignment', 'placeholders');
+  let selectedImportance;
+  function setImportance(importance) {
+    selectedImportance = importance;
+    importanceBtns.forEach((btn, i) => {
+      if (i === importance) btn.classList.add('raised');
+      else btn.classList.remove('raised');
+    });
+  }
+  importanceBtns.forEach((btn, i) => {
+    btn.addEventListener('click', e => {
+      setImportance(i);
+    });
+  });
 
   const editorDialog = document.getElementById('asgn-editor');
   const asgn_deleteBtn = document.getElementById('asgn-delete');
@@ -132,9 +220,20 @@ function initSchedule() {
   asgn_deleteBtn.addEventListener('click', e => { if (onDeleteClick) onDeleteClick(); });
   asgn_cancelBtn.addEventListener('click', e => { if (currentCancelFn) currentCancelFn(); });
   asgn_saveBtn.addEventListener('click', e => { if (onSaveClick) onSaveClick(); });
+  editorDialog.appendChild(dueDate.wrapper);
   function asgnEditor({text, category, importance, dueObj, period}) {
     if (currentCancelFn) currentCancelFn();
+    pdDropdown.set(period);
+    catDropdown.set(category);
+    dueDateTrigger.textContent = localizeTime('date', {
+      M: months[dueObj.m],
+      D: dueObj.d
+    });
+    dueDate.day = dueObj;
+    contentInput.value = text;
     editorDialog.classList.add('show');
+    contentInput.focus();
+    setImportance(importance);
     let onSave, onDelete, onFinish;
     currentCancelFn = () => {
       onDeleteClick = onSaveClick = currentCancelFn = null;
@@ -144,11 +243,19 @@ function initSchedule() {
       currentCancelFn();
       if (onDelete) onDelete();
       if (onFinish) onFinish();
+      cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable());
     };
     onSaveClick = () => {
       currentCancelFn();
-      if (onSave) onSave({});
+      if (onSave) onSave({
+        text: contentInput.value,
+        category: catDropdown.get(),
+        importance: selectedImportance,
+        dueObj: dueDate.day,
+        period: pdDropdown.get()
+      });
       if (onFinish) onFinish();
+      cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable());
     }
     const thing = {
       onSave(fn) { onSave = fn; return thing; },
@@ -157,8 +264,20 @@ function initSchedule() {
     };
     return thing;
   }
-  const asgnThing = initAssignments(asgnEditor, cookie.getItem('[gunn-web-app] assignments'));
-  asgnThing.todayIs(new Date(), formatOptions[5]);
+  const asgnThing = initAssignments({
+    editor: asgnEditor,
+    save() {
+      cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable());
+    },
+    rerender() {
+      scheduleapp.update();
+    },
+    getDefaultDate() {
+      return datepicker.day;
+    },
+    loadJSON: cookie.getItem('[gunn-web-app] assignments')
+  });
+  asgnThing.todayIs(getPeriodSpan, new Date(), formatOptions[5]);
   asgnThing.displaySection(formatOptions[4]);
 
   var scheduleapp;
@@ -182,7 +301,7 @@ function initSchedule() {
   var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
   var selfDays;
   var eventsul=document.querySelector('#events'),events={},
-  months=localize('months').split(' ');
+  months=localize('months').split('  ');
   function renderEvents() {
     var offset=scheduleapp.offset,d=new Date();
     eventsul.innerHTML=`<li><span class="secondary center">${localize('loading')}</span></li>`;
@@ -353,7 +472,11 @@ function initSchedule() {
       if (!dayString.includes('-')) continue;
       ugwaifyAlternates(alternates, dayString, alternates[dayString]);
     }
-    for (var i=0;i<letras.length;i++) periodstyles[letras[i]]={label:options[i][0],colour:options[i][1]};
+    for (var i=0;i<letras.length;i++) {
+      if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {};
+      periodstyles[letras[i]].label=options[i][0];
+      periodstyles[letras[i]].colour=options[i][1];
+    }
     scheduleapp=scheduleApp({
       element:document.querySelector('#schedulewrapper'),
       periods:periodstyles,
@@ -365,13 +488,17 @@ function initSchedule() {
       h24: formatOptions[1] === '24',
       h0Joke: formatOptions[1] === '0',
       compact: formatOptions[2] === 'compact',
-      self: +formatOptions[3]
+      self: +formatOptions[3],
+      getAssignments(date, getPeriodSpan) {
+        return asgnThing.getScheduleAsgns(date, getPeriodSpan);
+      }
       // customSchedule(date, y, m, d, wd)
     });
     makeWeekHappen();
+    asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
   }
   alternateGet();
-  var datepicker=new DatePicker({d:13,m:7,y:2019},{d:4,m:5,y:2020}),
+  var datepicker=new DatePicker(...datePickerRange),
   d=new Date();
   datepicker.day={d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   datepicker.onchange=e=>{
@@ -482,6 +609,7 @@ function initSchedule() {
         pickertrigger.style.backgroundColor=e;
         if (scheduleapp) scheduleapp.setPeriod(id,'',e);
         options[letras.indexOf(id)][1]=e;
+        if (periodstyles[id].update) periodstyles[id].update();
         cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
         if (picker.darkness()>125) {
           pickertrigger.classList.add('ripple-dark');
@@ -496,7 +624,10 @@ function initSchedule() {
       ripple(pickertrigger);
       pickertrigger.classList.add('material');
       pickertrigger.classList.add('customiser-colour');
-      if (isImage) pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+      if (isImage) {
+        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+        if (periodstyles[id].update) periodstyles[id].update(); // colour input already triggers this, so we only need to update image
+      }
       pickertrigger.addEventListener("click",e=>{
         picker.trigger(pickertrigger);
       },false);
@@ -555,6 +686,7 @@ function initSchedule() {
               pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
               if (scheduleapp) scheduleapp.setPeriod(id,'',imageInput.value);
               options[letras.indexOf(id)][1]=imageInput.value;
+              if (periodstyles[id].update) periodstyles[id].update();
               cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
               pickertrigger.classList.add('ripple-dark');
               pickertrigger.classList.remove('ripple-light');
@@ -574,6 +706,7 @@ function initSchedule() {
               pickertrigger.style.backgroundImage = null;
               if (scheduleapp) scheduleapp.setPeriod(id,'',picker.colour);
               options[letras.indexOf(id)][1]=picker.colour;
+              if (periodstyles[id].update) periodstyles[id].update();
               cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
               if (picker.darkness()>125) {
                 pickertrigger.classList.add('ripple-dark');

@@ -59,6 +59,65 @@ function ripple(elem) {
     elem.removeChild(focusblob);
   },false); */
 }
+function makeDropdown(wrapper, values) {
+  const selectDisplay = document.createElement('span');
+  selectDisplay.classList.add('mdrop-selected');
+  selectDisplay.tabIndex = 0;
+  ripple(selectDisplay);
+  wrapper.appendChild(selectDisplay);
+  const dropdown = document.createElement('div');
+  dropdown.classList.add('mdrop-values');
+  const valuesByVal = {};
+  values.forEach(([valText, elem]) => {
+    const value = document.createElement('div');
+    value.classList.add('mdrop-value');
+    value.dataset.value = valText;
+    value.tabIndex = 0;
+    ripple(value);
+    if (typeof elem === 'string') {
+      const temp = document.createElement('span');
+      temp.textContent = elem;
+      elem = temp;
+    }
+    value.appendChild(elem);
+    valuesByVal[valText] = elem;
+    dropdown.appendChild(value);
+  });
+  wrapper.appendChild(dropdown);
+  selectDisplay.innerHTML = valuesByVal[values[0][0]].outerHTML;
+  function close() {
+    dropdown.classList.remove('show');
+    document.removeEventListener('click', close);
+  }
+  selectDisplay.addEventListener('click', e => {
+    dropdown.classList.add('show');
+    document.addEventListener('click', close);
+    e.stopPropagation();
+  });
+  let selected, onchange;
+  dropdown.addEventListener('click', e => {
+    const value = e.target.closest('.mdrop-value');
+    if (value) {
+      selected = value.dataset.value;
+      selectDisplay.innerHTML = valuesByVal[selected].outerHTML;
+      if (onchange) onchange(selected);
+    }
+  });
+  return {
+    set(to) {
+      selected = to
+      selectDisplay.innerHTML = valuesByVal[selected].outerHTML;
+      return this;
+    },
+    get() {
+      return selected;
+    },
+    onChange(fn) {
+      onchange = fn;
+      return this;
+    }
+  };
+}
 window.addEventListener("load",e=>{
   toEach('.material-switch',t=>{
     t.addEventListener("click",e=>{

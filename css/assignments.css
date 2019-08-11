@@ -1,0 +1,121 @@
+/* ASSIGNMENT */
+button.material.icon.asgn-done-btn {
+  width: 48px;
+  height: 48px;
+  vertical-align: middle;
+  margin-left: -16px;
+  color: inherit;
+}
+.asgn-done-btn .material-icons {
+  pointer-events: none;
+}
+.asgn-line {
+  font-size: 14px;
+  position: relative;
+}
+.asgn-line .asgn-category {
+  margin-right: 10px;
+}
+.asgn-due-date {
+  color: var(--secondary);
+  margin-left: 10px;
+}
+.asgn-text {
+  cursor: pointer;
+  font-size: 16px;
+}
+.asgn-is-done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.asgn-is-done button.material.icon.asgn-done-btn {
+  color: var(--theme);
+}
+.asgn-text:hover, .tab-focus .asgn-text:focus {
+  text-decoration: underline;
+}
+.asgn-due, .asgn-overdue {
+  font-weight: bold;
+  color: white;
+  text-shadow: none;
+  background-color: #f44336;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  margin-right: 10px;
+  font-size: 12px;
+}
+.asgn-overdue {
+  background-color: #FF9800;
+  color: black;
+}
+.asgn-line::after {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 24px;
+}
+.asgn-importance-1:not(.asgn-is-done)::after {
+  content: '!';
+  color: var(--secondary);
+}
+.asgn-importance-2:not(.asgn-is-done)::after {
+  content: '!!!';
+  color: #2196F3;
+}
+
+/* BADGES */
+.asgn-category {
+  display: inline-flex;
+  height: 32px;
+  border-radius: 16px;
+  padding: 0 12px;
+  align-items: center;
+  background-color: #969896;
+  color: white;
+  font-size: 14px;
+  text-shadow: none;
+}
+.asgn-category-homework { background-color: #8abeb7; color: black; }
+.asgn-category-preparation { background-color: #b294bb; color: black; }
+.asgn-category-worksheet { background-color: #ffffff; color: black; }
+.asgn-category-reading { background-color: #cc6666; color: black; }
+.asgn-category-quiz { background-color: #b5bd68; color: black; }
+.asgn-category-test { background-color: #81a2be; color: black; }
+.asgn-category-exam { background-color: #de935f; color: black; }
+.asgn-category-presentation { background-color: #f0c674; color: black; }
+.asgn-category-materials { background-color: #a3685a; color: black; }
+.asgn-category-other { background-color: #969896; color: black; }
+
+/* UPCOMING */
+.add-asgn {
+  float: right;
+}
+
+/* EDITOR */
+#asgn-editor .content button {
+  vertical-align: middle;
+}
+#asgn-content {
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  resize: vertical;
+  background-color: var(--fill);
+  border-radius: 10px;
+  color: inherit;
+}
+#asgn-delete {
+  float: left;
+}
+.importance button {
+  margin-left: 10px;
+  color: var(--theme);
+  transition: all .2s;
+}
+#low-imp { --theme: #9E9E9E; }
+#medium-imp { --theme: #607D8B; }
+#high-imp { --theme: #2196F3; }
