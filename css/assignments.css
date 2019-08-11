@@ -1,3 +1,10 @@
+.confetti {
+  position: fixed;
+  margin: -60px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
 /* ASSIGNMENT */
 button.material.icon.asgn-done-btn {
   width: 48px;

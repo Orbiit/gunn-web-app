@@ -1,5 +1,59 @@
 // asgn = assignment
 
+const CONFETTI_RADIUS = 60;
+const CONFETTI_COUNT = 50;
+const CONFETTI_LIFE = 1000;
+const CONFETTI_GRAVITY = 0.0002;
+function createConfetti(x, y) {
+  const canvas = document.createElement('canvas');
+  canvas.classList.add('confetti');
+  canvas.width = canvas.height = CONFETTI_RADIUS * 2;
+  canvas.style.left = x + 'px';
+  canvas.style.top = y + 'px';
+  const c = canvas.getContext('2d');
+  const confetti = [];
+  for (let i = CONFETTI_COUNT; i--;) {
+    confetti.push({
+      x: 0,
+      y: 0,
+      xv: (Math.random() * 2 - 1) / 30,
+      yv: -Math.random() * 0.1,
+      fadeOffset: Math.random(),
+      colour: Math.random() * 0x1000000
+    });
+  }
+  document.body.appendChild(canvas);
+  const start = Date.now();
+  let lastTime = start;
+  (function paint() {
+    c.clearRect(0, 0, CONFETTI_RADIUS * 2, CONFETTI_RADIUS * 2);
+    const now = Date.now();
+    const elapsed = now - lastTime;
+    for (let i = confetti.length; i--;) {
+      const confetto = confetti[i];
+      confetto.x += elapsed * confetto.xv;
+      confetto.y += elapsed * confetto.yv;
+      confetto.yv += elapsed * CONFETTI_GRAVITY;
+      const age = now - start - confetto.fadeOffset;
+      if (age > CONFETTI_LIFE) {
+        confetti.splice(i, 1);
+        continue;
+      }
+      // thancc https://github.com/anematode/grapheme/blob/master/build/grapheme.js#L1095
+      c.fillStyle = `rgba(
+        ${(confetto.colour >> 16) & 0xff},
+        ${(confetto.colour >> 8) & 0xff},
+        ${confetto.colour & 0xff},
+        ${1 - (Math.max(age, 0) / CONFETTI_LIFE) ** 2}
+      )`;
+      c.fillRect(confetto.x + CONFETTI_RADIUS - 1, confetto.y + CONFETTI_RADIUS - 1, 2, 2);
+    }
+    lastTime = now;
+    if (confetti.length) window.requestAnimationFrame(paint);
+    else document.body.removeChild(canvas);
+  })();
+}
+
 const IMPORTANCE_ALGORITHMIC_WEIGHT = 1;
 const NADA = () => null;
 
@@ -266,8 +320,12 @@ function initAssignments({
       const assignment = assignmentsById[asgnLine.dataset.asgnId];
       if (e.target.classList.contains('asgn-done-btn')) {
         assignment.done = !assignment.done;
-        if (assignment.done) asgnLine.classList.add('asgn-is-done');
-        else asgnLine.classList.remove('asgn-is-done');
+        if (assignment.done) {
+          createConfetti(e.clientX, e.clientY);
+          asgnLine.classList.add('asgn-is-done');
+        } else {
+          asgnLine.classList.remove('asgn-is-done');
+        }
         e.target.setAttribute('aria-label', localize(assignment.done ? 'undoneify' : 'doneify'));
         e.target.children[0].innerHTML = assignment.done ? '&#xe834;' : '&#xe835;';
         save();
@@ -289,9 +347,12 @@ function initAssignments({
           today,
           getPeriodSpan
         })));
+      /*
+      // I don't feel like deleting assignments
       manager
         .getAssignmentsBefore(today - 3)
         .forEach(asgn => asgn.remove());
+      */
       lastGetPeriodSpan = getPeriodSpan;
       lastToday = date;
       lastSort = sort;
