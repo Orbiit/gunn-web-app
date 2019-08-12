@@ -43,6 +43,7 @@ button.material {
   padding: 0 16px;
   vertical-align: bottom;
   color: var(--colour);
+  margin: 0;
 }
 button.material.icon {
   width: 36px;
