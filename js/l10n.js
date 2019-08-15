@@ -151,7 +151,12 @@ langs.en = {
     importance: 'Priority:',
     low: 'low',
     medium: 'medium',
-    high: 'high'
+    high: 'high',
+    transfer: 'Cross-device settings transfer',
+    'export-copy': 'copy export code',
+    'export-file': 'download export code',
+    'import-file': 'Or upload a file: ',
+    import: 'import'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -238,13 +243,17 @@ langs.en = {
     'asgn-cat-exam': 'exam',
     'asgn-cat-presentation': 'presentation',
     'asgn-cat-materials': 'materials',
-    'asgn-cat-other': 'other'
+    'asgn-cat-other': 'other',
+    'import-warning': 'This will permanently override your existing settings. Do you want that?',
+    'import-problem': 'There was a problem.',
+    'export-file-name': 'the-settings-of-a-great-intellectual-gunn-student.json'
   },
   placeholders: {
     clubs: 'Search clubs',
     staff: 'Search staff',
     'send-msg': 'Send a message',
-    assignment: 'Assignment'
+    assignment: 'Assignment',
+    import: 'Paste exported settings here'
   },
   times: {
     duration({T: minutes}) {

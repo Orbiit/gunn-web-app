@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- /STYLES -->
     <script type="text/javascript">
-      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];}}}
+      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];},length:0,key(){return null;}}}
     </script>
     <!-- SCRIPTS -->
     <script src="js/l10n.js" charset="utf-8"></script>
@@ -83,7 +83,7 @@
       <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
       <p id="grade-output"></p>
       <h1>{{comm}}<a href="./prev-chats.html" target="_blank" rel="noopener noreferrer" class="chat-history"><button class="material">{{prev-chats}}</button></a></h1>
-      <textarea id="chat" readonly></textarea>
+      <textarea class="textarea" id="chat" readonly></textarea>
       <button class="material ripple-light raised" id="open-chat">{{open-chat}}</button>
       <div id="chatter">
         <p class="send-msg-wrapper"><input type="text" placeholder="..." id="msg-content"><button class="material" id="send">{{send}}</button></p>
@@ -167,6 +167,10 @@
       </div>
       <h1>{{languages}}</h1>
       <div id="langs"></div>
+      <h1>{{transfer}}</h1>
+      <p><button class="material" id="export-copy">{{export-copy}}</button><button class="material" id="export-file">{{export-file}}</button></p>
+      <textarea class="textarea" id="transfer-copypaste"></textarea>
+      <p>{{import-file}}<input type="file" id="import-file" accept="application/json"><button class="material" id="import">{{import}}</button></p>
       <div class="block-of-text">
         <h1>{{add-ugwa}}</h1>
         <p><strong>{{desktop}}</strong>{{desktop-instruct}}</p>

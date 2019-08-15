@@ -399,6 +399,7 @@ body.dark #mapimage {
   margin-left: -25px;
   margin-top: -25px;
   background-color: var(--card);
+  z-index: 1;
 }
 .zoom-dial {
   background-color: #f44336;
@@ -486,7 +487,7 @@ body.light .percent-wrapper {
   float: right;
   margin-top: -6px;
 }
-#chat {
+.textarea {
   display: block;
   -webkit-appearance: none;
   border: none;
@@ -494,17 +495,19 @@ body.light .percent-wrapper {
   background-color: rgba(0, 0, 0, 0.1);
   width: 100%;
   box-sizing: border-box;
-  min-height: 0;
-  height: 0;
   resize: vertical;
-  padding: 0 20px;
   border-radius: 10px;
-  transition: min-height .2s, padding .2s;
   color: inherit;
   font-size: 14px;
   font-family: monospace;
 }
-.chat-enabled #chat {
+#chat {
+  min-height: 0;
+  height: 0;
+  padding: 0 20px;
+  transition: min-height .2s, padding .2s;
+}
+.textarea, .chat-enabled #chat {
   min-height: 150px;
   padding: 20px;
 }

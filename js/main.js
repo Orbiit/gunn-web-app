@@ -240,6 +240,74 @@ window.addEventListener("load",e=>{
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
+  const exportCopyBtn = document.getElementById('export-copy');
+  const exportFileBtn = document.getElementById('export-file');
+  const transferTextarea = document.getElementById('transfer-copypaste');
+  const importFile = document.getElementById('import-file');
+  const importBtn = document.getElementById('import');
+  const UGWA_COOKIE_PREFIX = '[gunn-web-app] ';
+  const EXCEPT = 'global.theme';
+  transferTextarea.placeholder = localize('import', 'placeholders');
+  function getExportCode() {
+    const toExport = {};
+    for (let i = cookie.length; i--;) {
+      const key = cookie.key(i);
+      if (key.slice(0, UGWA_COOKIE_PREFIX.length) === UGWA_COOKIE_PREFIX) {
+        toExport[key.slice(UGWA_COOKIE_PREFIX.length)] = cookie.getItem(key);
+      } else if (key === EXCEPT) {
+        toExport[key] = cookie.getItem(key);
+      }
+    }
+    return JSON.stringify(toExport);
+  }
+  function importCode(code) {
+    if (!confirm(localize('import-warning'))) return;
+    try {
+      const values = JSON.parse(code);
+      Object.keys(values).forEach(key => {
+        cookie.setItem(key === EXCEPT ? key : UGWA_COOKIE_PREFIX + key, values[key]);
+      });
+      const periodCustomizations = JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
+      Promise.all(periodCustomizations.map((entry, i) => {
+        if (i > 0 && entry[1][0] !== '#') return cacheBackground(entry[1], letras[i]);
+      })).then(() => {
+        window.location.reload();
+      }).catch(e => {
+        console.log(e);
+        alert(localize('import-problem') + '\n\n' + e.stack);
+      });
+    } catch (e) {
+      console.log(e);
+      alert(localize('import-problem') + '\n\n' + e.stack);
+    }
+  }
+  exportCopyBtn.addEventListener('click', e => {
+    // https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
+    transferTextarea.value = getExportCode();
+    transferTextarea.select();
+    document.execCommand('copy');
+  });
+  exportFileBtn.addEventListener('click', e => {
+    // https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+    const tempLink = document.createElement('a');
+    tempLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(getExportCode());
+    tempLink.download = localize('export-file-name');
+    tempLink.style.display = 'none';
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+  });
+  importBtn.addEventListener('click', e => {
+    if (importFile.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        importCode(e.target.result);
+      };
+      reader.readAsText(importFile.files[0]);
+    } else if (transferTextarea.value) {
+      importCode(transferTextarea.value);
+    }
+  });
   const MAX_LENGTH = 50;
   const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?0-9\-;'/~#%&()":]|\s+$|^\s+|\s+(?=\s)/gi;
   const trim = /\s+$|^\s+|\s+(?=\s)/g;
@@ -397,17 +465,21 @@ window.addEventListener("load",e=>{
     fragment.appendChild(p);
   });
   document.getElementById('langs').appendChild(fragment);
-  navigator.serviceWorker.register('./sw.js').then(regis => {
-    regis.onupdatefound = () => {
-      const installingWorker = regis.installing;
-      installingWorker.onstatechange = () => {
-        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          console.log('New update! Redirecting you away and back');
-          window.location.replace('/ugwa-updater.html' + window.location.search);
-        }
+  try {
+    navigator.serviceWorker.register('./sw.js').then(regis => {
+      regis.onupdatefound = () => {
+        const installingWorker = regis.installing;
+        installingWorker.onstatechange = () => {
+          if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            console.log('New update! Redirecting you away and back');
+            window.location.replace('/ugwa-updater.html' + window.location.search);
+          }
+        };
       };
-    };
-  }, err => {
-    console.log(':( Couldn\'t register service worker', err);
-  });
+    }, err => {
+      console.log(':( Couldn\'t register service worker', err);
+    });
+  } catch (e) {
+    console.log('oof', e);
+  }
 },false);

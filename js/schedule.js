@@ -46,6 +46,13 @@ normalschedule=[
   null
 ];
 const datePickerRange = [{d:13,m:7,y:2019},{d:4,m:5,y:2020}]; // change for new school year, months are 0-indexed
+const IMAGE_CACHE = 'ugwa-img-cache-YEET';
+function cacheBackground(url, pd) {
+  return Promise.all([
+    caches.open(IMAGE_CACHE),
+    fetch(url, {mode: 'no-cors', cache: 'no-cache'})
+  ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res));
+}
 function initSchedule() {
   var letterPdFormat = localize('periodx'),
   periodstyles={
@@ -626,7 +633,6 @@ function initSchedule() {
       line:line
     };
   }
-  const IMAGE_CACHE = 'ugwa-img-cache-YEET';
   function addPeriodCustomisers(elem) {
     function period(name,id,colour='#FF594C',val='') {
       let isImage = colour[0] !== '#';
@@ -703,11 +709,7 @@ function initSchedule() {
       imageInput.addEventListener('change', e => {
         imageInput.disabled = true;
         if (imageInput.value) {
-          Promise.all([
-            caches.open(IMAGE_CACHE),
-            fetch(imageInput.value, {mode: 'no-cors', cache: 'no-cache'})
-          ])
-            .then(([cache, res]) => cache.put(`./.period-images/${id}`, res))
+          cacheBackground(imageInput.value, id)
             .then(() => {
               imageInput.disabled = false;
               isImage = true;
