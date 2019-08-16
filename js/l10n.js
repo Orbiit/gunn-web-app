@@ -228,7 +228,7 @@ langs.en = {
     summer: 'Enjoy your summer!',
     'image-url': 'Image URL',
     cannot: 'There was a problem fetching the image.',
-    'add-asgn': 'Add',
+    'add-asgn': 'Add assignment',
     asgn: 'Upcoming assignments',
     overdue: 'overdue',
     doneify: 'Mark as done',

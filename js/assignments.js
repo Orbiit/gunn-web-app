@@ -283,23 +283,20 @@ function initAssignments({
 
   const addBtn = document.createElement('button');
   addBtn.classList.add('material');
+  addBtn.classList.add('icon');
   addBtn.classList.add('add-asgn');
-  addBtn.textContent = localize('add-asgn');
+  const icon = document.createElement('i');
+  icon.classList.add('material-icons');
+  icon.innerHTML = '&#xe145;';
+  addBtn.appendChild(icon);
   ripple(addBtn);
-  addBtn.addEventListener('click', e => {
-    openEditor();
-  });
   heading.appendChild(addBtn);
 
   const wrapper = document.createElement('div');
   wrapper.classList.add('asgn-wrapper');
   section.appendChild(wrapper);
 
-  const openEditor = (asgn = new Assignment({dueObj: getDefaultDate() || {
-    y: lastToday.getFullYear(),
-    m: lastToday.getMonth(),
-    d: lastToday.getDate()
-  }})) => {
+  const openEditor = asgn => {
     editor(asgn)
       .onSave(props => {
         asgn.setProps(props);
@@ -315,6 +312,17 @@ function initAssignments({
   };
 
   document.addEventListener('click', e => {
+    if (e.target.classList.contains('add-asgn')) {
+      openEditor(new Assignment({
+        dueObj: getDefaultDate() || {
+          y: lastToday.getFullYear(),
+          m: lastToday.getMonth(),
+          d: lastToday.getDate()
+        },
+        period: e.target.dataset.pd || null
+      }));
+      return;
+    }
     const asgnLine = e.target.closest('.asgn-line');
     if (asgnLine) {
       const assignment = assignmentsById[asgnLine.dataset.asgnId];
