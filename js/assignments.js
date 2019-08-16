@@ -337,6 +337,10 @@ function initAssignments({
         e.target.setAttribute('aria-label', localize(assignment.done ? 'undoneify' : 'doneify'));
         e.target.children[0].innerHTML = assignment.done ? '&#xe834;' : '&#xe835;';
         save();
+        if (e.target.closest('.schedule-container')) {
+          methods.todayIs();
+        }
+        rerender();
       } else if (e.target.classList.contains('asgn-text')) {
         openEditor(assignment);
       }
