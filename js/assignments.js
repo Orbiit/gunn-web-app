@@ -60,11 +60,16 @@ const NADA = () => null;
 const assignmentsById = {};
 let currentId = 0;
 
+function generateID() {
+  return `${Date.now()}${Math.random()}`;
+}
+
 class Assignment {
 
-  constructor(props = {}) {
+  constructor(props = {}, id = generateID()) {
     this.setProps(props);
     this.id = currentId++;
+    this.assyncID = id;
     assignmentsById[this.id] = this;
     this.manager = null;
   }
@@ -191,7 +196,8 @@ class Assignment {
       importance: this.importance,
       dueObj: this.dueObj,
       period: this.period,
-      done: this.done
+      done: this.done,
+      assyncID: this.assyncID
     };
   }
 
@@ -208,10 +214,43 @@ class Assignment {
 
 }
 
+class AssyncManager {
+
+  constructor(hash = AssyncManager.newHash()) {
+    this.hash = hash;
+  }
+
+  fetch(mode, asgn) {
+    return fetch(`https://jsonstore.io/${this.hash}/${asgn.assyncID || asgn}`, {
+      headers: {
+        'Content-type': 'application/json'
+      },
+      method: mode === 'DELETE' ? 'DELETE' : 'POST',
+      body: mode === 'DELETE' ? null : JSON.stringify(asgn)
+    });
+  }
+
+  static newHash() {
+    let hash = '';
+    while (hash.length < 64) {
+      hash += Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0');
+    }
+    return hash;
+  }
+
+}
+
 class AssignmentsManager {
 
-  constructor(assignments = []) {
-    this.assignments = assignments.map(json => new Assignment(json).managedBy(this));
+  constructor(assignments = [], assyncHash = null) {
+    this.assignments = assignments.map(json => new Assignment(json, json.assyncID).managedBy(this));
+    if (assyncHash) this.assyncAccount = new AssyncManager(assyncHash);
+    try {
+      this.failureQueue = JSON.parse(cookie.getItem(FAIL_QUEUE));
+      if (!Array.isArray(this.failureQueue)) throw 'a ball';
+    } catch (e) {
+      this.failureQueue = [];
+    }
   }
 
   addAssignment(asgn) {
@@ -229,6 +268,70 @@ class AssignmentsManager {
 
   getAssignmentsToDoFor(day) {
     return this.assignments.filter(({due, done}) => !done || day <= due);
+  }
+
+  getAssignmentByAssyncId(id) {
+    return this.assignments.find(({assyncID}) => assyncID === id);
+  }
+
+  // when you first create/join an account, not to be used afterwards
+  async joinAssync() {
+    this.assyncAccount = new AssyncManager();
+    for (const asgn in this.assignments) {
+      await this.updateAssignment(asgn);
+    }
+  }
+
+  async fetchAssignments() {
+    while (this.failureQueue.length) {
+      const [method, input] = this.failureQueue.unshift();
+      if (method === 'UPDATE') {
+        await this.updateAssignment(input);
+      } else if (method === 'DELETE') {
+        await this.deleteAssignment(input);
+      }
+    }
+    // if it fails, the promise catch handles the saving
+    this.saveFailures();
+    const {result: assignments} = await fetch(`https://jsonstore.io/${this.assyncAccount}`)
+      .then(r => r.json());
+    const localAssignments = this.assignments.slice();
+    Object.keys(assignments).forEach(id => {
+      const index = localAssignments.findIndex(({assyncID}) => assyncID === id);
+      if (~index) {
+        localAssignments[index].setProps(assignments[id]);
+        localAssignments[index] = null;
+      } else {
+        this.addAssignment(new Assignment(assignments[id], id));
+      }
+    });
+    localAssignments.forEach(asgn => {
+      if (asgn) {
+        asgn.remove();
+      }
+    });
+  }
+
+  updateAssignment(asgn) {
+    const prom = this.assyncAccount.fetch('UPDATE', asgn);
+    prom.catch(() => {
+      this.failureQueue.push('UPDATE', asgn); // it's ok if the assignment gets JSONified
+      this.saveFailures();
+    });
+    return prom;
+  }
+
+  deleteAssignment(id) {
+    const prom = this.assyncAccount.fetch('DELETE', id);
+    prom.catch(() => {
+      this.failureQueue.push('DELETE', id);
+      this.saveFailures();
+    });
+    return prom;
+  }
+
+  saveFailures() {
+    cookie.setItem(FAIL_QUEUE, JSON.stringify(this.failureQueue));
   }
 
   sortAssignmentsBy(mode = 'chrono-primero') {
@@ -303,8 +406,16 @@ function initAssignments({
         if (!asgn.manager) {
           manager.addAssignment(asgn);
         }
+        if (manager.assyncAccount) {
+          manager.updateAssignment(asgn);
+        }
       })
-      .onDelete(() => asgn.remove())
+      .onDelete(() => {
+        asgn.remove();
+        if (manager.assyncAccount) {
+          manager.deleteAssignment(asgn.assyncID);
+        }
+      })
       .onFinish(() => {
         methods.todayIs();
         rerender();
