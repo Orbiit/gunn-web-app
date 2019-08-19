@@ -81,7 +81,6 @@ body.light .customiser-inputwrapper.focus .customiser-label {
 
 .customiser-image {
   -webkit-appearance: none;
-  padding-left: 5px;
   width: 0;
   min-width: 100%;
   box-sizing: border-box;

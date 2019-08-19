@@ -156,7 +156,15 @@ langs.en = {
     'export-copy': 'copy export code',
     'export-file': 'download export code',
     'import-file': 'Or upload a file: ',
-    import: 'import'
+    import: 'import',
+    assync: 'Asynchronous Assignment Synchronization (Assync)',
+    'create-assync': 'Create Assync account',
+    'or-assync': ' or ',
+    'join-assync': 'Sync to account',
+    'leave-assync': 'Stop synching',
+    'assync-id': 'Your Assync account ID: ',
+    'refresh-assync': 'Refresh',
+    'loading-assync': 'Loading...'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -246,14 +254,21 @@ langs.en = {
     'asgn-cat-other': 'other',
     'import-warning': 'This will permanently override your existing settings. Do you want that?',
     'import-problem': 'There was a problem.',
-    'export-file-name': 'the-settings-of-a-great-intellectual-gunn-student.json'
+    'export-file-name': 'the-settings-of-a-great-intellectual-gunn-student.json',
+    'assync-loading': 'Loading assignments...',
+    'assync-loaded': 'Assignments loaded.',
+    'assync-loading-problem': 'There was a problem loading the assignments.',
+    'assync-saving': 'Saving changes...',
+    'assync-saved': 'Changes saved.',
+    'assync-saving-problem': 'There was a problem saving the changes.'
   },
   placeholders: {
     clubs: 'Search clubs',
     staff: 'Search staff',
     'send-msg': 'Send a message',
     assignment: 'Assignment',
-    import: 'Paste exported settings here'
+    import: 'Paste exported settings here',
+    assync: 'Assync ID'
   },
   times: {
     duration({T: minutes}) {

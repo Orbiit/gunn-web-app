@@ -165,12 +165,22 @@
         <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="important-importance" class="material-radio"><label>{{asgn-important-importance}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="aLgOriThMs" class="material-radio"><label>{{asgn-algorithms}}</label></p>
       </div>
+      <h2>{{assync}}</h2>
+      <div id="assync-auth-wrapper">
+        <div class="not-using-assync">
+          <p><button class="material raised" id="create-assync">{{create-assync}}</button>{{or-assync}}<input type="text" id="join-assync-id" class="notmaterial-input"> <button class="material raised" id="join-assync">{{join-assync}}</button></p>
+        </div>
+        <div class="using-assync">
+          <p><button class="material raised" id="refresh-assync">{{refresh-assync}}</button>{{assync-id}}<span id="assync-id"></span><button class="material raised" id="leave-assync">{{leave-assync}}</button></p>
+        </div>
+        <p class="loading-assync">{{loading-assync}}</p>
+      </div>
       <h1>{{languages}}</h1>
       <div id="langs"></div>
       <h1>{{transfer}}</h1>
-      <p><button class="material" id="export-copy">{{export-copy}}</button><button class="material" id="export-file">{{export-file}}</button></p>
+      <p><button class="material raised" id="export-copy">{{export-copy}}</button> <button class="material raised" id="export-file">{{export-file}}</button></p>
       <textarea class="textarea" id="transfer-copypaste"></textarea>
-      <p>{{import-file}}<input type="file" id="import-file" accept="application/json"><button class="material" id="import">{{import}}</button></p>
+      <p>{{import-file}}<input type="file" id="import-file" accept="application/json"><button class="material raised" id="import">{{import}}</button></p>
       <div class="block-of-text">
         <h1>{{add-ugwa}}</h1>
         <p><strong>{{desktop}}</strong>{{desktop-instruct}}</p>

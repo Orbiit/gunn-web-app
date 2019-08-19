@@ -148,3 +148,47 @@ button.add-asgn {
 #low-imp { --theme: #9E9E9E; }
 #medium-imp { --theme: #607D8B; }
 #high-imp { --theme: #2196F3; }
+
+/* ASSYNC STATUS */
+.assync-status {
+  border-radius: 5px;
+  position: fixed;
+  bottom: 56px;
+  margin: 10px;
+  left: 50%;
+  transform: translate(-50%);
+  pointer-events: none;
+  background-color: #27ae60;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  transition: opacity .2s, background-color .2s;
+  z-index: 7;
+}
+.assync-disappearing {
+  animation: fade-out .5s 2s forwards;
+}
+.assync-hidden {
+  opacity: 0;
+}
+.assync-error {
+  background-color: #e74c3c;
+}
+
+/* ASSYNC SETTINGS */
+#assync-auth-wrapper button, #assync-auth-wrapper .notmaterial-input {
+  vertical-align: middle;
+}
+.is-using-assync .not-using-assync, .isnt-using-assync .using-assync, .is-loading :not(.loading-assync), .loading-assync {
+  display: none;
+}
+.is-loading .loading-assync {
+  display: block;
+}
+#assync-id, #join-assync-id {
+  font-family: monospace;
+}
+button.assync-refresh {
+  float: right;
+  margin-left: 10px;
+}

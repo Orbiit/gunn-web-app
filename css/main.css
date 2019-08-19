@@ -294,9 +294,11 @@ body #footer ul li.active {
   font-size: 14px;
   vertical-align: top;
   padding: 5px;
-  padding-left: 25px;
   border-radius: 5px;
   background-color: var(--fill);
+}
+.search-wrapper .notmaterial-input {
+  padding-left: 25px;
 }
 #barcode {
   margin: 0;

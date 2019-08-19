@@ -61,7 +61,7 @@ const assignmentsById = {};
 let currentId = 0;
 
 function generateID() {
-  return `${Date.now()}${Math.random()}`;
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 class Assignment {
@@ -218,16 +218,66 @@ class AssyncManager {
 
   constructor(hash = AssyncManager.newHash()) {
     this.hash = hash;
+    this.status = document.createElement('div');
+    this.setStatus('idk');
+    document.body.appendChild(this.status);
   }
 
-  fetch(mode, asgn) {
-    return fetch(`https://jsonstore.io/${this.hash}/${asgn.assyncID || asgn}`, {
+  setStatus(status = 'idk', type = 'load') {
+    this.status.className = 'assync-status';
+    switch (status) {
+      case 'loading':
+        this.status.textContent = localize(`assync-${type}ing`);
+        this.status.classList.add('assync-loading');
+        break;
+      case 'loaded':
+        this.status.textContent = localize(`assync-${type}ed`);
+        this.status.classList.add('assync-disappearing');
+        break;
+      case 'problem':
+        this.status.textContent = localize(`assync-${type}ing-problem`);
+        this.status.classList.add('assync-error');
+        this.status.classList.add('assync-disappearing');
+        break;
+      default:
+        this.status.classList.add('assync-hidden');
+    }
+  }
+
+  fetch() {
+    this.setStatus('loading', 'load');
+    return fetch(`https://www.jsonstore.io/${this.hash}`)
+      .then(r => {
+        this.setStatus('loaded', 'load');
+        return r.json();
+      })
+      .then(({result, ok}) => ok ? result : Promise.reject(result))
+      .catch(err => {
+        console.log(err);
+        this.setStatus('problem', 'load');
+        return Promise.reject(err);
+      });
+  }
+
+  save(mode, asgn) {
+    this.setStatus('loading', 'sav');
+    return fetch(`https://www.jsonstore.io/${this.hash}/${asgn.assyncID || asgn}`, {
       headers: {
         'Content-type': 'application/json'
       },
       method: mode === 'DELETE' ? 'DELETE' : 'POST',
       body: mode === 'DELETE' ? null : JSON.stringify(asgn)
-    });
+    })
+      .then(r => {
+        this.setStatus('loaded', 'sav');
+        return r.json();
+      })
+      .then(({ok}) => ok ? null : Promise.reject())
+      .catch(err => {
+        console.log(err);
+        this.setStatus('problem', 'sav');
+        return Promise.reject(err);
+      });
   }
 
   static newHash() {
@@ -245,12 +295,7 @@ class AssignmentsManager {
   constructor(assignments = [], assyncHash = null) {
     this.assignments = assignments.map(json => new Assignment(json, json.assyncID).managedBy(this));
     if (assyncHash) this.assyncAccount = new AssyncManager(assyncHash);
-    try {
-      this.failureQueue = JSON.parse(cookie.getItem(FAIL_QUEUE));
-      if (!Array.isArray(this.failureQueue)) throw 'a ball';
-    } catch (e) {
-      this.failureQueue = [];
-    }
+    this.failureQueue = [];
   }
 
   addAssignment(asgn) {
@@ -275,16 +320,17 @@ class AssignmentsManager {
   }
 
   // when you first create/join an account, not to be used afterwards
-  async joinAssync() {
-    this.assyncAccount = new AssyncManager();
-    for (const asgn in this.assignments) {
+  async joinAssync(hash) {
+    this.assyncAccount = new AssyncManager(hash);
+    for (const asgn of this.assignments) {
       await this.updateAssignment(asgn);
     }
+    return this.assyncAccount.hash;
   }
 
   async fetchAssignments() {
     while (this.failureQueue.length) {
-      const [method, input] = this.failureQueue.unshift();
+      const [method, input] = this.failureQueue.shift();
       if (method === 'UPDATE') {
         await this.updateAssignment(input);
       } else if (method === 'DELETE') {
@@ -293,11 +339,10 @@ class AssignmentsManager {
     }
     // if it fails, the promise catch handles the saving
     this.saveFailures();
-    const {result: assignments} = await fetch(`https://jsonstore.io/${this.assyncAccount}`)
-      .then(r => r.json());
+    const assignments = await this.assyncAccount.fetch();
     const localAssignments = this.assignments.slice();
     Object.keys(assignments).forEach(id => {
-      const index = localAssignments.findIndex(({assyncID}) => assyncID === id);
+      const index = localAssignments.findIndex(asgn => asgn && asgn.assyncID === id);
       if (~index) {
         localAssignments[index].setProps(assignments[id]);
         localAssignments[index] = null;
@@ -313,25 +358,19 @@ class AssignmentsManager {
   }
 
   updateAssignment(asgn) {
-    const prom = this.assyncAccount.fetch('UPDATE', asgn);
-    prom.catch(() => {
-      this.failureQueue.push('UPDATE', asgn); // it's ok if the assignment gets JSONified
+    return this.assyncAccount.save('UPDATE', asgn).catch(() => {
+      this.failureQueue.push(['UPDATE', asgn]); // it's ok if the assignment gets JSONified
       this.saveFailures();
+      return Promise.reject();
     });
-    return prom;
   }
 
   deleteAssignment(id) {
-    const prom = this.assyncAccount.fetch('DELETE', id);
-    prom.catch(() => {
-      this.failureQueue.push('DELETE', id);
+    return this.assyncAccount.save('DELETE', id).catch(() => {
+      this.failureQueue.push(['DELETE', id]);
       this.saveFailures();
+      return Promise.reject();
     });
-    return prom;
-  }
-
-  saveFailures() {
-    cookie.setItem(FAIL_QUEUE, JSON.stringify(this.failureQueue));
   }
 
   sortAssignmentsBy(mode = 'chrono-primero') {
@@ -368,7 +407,9 @@ function initAssignments({
   save = NADA,
   rerender = NADA,
   getDefaultDate = NADA,
-  loadJSON = ''
+  loadJSON = '',
+  failQueueCookie = null,
+  assyncID
 }) {
   try {
     loadJSON = JSON.parse(loadJSON);
@@ -376,7 +417,18 @@ function initAssignments({
   } catch (e) {
     loadJSON = [];
   }
-  const manager = new AssignmentsManager(loadJSON);
+  const manager = new AssignmentsManager(loadJSON, assyncID);
+  if (failQueueCookie) {
+    try {
+      manager.failureQueue = JSON.parse(cookie.getItem(failQueueCookie));
+      if (!Array.isArray(manager.failureQueue)) throw 'a ball';
+    } catch (e) {
+      manager.failureQueue = [];
+    }
+    manager.saveFailures = () => {
+      cookie.setItem(failQueueCookie, JSON.stringify(manager.failureQueue));
+    };
+  }
   const section = document.createElement('div');
   section.classList.add('asgn-upcoming');
 
@@ -452,6 +504,9 @@ function initAssignments({
           methods.todayIs();
         }
         rerender();
+        if (manager.assyncAccount) {
+          manager.updateAssignment(assignment);
+        }
       } else if (e.target.classList.contains('asgn-text')) {
         openEditor(assignment);
       }
@@ -506,6 +561,27 @@ function initAssignments({
     },
     getSaveable() {
       return JSON.stringify(manager);
+    },
+    joinAssync(hash) {
+      return manager.joinAssync(hash);
+    },
+    leaveAssync() {
+      manager.assyncAccount = null;
+      manager.failureQueue = [];
+      manager.saveFailures();
+    },
+    refreshAssync() {
+      return manager.fetchAssignments()
+        .then(() => {
+          methods.todayIs();
+          rerender();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    insertButton(btn) {
+      heading.insertBefore(btn, addBtn);
     }
   };
   return methods;

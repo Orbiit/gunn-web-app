@@ -271,6 +271,67 @@ function initSchedule() {
     };
     return thing;
   }
+
+  const ASSYNC_ID = '[gunn-web-app] assignments.assync';
+  const assyncID = cookie.getItem(ASSYNC_ID);
+  const assyncIDDisplay = document.getElementById('assync-id');
+  assyncIDDisplay.textContent = assyncID;
+  const refresh = document.createElement('button');
+  refresh.classList.add('material');
+  refresh.classList.add('raised');
+  refresh.classList.add('icon');
+  refresh.classList.add('assync-refresh');
+  ripple(refresh);
+  refresh.innerHTML = `<i class="material-icons">&#xe5d5;</i>`;
+  if (!assyncID) refresh.style.display = 'none';
+  refresh.addEventListener('click', e => {
+    refresh.disabled = true;
+    asgnThing.refreshAssync().then(() => {
+      refresh.disabled = false;
+      cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable());
+    });
+  });
+  const wrapper = document.getElementById('assync-auth-wrapper');
+  wrapper.className = assyncID ? 'is-using-assync' : 'isnt-using-assync';
+  document.getElementById('create-assync').addEventListener('click', e => {
+    wrapper.className = 'is-loading';
+    asgnThing.joinAssync().then(hash => {
+      cookie.setItem(ASSYNC_ID, hash);
+      assyncIDDisplay.textContent = hash;
+      wrapper.className = 'is-using-assync';
+      refresh.style.display = null;
+      refresh.click();
+    }).catch(err => {
+      console.log(err);
+      wrapper.className = 'isnt-using-assync';
+    });
+  });
+  const join = document.getElementById('join-assync');
+  const joinID = document.getElementById('join-assync-id');
+  joinID.placeholder = localize('assync', 'placeholders');
+  joinID.addEventListener('keydown', e => {
+    if (e.keyCode === 13) join.click();
+  });
+  join.addEventListener('click', e => {
+    wrapper.className = 'is-loading';
+    asgnThing.joinAssync(joinID.value).then(hash => {
+      cookie.setItem(ASSYNC_ID, hash);
+      assyncIDDisplay.textContent = hash;
+      wrapper.className = 'is-using-assync';
+      refresh.style.display = null;
+      refresh.click();
+    }).catch(err => {
+      console.log(err);
+      wrapper.className = 'isnt-using-assync';
+    });
+  });
+  document.getElementById('leave-assync').addEventListener('click', e => {
+    asgnThing.leaveAssync();
+    cookie.removeItem(ASSYNC_ID);
+    wrapper.className = 'isnt-using-assync';
+    refresh.style.display = 'none';
+  });
+
   const asgnThing = initAssignments({
     editor: asgnEditor,
     save() {
@@ -282,10 +343,16 @@ function initSchedule() {
     getDefaultDate() {
       return datepicker.day;
     },
-    loadJSON: cookie.getItem('[gunn-web-app] assignments')
+    loadJSON: cookie.getItem('[gunn-web-app] assignments'),
+    failQueueCookie: '[gunn-web-app] assignments.failQueue',
+    assyncID
   });
+  asgnThing.insertButton(refresh);
   asgnThing.todayIs(getPeriodSpan, new Date(), formatOptions[5]);
   asgnThing.displaySection(formatOptions[4]);
+  if (assyncID) {
+    refresh.click();
+  }
 
   var scheduleapp;
   var weekwrapper=document.querySelector('#weekwrapper');
