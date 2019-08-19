@@ -164,7 +164,6 @@ langs.en = {
     'join-assync': 'Sync to account',
     'leave-assync': 'Stop synching',
     'assync-id': 'Your Assync account ID: ',
-    'refresh-assync': 'Refresh',
     'loading-assync': 'Loading...'
   },
   other: {
