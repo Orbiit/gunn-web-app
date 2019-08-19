@@ -147,6 +147,13 @@ function initSchedule() {
     'other'
   ];
   const contentInput = document.getElementById('asgn-content');
+  contentInput.addEventListener('keydown', e => {
+    if (e.keyCode === 13) {
+      asgn_saveBtn.click();
+    } else if (e.keyCode === 27) {
+      asgn_cancelBtn.click();
+    }
+  });
   const dueDateTrigger = document.getElementById('date');
   const importanceBtns = [
     document.getElementById('low-imp'),
