@@ -72,6 +72,7 @@ class Assignment {
     this.assyncID = id;
     assignmentsById[this.id] = this;
     this.manager = null;
+    if (!this.dueObj) this.dueObj = {d: 1, m: 0, y: 2000};
   }
 
   setProps({
