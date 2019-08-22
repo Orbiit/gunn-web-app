@@ -90,17 +90,19 @@ button.material.icon.asgn-done-btn {
   color: white;
   font-size: 14px;
   text-shadow: none;
+  color: black;
 }
-.asgn-category-homework { background-color: #8abeb7; color: black; }
-.asgn-category-preparation { background-color: #b294bb; color: black; }
-.asgn-category-worksheet { background-color: #ffffff; color: black; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
-.asgn-category-reading { background-color: #cc6666; color: black; }
-.asgn-category-quiz { background-color: #b5bd68; color: black; }
-.asgn-category-test { background-color: #81a2be; color: black; }
-.asgn-category-exam { background-color: #de935f; color: black; }
-.asgn-category-presentation { background-color: #f0c674; color: black; }
-.asgn-category-materials { background-color: #a3685a; color: black; }
-.asgn-category-other { background-color: #969896; color: black; }
+.asgn-category-homework { background-color: #8abeb7; }
+.asgn-category-preparation { background-color: #b294bb; }
+.asgn-category-worksheet { background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+.asgn-category-reading { background-color: #cc6666; }
+.asgn-category-quiz { background-color: #b5bd68; }
+.asgn-category-test { background-color: #81a2be; }
+.asgn-category-exam { background-color: #de935f; }
+.asgn-category-presentation { background-color: #f0c674; }
+.asgn-category-materials { background-color: #a3685a; }
+.asgn-category-lab { background-color: #373b41; color: white; }
+.asgn-category-other { background-color: #969896; }
 
 /* ADD ASSIGNMENT BUTTONS */
 button.add-asgn {

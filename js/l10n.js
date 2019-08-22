@@ -251,6 +251,7 @@ langs.en = {
     'asgn-cat-exam': 'exam',
     'asgn-cat-presentation': 'presentation',
     'asgn-cat-materials': 'materials',
+    'asgn-cat-lab': 'lab',
     'asgn-cat-other': 'other',
     'import-warning': 'This will permanently override your existing settings. Do you want that?',
     'import-problem': 'There was a problem.',

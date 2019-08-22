@@ -378,18 +378,25 @@ class AssignmentsManager {
     switch (mode) {
       case 'chrono-primero':
         this.assignments.sort((a, b) =>
-          a.due === b.due
-            ? b.sortableImportance - a.sortableImportance
-            : a.due - b.due);
+          a.done !== b.done
+            ? a.done - b.done
+            : a.due === b.due
+              ? b.sortableImportance - a.sortableImportance
+              : a.due - b.due);
         break;
       case 'important-importance':
         this.assignments.sort((a, b) =>
-          a.importance === b.importance
-            ? a.due - b.due
-            : b.sortableImportance - a.sortableImportance);
+          a.done !== b.done
+            ? a.done - b.done
+            : a.importance === b.importance
+              ? a.due - b.due
+              : b.sortableImportance - a.sortableImportance);
         break;
       case 'aLgOriThMs':
-        this.assignments.sort((a, b) => a.algorithmicValue - b.algorithmicValue);
+        this.assignments.sort((a, b) =>
+          a.done !== b.done
+            ? a.done - b.done
+            : a.algorithmicValue - b.algorithmicValue);
         break;
       default:
         throw new Error('idk how to do that');
@@ -521,7 +528,7 @@ function initAssignments({
       wrapper.innerHTML = '';
       manager
         .sortAssignmentsBy(sort)
-        .getAssignmentsToDoFor(today)
+        .getAssignmentsToDoFor(today + 1)
         .forEach(asgn => wrapper.appendChild(asgn.toElem({
           today,
           getPeriodSpan

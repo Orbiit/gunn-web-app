@@ -143,7 +143,7 @@ function initSchedule() {
   }
   const categoryList = [
     'homework', 'preparation',
-    'worksheet', 'reading', 'quiz', 'test', 'exam', 'presentation', 'materials',
+    'worksheet', 'reading', 'quiz', 'test', 'exam', 'presentation',  'lab', 'materials',
     'other'
   ];
   const contentInput = document.getElementById('asgn-content');
