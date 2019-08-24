@@ -93,7 +93,7 @@ function scheduleApp(options={}) {
             P: getPeriodSpan(period=getPeriodName(periods.length-1)),
             T: `<strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong>`
           })
-        }</p>`,compactStr=localize('appname'),options.onEndOfDay&&options.onEndOfDay(options.onEndOfDay = null); // after school
+        }</p>`,compactStr=localize('appname'),returnval.endOfDay = true; // after school
         else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${
           localizeTime('ending', {
             P: getPeriodSpan(period=getPeriodName(i)),
@@ -186,7 +186,9 @@ function scheduleApp(options={}) {
         day=[];
         var isSELF = isSELFDay(d.getMonth(), d.getDate());
         var sched;
-        if (options.isSummer && options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
+        if (options.customSchedule) {
+          sched = options.customSchedule(d, d.getFullYear(), d.getMonth(), d.getDate(), d.getDay());
+        } else if (options.isSummer && options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
           sched = [];
         } else if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
           sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()].periods;

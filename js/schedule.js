@@ -540,40 +540,36 @@ function initSchedule() {
     };
     return true;
   }
-  function alternateGet() {
-    if (cookie.getItem('[gunn-web-app] alts.2019-20')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
-    else alternates={};
-    selfDays = alternates.self || [];
-    for (var dayString in alternates) {
-      if (!dayString.includes('-')) continue;
-      ugwaifyAlternates(alternates, dayString, alternates[dayString]);
-    }
-    for (var i=0;i<letras.length;i++) {
-      if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {};
-      periodstyles[letras[i]].label=options[i][0];
-      periodstyles[letras[i]].colour=options[i][1];
-    }
-    scheduleapp=scheduleApp({
-      element:document.querySelector('#schedulewrapper'),
-      periods:periodstyles,
-      normal:normalschedule,
-      alternates:alternates,
-      selfDays: selfDays,
-      offset:0,
-      update:true,
-      h24: formatOptions[1] === '24',
-      h0Joke: formatOptions[1] === '0',
-      compact: formatOptions[2] === 'compact',
-      self: +formatOptions[3],
-      getAssignments(date, getPeriodSpan) {
-        return asgnThing.getScheduleAsgns(date, getPeriodSpan);
-      }
-      // customSchedule(date, y, m, d, wd)
-    });
-    makeWeekHappen();
-    asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
+  if (cookie.getItem('[gunn-web-app] alts.2019-20')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
+  else alternates={};
+  selfDays = alternates.self || [];
+  for (var dayString in alternates) {
+    if (!dayString.includes('-')) continue;
+    ugwaifyAlternates(alternates, dayString, alternates[dayString]);
   }
-  alternateGet();
+  for (var i=0;i<letras.length;i++) {
+    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {};
+    periodstyles[letras[i]].label=options[i][0];
+    periodstyles[letras[i]].colour=options[i][1];
+  }
+  scheduleapp=scheduleApp({
+    element:document.querySelector('#schedulewrapper'),
+    periods:periodstyles,
+    normal:normalschedule,
+    alternates:alternates,
+    selfDays: selfDays,
+    offset:0,
+    update:true,
+    h24: formatOptions[1] === '24',
+    h0Joke: formatOptions[1] === '0',
+    compact: formatOptions[2] === 'compact',
+    self: +formatOptions[3],
+    getAssignments(date, getPeriodSpan) {
+      return asgnThing.getScheduleAsgns(date, getPeriodSpan);
+    },
+    // customSchedule(date, y, m, d, wd)
+  });
+  asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
   const yesterdayer = document.querySelector('#plihieraux');
   const tomorrower = document.querySelector('#plimorgaux');
   var datepicker=new DatePicker(...datePickerRange),
@@ -597,12 +593,6 @@ function initSchedule() {
       makeWeekHappen();
     }
   };
-  scheduleapp.options.onEndOfDay = () => {
-    Promise.resolve().then(() => {
-      var proposal={d:d.getDate()+1,m:d.getMonth(),y:d.getFullYear()};
-      if (datepicker.inrange(proposal)) datepicker.day=proposal;
-    });
-  };
   scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
   function isSchoolDay(d) {
     if (scheduleapp.options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
@@ -613,15 +603,14 @@ function initSchedule() {
       return normalschedule[d.getDay()];
     }
   }
-  let offset = scheduleapp.offset;
+  // skip to next school day
+  if (scheduleapp.endOfDay) {
+    d.setDate(d.getDate() + 1);
+  }
   while (datepicker.compare({d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}, datepicker.end) <= 0 && !isSchoolDay(d)) {
     d.setDate(d.getDate() + 1);
-    offset++;
   }
-  scheduleapp.offset = offset;
   datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
-  makeWeekHappen(); // rerender week preview in case it's summer and isSummer has just been defined
-  scheduleapp.update();
   datepicker.wrapper.classList.add('hide');
   datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);
