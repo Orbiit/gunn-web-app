@@ -429,6 +429,7 @@ function initSchedule() {
           }
           events[offset]=e;
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
+          const date = dateDate.slice(5, 10);
           var alternateJSON = json.filter(ev => altSchedRegex.test(ev.summary));
           var altSched = toAlternateSchedules(alternateJSON);
           var ugwitaAltObj = {};
@@ -437,34 +438,28 @@ function initSchedule() {
             ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
           var selfDay = json.find(ev => ev.summary.includes('SELF'));
           if (selfDay) {
-            var date = (selfDay.start.dateTime || selfDay.start.date).slice(5, 10);
             if (!selfDays.includes(date)) {
               selfDays.push(date);
               change = true;
               ugwitaAltObj.self = selfDays;
             }
           } else {
-            const index = selfDays.indexOf(dateDate.slice(5, 10));
+            const index = selfDays.indexOf(date);
             if (~index) {
               selfDays.splice(index, 1);
               change = true;
               ugwitaAltObj.self = selfDays;
             }
           }
-          Object.keys(altSched).forEach(date => {
-            if (date) {
-              ugwitaAltObj[date] = altSched[date];
-              if (ugwaifyAlternates(alternates, date, altSched[date], alternateJSON[0].summary)) {
-                change = true;
-                return;
-              }
-            }
-            if (ugwitaAltObj[date] !== undefined) {
-              delete ugwitaAltObj[date];
-              delete alternates[date.split('-').map(Number).join('-')];
-              change = true;
-            }
-          });
+          if (altSched[date]) {
+            ugwitaAltObj[date] = altSched[date];
+            ugwaifyAlternates(alternates, date, altSched[date], alternateJSON[0].summary);
+            change = true;
+          } else if (ugwitaAltObj[date] !== undefined) {
+            delete ugwitaAltObj[date];
+            delete alternates[date.split('-').map(Number).join('-')];
+            change = true;
+          }
           if (change) {
             cookie.setItem('[gunn-web-app] alts.2019-20', JSON.stringify(ugwitaAltObj));
             scheduleapp.offset = scheduleapp.offset;
