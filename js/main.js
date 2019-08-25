@@ -443,7 +443,7 @@ window.addEventListener("load",e=>{
     }
   }
   const fragment = document.createDocumentFragment();
-  Object.keys(availableLangs).forEach(lang => {
+  publicLangs.forEach(lang => {
     const p = document.createElement('p');
     p.classList.add('radio-wrapper');
     const input = document.createElement('input');
@@ -488,4 +488,5 @@ window.addEventListener("load",e=>{
   errorLog.classList.add('textarea');
   errorLog.classList.remove('error-log');
   errorLog.readOnly = true;
+  errorLog.placeholder = localize('errors', 'placeholders');
 },false);

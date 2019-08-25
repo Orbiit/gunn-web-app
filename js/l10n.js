@@ -270,7 +270,8 @@ langs.en = {
     'send-msg': 'Send a message',
     assignment: 'Assignment',
     import: 'Paste exported settings here',
-    assync: 'Assync ID'
+    assync: 'Assync ID',
+    errors: 'JavaScript runtime errors will be logged here'
   },
   times: {
     duration({T: minutes}) {
@@ -297,8 +298,12 @@ langs.en = {
 const availableLangs = {
   'en': 'English',
   'en-gt': 'English (Google Translated through Chinese)',
-  // 'es': 'español'
+  'es': 'español',
+  'test': 'le language test'
 };
+const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
+  ? Object.keys(availableLangs)
+  : ['en', 'en-gt'];
 if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   let lang = 'en';
   if (navigator.languages) {
