@@ -1,5 +1,4 @@
-var days=localize('days').split('  '),
-months=localize('months').split('  ');
+var days, months;
 function localizeTime(id, params = {}) {
   let entry = localize(id, 'times');
   if (typeof entry === 'function') {

@@ -96,6 +96,8 @@ window.addEventListener("load",e=>{
     });
     return;
   }
+  days=localize('days').split('  '),
+  months=localize('months').split('  ');
   schedulesReady.then(initSchedule);
   ripple("#footer > ul > li, button.material");
   let tabFocus = false;

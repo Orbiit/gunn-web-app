@@ -1,63 +1,62 @@
-const langs = {};
-
-langs.en = {
+// my conlang for my own entertainment, please ignore
+langs['x-mleng'] = {
   html: {
-    utilities: 'Utilities',
+    utilities: 'Utilites',
     clubs: 'Clubs',
-    schedule: 'Schedule',
-    staff: 'Staff',
-    options: 'Options',
-    'pausd-login': 'PAUSD Login Page',
-    barcode: 'Barcode',
-    'barcode-desc-before-link': 'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on ',
+    schedule: 'Hors',
+    staff: "Emplo'ds",
+    options: 'Opces',
+    'pausd-login': "pagin d'aut pa'PAUSD",
+    barcode: 'Barcod',
+    'barcode-desc-before-link': "Li cliq l'icon d'oq pa'present; li max t'brilo d'ecran dure l'scanac (just in case). Edits'i salv'd autoe. Pa'l'curios, carts d'id d'studs'i us cod 39; (about) lo'i lej'dabl ene ",
     wikipedia: 'Wikipedia',
     'barcode-desc-after-link': '.',
-    'add-barcode': 'Add barcode',
-    minscore: 'Minimum finals score calculator',
-    'current-grade': 'Current grade: ',
-    'finals-worth': 'Portion of grade the final determines: ',
-    'min-grade': 'Minimum acceptable grade: ',
+    'add-barcode': 'li aument barcod',
+    minscore: "Calcul l'min result final",
+    'current-grade': 'Not actual: ',
+    'finals-worth': "Porc d'not determin'd l'exam final: ",
+    'min-grade': 'Min result aceptabl: ',
     map: 'Map',
-    'for-image': 'For the image:',
-    'image-instruct': ' You can use a finger to pan, or two to rotate, zoom, and pan. You can use your mouse to drag, or scroll to zoom or right-click to rotate.',
-    'for-gmaps': 'For Google Maps:',
-    'gmaps-instruct': " Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
-    'club-list': 'Club list',
+    'for-image': "Pa'l'imaj:",
+    'image-instruct': " Li us un ded pa'movac o du pa'rotac, sumac, e movac. Li us un mus pa'movac, rol pa'sumac, o secondare cliq pa'rotac.",
+    'for-gmaps': "Pa'Google Maps:",
+    'gmaps-instruct': " Lo'i funci soloe dure k't'conect'd a l'ret. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
+    'club-list': "List d'clubs",
     'clubs-disclaimer-before-link': 'Please note that club information was taken from their ',
     'clubs-disclaimer-link': 'chartered club list as of February 2nd, 2019',
     'clubs-disclaimer-after-link': '. Apparently some of their information turned out to be inaccurate, so blame them, not us.',
     'lists-disabled': "You've disabled the club and staff lists",
     'turn-back-on': 'Turn back on',
-    'select-date': 'select date',
+    'select-date': 'li select un dia',
     events: 'Events',
-    'staff-list': 'Staff list',
-    'last-psa': 'Last PSA',
-    'before-version': 'You are using the ',
-    'after-version': ' version.',
-    theme: 'Theme',
-    'light-theme': 'Light theme',
-    'dark-theme': 'Dark theme',
-    'neither-theme': 'Neither theme',
-    'time-formatting': 'Time formatting',
-    '12h': '12-hour',
-    '24h': '24-hour',
-    'title-compact': 'Tab title compactness',
-    units: 'Units included',
-    numbers: 'Numbers only',
+    'staff-list': "List d'emplo'ds",
+    'last-psa': 'Ult anunc',
+    'before-version': "T'us l'vers d'",
+    'after-version': '.',
+    theme: 'Tem',
+    'light-theme': 'Tem bril',
+    'dark-theme': 'Tem oscur',
+    'neither-theme': 'Sen tem',
+    'time-formatting': "Stil d'temp",
+    '12h': "12 g'hor",
+    '24h': "24 g'hor",
+    'title-compact': "Compacto d'titul'",
+    units: 'Co units',
+    numbers: 'Soloe nums',
     'disable-lists': 'Disable club/staff lists',
     periods: 'Periods',
     'periods-desc': 'Click on the coloured square to change period colour.',
-    'show-self': 'Show SELF',
-    'hide-self': 'Hide SELF',
-    'control-centre': 'Control Centre',
+    'show-self': 'Li present SELF',
+    'hide-self': "Li n'present SELF",
+    'control-centre': "Centr d'moderac",
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",
-    reload: 'Restart UGWA',
-    'trick-cache': 'trick the cache',
-    'staff-name': 'Staff name',
-    close: 'Close',
-    'club-name': 'Club name',
-    psa: 'From the Creators',
-    ok: 'OK',
+    reload: 'Li recomenc UGWA',
+    'trick-cache': "Li confud l'cas",
+    'staff-name': "Nom d'emplo'd",
+    close: 'Li cer',
+    'club-name': "Nom d'club",
+    psa: "D'l'cres",
+    ok: 'Bone',
     'add-ugwa': 'To add UGWA to your home screen',
     desktop: 'Desktop',
     'desktop-instruct': '—bookmark this page or pin this tab (right click on the tab and select "Pin tab")',
@@ -111,12 +110,12 @@ langs.en = {
     'before-material': 'Design based on ',
     material: 'Material Design',
     'after-material': "'s icons, colours, and specifications.",
-    languages: 'Languages',
+    languages: 'Lengs',
     'this-is-joke': '(This is a joke.)',
-    'no-hour': 'No hours',
-    'comm': 'Interstudent communication',
-    'prev-chats': 'Previous chats',
-    'open-chat': 'Join chat',
+    'no-hour': 'Sen hors',
+    'comm': "Comunicac inter l'studs",
+    'prev-chats': "Conversaces pas'd",
+    'open-chat': 'Junt conversac',
     'send': 'Send',
     'msg-note': 'Only consonants, numbers, spaces, and a few punctuation marks are allowed. 5 messages per 10 seconds.',
     'want-ugwa-normal': 'To install UGWA like a normal app:',
@@ -130,7 +129,7 @@ langs.en = {
     'after-add': '."',
     'use-safari': "Open UGWA in Safari first; this can't be done anywhere else.",
     naw: 'Thanks but no thanks',
-    heaucques: 'OK.',
+    heaucques: ':))',
     assignments: 'Assignments',
     'asgn-display': 'Upcoming assignments position',
     'asgn-before': 'Before the schedule',
@@ -168,42 +167,42 @@ langs.en = {
     errors: 'Runtime error log'
   },
   other: {
-    'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
-    'psa-error': "; couldn't get last PSA; maybe you aren't connected to the internet?",
-    'no-study-before-emph': 'You ',
-    'no-study-emph': "don't need to study",
-    'no-study-after-emph': "; even if you score 0%, you'll be above your threshold.",
-    'zero-error': "Please don't enter so many zeroes.",
-    'minscore-before-emph': "You'll need to score at least ",
-    'minscore-after-emph': ' to keep your parents happy.',
-    'minscore-too-high-addendum': " If there's no extra credit, you're screwed.",
-    gmaps: 'use google maps',
-    image: 'use the image',
-    'gmaps-error': "Google Maps not loading! Maybe you aren't connected to the internet?",
-    you: 'You',
-    'barcode-legacy-default': 'Student #{N}',
+    'anti-ugwaga': "Li cliq/toq pa'continu a l'Retap Deoficial d'Gunn",
+    'psa-error': "; n'recibabl l'ult anunc; ce posibl li k't'n'conect'd a l'ret?",
+    'no-study-before-emph': "Ce",
+    'no-study-emph': "n'obligat li studac",
+    'no-study-after-emph': ". Ce n'import s't'recib un 0%; t'super t'min.",
+    'zero-error': "Li n'don mult g'cero.",
+    'minscore-before-emph': "Li recib mine ",
+    'minscore-after-emph': " pa'n'defeli t'mas.",
+    'minscore-too-high-addendum': " S'ce cero g'credit extra, t'hav problems.",
+    gmaps: "li us l'map d'Google",
+    image: "li us l'imaj",
+    'gmaps-error': "Google Maps'i n'funci! Ce posibl li k't'n'conect'd a l'ret?",
+    you: 'Tu',
+    'barcode-legacy-default': 'Stud #{N}',
     'barcode-default': 'Intellectual student',
     'barcode-student-placeholder': "Whose ID is this?",
-    ds: 'S  M  T  W  &Theta;  F  S',
-    mos: 'jan  feb  mar  apr  may  jun  jul  aug  sep  oct  nov  dec',
+    ds: '0  1  2  3  4  5  6',
+    mos: '01  02  03  04  05  06  07  08  09  10  11  12',
     'no-school': 'No school today!',
-    flex: 'Flex',
-    brunch: 'Brunch',
-    lunch: 'Lunch',
+    flex: 'Flexibl',
+    brunch: 'Manjacet',
+    lunch: 'Medmanjac',
     self: 'SELF',
     periodx: 'Period {X}',
-    months: 'January  February  March  April  May  June  July  August  September  October  November  December',
-    loading: 'Loading',
-    'no-events': 'No events today :(',
-    'events-error': "; couldn't get events; maybe you aren't connected to the internet?",
-    days: 'Sunday  Monday  Tuesday  Wednesday  Thursday  Friday  Saturday',
-    'default-alt-msg': 'good luck with our schedule lol',
+    months: '01 mes  02 mes  03 mes  04 mes  05 mes  06 mes  07 mes  08 mes  09 mes  10 mes  11 mes  12 mes',
+    loading: 'Li carg',
+    'no-events': "Ce cero g'events ledie :(",
+    'events-error': "; couldn't get events; ce posibl li k't'n'conect'd a l'ret?",
+    days: '0 dia  1 dia  2 dia  3 dia  4 dia  5 dia  6 dia',
+    'default-alt-msg': ":))",
     'period-name-label': 'Set label for ',
     'enable-lists': 'Enable club/staff lists',
     'supreme-leader': 'Supreme Leader',
     universe: 'Universe',
     'blamed-teacher': 'Blamed Teacher',
-    'staff-error': "; couldn't get staff data; maybe you aren't connected to the internet?",
+    'staff-error': "; couldn't get staff data; ce posibl li k't'n'conect'd a l'ret?",
     title: 'Title:',
     department: 'Department:',
     email: 'Email:',
@@ -219,7 +218,7 @@ langs.en = {
     'soph-prez': 'Tara Firenzi',
     'soph-teacher': 'Courtney Carlomagno',
     'soph-email': 'ccarlomagno@pausd.org',
-    'club-error': "; couldn't get club data; maybe you aren't connected to the internet?",
+    'club-error': "; couldn't get club data; ce posibl li k't'n'conect'd a l'ret?",
     day: 'Meeting day:',
     time: 'Meeting time:',
     location: 'Location:',
@@ -228,9 +227,9 @@ langs.en = {
     advisors: 'Teacher Advisor(s):',
     'teacher-email': 'Teacher Email:',
     donation: 'Suggested donation:',
-    'before-alt-msg': 'This is an alternate schedule. The school says, "',
+    'before-alt-msg': "Le'i hors diferents. L'scol'i dic \"",
     'after-alt-msg': '"',
-    appname: 'Unofficial Gunn Web App (UGWA)',
+    appname: "Retap Deoficial d'Gunn (RDG)",
     'add-to-list': 'Add to my clubs',
     'remove-from-list': 'Remove from my clubs',
     'lunch-clubs': 'Clubs',
@@ -275,68 +274,22 @@ langs.en = {
   },
   times: {
     duration({T: minutes}) {
-      if (minutes < 1) return 'less than a minute';
-      return (minutes >= 120 ? Math.floor(minutes / 60) + ' hours' : minutes >= 60 ? 'an hour' : '')
-        + (minutes % 60 === 0 ? '' : (minutes >= 60 ? ' and ' : '') + (minutes % 60 === 1 ? 'a minute' : (minutes % 60) + ' minutes'));
+      if (minutes < 1) return 'minus un minut';
+      return (minutes >= 60 ? Math.floor(minutes / 60) + " g'hor" : '')
+        + (minutes % 60 === 0 ? '' : (minutes >= 60 ? ' e ' : '') + (minutes % 60) + " g'minut");
     },
     date: '{M} {D}',
-    ended: '{P} ended {T} ago.',
-    ending: '{P} ending in {T}.',
-    'ending-short': '{T} left',
-    starting: '{P} starting in {T}.',
-    'starting-short': '{T} until {P}',
-    long: '{T} long',
-    'self-ended': 'Ended {T} ago.',
-    'self-starting': 'Starting in {T}.',
-    'self-ending': 'Ending in {T1}; started {T2} ago.',
+    ended: "{P}'i ha term ante {T}.",
+    ending: "{P}'i term en {T}.",
+    'ending-short': 'Ce {T}',
+    starting: "{P}'i comenc en {T}.",
+    'starting-short': "{T} ant {P}",
+    long: '{T}',
+    'self-ended': 'Li ha term ante {T}.',
+    'self-starting': 'Li comenc en {T}.',
+    'self-ending': 'Li term en {T1} e ha comence ante {T2}.',
     'due-date'({P: periodSpan, D: dateStr}) {
-      return 'due by ' + (periodSpan ? periodSpan + ' on ' : '') + dateStr;
+      return "pa'" + (periodSpan ? periodSpan + " en " : '') + dateStr;
     }
   }
 };
-
-const availableLangs = {
-  'en': 'English',
-  'en-gt': 'English (Google Translated through Chinese)',
-  'es': 'español',
-  'test': 'le language test',
-  'x-mleng': "L'leng"
-};
-const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
-  ? Object.keys(availableLangs)
-  : ['en', 'en-gt'];
-if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
-  let lang = 'en';
-  if (navigator.languages) {
-    lang = navigator.languages.find(lang => availableLangs[lang]) || lang;
-  } else {
-    const userLang = navigator.language || navigator.userLanguage;
-    if (availableLangs[userLang]) lang = userLang;
-  }
-  cookie.setItem('[gunn-web-app] language', lang);
-}
-let currentLang = cookie.getItem('[gunn-web-app] language');
-function localize(id, src = 'other') {
-  if (!langs[currentLang]) {
-    console.warn(`Language ${currentLang} not loaded.`);
-    langs[currentLang] = {};
-  }
-  if (!langs[currentLang][src]) {
-    langs[currentLang][src] = {};
-  }
-  if (langs[currentLang][src][id] !== undefined) return langs[currentLang][src][id];
-  if (!langs.en[src]) {
-    console.warn(`Source ${src} does not exist.`);
-    return id;
-  }
-  if (langs.en[src][id] === undefined) {
-    console.warn(`Nothing set for ${src}/${id}`);
-    return id;
-  }
-  return langs.en[src][id];
-}
-if (currentLang !== 'en') {
-  const script = document.createElement('script');
-  script.src = `./js/languages/${currentLang}.js`;
-  document.head.appendChild(script);
-}
