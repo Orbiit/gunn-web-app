@@ -164,7 +164,8 @@ langs.en = {
     'join-assync': 'Sync to account',
     'leave-assync': 'Stop synching',
     'assync-id': 'Your Assync account ID: ',
-    'loading-assync': 'Loading...'
+    'loading-assync': 'Loading...',
+    errors: 'Runtime error log'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

@@ -482,4 +482,10 @@ window.addEventListener("load",e=>{
   } catch (e) {
     console.log('oof', e);
   }
+  const errorLog = document.getElementById('error-log');
+  const logInsertPt = document.getElementById('insert-error-log-here');
+  logInsertPt.parentNode.replaceChild(errorLog, logInsertPt);
+  errorLog.classList.add('textarea');
+  errorLog.classList.remove('error-log');
+  errorLog.readOnly = true;
 },false);

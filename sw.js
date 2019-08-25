@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ugwa-sw-1566441133237';
+const CACHE_NAME = 'ugwa-sw-1566695158590';
 const urlsToCache = [
   './',
   'images/gunnmap.svg',
@@ -22,6 +22,10 @@ const urlsToCache = [
   'js/languages/en-gt.js'
 ];
 
+function sendError(msg) {
+  self.clients.matchAll().then(clients => clients.forEach(c => c.postMessage({error: msg})));
+}
+
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)).then(() => self.skipWaiting()));
 });
@@ -39,4 +43,11 @@ self.addEventListener('activate', e => {
         ? caches.delete(cache)
         : null)))
     .then(() => self.clients.claim()));
+});
+self.addEventListener('error', e => {
+  sendError(e.error && e.error.stack ? e.error.stack
+    : `${e.message} at ${e.filename}:${e.lineno}:${e.colno}`);
+});
+self.addEventListener('unhandledrejection', e => {
+  sendError(e.reason && (e.reason.stack || e.reason.message || e.reason));
 });

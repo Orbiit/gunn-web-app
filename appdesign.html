@@ -4,6 +4,41 @@
     <title>Unofficial Gunn Web App (UGWA)</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script type="text/javascript">
+      window.errors = '';
+      window.errorLogger = null;
+      if (window.addEventListener) {
+        window.addEventListener('error', function(e) {
+          if (e.message) {
+            errors += '\n' + (e.error && e.error.stack ? e.error.stack
+              : e.message + ' at ' + e.filename + ':' + e.lineno + ':' + e.colno);
+          } else {
+            errors += '\nProblem loading ' + (e.target.src || e.target.href);
+          }
+          if (errorLogger) errorLogger.value = errors;
+          window.onerror = null;
+        }, true);
+        window.addEventListener('unhandledrejection', function(e) {
+          errors += '\n' + (e.reason && (e.reason.stack || e.reason.message || e.reason));
+          if (errorLogger) errorLogger.value = errors;
+        }, false);
+      }
+      window.onerror = function(message, source, lineno, colno, error) {
+        if (colno) {
+          lineno += ':' + colno;
+        }
+        errors += '\n' + (error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
+        if (errorLogger) errorLogger.value = errors;
+      };
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.addEventListener('message', function(e) {
+          if (e.data.error) {
+            errors += '\n' + e.data.error;
+            if (errorLogger) errorLogger.value = errors;
+          }
+        });
+      }
+    </script>
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -210,6 +245,8 @@
         <button class="material ripple-light raised" id="reload">{{reload}}</button>
         <button class="material ripple-light raised" id="trick-cache">{{trick-cache}}</button>
       </p>
+      <h2>{{errors}}</h2>
+      <span id="insert-error-log-here"></span>
     </div>
     <div id="staffcontact" class="material-dialog">
       <h1>{{staff-name}}</h1>
@@ -263,5 +300,13 @@
       </div>
       <div class="ios-ok">{{heaucques}}</div>
     </div>
+    <textarea id="error-log" class="error-log" placeholder="Errors will be logged here." required></textarea>
+    <noscript>
+      <textarea id="error-log" class="error-log" required>Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea>
+    </noscript>
+    <script type="text/javascript">
+      errorLogger = document.getElementById('error-log');
+      errorLogger.value = errors;
+    </script>
   </body>
 </html>
