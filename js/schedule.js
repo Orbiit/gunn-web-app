@@ -451,7 +451,7 @@ function initSchedule() {
               ugwitaAltObj.self = selfDays;
             }
           }
-          if (altSched[date]) {
+          if (altSched[date] !== undefined) {
             ugwitaAltObj[date] = altSched[date];
             ugwaifyAlternates(alternates, date, altSched[date], alternateJSON[0].summary);
             change = true;
