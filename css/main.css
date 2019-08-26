@@ -332,17 +332,21 @@ body #footer ul li.active {
   left: 0;
   right: 0;
   bottom: 0;
+  height: 150px;
   width: 320px;
-  height: 40px;
-  padding: calc(50vh - 20px) calc(50vw - 160px);
+  border-color: black;
+  border-style: solid;
+  border-width: calc(50vh - 95px) 0;
+  padding: 20px calc(50vw - 160px);
   box-sizing: content-box;
   border-radius: 0;
   box-shadow: none;
   z-index: 1;
 }
-@media (orientation: portrait) {
+@media (max-width: 340px) {
   #barcode canvas.viewbarcode {
-    padding: calc(50vw - 20px) calc(50vh - 160px);
+    border-width: calc(50vw - 95px) 0;
+    padding: 20px calc(50vh - 160px);
     transform: translateX(100vw) rotate(90deg);
     transform-origin: 0 0;
   }
