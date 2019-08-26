@@ -129,9 +129,7 @@ class Assignment {
     return `
     <div class="asgn-line asgn-importance-${this.importance}${this.done ? ' asgn-is-done' : ''}" data-asgn-id="${this.id}">
       <button class="asgn-done-btn material icon" aria-label="${localize(this.done ? 'undoneify' : 'doneify')}"><i class="material-icons">${this.done ? '&#xe834;' : '&#xe835;'}</i></button>
-      <span class="asgn-due">${localize('due')}</span>
       <span class="asgn-category asgn-category-${this.category}">${localize('asgn-cat-' + this.category)}</span>
-      ${today > this.due ? `<span class="asgn-overdue">${localize('overdue')}</span>`: ''}
       <span class="asgn-text" tabindex="0">${escapeHTML(this.text)}</span>
     </div>
     `;

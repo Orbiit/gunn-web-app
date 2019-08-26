@@ -242,7 +242,6 @@ langs.en = {
     overdue: 'overdue',
     doneify: 'Mark as done',
     undoneify: 'Unmark as done',
-    due: 'due',
     'asgn-cat-homework': 'homework',
     'asgn-cat-preparation': 'preparation',
     'asgn-cat-worksheet': 'worksheet',
