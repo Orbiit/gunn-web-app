@@ -133,6 +133,7 @@ function initSchedule() {
   },false));
 
   function getPeriodSpan(pd) { // yay hoisting (see three lines above)
+    if (!periodstyles[pd]) return '???'; // just in case
     let css, colour = periodstyles[pd].colour;
     if (colour[0] === '#') {
       css = `background-color:${colour};color:${getFontColour(colour)};`;

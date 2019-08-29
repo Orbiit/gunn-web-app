@@ -87,6 +87,7 @@ class Assignment {
     if (category) this.category = category;
     if (importance !== undefined) this.importance = importance;
     if (dueObj) this.setDue(dueObj);
+    if (period === 'null') period = null;
     if (period !== undefined) this.period = period;
     if (done !== undefined) this.done = done;
   }
