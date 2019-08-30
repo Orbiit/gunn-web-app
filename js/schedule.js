@@ -380,7 +380,7 @@ function initSchedule() {
     weekwrapper.innerHTML=innerHTML;
     renderEvents();
   }
-  var altSchedRegex = /schedule|extended|holiday|no students|break|development/i;
+  var altSchedRegex = /schedule|extended|holiday|no students|break|development|back\sto\sschool/i;
   var selfDays;
   var eventsul=document.querySelector('#events'),events={},
   months=localize('months').split('  ');
@@ -432,6 +432,7 @@ function initSchedule() {
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
           const date = dateDate.slice(5, 10);
           var alternateJSON = json.filter(ev => altSchedRegex.test(ev.summary));
+          console.log(alternateJSON);
           var altSched = toAlternateSchedules(alternateJSON);
           var ugwitaAltObj = {};
           var change = false;

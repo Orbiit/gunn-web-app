@@ -7,7 +7,7 @@ const timeGetterRegex = /\(?(1?[0-9]):([0-9]{2}) *(?:-|–) *(1?[0-9]):([0-9]{2}
 const newLineRegex = /\r?\n/g;
 const noNewLineBeforeTimeRegex = /\n\(/g; // hack for 2019-09-06 schedule
 
-const altScheduleRegex = /schedule|extended|lunch/i;
+const altScheduleRegex = /schedule|extended|lunch|back\sto\sschool/i;
 const noSchoolRegex = /holiday|no\sstudents|break|development/i;
 
 function parseAlternate(summary, description) {
@@ -62,6 +62,16 @@ function parseAlternate(summary, description) {
   }
 }
 
+// merges multiple schedules
+function addSchedule(obj, dateID, schedule) {
+  if (obj[dateID]) {
+    // PROBLEM: what if the same schedule was listed twice?
+    obj[dateID] = [...obj[dateID], ...schedule].sort((a, b) => a.start - b.start);
+  } else {
+    obj[dateID] = schedule;
+  }
+}
+
 function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
   let altSchedules = {};
   for (let i = eventItems.length; i--;) {
@@ -70,6 +80,7 @@ function toAlternateSchedules(eventItems, EARLIEST_AM_HOUR = 6) {
     if (eventItems[i].start.date) {
       const dateObj = new Date(eventItems[i].start.date);
       while (dateObj.toISOString().slice(5, 10) !== eventItems[i].end.date.slice(5, 10)) {
+        addSchedule(altSchedules, dateObj.toISOString().slice(5, 10), schedule);
         altSchedules[dateObj.toISOString().slice(5, 10)] = schedule;
         dateObj.setUTCDate(dateObj.getUTCDate() + 1);
       }
