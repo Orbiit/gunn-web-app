@@ -165,7 +165,9 @@ langs.en = {
     'leave-assync': 'Stop synching',
     'assync-id': 'Your Assync account ID: ',
     'loading-assync': 'Loading...',
-    errors: 'Runtime error log'
+    errors: 'Runtime error log',
+    'edit-h': 'Set H period times',
+    'h-editor': 'H period settings'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

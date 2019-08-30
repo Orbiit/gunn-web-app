@@ -187,6 +187,7 @@
       <a id="periodcustomisermarker"></a>
       <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>{{show-self}}</label></p>
       <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>{{hide-self}}</label></p>
+      <button class="material raised" id="edit-h">{{edit-h}}</button>
       <h1>{{assignments}}</h1>
       <h2>{{asgn-display}}</h2>
       <div class="radios-wrapper">
@@ -282,6 +283,13 @@
         <button class="material red" id="asgn-delete">{{delete-asgn}}</button>
         <button class="material red close" id="asgn-cancel">{{cancel-asgn}}</button>
         <button class="material red close" id="asgn-save">{{save-asgn}}</button>
+      </div>
+    </div>
+    <div id="h-editor" class="material-dialog">
+      <h1>{{h-editor}}</h1>
+      <div class="content" id="h-days"></div>
+      <div class="buttons">
+        <button class="material red close">{{ok}}</button>
       </div>
     </div>
     <div class="ios-cover" id="ios-add-to-home-screen">

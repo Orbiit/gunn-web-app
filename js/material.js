@@ -118,6 +118,20 @@ function makeDropdown(wrapper, values) {
     }
   };
 }
+function createRange(min, max) {
+  const range = document.createElement('div');
+  range.classList.add('material-range');
+  const knob1 = document.createElement('div');
+  knob1.classList.add('range-knob');
+  range.appendChild(knob1);
+  const knob2 = document.createElement('div');
+  knob2.classList.add('range-knob');
+  range.appendChild(knob2);
+  const selected = document.createElement('div');
+  selected.classList.add('range-selected');
+  range.appendChild(selected);
+  return range;
+}
 window.addEventListener("load",e=>{
   toEach('.material-switch',t=>{
     t.addEventListener("click",e=>{

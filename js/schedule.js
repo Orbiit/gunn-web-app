@@ -1,6 +1,11 @@
 var options,
-letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF'],
-VERSION=2, // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF','H'],
+
+// period style save format version
+// WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+VERSION=3,
+
+// radios save format version
 FORMATTING_VERSION='3',
 normalschedule=[
   null,
@@ -67,15 +72,19 @@ function initSchedule() {
     "D":{label:letterPdFormat.replace('{X}', "D"),colour:"#795548"},
     "E":{label:letterPdFormat.replace('{X}', "E"),colour:"#FF9800"},
     "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
-    "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"}
+    "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"},
+    "H":{label:letterPdFormat.replace('{X}', "H"),colour:"#673AB7"}
   };
   if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
     options=JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'));
     if (options[0]!==VERSION) {
       switch (options[0]) {
         case 1:
-          options[0] = 2;
           options.push([periodstyles.SELF.label,periodstyles.SELF.colour]);
+        case 2:
+          options.push([periodstyles.H.label,periodstyles.H.colour]);
+
+          options[0] = VERSION;
           break;
         default:
           options=null;
@@ -131,6 +140,14 @@ function initSchedule() {
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     asgnThing.todayIs(getPeriodSpan, new Date(), e.target.value);
   },false));
+
+  function getHumanTime(minutes) {
+    if (formatOptions[1]==='0') return minutes % 60;
+    const h = Math.floor(minutes / 60);
+    const m = ('0' + minutes % 60).slice(-2);
+    if (formatOptions[1]==='24') return `${h}:${m}`;
+    else return `${(h-1)%12+1}:${m}${h<12?'a':'p'}m`;
+  }
 
   function getPeriodSpan(pd) { // yay hoisting (see three lines above)
     if (!periodstyles[pd]) return '???'; // just in case
@@ -541,12 +558,14 @@ function initSchedule() {
     periodstyles[letras[i]].label=options[i][0];
     periodstyles[letras[i]].colour=options[i][1];
   }
+  const hPeriods = JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || [];
   scheduleapp=scheduleApp({
     element:document.querySelector('#schedulewrapper'),
     periods:periodstyles,
     normal:normalschedule,
     alternates:alternates,
     selfDays: selfDays,
+    hPeriods,
     offset:0,
     update:true,
     h24: formatOptions[1] === '24',
@@ -814,9 +833,35 @@ function initSchedule() {
     (letterPdFormat.replace('{X}', 'E'),'E',options[5][1],options[5][0])
     (letterPdFormat.replace('{X}', 'F'),'F',options[6][1],options[6][0])
     (letterPdFormat.replace('{X}', 'G'),'G',options[7][1],options[7][0])
+    (letterPdFormat.replace('{X}', 'H'),'H',options[12][1],options[12][0])
     (localize('flex'),'Flex',options[8][1],options[8][0]);
   if (+formatOptions[3]) customiserAdder = customiserAdder(localize('self'),'SELF',options[11][1],options[11][0]);
   customiserAdder(localize('brunch'),'Brunch',options[9][1],options[9][0])
     (localize('lunch'),'Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
+
+  const hEditor = document.getElementById('h-editor');
+  document.getElementById('edit-h').addEventListener('click', e => {
+    hEditor.classList.add('show');
+  });
+  const hDays = document.createDocumentFragment();
+  for (let day = 1; day <= 5; day++) {
+    const wrapper = document.createElement('div');
+    hDays.appendChild(wrapper);
+
+    const checkbox = document.createElement('div');
+    checkbox.classList.add('material-switch');
+    checkbox.tabIndex = 0;
+    if (hPeriods[day]) checkbox.classList.add('checked');
+    wrapper.appendChild(checkbox);
+
+    const sliderWrapper = document.createElement('div');
+    sliderWrapper.classList.add('slider-wrapper');
+    wrapper.appendChild(sliderWrapper);
+
+    const label = document.createElement('span');
+    label.textContent = days[day] + (hPeriods[day] ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1]) : '');
+    sliderWrapper.appendChild(label);
+  }
+  document.getElementById('h-days').appendChild(hDays);
 }

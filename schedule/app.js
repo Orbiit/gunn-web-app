@@ -82,6 +82,14 @@ function scheduleApp(options={}) {
     } else if (options.normal[weekday]&&options.normal[weekday].length) {
       periods = options.normal[weekday];
     } else periods = [];
+    if (options.hPeriods[weekday]) {
+      const {start, end} = options.hPeriods[weekday];
+      periods.push({
+        name: 'H',
+        start: {hour: Math.floor(start / 60), minute: start % 60, totalminutes: start},
+        end: {hour: Math.floor(end / 60), minute: end % 60, totalminutes: end}
+      });
+    }
     if (periods.length) {
       if (checkfuture) {
         for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;
