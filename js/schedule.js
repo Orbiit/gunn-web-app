@@ -510,23 +510,11 @@ function initSchedule() {
       ugwitaData.forEach(p => {
         if (!/collaboration|meeting/i.test(p.name)) {
           const pd = identifyPeriod(p.name);
-          if (pd === 'Flex' && p.end - p.start === 80) {
-            periods.push({
-              name: pd,
-              start: toTraditionalUGWATime(p.start),
-              end: toTraditionalUGWATime(p.start + 35)
-            }, {
-              name: pd,
-              start: toTraditionalUGWATime(p.end - 35),
-              end: toTraditionalUGWATime(p.end)
-            });
-          } else {
-            periods.push({
-              name: pd,
-              start: toTraditionalUGWATime(p.start),
-              end: toTraditionalUGWATime(p.end)
-            });
-          }
+          periods.push({
+            name: pd,
+            start: toTraditionalUGWATime(p.start),
+            end: toTraditionalUGWATime(p.end)
+          });
         }
       });
     }
