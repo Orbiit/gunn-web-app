@@ -16,6 +16,7 @@ body {
   color: var(--colour);
   --theme: #FF594C;
   --focus: rgba(255, 89, 76, 0.2);
+  --active-back: rgba(255,89,76,0.5);
 }
 @keyframes fade-in {
   0% {opacity: 0;}

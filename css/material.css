@@ -83,9 +83,9 @@ button.material.raised {
   background-color: var(--off-switch-back);
 }
 .material-switch.checked {
-  background-color: rgba(255,89,76,0.5);
+  background-color: var(--active-back);
 }
-.material-switch::before {
+.material-switch::before, .range-knob::before {
   content: '';
   position: absolute;
   opacity: 0;
@@ -98,7 +98,7 @@ button.material.raised {
   left: 0;
   background-color: var(--pure-contrast);
 }
-.material-switch:focus::before {
+.material-switch:focus::before, .range-knob.range-controlled::before {
   opacity: 0.1;
   transform: scale(4);
 }
@@ -377,4 +377,70 @@ ul.material-list li.error, .get-error {
   cursor: pointer;
   overflow: hidden;
   position: relative;
+}
+
+.material-range {
+  display: inline-block;
+  position: relative;
+  height: 24px;
+  width: 120px;
+}
+.material-range.disabled {
+  pointer-events: none;
+  overflow: hidden;
+}
+.material-range::before, .material-range::after, .range-selected {
+  content: '';
+  position: absolute;
+  height: 2px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  background-color: var(--active-back);
+}
+.material-range::before {
+  left: 0;
+  width: var(--min);
+}
+.material-range::after {
+  right: 0;
+  width: var(--max);
+}
+.range-knob {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto -6px;
+  border-radius: 50%;
+  background-color: var(--theme);
+}
+.range-min, .range-selected {
+  left: var(--min);
+}
+.range-max, .range-selected {
+  right: var(--max);
+}
+.range-knob::before {
+  margin: 0;
+  background-color: var(--theme);
+}
+.range-selected {
+  background-color: var(--theme);
+}
+.material-range.disabled::before, .material-range.disabled::after {
+  background-color: var(--fill);
+}
+.material-range.disabled .range-knob, .material-range.disabled .range-selected {
+  background-color: var(--disabled);
+}
+.material-range.disabled::before {
+  margin-left: -9px;
+}
+.material-range.disabled::after {
+  margin-right: -9px;
+}
+.material-range.disabled .range-selected {
+  margin: auto 9px;
 }

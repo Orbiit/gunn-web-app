@@ -840,6 +840,10 @@ function initSchedule() {
     (localize('lunch'),'Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
 
+  const MIN_TIME = 14 * 60;
+  const MAX_TIME = 19 * 60;
+  const MIN_LENGTH = 10;
+  const STEP = 5;
   const hEditor = document.getElementById('h-editor');
   document.getElementById('edit-h').addEventListener('click', e => {
     hEditor.classList.add('show');
@@ -853,6 +857,20 @@ function initSchedule() {
     checkbox.classList.add('material-switch');
     checkbox.tabIndex = 0;
     if (hPeriods[day]) checkbox.classList.add('checked');
+    checkbox.addEventListener('click', e => {
+      // checkbox class checked not yet toggled because the listener that does that is added later
+      if (checkbox.classList.contains('checked')) {
+        range.elem.classList.add('disabled');
+        hPeriods[day] = null;
+        label.textContent = days[day];
+      } else {
+        range.elem.classList.remove('disabled');
+        hPeriods[day] = range.range.map(n => Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME));
+        label.textContent = days[day] + ' ' + getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1]);
+      }
+      scheduleapp.update();
+      cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
+    });
     wrapper.appendChild(checkbox);
 
     const sliderWrapper = document.createElement('div');
@@ -860,8 +878,25 @@ function initSchedule() {
     wrapper.appendChild(sliderWrapper);
 
     const label = document.createElement('span');
-    label.textContent = days[day] + (hPeriods[day] ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1]) : '');
+    label.textContent = days[day] + ' ' + (hPeriods[day] ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1]) : '');
     sliderWrapper.appendChild(label);
+
+    const range = createRange(
+      MIN_LENGTH / (MAX_TIME - MIN_TIME),
+      r => {
+        range.range = r.map(n => Math.round(n * (MAX_TIME - MIN_TIME) / STEP) * STEP / (MAX_TIME - MIN_TIME));
+        hPeriods[day] = range.range.map(n => Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME));
+        scheduleapp.update();
+        cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
+      },
+      r => {
+        r = r.map(n => Math.round(n * (MAX_TIME - MIN_TIME) / STEP) * STEP + MIN_TIME);
+        label.textContent = days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]));
+      }
+    );
+    range.range = (hPeriods[day] || [17 * 60, 18 * 60]).map(m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME));
+    if (!hPeriods[day]) range.elem.classList.add('disabled');
+    wrapper.appendChild(range.elem);
   }
   document.getElementById('h-days').appendChild(hDays);
 }

@@ -72,18 +72,18 @@ function scheduleApp(options={}) {
       return periods[index].name === 'Flex' && isSELF ? 'SELF' : periods[index].name;
     }
     if (options.customSchedule) periods = options.customSchedule(d, ano, mez, dia, weekday);
-    if (periods);
+    if (periods) periods = periods.slice();
     else if (options.isSummer && options.isSummer(ano, mez, dia)) {
       return innerHTML + `<span class="schedule-noschool">${localize("summer")}</span>`;
     } else if (options.alternates[(mez+1)+'-'+dia]) {
       var sched=options.alternates[(mez+1)+'-'+dia];
       innerHTML+=`<span class="schedule-alternatemsg">${localize('before-alt-msg')}<strong>${sched.description}</strong>${localize('after-alt-msg')}</span>`;
-      periods = sched.periods;
+      periods = sched.periods.slice();
     } else if (options.normal[weekday]&&options.normal[weekday].length) {
-      periods = options.normal[weekday];
+      periods = options.normal[weekday].slice();
     } else periods = [];
     if (options.hPeriods[weekday]) {
-      const {start, end} = options.hPeriods[weekday];
+      const [start, end] = options.hPeriods[weekday];
       periods.push({
         name: 'H',
         start: {hour: Math.floor(start / 60), minute: start % 60, totalminutes: start},
@@ -194,13 +194,16 @@ function scheduleApp(options={}) {
         var isSELF = isSELFDay(d.getMonth(), d.getDate());
         var sched;
         if (options.customSchedule) {
-          sched = options.customSchedule(d, d.getFullYear(), d.getMonth(), d.getDate(), d.getDay());
+          sched = options.customSchedule(d, d.getFullYear(), d.getMonth(), d.getDate(), d.getDay()).slice();
         } else if (options.isSummer && options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
           sched = [];
         } else if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
-          sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()].periods;
+          sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()].periods.slice();
         } else {
-          sched=options.normal[d.getDay()] || [];
+          sched=(options.normal[d.getDay()] || []).slice();
+        }
+        if (options.hPeriods[d.getDay()]) {
+          sched.push({name: 'H'});
         }
         if (sched.length) for (var period of sched) {
           // q stands for 'quick' because I'm too lazy to make a variable name

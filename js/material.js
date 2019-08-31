@@ -118,19 +118,102 @@ function makeDropdown(wrapper, values) {
     }
   };
 }
-function createRange(min, max) {
+function createRange(minRange = 0, onchange = NADA, oninput = NADA) {
   const range = document.createElement('div');
   range.classList.add('material-range');
-  const knob1 = document.createElement('div');
-  knob1.classList.add('range-knob');
-  range.appendChild(knob1);
-  const knob2 = document.createElement('div');
-  knob2.classList.add('range-knob');
-  range.appendChild(knob2);
+  range.tabIndex = 0;
+  const minKnob = document.createElement('div');
+  minKnob.classList.add('range-knob');
+  minKnob.classList.add('range-min');
+  range.appendChild(minKnob);
+  const maxKnob = document.createElement('div');
+  maxKnob.classList.add('range-knob');
+  maxKnob.classList.add('range-max');
+  range.appendChild(maxKnob);
   const selected = document.createElement('div');
   selected.classList.add('range-selected');
   range.appendChild(selected);
-  return range;
+  let min = 0, max = 1, controlling = null;
+  function acceptInput(callListener = true) {
+    if (max > 1) max = 1;
+    if (min < 0) min = 0;
+    range.style.setProperty('--min', min * 100 + '%');
+    range.style.setProperty('--max', (1 - max) * 100 + '%');
+    if (callListener) oninput([min, max]);
+  }
+  function acceptChange(callListener = true) {
+    if (max - min < minRange) max = Math.min(1, min + minRange);
+    if (max - min < minRange) min = Math.max(0, max - minRange);
+    acceptInput();
+    if (callListener) onchange([min, max]);
+  }
+  let rect;
+  function getPos(e) {
+    return Math.max(Math.min(((e.touches ? e.touches[0].clientX : e.clientX) - rect.left) / rect.width, 1), 0);
+  }
+  function start(e) {
+    if (controlling) return;
+    rect = range.getBoundingClientRect();
+    const pos = getPos(e);
+    if (pos < (min + max) / 2) {
+      controlling = 'min';
+      min = pos;
+    } else {
+      controlling = 'max';
+      max = pos;
+    }
+    (controlling === 'min' ? minKnob : maxKnob).classList.add('range-controlled');
+    document.addEventListener(e.type === 'touchstart' ? 'touchmove' : 'mousemove', move, {passive: false});
+    document.addEventListener(e.type === 'touchstart' ? 'touchend' : 'mouseup', end, {passive: false});
+    acceptInput();
+    e.preventDefault();
+  }
+  function move(e) {
+    const pos = getPos(e);
+    if (controlling === 'min') {
+      if (pos > max) {
+        controlling = 'max';
+        maxKnob.classList.add('range-controlled');
+        minKnob.classList.remove('range-controlled');
+        min = max;
+        max = pos;
+      } else {
+        min = pos;
+      }
+    } else {
+      if (pos < min) {
+        controlling = 'min';
+        minKnob.classList.add('range-controlled');
+        maxKnob.classList.remove('range-controlled');
+        max = min;
+        min = pos;
+      } else {
+        max = pos;
+      }
+    }
+    acceptInput();
+    e.preventDefault();
+  }
+  function end(e) {
+    (controlling === 'min' ? minKnob : maxKnob).classList.remove('range-controlled');
+    controlling = null;
+    document.removeEventListener(e.type === 'touchend' ? 'touchmove' : 'mousemove', move);
+    document.removeEventListener(e.type === 'touchend' ? 'touchend' : 'mouseup', end);
+    acceptChange();
+    e.preventDefault();
+  }
+  range.addEventListener('mousedown', start);
+  range.addEventListener('touchstart', start, {passive: false});
+  return {
+    elem: range,
+    get range() {
+      return [min, max];
+    },
+    set range(to) {
+      [min, max] = to;
+      acceptInput(false);
+    }
+  };
 }
 window.addEventListener("load",e=>{
   toEach('.material-switch',t=>{
