@@ -216,11 +216,14 @@ function createRange(minRange = 0, onchange = NADA, oninput = NADA) {
   };
 }
 window.addEventListener("load",e=>{
+  /*
+  // commented out because it makes knowing if the switch is on confusing
   toEach('.material-switch',t=>{
     t.addEventListener("click",e=>{
       t.classList.toggle('checked');
     },false);
   });
+  */
   toEach('.radio-wrapper',t=>{
     var radio=t.querySelector('input[type=radio]');
     t.addEventListener("click",e=>{

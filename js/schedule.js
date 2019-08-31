@@ -860,14 +860,15 @@ function initSchedule() {
     if (hPeriods[day]) checkbox.classList.add('checked');
     checkbox.addEventListener('click', e => {
       // checkbox class checked not yet toggled because the listener that does that is added later
+      checkbox.classList.toggle('checked');
       if (checkbox.classList.contains('checked')) {
-        range.elem.classList.add('disabled');
-        hPeriods[day] = null;
-        label.textContent = days[day];
-      } else {
         range.elem.classList.remove('disabled');
         hPeriods[day] = range.range.map(n => Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME));
         label.textContent = days[day] + ' ' + getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1]);
+      } else {
+        range.elem.classList.add('disabled');
+        hPeriods[day] = null;
+        label.textContent = days[day];
       }
       scheduleapp.update();
       cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
