@@ -710,3 +710,11 @@ body.light .percent-wrapper {
 .error-log:invalid {
   display: none;
 }
+
+.slider-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+.h-day .material-switch {
+  vertical-align: middle;
+}

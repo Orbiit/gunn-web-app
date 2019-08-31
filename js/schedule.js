@@ -851,6 +851,7 @@ function initSchedule() {
   const hDays = document.createDocumentFragment();
   for (let day = 1; day <= 5; day++) {
     const wrapper = document.createElement('div');
+    wrapper.classList.add('h-day');
     hDays.appendChild(wrapper);
 
     const checkbox = document.createElement('div');
@@ -878,6 +879,7 @@ function initSchedule() {
     wrapper.appendChild(sliderWrapper);
 
     const label = document.createElement('span');
+    label.classList.add('label');
     label.textContent = days[day] + ' ' + (hPeriods[day] ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1]) : '');
     sliderWrapper.appendChild(label);
 
@@ -896,7 +898,7 @@ function initSchedule() {
     );
     range.range = (hPeriods[day] || [17 * 60, 18 * 60]).map(m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME));
     if (!hPeriods[day]) range.elem.classList.add('disabled');
-    wrapper.appendChild(range.elem);
+    sliderWrapper.appendChild(range.elem);
   }
   document.getElementById('h-days').appendChild(hDays);
 }
