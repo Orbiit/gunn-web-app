@@ -82,7 +82,7 @@ function scheduleApp(options={}) {
     } else if (options.normal[weekday]&&options.normal[weekday].length) {
       periods = options.normal[weekday].slice();
     } else periods = [];
-    if (options.hPeriods[weekday]) {
+    if (periods.length && options.hPeriods[weekday]) {
       const [start, end] = options.hPeriods[weekday];
       periods.push({
         name: 'H',
@@ -214,7 +214,7 @@ function scheduleApp(options={}) {
         } else {
           sched=(options.normal[d.getDay()] || []).slice();
         }
-        if (options.hPeriods[d.getDay()]) {
+        if (sched.length && options.hPeriods[d.getDay()]) {
           sched.push({name: 'H'});
         }
         if (sched.length) for (var period of sched) {

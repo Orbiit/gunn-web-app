@@ -1,7 +1,7 @@
-const CACHE_NAME = 'ugwa-sw-1567213444225';
+const CACHE_NAME = 'ugwa-sw-1567567066776';
 const urlsToCache = [
   './',
-  'images/gunnmap.svg',
+  'images/newmap.min.png',
   'https://fonts.googleapis.com/css?family=Roboto:300,400%7CMaterial+Icons',
   'https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2',

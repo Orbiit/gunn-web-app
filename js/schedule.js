@@ -98,7 +98,8 @@ function initSchedule() {
     }
   }
   /* SCHEDULE APP */
-  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):[FORMATTING_VERSION,'12','full','0', 'after', 'chrono-primero'];
+  const defaultThings = [FORMATTING_VERSION,'12','full','0', 'after', 'chrono-primero', 'yes', 'show'];
+  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):defaultThings;
   if (formatOptions[0] === '1') {
     formatOptions[0] = '2';
     formatOptions[3] = '0';
@@ -118,7 +119,7 @@ function initSchedule() {
   }
   if (formatOptions[0] !== FORMATTING_VERSION) {
     // you should be worried
-    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full.0.after.chrono-primero');
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', defaultThings.join('.'));
     window.location.reload();
   }
   toEach('input[name=hour]',t=>t.addEventListener("click",e=>{
@@ -160,14 +161,17 @@ function initSchedule() {
   if (formatOptions[7] === 'hide') {
     hideSupportIcon.textContent = 'expand_more';
     supportList.style.height = 0;
-  } else {
-    window.requestAnimationFrame(() => {
-      supportList.style.height = supportList.scrollHeight + 'px';
-    });
   }
   hideSupportIcon.parentNode.addEventListener('click', e => {
     const nowHidden = hideSupportIcon.textContent === 'expand_less';
-    supportList.style.height = nowHidden ? 0 : supportList.scrollHeight + 'px';
+    if (supportList.style.height) {
+      supportList.style.height = nowHidden ? 0 : supportList.scrollHeight + 'px';
+    } else {
+      supportList.style.height = supportList.scrollHeight + 'px';
+      window.requestAnimationFrame(() => {
+        supportList.style.height = nowHidden ? 0 : supportList.scrollHeight + 'px';
+      });
+    }
     hideSupportIcon.textContent = nowHidden ? 'expand_more' : 'expand_less';
     formatOptions[7] = nowHidden ? 'hide' : 'show';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
@@ -873,8 +877,8 @@ function initSchedule() {
     (localize('lunch'),'Lunch',options[10][1],options[10][0]);
   document.querySelector('.section.options').insertBefore(periodCustomisers,document.querySelector('#periodcustomisermarker'));
 
-  const MIN_TIME = 14 * 60;
-  const MAX_TIME = 19 * 60;
+  const MIN_TIME = 15 * 60;
+  const MAX_TIME = 21 * 60;
   const MIN_LENGTH = 10;
   const STEP = 5;
   const hEditor = document.getElementById('h-editor');

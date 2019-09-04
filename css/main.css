@@ -711,12 +711,23 @@ body.light .percent-wrapper {
   display: none;
 }
 
+#h-days {
+  overflow-x: hidden;
+}
 .slider-wrapper {
+  flex: auto;
   display: inline-block;
   vertical-align: middle;
+  margin-right: 20px;
+}
+.h-day {
+  display: flex;
 }
 .h-day .material-switch {
   vertical-align: middle;
+}
+.h-day .material-range {
+  width: 100%;
 }
 
 p.secondary {
