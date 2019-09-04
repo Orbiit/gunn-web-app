@@ -6,7 +6,7 @@ letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF','H'],
 VERSION=3,
 
 // radios save format version
-FORMATTING_VERSION='3',
+FORMATTING_VERSION='4',
 normalschedule=[
   null,
   [
@@ -110,6 +110,11 @@ function initSchedule() {
     formatOptions[5] = 'chrono-primero';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
   }
+  if (formatOptions[0] === '3') {
+    formatOptions[0] = '4';
+    formatOptions[6] = 'yes';
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
+  }
   if (formatOptions[0] !== FORMATTING_VERSION) {
     // you should be worried
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', FORMATTING_VERSION+'.12.full.0.after.chrono-primero');
@@ -140,6 +145,15 @@ function initSchedule() {
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     asgnThing.todayIs(getPeriodSpan, new Date(), e.target.value);
   },false));
+  const togglePdAsgn = document.getElementById('toggle-pd-add-asgn');
+  if (formatOptions[6] === 'yes') togglePdAsgn.classList.add('checked');
+  togglePdAsgn.parentNode.addEventListener('click', e => {
+    togglePdAsgn.classList.toggle('checked');
+    formatOptions[6] = togglePdAsgn.classList.contains('checked') ? 'yes' : 'no';
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
+    scheduleapp.options.displayAddAsgn = formatOptions[6] === 'yes';
+    scheduleapp.update();
+  });
 
   function getHumanTime(minutes) {
     if (formatOptions[1]==='0') return minutes % 60;
@@ -572,6 +586,7 @@ function initSchedule() {
     h0Joke: formatOptions[1] === '0',
     compact: formatOptions[2] === 'compact',
     self: +formatOptions[3],
+    displayAddAsgn: formatOptions[6] === 'yes',
     getAssignments(date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan);
     },

@@ -121,7 +121,19 @@ function scheduleApp(options={}) {
       }
       for (var period of periods) {
         var periodName = getPeriod(period.name === 'Flex' && isSELF ? 'SELF' : period.name);
-        innerHTML+=`<div class="schedule-period" style="${getCSS(periodName.colour, period.name)}"><span class="schedule-periodname">${escapeHTML(periodName.label)}<button class="material add-asgn" data-pd="${period.name}">${localize('add-asgn')}</button></span><span>${getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))} &ndash; ${getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))} &middot; ${localizeTime('long', {T: getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)})}</span>`;
+        innerHTML+=`<div class="schedule-period" style="${
+          getCSS(periodName.colour, period.name)
+          }"><span class="schedule-periodname">${
+            escapeHTML(periodName.label)
+          }${
+            options.displayAddAsgn ? `<button class="material add-asgn" data-pd="${period.name}">${localize('add-asgn')}</button>` : ''
+          }</span><span>${
+            getHumanTime(('0'+period.start.hour).slice(-2)+('0'+period.start.minute).slice(-2))
+          } &ndash; ${
+            getHumanTime(('0'+period.end.hour).slice(-2)+('0'+period.end.minute).slice(-2))
+          } &middot; ${
+            localizeTime('long', {T: getUsefulTimePhrase(period.end.totalminutes - period.start.totalminutes)})
+          }</span>`;
         if (checkfuture) {
           innerHTML+=`<span>`;
           if (totalminute>=period.end.totalminutes) innerHTML+=localizeTime('self-ended', {T: `<strong>${getUsefulTimePhrase(totalminute-period.end.totalminutes)}</strong>`});

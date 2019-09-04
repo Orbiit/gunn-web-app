@@ -167,7 +167,8 @@ langs.en = {
     'loading-assync': 'Loading...',
     errors: 'Runtime error log',
     'edit-h': 'Set H period times',
-    'h-editor': 'H period settings'
+    'h-editor': 'H period settings',
+    'toggle-pd-add-asgn': 'Show Add Assignment button on period cards?'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
