@@ -168,7 +168,9 @@ langs.en = {
     errors: 'Runtime error log',
     'edit-h': 'Set H period times',
     'h-editor': 'H period settings',
-    'toggle-pd-add-asgn': 'Show Add Assignment button on period cards?'
+    'toggle-pd-add-asgn': 'Show "Add assignment" button on period cards?',
+    support: 'Student resources',
+    sponsor: 'Sponsored by the ROCK team'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

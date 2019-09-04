@@ -108,10 +108,44 @@
       </ul>
     </div>
     <div class="section utilities">
-      <p class="center"><a href="https://id.pausd.org/" target="_blank" rel="noopener noreferrer"><button class="material ripple-light raised">{{pausd-login}}</button></a></p>
       <h1>{{barcode}}</h1>
       <p>{{barcode-desc-before-link}}<a href="https://en.wikipedia.org/wiki/Code_39">{{wikipedia}}</a>{{barcode-desc-after-link}}</p>
       <ul id='barcode'><li class="right"><button class="material" id='addbarcode'>{{add-barcode}}</button></li></ul>
+      <h1>{{support}}<button class="material icon to-right"><i class="material-icons" id="hide-support">expand_less</i></button></h1>
+      <p class="secondary">{{sponsor}}</p>
+      <!-- I'm too lazy to localize this part -->
+      <ul class="material-list three-line short collapsible" id="support-list">
+        <li>
+          <span class="primary">Crisis Text Line</span>
+          <a href="sms:741-741">741-741</a>
+          <span class="secondary">For everyone in crisis; text "Help"<br>Text "LGBTQ" for LGBTQQ-specific support</span>
+        </li>
+        <li>
+          <span class="primary">Suicide Prevention Hotline</span>
+          <a href="tel:800-273-8256">800-273-8256</a>
+          <span class="secondary">Preventon and crisis resources (national)</span>
+        </li>
+        <li>
+          <span class="primary">Suicide & Crisis Line</span>
+          <a href="tel:855-278-4204">855-278-4204</a>
+          <span class="secondary">For individuals in crisis (Santa Clara County)</span>
+        </li>
+        <li>
+          <span class="primary">Star Vista</span>
+          <a href="tel:650-579-0350">650-579-0350</a>
+          <span class="secondary">Crisis intervention (San Mateo County)</span>
+        </li>
+        <li>
+          <span class="primary">Uplift</span>
+          <a href="tel:408-379-9085">408-379-9085</a>
+          <span class="secondary">Mobile crisis intervention and safety planning</span>
+        </li>
+        <li>
+          <span class="primary">Trevor Lifeline</span>
+          <a href="tel:866-488-7386">866-488-7386</a>
+          <span class="secondary">LGBTQ crisis intervention and suicide prevention</span>
+        </li>
+      </ul>
       <h1>{{minscore}}</h1>
       <p>{{current-grade}}<span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span></p>
       <p>{{finals-worth}}<span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
@@ -129,7 +163,7 @@
       <p class="center" id="maptoggle"></p>
       <p><strong>{{for-image}}</strong>{{image-instruct}}</p>
       <p><strong>{{for-gmaps}}</strong>{{gmaps-instruct}}</p>
-      <img src="images/gunnmap.svg" id='mapimage' alt="The map image failed to load :(">
+      <img src="images/newmap.min.png" id='mapimage' alt="The map image failed to load :(">
       <div id="mapgoogle"></div>
     </div>
     <div class="section clubs">

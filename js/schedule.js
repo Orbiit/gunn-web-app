@@ -113,6 +113,7 @@ function initSchedule() {
   if (formatOptions[0] === '3') {
     formatOptions[0] = '4';
     formatOptions[6] = 'yes';
+    formatOptions[7] = 'show';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
   }
   if (formatOptions[0] !== FORMATTING_VERSION) {
@@ -153,6 +154,23 @@ function initSchedule() {
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     scheduleapp.options.displayAddAsgn = formatOptions[6] === 'yes';
     scheduleapp.update();
+  });
+  const hideSupportIcon = document.getElementById('hide-support');
+  const supportList = document.getElementById('support-list');
+  if (formatOptions[7] === 'hide') {
+    hideSupportIcon.textContent = 'expand_more';
+    supportList.style.height = 0;
+  } else {
+    window.requestAnimationFrame(() => {
+      supportList.style.height = supportList.scrollHeight + 'px';
+    });
+  }
+  hideSupportIcon.parentNode.addEventListener('click', e => {
+    const nowHidden = hideSupportIcon.textContent === 'expand_less';
+    supportList.style.height = nowHidden ? 0 : supportList.scrollHeight + 'px';
+    hideSupportIcon.textContent = nowHidden ? 'expand_more' : 'expand_less';
+    formatOptions[7] = nowHidden ? 'hide' : 'show';
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
   });
 
   function getHumanTime(minutes) {

@@ -214,6 +214,7 @@ ul.material-list li {
   overflow: hidden;
   position: relative;
   vertical-align: top;
+  font-size: 14px;
 }
 .tab-focus ul.material-list li:focus {
   background-color: var(--focus);
@@ -247,9 +248,6 @@ ul.material-list span {
 }
 ul.material-list span.primary {
   font-size: 16px;
-}
-ul.material-list span.secondary {
-  font-size: 14px;
 }
 ul.material-list span.secondary, ul.material-list li.error, body.light .get-error {
   color: var(--secondary);
