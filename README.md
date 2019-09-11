@@ -1,7 +1,7 @@
 # The Unofficial Gunn Web App (UGWA)
 The Gunn App, this project's predecessor, was originally only available to [Android](https://github.com/RiceCakess/TheGunnApp) and [iOS](https://github.com/xaviloinaz/thegunnapp) users.
 
-The **Unofficial Gunn Web App** (abbrev. UGWA, pronounced `/ˈuːɡwə/`) aims to bring the capabilities of the Gunn App to the web (Chrome and maybe iOS Safari; it'd be a miracle if it worked on other browsers too).
+The **Unofficial Gunn Web App** (abbrev. UGWA, pronounced `/ˈuːɡwə/` or OOG-WAH) aims to bring the capabilities of the Gunn App to the web (Chrome and maybe iOS Safari; it'd be a miracle if it worked on other browsers too).
 
 ## Versions
 and their faults:
