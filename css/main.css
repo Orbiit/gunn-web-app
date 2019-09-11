@@ -743,3 +743,6 @@ p.secondary {
   transition: height .2s;
   box-sizing: border-box;
 }
+.collapsible li {
+  white-space: pre-wrap;
+}
