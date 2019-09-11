@@ -47,8 +47,6 @@ langs.en = {
     'disable-lists': 'Disable club/staff lists',
     periods: 'Periods',
     'periods-desc': 'Click on the coloured square to change period colour.',
-    'show-self': 'Show SELF',
-    'hide-self': 'Hide SELF',
     'control-centre': 'Control Centre',
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",
     reload: 'Restart UGWA',
@@ -170,7 +168,9 @@ langs.en = {
     'h-editor': 'H period settings',
     'toggle-pd-add-asgn': 'Show "Add assignment" button on period cards?',
     support: 'Student resources',
-    sponsor: 'Sponsored by the ROCK team'
+    sponsor: 'Sponsored by the ROCK team',
+    'show-self-toggle': 'Show SELF?',
+    show0: 'Show zero period?'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -266,7 +266,8 @@ langs.en = {
     'assync-loading-problem': 'There was a problem loading the assignments.',
     'assync-saving': 'Saving changes...',
     'assync-saved': 'Changes saved.',
-    'assync-saving-problem': 'There was a problem saving the changes.'
+    'assync-saving-problem': 'There was a problem saving the changes.',
+    p0: 'Zero period'
   },
   placeholders: {
     clubs: 'Search clubs',

@@ -219,11 +219,11 @@
       <h1>{{periods}}</h1>
       <p>{{periods-desc}}</p>
       <a id="periodcustomisermarker"></a>
-      <p class='radio-wrapper'><input type="radio" name="self" value="show" class="material-radio"><label>{{show-self}}</label></p>
-      <p class='radio-wrapper'><input type="radio" name="self" value="hide" class="material-radio"><label>{{hide-self}}</label></p>
+      <p><label><span class="material-switch" id="self" tabindex="0"></span>{{show-self-toggle}}</label></p>
+      <p><label><span class="material-switch" id="show0" tabindex="0"></span>{{show0}}</label></p>
       <button class="material raised" id="edit-h">{{edit-h}}</button>
       <h1>{{assignments}}</h1>
-      <label><div class="material-switch" id="toggle-pd-add-asgn" tabindex="0"></div>{{toggle-pd-add-asgn}}</label>
+      <p><label><span class="material-switch" id="toggle-pd-add-asgn" tabindex="0"></span>{{toggle-pd-add-asgn}}</label></p>
       <h2>{{asgn-display}}</h2>
       <div class="radios-wrapper">
         <p class='radio-wrapper'><input type="radio" name="asgn-display" value="before" class="material-radio"><label>{{asgn-before}}</label></p>

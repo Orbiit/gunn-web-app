@@ -56,16 +56,9 @@ function scheduleApp(options={}) {
   getFontColour('rgba(0,0,0,0.2)');
   let setTitle = false;
   const dayToPrime = {1: 2, 2: 3, 3: 5, 4: 7, 5: 11};
-  function generateDay(offset=0) {
-    var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
-    if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
+  function getSchedule(d, includeZero = options.show0) {
     const ano = d.getFullYear(), mez = d.getMonth(), dia = d.getDate(), weekday = d.getDay();
-    day=days[weekday];
-    innerHTML=`<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez + 1}-${dia}`}">${localizeTime('date', {M: months[mez], D: dia})}</a></h3>`;
-    const assignments = options.getAssignments(d);
-    if (assignments.noPeriod) {
-      innerHTML += assignments.noPeriod;
-    }
+    let alternate = false, summer = false;
     var isSELF = isSELFDay(mez, dia);
     var periods;
     function getPeriodName(index) {
@@ -74,21 +67,59 @@ function scheduleApp(options={}) {
     if (options.customSchedule) periods = options.customSchedule(d, ano, mez, dia, weekday);
     if (periods) periods = periods.slice();
     else if (options.isSummer && options.isSummer(ano, mez, dia)) {
-      return innerHTML + `<span class="schedule-noschool">${localize("summer")}</span>`;
+      summer = true;
+      periods = [];
     } else if (options.alternates[(mez+1)+'-'+dia]) {
       var sched=options.alternates[(mez+1)+'-'+dia];
-      innerHTML+=`<span class="schedule-alternatemsg">${localize('before-alt-msg')}<strong>${sched.description}</strong>${localize('after-alt-msg')}</span>`;
+      alternate = sched;
       periods = sched.periods.slice();
     } else if (options.normal[weekday]&&options.normal[weekday].length) {
       periods = options.normal[weekday].slice();
     } else periods = [];
-    if (periods.length && options.hPeriods[weekday]) {
-      const [start, end] = options.hPeriods[weekday];
-      periods.push({
-        name: 'H',
-        start: {hour: Math.floor(start / 60), minute: start % 60, totalminutes: start},
-        end: {hour: Math.floor(end / 60), minute: end % 60, totalminutes: end}
-      });
+    if (periods.length) {
+      if (options.hPeriods[weekday]) {
+        const [start, end] = options.hPeriods[weekday];
+        periods.push({
+          name: 'H',
+          start: {hour: Math.floor(start / 60), minute: start % 60, totalminutes: start},
+          end: {hour: Math.floor(end / 60), minute: end % 60, totalminutes: end}
+        });
+      }
+      if (includeZero) {
+        if (getSchedule(new Date(ano, mez, dia - 1), false).periods.length) {
+          periods.unshift(options.show0);
+        }
+      }
+    }
+    return {
+      periods,
+      alternate,
+      summer,
+      getPeriodName,
+      isSELF,
+      date: {ano, mez, dia, weekday}
+    };
+  }
+  function generateDay(offset=0) {
+    var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
+    if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
+    const {
+      periods,
+      alternate,
+      summer,
+      getPeriodName,
+      isSELF,
+      date: {ano, mez, dia, weekday}
+    } = getSchedule(d);
+    day=days[weekday];
+    innerHTML=`<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez + 1}-${dia}`}">${localizeTime('date', {M: months[mez], D: dia})}</a></h3>`;
+    const assignments = options.getAssignments(d);
+    if (assignments.noPeriod) {
+      innerHTML += assignments.noPeriod;
+    }
+    if (summer) return innerHTML + `<span class="schedule-noschool">${localize("summer")}</span>`;
+    if (alternate) {
+      innerHTML+=`<span class="schedule-alternatemsg">${localize('before-alt-msg')}<strong>${alternate.description}</strong>${localize('after-alt-msg')}</span>`;
     }
     if (periods.length) {
       if (checkfuture) {
@@ -204,19 +235,7 @@ function scheduleApp(options={}) {
         var d=new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay()+i),
         day=[];
         var isSELF = isSELFDay(d.getMonth(), d.getDate());
-        var sched;
-        if (options.customSchedule) {
-          sched = options.customSchedule(d, d.getFullYear(), d.getMonth(), d.getDate(), d.getDay()).slice();
-        } else if (options.isSummer && options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
-          sched = [];
-        } else if (options.alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
-          sched=options.alternates[(d.getMonth()+1)+'-'+d.getDate()].periods.slice();
-        } else {
-          sched=(options.normal[d.getDay()] || []).slice();
-        }
-        if (sched.length && options.hPeriods[d.getDay()]) {
-          sched.push({name: 'H'});
-        }
+        var sched = getSchedule(d).periods;
         if (sched.length) for (var period of sched) {
           // q stands for 'quick' because I'm too lazy to make a variable name
           // but I am not lazy enough to make a comment explaining it
