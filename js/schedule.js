@@ -715,7 +715,7 @@ function initSchedule() {
     document.querySelector('input[name=theme][value=light]').checked=true;
   document.querySelector(`input[name=hour][value=h${formatOptions[1]}]`).checked=true;
   document.querySelector(`input[name=format][value=${formatOptions[2]}]`).checked=true;
-  if (formatOptions[3]!=='hide') selfSwitch.classList.add('checked');
+  if (formatOptions[3]==='1') selfSwitch.classList.add('checked');
   document.querySelector(`input[name=asgn-display][value=${formatOptions[4]}]`).checked=true;
   document.querySelector(`input[name=asgn-sort][value=${formatOptions[5]}]`).checked=true;
   if (formatOptions[8]==='yes') showZero.classList.add('checked');
