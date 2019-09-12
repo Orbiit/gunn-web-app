@@ -23,9 +23,9 @@ langs.en = {
     'for-gmaps': 'For Google Maps:',
     'gmaps-instruct': " Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
     'club-list': 'Club list',
-    'clubs-disclaimer-before-link': 'Please note that club information was taken from their ',
-    'clubs-disclaimer-link': 'chartered club list as of February 2nd, 2019',
-    'clubs-disclaimer-after-link': '. Apparently some of their information turned out to be inaccurate, so blame them, not us.',
+    'clubs-disclaimer-before-link': "Please note that club information was taken from the administration's ",
+    'clubs-disclaimer-link': 'chartered club list as of September 11th, 2019',
+    'clubs-disclaimer-after-link': ', so attribute inaccuracies to them.',
     'lists-disabled': "You've disabled the club and staff lists",
     'turn-back-on': 'Turn back on',
     'select-date': 'select date',
@@ -188,7 +188,10 @@ langs.en = {
     s5c: 'Mobile crisis intervention and safety planning',
     s6a: 'Trevor Lifeline',
     s6b: '866-488-7386',
-    s6c: 'LGBTQ crisis intervention and suicide prevention'
+    s6c: 'LGBTQ crisis intervention and suicide prevention',
+    'staff-disclaimer-before-link': "Please note that staff information was taken from the administration's ",
+    'staff-disclaimer-link': 'staff directory as of September 11th, 2019',
+    'staff-disclaimer-after-link': ', so attribute inaccuracies to them.'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
@@ -285,7 +288,8 @@ langs.en = {
     'assync-saving': 'Saving changes...',
     'assync-saved': 'Changes saved.',
     'assync-saving-problem': 'There was a problem saving the changes.',
-    p0: 'Zero period'
+    p0: 'Zero period',
+    'dead-club': 'This club no longer exists at Gunn.'
   },
   placeholders: {
     clubs: 'Search clubs',

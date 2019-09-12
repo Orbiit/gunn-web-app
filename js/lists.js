@@ -310,6 +310,10 @@ window.addEventListener("load",e=>{
     currentClub = clubName;
     const club = clubs[clubName];
     clubAddList.textContent = savedClubs[clubName] ? localize('remove-from-list') : localize('add-to-list');
+    if (!club) {
+      clubcontent.innerHTML = `<p>${localize('dead-club')}</p>`;
+      return;
+    }
     clubAddList.style.display = /lunch/i.test(club.time) ? null : 'none';
     let innerHTML = '';
     innerHTML += `<p><strong>${localize('day')}</strong> ${club.day}</p>`;
