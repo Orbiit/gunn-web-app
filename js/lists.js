@@ -290,7 +290,17 @@ window.addEventListener("load",e=>{
         "teacher":localize('soph-teacher'),
         "email":localize('soph-email')
       };
-      var clubnames=Object.keys(clubs).sort(),
+      // ask Ronnie if this club is renewed for next semester/year
+      clubs['Sensors & Electronics Club'] = {
+        desc: 'We specialized in sensors and electronics, such as Arduino, Raspberry Pi, circuit boards, lidar, and a variety of other sensors, many of which will be on display during meetings. We will have fun projects and competitions including snacks each week.',
+        day: 'Friday',
+        time: 'Lunch',
+        room: 'N-207',
+        president: 'Jamisen Ma, Kevin Bao',
+        teacher: 'Florina Limburg',
+        email: 'flimburg@pausd.org'
+      };
+      var clubnames=Object.keys(clubs).sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
       innerHTML=``;
       for (var i=0,arr=clubnames,len=arr.length,club=arr[i];i<len;i++,club=arr[i]) {
         innerHTML+=`<li tabindex="0" data-club="${club}" data-search="${club} ${clubs[club].room} ${clubs[club].day}"><span class="primary">${club}</span><span class="secondary">${clubs[club].room}</span><span class="secondary">${clubs[club].day}</span></li>`;
