@@ -42,7 +42,8 @@ window.addEventListener("load",e=>{
   staffcontact=document.querySelector('#staffcontact'),
   staffh1=document.querySelector('#staffcontact h1'),
   staffcontent=document.querySelector('#staffcontact .content'),
-  staffsearch=document.querySelector('#staffsearch');
+  staffsearch=document.querySelector('#staffsearch'),
+  staffclear=document.querySelector('#staffclear');
   ajax(
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/staff.json',
     e=>{
@@ -270,12 +271,17 @@ window.addEventListener("load",e=>{
   }
   staffsearch.addEventListener("input", doStaffSearch,false);
   staffsearch.placeholder = localizePlaceholder('staff');
+  staffclear.addEventListener('click', e => {
+    staffsearch.value = '';
+    doStaffSearch();
+  });
   var clubs,
   clublist=document.querySelector('#clubs'),
   clubinfo=document.querySelector('#clubinfo'),
   clubh1=document.querySelector('#clubinfo h1'),
   clubcontent=document.querySelector('#clubinfo .content'),
   clubsearch=document.querySelector('#clubsearch'),
+  clubclear=document.querySelector('#clubclear'),
   clubAddList = document.getElementById('club-add-list');
   ajax(
     (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+'json/clubs.json',
@@ -377,4 +383,8 @@ window.addEventListener("load",e=>{
   }
   clubsearch.addEventListener("input", doClubSearch,false);
   clubsearch.placeholder = localizePlaceholder('clubs');
+  clubclear.addEventListener('click', e => {
+    clubsearch.value = '';
+    doClubSearch();
+  });
 },false);

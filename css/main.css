@@ -280,13 +280,22 @@ body #footer ul li.active {
   margin: 0 15px;
   position: relative;
 }
-.search-wrapper .material-icons {
+.search-wrapper > .material-icons {
   font-size: 16px;
   position: absolute;
   left: 0;
   pointer-events: none;
   opacity: 0.5;
   margin: 5.5px 6px;
+}
+.search-wrapper > .material.icon {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  top: 50%;
+}
+.search-wrapper > .material.icon > .material-icons {
+  font-size: 18px;
 }
 .notmaterial-input {
   border: none;
