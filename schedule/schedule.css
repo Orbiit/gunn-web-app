@@ -22,7 +22,7 @@
 .totally-not-a-link {
   color: inherit;
 }
-.schedule-container .schedule-alternatemsg, .schedule-container .schedule-noschool {
+.schedule-container .schedule-alternatemsg, .schedule-container .schedule-noschool, .schedule-container .schedule-end {
   font-size: 14px;
   text-align: center;
   display: block;

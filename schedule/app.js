@@ -122,6 +122,9 @@ function scheduleApp(options={}) {
       innerHTML+=`<span class="schedule-alternatemsg">${localize('before-alt-msg')}<strong>${alternate.description}</strong>${localize('after-alt-msg')}</span>`;
     }
     if (periods.length) {
+      innerHTML+=`<span class="schedule-end">${localizeTime('end-time', {
+        T: `<strong>${getHumanTime(('0'+periods[periods.length - 1].end.hour).slice(-2)+('0'+periods[periods.length - 1].end.minute).slice(-2))}</strong>`
+      })}</span>`;
       if (checkfuture) {
         for (var i=0;i<periods.length;i++) if (totalminute<periods[i].end.totalminutes) break;
         var str;

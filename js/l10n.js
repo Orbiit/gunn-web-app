@@ -320,7 +320,8 @@ langs.en = {
     'self-ending': 'Ending in {T1}; started {T2} ago.',
     'due-date'({P: periodSpan, D: dateStr}) {
       return 'due by ' + (periodSpan ? periodSpan + ' on ' : '') + dateStr;
-    }
+    },
+    'end-time': 'School ends at {T} today.'
   }
 };
 

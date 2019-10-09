@@ -779,6 +779,7 @@ p.secondary {
 #new-psa {
   display: none;
   background-color: var(--theme);
+  color: white;
   padding: 5px 10px;
   border-radius: 2px;
   font-size: 14px;
