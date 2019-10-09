@@ -191,7 +191,8 @@ langs.en = {
     'staff-disclaimer-link': 'staff directory as of September 11th, 2019',
     'staff-disclaimer-after-link': ', so attribute inaccuracies to them.',
     announcements: 'Announcements',
-    loading: 'Loading...'
+    loading: 'Loading...',
+    new: 'NEW'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

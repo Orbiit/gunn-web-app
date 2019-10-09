@@ -146,6 +146,7 @@ window.addEventListener("load",e=>{
       const prevPsa = document.getElementById('prev-psa');
       const nextPsa = document.getElementById('next-psa');
       const notifBadge = document.getElementById('notif');
+      const newBadge = document.getElementById('new-psa');
       const psas = [];
       const lastPsa = cookie.getItem('[gunn-web-app] scheduleapp.psa');
       let lastRead = psaData.length - 1;
@@ -176,6 +177,7 @@ window.addEventListener("load",e=>{
               const [year, month, date] = psaData[id].split('-').map(Number);
               const dateStr = localize('psa-date').replace('{D}', new Date(year, month - 1, date).toLocaleDateString());
               psaContent.innerHTML = html + `<p class="psa-date">${dateStr}</p>`;
+              newBadge.style.display = currentPsa > lastRead ? 'inline' : null;
               if (currentPsa > lastRead) {
                 lastRead = currentPsa;
                 cookie.setItem('[gunn-web-app] scheduleapp.psa', psaData[lastRead]);

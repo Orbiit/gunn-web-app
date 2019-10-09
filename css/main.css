@@ -760,7 +760,7 @@ p.secondary {
   opacity: 0.5;
 }
 #next-psa, #prev-psa {
-  margin-bottom: -5px;
+  vertical-align: middle;
   margin-left: 10px;
 }
 #footer .material-icons {
@@ -775,4 +775,13 @@ p.secondary {
   width: 5px;
   height: 5px;
   border-radius: 5px;
+}
+#new-psa {
+  display: none;
+  background-color: var(--theme);
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 14px;
+  margin-left: 10px;
+  vertical-align: middle;
 }
