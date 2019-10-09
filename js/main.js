@@ -86,6 +86,8 @@ function saveSavedClubs() {
   if (onSavedClubsUpdate) onSavedClubsUpdate();
 }
 
+let onOptionsTab;
+
 window.addEventListener("load",e=>{
   document.title = localize('appname');
   if (window !== window.parent) {
@@ -137,27 +139,68 @@ window.addEventListener("load",e=>{
     setTimeout(updateSeconds,1010-d.getMilliseconds());
   }
   updateSeconds();
-  var psa=document.querySelector('#psadialog .content');
-  ajax(
-    (window.location.protocol==='file:'?"https://orbiit.github.io/gunn-web-app/":"")+"psa.html",
-    e=>{
-      document.querySelector('#psa').innerHTML=e;
-      if (cookie.getItem('[gunn-web-app] scheduleapp.psa')!==e) {
-        if (cookie.getItem('[gunn-web-app] scheduleapp.psa')) {
-          psa.innerHTML=e;
-          psa.parentNode.classList.add("show");
-          document.querySelector('#psadialog > .buttons > .close').addEventListener('click', () => {
-            cookie.setItem('[gunn-web-app] scheduleapp.psa',e);
-          }, {once: true});
+  fetch('./psa/psas.json')
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(psaData => {
+      const psaContent = document.getElementById('psa');
+      const prevPsa = document.getElementById('prev-psa');
+      const nextPsa = document.getElementById('next-psa');
+      const notifBadge = document.getElementById('notif');
+      const psas = [];
+      const lastPsa = cookie.getItem('[gunn-web-app] scheduleapp.psa');
+      let lastRead = psaData.length - 1;
+      let currentPsa = lastRead;
+      if (lastPsa) {
+        lastRead = psaData.indexOf(lastPsa);
+        if (!~lastRead) {
+          lastRead = -1;
+          currentPsa = 0;
+          notifBadge.style.display = 'block';
+        } else if (lastRead !== psaData.length - 1) {
+          currentPsa = lastRead + 1;
+          notifBadge.style.display = 'block';
         } else {
-          cookie.setItem('[gunn-web-app] scheduleapp.psa',e);
+          currentPsa = lastRead;
         }
       }
-    },
-    e=>{
-      document.querySelector('#psa').innerHTML=`<p class="get-error">${e}${localize('psa-error')}</p>`+cookie.getItem('[gunn-web-app] scheduleapp.psa');
-    }
-  );
+      function displayPsa(id) {
+        prevPsa.disabled = id === 0;
+        nextPsa.disabled = id === psaData.length - 1;
+        return Promise.resolve(psas[id] ||
+          fetch(`./psa/${psaData[id]}.html`)
+            .then(r => r.ok ? r.text() : Promise.reject(r.status))
+            .then(html => psas[id] = html)
+            .catch(err => localize('psa-error') + err))
+          .then(html => {
+            if (currentPsa === id) {
+              const [year, month, date] = psaData[id].split('-').map(Number);
+              const dateStr = localize('psa-date').replace('{D}', new Date(year, month - 1, date).toLocaleDateString());
+              psaContent.innerHTML = html + `<p class="psa-date">${dateStr}</p>`;
+              if (currentPsa > lastRead) {
+                lastRead = currentPsa;
+                cookie.setItem('[gunn-web-app] scheduleapp.psa', psaData[lastRead]);
+                if (lastRead === psaData.length - 1) {
+                  notifBadge.style.display = null;
+                }
+              }
+            }
+          });
+      }
+      Promise.resolve(document.body.className.includes('footer-options') ? null : new Promise(res => onOptionsTab = res))
+        .then(() => {
+          onOptionsTab = null;
+          displayPsa(currentPsa);
+        });
+      prevPsa.addEventListener('click', e => {
+        if (currentPsa > 0) displayPsa(--currentPsa);
+      });
+      nextPsa.addEventListener('click', e => {
+        if (currentPsa < psaData.length - 1) displayPsa(++currentPsa);
+      });
+    })
+    .catch(err => {
+      document.getElementById('psa').textContent = localize('psa-error') + err;
+    });
   var gradeCalc = {
     current: document.getElementById('current-grade'),
     worth: document.getElementById('finals-worth'),

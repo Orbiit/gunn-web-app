@@ -104,7 +104,7 @@
         <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>{{clubs}}</span></li>
         <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>{{schedule}}</span></li>
         <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>{{staff}}</span></li>
-        <li data-section="options" tabindex="0"><i class="material-icons">&#xE8B8;</i><span>{{options}}</span></li>
+        <li data-section="options" tabindex="0"><i class="material-icons"><div id="notif"></div>&#xE8B8;</i><span>{{options}}</span></li>
       </ul>
     </div>
     <div class="section utilities">
@@ -171,8 +171,8 @@
       </div>
     </div>
     <div class="section options">
-      <h1>{{last-psa}}</h1>
-      <div class="material-card block-of-text" id="psa">loading</div>
+      <h1>{{announcements}}<button class="material icon" id="prev-psa" disabled><i class="material-icons">&#xE5CB;</i></button><button class="material icon" id="next-psa" disabled><i class="material-icons">&#xE5CC;</i></button></h1>
+      <div class="material-card block-of-text" id="psa">{{loading}}</div>
       <p>{{before-version}}<strong>{VERSION}</strong>{{after-version}}</p>
       <h1>{{theme}}</h1>
       <div class="radios-wrapper">
@@ -273,13 +273,6 @@
       <div class="buttons">
         <button class="material red" id="club-add-list"></button>
         <button class="material red close">{{close}}</button>
-      </div>
-    </div>
-    <div id="psadialog" class="material-dialog">
-      <h1>{{psa}}</h1>
-      <div class="content block-of-text"></div>
-      <div class="buttons">
-        <button class="material red close">{{ok}}</button>
       </div>
     </div>
     <div id="asgn-editor" class="material-dialog">

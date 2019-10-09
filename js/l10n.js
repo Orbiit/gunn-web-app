@@ -31,7 +31,6 @@ langs.en = {
     'select-date': 'select date',
     events: 'Events',
     'staff-list': 'Staff list',
-    'last-psa': 'Last PSA',
     'before-version': 'You are using the ',
     'after-version': ' version.',
     theme: 'Theme',
@@ -54,7 +53,6 @@ langs.en = {
     'staff-name': 'Staff name',
     close: 'Close',
     'club-name': 'Club name',
-    psa: 'From the Creators',
     ok: 'OK',
     'add-ugwa': 'To add UGWA to your home screen',
     desktop: 'Desktop',
@@ -191,11 +189,12 @@ langs.en = {
     s6c: 'LGBTQ crisis intervention and suicide prevention',
     'staff-disclaimer-before-link': "Please note that staff information was taken from the administration's ",
     'staff-disclaimer-link': 'staff directory as of September 11th, 2019',
-    'staff-disclaimer-after-link': ', so attribute inaccuracies to them.'
+    'staff-disclaimer-after-link': ', so attribute inaccuracies to them.',
+    announcements: 'Announcements',
+    loading: 'Loading...'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
-    'psa-error': "; couldn't get last PSA; maybe you aren't connected to the internet?",
     'no-study-before-emph': 'You ',
     'no-study-emph': "don't need to study",
     'no-study-after-emph': "; even if you score 0%, you'll be above your threshold.",
@@ -289,7 +288,9 @@ langs.en = {
     'assync-saved': 'Changes saved.',
     'assync-saving-problem': 'There was a problem saving the changes.',
     p0: 'Zero period',
-    'dead-club': 'This club no longer exists at Gunn.'
+    'dead-club': 'This club no longer exists at Gunn.',
+    'psa-date': 'Created on {D}.',
+    'psa-error': 'Could not load PSA: '
   },
   placeholders: {
     clubs: 'Search clubs',

@@ -16,6 +16,7 @@ window.addEventListener("load",e=>{
     document.querySelector(`#footer > ul > li[data-section="${section}"]`).classList.add('active');
     document.body.classList.add('footer-'+section);
     cookie.setItem('[gunn-web-app] section',section);
+    if (onOptionsTab && section === 'options') onOptionsTab();
   }
   if (window.location.search) {
     const section = /(?:\?|&)section=([^&]+)/.exec(window.location.search);

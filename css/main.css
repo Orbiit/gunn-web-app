@@ -434,10 +434,10 @@ body.dark #mapimage {
 .lists-enabled {
   display: none;
 }
-.block-of-text, #psadialog>.content {
+.block-of-text {
   line-height: 1.8;
 }
-.block-of-text p, #psadialog>.content p {
+.block-of-text p {
   margin: 0.5em 0;
 }
 .percent-wrapper {
@@ -754,4 +754,25 @@ p.secondary {
 }
 .collapsible li {
   white-space: pre-wrap;
+}
+
+.psa-date {
+  opacity: 0.5;
+}
+#next-psa, #prev-psa {
+  margin-bottom: -5px;
+  margin-left: 10px;
+}
+#footer .material-icons {
+  position: relative;
+}
+#notif {
+  display: none;
+  background-color: var(--theme);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 5px;
 }

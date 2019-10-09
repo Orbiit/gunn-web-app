@@ -19,9 +19,11 @@ const date = new Date().toDateString();
 readFile('./sw.js').then(cache => {
   writeFile('./sw.js', cache.replace(/ugwa-sw-\d+/, 'ugwa-sw-' + Date.now()));
 });
+/*
 readFile('./psa.html').then(html => {
   writeFile('./psa.html', html.replace(/(<strong data-version>).*?(<\/strong>)/, `$1${date}$2`));
 });
+*/
 
 readFile('./appdesign.html').then(html => {
   const css = [];
