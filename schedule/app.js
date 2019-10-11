@@ -91,6 +91,11 @@ function scheduleApp(options={}) {
         }
       }
     }
+    // putting this after it checks if the day is a school day because
+    // you can have all day prep and still have H period on that day, maybe
+    if (options.hidePreps) {
+      periods = periods.filter(({name}) => !getPeriod(name).label.toLowerCase().includes('prep'));
+    }
     return {
       periods,
       alternate,

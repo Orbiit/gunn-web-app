@@ -192,7 +192,8 @@ langs.en = {
     'staff-disclaimer-after-link': ', so attribute inaccuracies to them.',
     announcements: 'Announcements',
     loading: 'Loading...',
-    new: 'NEW'
+    new: 'NEW',
+    'hide-preps': 'Hide periods with "prep" in their names from the schedule?'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

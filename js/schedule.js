@@ -6,7 +6,7 @@ letras=[0,'A','B','C','D','E','F','G','Flex','Brunch','Lunch','SELF','H','0'],
 VERSION=4,
 
 // radios save format version
-FORMATTING_VERSION='5',
+FORMATTING_VERSION='6',
 normalschedule=[
   null,
   [
@@ -101,7 +101,7 @@ function initSchedule() {
     }
   }
   /* SCHEDULE APP */
-  const defaultThings = [FORMATTING_VERSION,'12','full','0', 'after', 'chrono-primero', 'yes', 'show', 'no'];
+  const defaultThings = [FORMATTING_VERSION,'12','full','0', 'after', 'chrono-primero', 'yes', 'show', 'no', 'preps'];
   var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')?cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.'):defaultThings;
   if (formatOptions[0] === '1') {
     formatOptions[0] = '2';
@@ -125,39 +125,50 @@ function initSchedule() {
     formatOptions[8] = 'no'; // zero period
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
   }
+  if (formatOptions[0] === '5') {
+    formatOptions[0] = '6';
+    formatOptions[9] = 'preps'; // hide preps?
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', formatOptions.join('.'));
+  }
   if (formatOptions[0] !== FORMATTING_VERSION) {
     // you should be worried
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions', defaultThings.join('.'));
     window.location.reload();
   }
+  document.querySelector(`input[name=hour][value=h${formatOptions[1]}]`).checked=true;
   toEach('input[name=hour]',t=>t.addEventListener("click",e=>{
     formatOptions[1] = e.target.value==='h12' ? '12' : e.target.value==='h0' ? '0' : '24';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     window.location.reload();
   },false));
+  document.querySelector(`input[name=format][value=${formatOptions[2]}]`).checked=true;
   toEach('input[name=format]',t=>t.addEventListener("click",e=>{
     formatOptions[2] = e.target.value==='full' ? 'full' : 'compact';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     window.location.reload();
   },false));
   const selfSwitch = document.getElementById('self');
+  if (formatOptions[3]==='1') selfSwitch.classList.add('checked');
   selfSwitch.parentNode.addEventListener('click', e => {
     selfSwitch.classList.toggle('checked');
     formatOptions[3] = selfSwitch.classList.contains('checked') ? '1' : '0';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     window.location.reload();
   });
+  document.querySelector(`input[name=asgn-display][value=${formatOptions[4]}]`).checked=true;
   toEach('input[name=asgn-display]',t=>t.addEventListener("click",e=>{
     formatOptions[4] = e.target.value;
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     asgnThing.displaySection(e.target.value);
   },false));
+  document.querySelector(`input[name=asgn-sort][value=${formatOptions[5]}]`).checked=true;
   toEach('input[name=asgn-sort]',t=>t.addEventListener("click",e=>{
     formatOptions[5] = e.target.value;
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     asgnThing.todayIs(getPeriodSpan, new Date(), e.target.value);
   },false));
   const showZero = document.getElementById('show0');
+  if (formatOptions[8]==='yes') showZero.classList.add('checked');
   showZero.parentNode.addEventListener('click', e => {
     showZero.classList.toggle('checked');
     formatOptions[8] = showZero.classList.contains('checked') ? 'yes' : 'no';
@@ -172,6 +183,14 @@ function initSchedule() {
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     scheduleapp.options.displayAddAsgn = formatOptions[6] === 'yes';
     scheduleapp.update();
+  });
+  const prepSwitch = document.getElementById('hide-preps');
+  if (formatOptions[9] === 'prepnt') prepSwitch.classList.add('checked');
+  prepSwitch.parentNode.addEventListener('click', e => {
+    prepSwitch.classList.toggle('checked');
+    formatOptions[9] = prepSwitch.classList.contains('checked') ? 'prepnt' : 'prep';
+    cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
+    window.location.reload();
   });
   const hideSupportIcon = document.getElementById('hide-support');
   const supportList = document.getElementById('support-list');
@@ -631,6 +650,7 @@ function initSchedule() {
       start: {hour: 7, minute: 15, totalminutes: 435},
       end: {hour: 8, minute: 5, totalminutes: 485}
     },
+    hidePreps: formatOptions[9] === 'prepnt',
     getAssignments(date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan);
     },
@@ -709,16 +729,6 @@ function initSchedule() {
     const proposal = {y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d};
     if (datepicker.inrange(proposal)) datepicker.day = proposal;
   }
-  if (cookie.getItem('global.theme'))
-    document.querySelector(`input[name=theme][value=${cookie.getItem('global.theme')}]`).checked=true;
-  else
-    document.querySelector('input[name=theme][value=light]').checked=true;
-  document.querySelector(`input[name=hour][value=h${formatOptions[1]}]`).checked=true;
-  document.querySelector(`input[name=format][value=${formatOptions[2]}]`).checked=true;
-  if (formatOptions[3]==='1') selfSwitch.classList.add('checked');
-  document.querySelector(`input[name=asgn-display][value=${formatOptions[4]}]`).checked=true;
-  document.querySelector(`input[name=asgn-sort][value=${formatOptions[5]}]`).checked=true;
-  if (formatOptions[8]==='yes') showZero.classList.add('checked');
 
   /* CUSTOMISE PERIODS */
   var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');

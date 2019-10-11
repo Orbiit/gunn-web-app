@@ -119,6 +119,10 @@ window.addEventListener("load",e=>{
       document.body.classList.remove('tab-focus');
     }
   });
+  if (cookie.getItem('global.theme'))
+    document.querySelector(`input[name=theme][value=${cookie.getItem('global.theme')}]`).checked=true;
+  else
+    document.querySelector('input[name=theme][value=light]').checked=true;
   toEach('input[name=theme]',t=>t.addEventListener("click",e=>{
     document.body.classList.remove(cookie.getItem('global.theme')||'light');
     document.body.classList.add(e.target.value);
