@@ -98,6 +98,7 @@
     <script type="text/javascript">
       document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
     </script>
+
     <div id="footer">
       <ul>
         <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>{{utilities}}</span></li>
@@ -107,10 +108,12 @@
         <li data-section="options" tabindex="0"><i class="material-icons"><div id="notif"></div>&#xE8B8;</i><span>{{options}}</span></li>
       </ul>
     </div>
+
     <div class="section utilities">
       <h1>{{barcode}}</h1>
       <p>{{barcode-desc-before-link}}<a href="https://en.wikipedia.org/wiki/Code_39">{{wikipedia}}</a>{{barcode-desc-after-link}}</p>
       <ul id='barcode'><li class="right"><button class="material" id='addbarcode'>{{add-barcode}}</button></li></ul>
+
       <h1>{{support}}<button class="material icon to-right"><i class="material-icons" id="hide-support">expand_less</i></button></h1>
       <p class="secondary">{{sponsor}}</p>
       <ul class="material-list three-line short collapsible" id="support-list">
@@ -121,11 +124,13 @@
         <li><span class="primary">{{s5a}}</span><a href="tel:408-379-9085">{{s5b}}</a><span class="secondary">{{s5c}}</span></li>
         <li><span class="primary">{{s6a}}</span><a href="tel:866-488-7386">{{s6b}}</a><span class="secondary">{{s6c}}</span></li>
       </ul>
+
       <h1>{{minscore}}</h1>
       <p>{{current-grade}}<span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span></p>
       <p>{{finals-worth}}<span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
       <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
       <p id="grade-output"></p>
+
       <h1>{{comm}}<a href="./prev-chats.html" target="_blank" rel="noopener noreferrer" class="chat-history"><button class="material" disabled>{{prev-chats}}</button></a></h1>
       <textarea class="textarea" id="chat" readonly></textarea>
       <button class="material ripple-light raised" id="open-chat" disabled>{{open-chat}}</button>
@@ -134,6 +139,7 @@
         <p id="preview"></p>
         <p>{{msg-note}}</p>
       </div>
+
       <h1>{{map}}</h1>
       <p class="center" id="maptoggle"></p>
       <p><strong>{{for-image}}</strong>{{image-instruct}}</p>
@@ -141,77 +147,97 @@
       <img src="images/newmap.min.png" id='mapimage' alt="The map image failed to load :(">
       <div id="mapgoogle"></div>
     </div>
+
     <div class="section clubs">
       <h1>{{clubs}}<div class="search-wrapper"><i class="material-icons">&#xE8B6;</i><input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"><button class="material icon" id="clubclear"><i class="material-icons">&#xe14c;</i></button></div></h1>
       <p>{{clubs-disclaimer-before-link}}<a href="https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/">{{clubs-disclaimer-link}}</a>{{clubs-disclaimer-after-link}}</p>
+
       <ul class="material-list three-line short clickables" id='clubs'></ul>
       <div class="lists-enabled center">
         <p>{{lists-disabled}}</p>
         <button class="material ripple-light raised">{{turn-back-on}}</button>
       </div>
     </div>
+
     <div class="section schedule">
       <span id='seconds'></span>
+
       <span id="asgn-sec-ins-before-pt"></span>
+
       <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button><button class='material' id="datepicker">{{select-date}}</button><button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button></p>
       <p class="center get-error" id="alternateerror"></p>
       <div id="schedulewrapper"></div>
+
       <div id="weekwrapper"></div>
+
       <span id="asgn-sec-ins-after-pt"></span>
+
       <h1>{{events}}</h1>
       <ul class="material-list two-line" id='events'></ul>
     </div>
+
     <div class="section staff">
       <h1>{{staff-list}}<div class="search-wrapper"><i class="material-icons">&#xE8B6;</i><input type="search" id='staffsearch' placeholder="Search staff" class="notmaterial-input"><button class="material icon" id="staffclear"><i class="material-icons">&#xe14c;</i></button></div></h1>
       <p>{{staff-disclaimer-before-link}}<a href="https://gunn.pausd.org/connect/staff-directory">{{staff-disclaimer-link}}</a>{{staff-disclaimer-after-link}}</p>
+
       <ul class="material-list three-line short clickables" id='staff'></ul>
       <div class="lists-enabled center">
         <p>{{lists-disabled}}</p>
         <button class="material ripple-light raised">{{turn-back-on}}</button>
       </div>
     </div>
+
     <div class="section options">
       <h1>{{announcements}}<button class="material icon" id="prev-psa" disabled><i class="material-icons">&#xE5CB;</i></button><button class="material icon" id="next-psa" disabled><i class="material-icons">&#xE5CC;</i></button><span id="new-psa">{{new}}</span></h1>
       <div class="material-card block-of-text" id="psa">{{loading}}</div>
+
       <p>{{before-version}}<strong>{VERSION}</strong>{{after-version}}</p>
+
       <h1>{{theme}}</h1>
       <div class="radios-wrapper">
         <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>{{light-theme}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>{{dark-theme}}</label></p>
         <p class='radio-wrapper is-joke'><input type="radio" name="theme" value="neither" class="material-radio"><label>{{neither-theme}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
       </div>
+
       <h1>{{time-formatting}}</h1>
       <div class="radios-wrapper">
         <p class='radio-wrapper'><input type="radio" name="hour" value="h12" class="material-radio"><label>{{12h}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="hour" value="h24" class="material-radio"><label>{{24h}}</label></p>
         <p class='radio-wrapper is-joke'><input type="radio" name="hour" value="h0" class="material-radio"><label>{{no-hour}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
       </div>
+
       <h2>{{title-compact}}</h2>
       <div class="radios-wrapper">
         <p class='radio-wrapper'><input type="radio" name="format" value="full" class="material-radio"><label>{{units}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="format" value="compact" class="material-radio"><label>{{numbers}}</label></p>
       </div>
       <div class="center"><button class="material ripple-light raised" id="disable-lists">{{disable-lists}}</button></div>
+
       <h1>{{periods}}</h1>
       <p>{{periods-desc}}</p>
       <a id="periodcustomisermarker"></a>
       <p><label><span class="material-switch" id="self" tabindex="0"></span>{{show-self-toggle}}</label></p>
       <p><label><span class="material-switch" id="show0" tabindex="0"></span>{{show0}}</label></p>
       <button class="material raised" id="edit-h">{{edit-h}}</button>
+
       <h1>{{assignments}}</h1>
       <p><label><span class="material-switch" id="toggle-pd-add-asgn" tabindex="0"></span>{{toggle-pd-add-asgn}}</label></p>
+
       <h2>{{asgn-display}}</h2>
       <div class="radios-wrapper">
         <p class='radio-wrapper'><input type="radio" name="asgn-display" value="before" class="material-radio"><label>{{asgn-before}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="asgn-display" value="after" class="material-radio"><label>{{asgn-after}}</label></p>
         <p class='radio-wrapper is-joke'><input type="radio" name="asgn-display" value="none" class="material-radio"><label>{{asgn-none}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
       </div>
+
       <h2>{{asgn-sort}}</h2>
       <div class="radios-wrapper">
         <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="chrono-primero" class="material-radio"><label>{{asgn-chrono-primero}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="important-importance" class="material-radio"><label>{{asgn-important-importance}}</label></p>
         <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="aLgOriThMs" class="material-radio"><label>{{asgn-algorithms}}</label></p>
       </div>
+
       <h2>{{assync}}</h2>
       <p>{{assync-desc}}</p>
       <div id="assync-auth-wrapper">
@@ -223,27 +249,33 @@
         </div>
         <p class="loading-assync">{{loading-assync}}</p>
       </div>
+
       <h1>{{languages}}</h1>
       <div id="langs"></div>
+
       <h1>{{transfer}}</h1>
       <p><button class="material raised" id="export-copy">{{export-copy}}</button> <button class="material raised" id="export-file">{{export-file}}</button></p>
       <textarea class="textarea" id="transfer-copypaste"></textarea>
       <p>{{import-file}}<input type="file" id="import-file" accept="application/json"><button class="material raised" id="import">{{import}}</button></p>
+
       <div class="block-of-text">
         <h1>{{add-ugwa}}</h1>
         <p><strong>{{desktop}}</strong>{{desktop-instruct}}</p>
         <p><strong>{{chromebook}}</strong>{{chromebook-instruct}}</p>
         <p><strong>{{ios}}</strong>{{ios-instruct}}</p>
         <p><strong>{{android}}</strong>{{android-instruct}}</p>
+
         <h1>{{bugs}}</h1>
         <p>{{before-gh-link}}<a href="https://github.com/Orbiit/gunn-web-app/issues/new" target="_blank" rel="noopener noreferrer">{{gh-link}}</a>{{inter-link}}<a href="mailto:sy24484@pausd.us" target="_blank" rel="noopener noreferrer">{{sean-email}}</a>{{after-email}}</p>
         <p>{{browsers}}</p>
+
         <h1>{{about}}</h1>
         <p>{{intent}}</p>
         <p>{{before-source-link}}<a href="https://github.com/Orbiit/gunn-web-app" target="_blank" rel="noopener noreferrer">{{github}}</a>{{after-source-link}}</p>
         <p>{{other-versions}}<a href="https://orbiit.github.io/gunn-web-app/schedule/">{{gunn-schedule}}</a>{{inter-link-1}}<a href="https://orbiit.github.io/gunn-web-app/lite/">{{ugwita}}</a>{{inter-link-2}}<a href="https://orbiit.github.io/ugwa2/">{{ugwa2}}</a>{{inter-link-3}}<a href="https://orbiit.github.io/ugwisha/">{{ugwisha}}</a>{{after-links}}</p>
         <p>{{lonely}}</p>
         <p>{{other-apps}}<a href="https://itunes.apple.com/us/app/thegunnapp/id1141159201">{{tga-ios}}</a>{{inter-link-4}}<a href="https://play.google.com/store/apps/details?id=xyz.dchen.thegunnapp">{{tga-android}}</a>{{inter-link-5}}<a href="https://nugwa.sord.cf/">{{nugwa}}</a>{{after-apps}}</p>
+
         <h1>{{credits}}</h1>
         <p><a href="https://sheeptester.github.io/" target="_blank" rel="noopener noreferrer">{{sean}}</a>{{sean-creds}}</p>
         <p><a href="https://poolehenry.github.io/" target="_blank" rel="noopener noreferrer">{{henry}}</a>{{henry-creds}}</p>
@@ -251,15 +283,18 @@
         <p>{{feature-based}}</p>
         <p>{{before-material}}<a href="https://material.io/" target="_blank" rel="noopener noreferrer">{{material}}</a>{{after-material}}</p>
       </div>
+
       <h1>{{control-centre}}</h1>
       <p>{{control-centre-desc}}</p>
       <p class="center">
         <button class="material ripple-light raised" id="reload">{{reload}}</button>
         <button class="material ripple-light raised" id="trick-cache">{{trick-cache}}</button>
       </p>
+
       <h2>{{errors}}</h2>
       <span id="insert-error-log-here"></span>
     </div>
+
     <div id="staffcontact" class="material-dialog">
       <h1>{{staff-name}}</h1>
       <div class="content"></div>
@@ -267,6 +302,7 @@
         <button class="material red close">{{close}}</button>
       </div>
     </div>
+
     <div id="clubinfo" class="material-dialog">
       <h1>{{club-name}}</h1>
       <div class="content"></div>
@@ -275,6 +311,7 @@
         <button class="material red close">{{close}}</button>
       </div>
     </div>
+
     <div id="asgn-editor" class="material-dialog">
       <h1>{{edit-asgn}}</h1>
       <div class="content">
@@ -289,6 +326,7 @@
         <button class="material red close" id="asgn-save">{{save-asgn}}</button>
       </div>
     </div>
+
     <div id="h-editor" class="material-dialog">
       <h1>{{h-editor}}</h1>
       <div class="content" id="h-days"></div>
@@ -296,6 +334,7 @@
         <button class="material red close">{{ok}}</button>
       </div>
     </div>
+
     <div class="ios-cover" id="ios-add-to-home-screen">
       <div class="ios-dialog">
         <h1>{{want-ugwa-normal}}</h1>
@@ -312,6 +351,7 @@
       </div>
       <div class="ios-ok">{{heaucques}}</div>
     </div>
+
     <textarea id="error-log" class="error-log" placeholder="Errors will be logged here." required></textarea>
     <noscript>
       <textarea id="error-log" class="error-log" required>Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea>
