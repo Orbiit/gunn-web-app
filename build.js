@@ -33,7 +33,11 @@ readFile('./appdesign.html').then(html => {
   Promise.all(css.map(c => readFile(c))).then(css => {
     css = css.join('\n').replace(/url\(('|")\.\./g, 'url($1.');
     Promise.all(js.map(j => readFile(j))).then(js => {
-      js = js.join('\n');
+      js = `(()=>{
+        ${js.join('\n')}
+        window.initMap = initMap;
+        window.langs = langs;
+      })();`;
       const result = minify(
         html
           .replace(/<!-- STYLES [^]* \/STYLES -->/, `<style>${css}</style>`)
@@ -58,9 +62,6 @@ readFile('./appdesign.html').then(html => {
               },
               parse: {
                 bare_returns: inline
-              },
-              mangle: {
-                reserved: ['initMap', 'langs']
               },
               toplevel: true
             });
