@@ -786,3 +786,18 @@ p.secondary {
   margin-left: 10px;
   vertical-align: middle;
 }
+
+/* TEMP: remove after end of HoCo */
+#hoco {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  /* background-image: linear-gradient(0deg, var(--background), transparent), url('../images/hoco-junior/thursday.jpg'); */
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: fade-in 2s .5s forwards;
+}
