@@ -4,9 +4,9 @@ In preparation for our evitable egress from Gunn, UGWA should be able to be legi
 
 ## Startup process
 
-The following lists most things related to the core features of UGWA (eg schedules, period colours and names, assignments, localization).
+The following lists most things related to the core [features of UGWA](./feature-set.md) (eg schedules, period colours and names, assignments, localization).
 
-### Data preparation
+### Data preparation (back end)
 
 - **options** requires parsing from localStorage
 - **period styles** requires *options*
@@ -18,7 +18,7 @@ The following lists most things related to the core features of UGWA (eg schedul
 - **assignments** requires *options*, possibly fetching from Assync
 - **club/staff data** requires fetching the JSON files
 
-### On DOM ready
+### On DOM ready (front end)
 
 - **theme** requires *options*
 - **schedule rendering** requires *get schedule*, *localization*, *period styles*, *preview date*, *current time*, *assignments*, *club/staff data*, *options* (for displaying clubs during lunch), *time formatting*, getting events
@@ -27,6 +27,25 @@ The following lists most things related to the core features of UGWA (eg schedul
 - **period customization** requires *period styles*, *localization*
 - **display language** requires *localization*
 - **club/staff lists** requires *club/staff data*
+
+## Data formats
+
+Data formats used in UGWA:
+
+- **date**
+  - `08-10` - used to store alternate schedules and SELF days (from Ugwita)
+  - `8-10` - used to refer to alternate schedules and SELF days (translated from Ugwita to legacy UGWA for `scheduleApp`)
+  - `{d: 10, m: 7, y: 2019}` - used to refer to a day outside of `scheduleApp` and assignment dates (from `DatePicker`)
+  - `offset` - used internally in `scheduleApp` to refer to a day relative to the current date
+  - `2019-08-10` - announcement date
+  - Note: club list also relies on the current date for the default search query
+- **time**
+  - `795` - H period times, stored periods
+  - `{hour: 13, minute: 15, totalminutes: 795}` - `scheduleApp`
+  - `1315` - `scheduleApp`'s `getHumanTime`
+- **period colour**
+  - `#abc123` - a colour
+  - [anything else] - an image
 
 ## Other notes
 
