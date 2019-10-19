@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ugwa-sw-1571100220274';
+const CACHE_NAME = 'ugwa-sw-1571519265496';
 const urlsToCache = [
   './',
   'images/newmap.min.png',
@@ -19,11 +19,7 @@ const urlsToCache = [
   'favicon/mstile-150x150.png',
   'json/clubs.json',
   'json/staff.json',
-  'js/languages/en-gt.js',
-  'images/hoco-junior/tuesday.jpg',
-  'images/hoco-junior/wednesday.jpg',
-  'images/hoco-junior/thursday.jpg',
-  'images/hoco-junior/friday.jpg'
+  'js/languages/en-gt.js'
 ];
 
 function sendError(msg) {

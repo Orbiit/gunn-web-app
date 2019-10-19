@@ -292,14 +292,6 @@ window.addEventListener("load",e=>{
     window.location = '?' + Date.now();
   });
 
-  // TEMP: remove after HoCo
-  const hocoDay = new Date().getDate();
-  if (hocoDay >= 15 && hocoDay <= 18) {
-    document.getElementById('hoco').style.backgroundImage = `linear-gradient(0deg, var(--background), transparent), url('./images/hoco-junior/${
-      ['tuesday', 'wednesday', 'thursday', 'friday'][hocoDay - 15]
-    }.jpg')`;
-  }
-
   const exportCopyBtn = document.getElementById('export-copy');
   const exportFileBtn = document.getElementById('export-file');
   const transferTextarea = document.getElementById('transfer-copypaste');

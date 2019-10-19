@@ -7,7 +7,6 @@ langs.en = {
     schedule: 'Schedule',
     staff: 'Staff',
     options: 'Options',
-    'pausd-login': 'PAUSD Login Page',
     barcode: 'Barcode',
     'barcode-desc-before-link': 'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on ',
     wikipedia: 'Wikipedia',
@@ -193,7 +192,9 @@ langs.en = {
     announcements: 'Announcements',
     loading: 'Loading...',
     new: 'NEW',
-    'hide-preps': 'Hide periods with "prep" in their names from the schedule?'
+    'hide-preps': 'Hide periods with "prep" in their names from the schedule?',
+    'martin-ad': 'GPA Calculation Website',
+    ad: 'Advertisement'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
