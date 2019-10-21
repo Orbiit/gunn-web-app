@@ -193,8 +193,8 @@ langs.en = {
     loading: 'Loading...',
     new: 'NEW',
     'hide-preps': 'Hide periods with "prep" in their names from the schedule?',
-    'martin-ad': 'GPA Calculation Website',
-    ad: 'Advertisement'
+    'martin-ad': 'Martin\'s GPA Calculation Website',
+    ad: 'Compelling utility'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
