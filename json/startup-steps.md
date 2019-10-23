@@ -58,3 +58,4 @@ Data formats used in UGWA:
 - separate schedule rendering from period status
   - avoid recreating elements when just updating current time
   - only recreate elements when schedule is updated
+- make sure to define spaces to insert special things such as AP schedule, summer school, ads (dialogs), etc.
