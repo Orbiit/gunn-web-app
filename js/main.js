@@ -360,10 +360,6 @@ window.addEventListener("load",e=>{
       importCode(transferTextarea.value);
     }
   });
-  // TEMP: remove after 2019-10-26
-  document.getElementById('ronnie-trigger').addEventListener('click', e => {
-    document.getElementById('ronnie-tab').classList.add('show');
-  });
   const MAX_LENGTH = 50;
   const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?0-9\-;'/~#%&()":]|\s+$|^\s+|\s+(?=\s)/gi;
   const trim = /\s+$|^\s+|\s+(?=\s)/g;
