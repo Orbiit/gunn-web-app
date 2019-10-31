@@ -1,121 +1,141 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Schedule App Test - UGWA</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
     <link rel="stylesheet" href="schedule.css">
     <style>
-      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
-      body {
-        font-family: 'Roboto', sans-serif;
-      }
-      body.light {
-        background-color: #fafafa;
-        color: rgba(0,0,0,0.87);
-      }
-      body.dark {
-        background-color: #303030;
-        color: white;
-      }
-      #app {
-        width: 100%;
-        height: 100%;
-        border-radius: 2px;
-        overflow: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app"></div>
-    <button type="button" onclick="document.body.classList.contains('light')?document.body.classList.remove('light'):document.body.classList.add('light');document.body.classList.contains('dark')?document.body.classList.remove('dark'):document.body.classList.add('dark')">toggle light/dark theme</button>
-    <button type="button" onclick="app?app.offset--:0">yesterdayer</button>
-    <button type="button" onclick="app?app.offset++:0">more tomorrow</button>
-    <p>type in console: <code>app</code> also alternate schedule is <code>alternates</code></p>
-    <script src="app.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      var xmlHttp=new XMLHttpRequest(),alternates,app,
-      periods={
-        NO_SCHOOL:{label:"No school today!"},
-        "Brunch":{label:"Brunch",colour:"#90a4ae"},
-        "Lunch":{label:"Lunch",colour:"#90a4ae"},
-        "Flex":{label:"Flex",colour:"#455a64"},
-        "A":{label:"Period_A",colour:"#f44336"},
-        "B":{label:"Period_B",colour:"#2196F3"},
-        "C":{label:"Period_C",colour:"#FFEB3B"},
-        "D":{label:"Period_D",colour:"#795548"},
-        "E":{label:"Period_E",colour:"#FF9800"},
-        "F":{label:"Period_F",colour:"#9C27B0"},
-        "G":{label:"Period_G",colour:"#4CAF50"}
-      };
-      if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
-        var t=JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options')),
-        letras='ABCDEFG';
-        for (var i=0;i<letras.length;i++) periods[letras[i]]={label:t[i][0],colour:t[i][1]};
-      }
-      xmlHttp.onreadystatechange=function(){
-        if (xmlHttp.readyState===4) {
-          if (xmlHttp.status===200) {
-            alternates=JSON.parse(xmlHttp.responseText);
-            app=scheduleApp({
-              element:document.querySelector('#app'),
-              periods:periods,
-              normal:{
-                Monday:[
-                  {type:'A',begin:'0825',end:'0945'},
-                  {type:'Brunch',begin:'0945',end:'1000'},
-                  {type:'B',begin:'1000',end:'1115'},
-                  {type:'C',begin:'1125',end:'1240'},
-                  {type:'Lunch',begin:'1240',end:'1320'},
-                  {type:'F',begin:'1320',end:'1435'}
-                ],
-                Tuesday:[
-                  {type:'D',begin:'0825',end:'0945'},
-                  {type:'Brunch',begin:'0945',end:'1000'},
-                  {type:'Flex',begin:'1000',end:'1050'},
-                  {type:'E',begin:'1100',end:'1215'},
-                  {type:'Lunch',begin:'1215',end:'1255'},
-                  {type:'A',begin:'1255',end:'1415'},
-                  {type:'G',begin:'1425',end:'1540'}
-                ],
-                Wednesday:[
-                  {type:'B',begin:'0825',end:'0950'},
-                  {type:'Brunch',begin:'0950',end:'1005'},
-                  {type:'C',begin:'1005',end:'1125'},
-                  {type:'D',begin:'1135',end:'1255'},
-                  {type:'Lunch',begin:'1255',end:'1335'},
-                  {type:'F',begin:'1335',end:'1455'},
-                ],
-                Thursday:[
-                  {type:'E',begin:'0825',end:'0950'},
-                  {type:'Brunch',begin:'0950',end:'1005'},
-                  {type:'Flex',begin:'1005',end:'1055'},
-                  {type:'B',begin:'1105',end:'1215'},
-                  {type:'Lunch',begin:'1215',end:'1255'},
-                  {type:'A',begin:'1255',end:'1405'},
-                  {type:'G',begin:'1415',end:'1535'},
-                ],
-                Friday:[
-                  {type:'C',begin:'0825',end:'0940'},
-                  {type:'Brunch',begin:'0940',end:'0955'},
-                  {type:'D',begin:'0955',end:'1105'},
-                  {type:'E',begin:'1115',end:'1225'},
-                  {type:'Lunch',begin:'1225',end:'1305'},
-                  {type:'F',begin:'1305',end:'1415'},
-                  {type:'G',begin:'1425',end:'1535'}
-                ]
-              },
-              alternates:alternates,
-              offset:0,
-              update:true
-            });
-          }
+        body {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-family: sans-serif;
         }
-      };
-      xmlHttp.open("GET","https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json",true);
-      xmlHttp.send(null);
-      localStorage.getItem('global.theme')==='dark'?document.body.classList.add('dark'):document.body.classList.add('light');
-    </script>
-  </body>
+
+        input, button, select, textarea {
+            font: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body.light {
+            background-color: #fafafa;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        body.dark {
+            background-color: #303030;
+            color: white;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<button type="button"
+        onclick="document.body.classList.contains('light')?document.body.classList.remove('light'):document.body.classList.add('light');document.body.classList.contains('dark')?document.body.classList.remove('dark'):document.body.classList.add('dark')">
+    toggle light/dark theme
+</button>
+<button type="button" onclick="app?app.offset--:0">yesterdayer</button>
+<button type="button" onclick="app?app.offset++:0">more tomorrow</button>
+<p>type in console: <code>app</code> also alternate schedule is <code>alternates</code></p>
+<script src="app.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var xmlHttp = new XMLHttpRequest(), alternates, app,
+        periods = {
+            NO_SCHOOL: {label: "No school today!"},
+            "Brunch": {label: "Brunch", colour: "#90a4ae"},
+            "Lunch": {label: "Lunch", colour: "#90a4ae"},
+            "Flex": {label: "Flex", colour: "#455a64"},
+            "A": {label: "Period_A", colour: "#f44336"},
+            "B": {label: "Period_B", colour: "#2196F3"},
+            "C": {label: "Period_C", colour: "#FFEB3B"},
+            "D": {label: "Period_D", colour: "#795548"},
+            "E": {label: "Period_E", colour: "#FF9800"},
+            "F": {label: "Period_F", colour: "#9C27B0"},
+            "G": {label: "Period_G", colour: "#4CAF50"}
+        };
+    if (localStorage.getItem('[gunn-web-app] scheduleapp.options')) {
+        var t = JSON.parse(localStorage.getItem('[gunn-web-app] scheduleapp.options')),
+            letras = 'ABCDEFG';
+        for (var i = 0; i < letras.length; i++) periods[letras[i]] = {label: t[i][0], colour: t[i][1]};
+    }
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                alternates = JSON.parse(xmlHttp.responseText);
+                app = scheduleApp({
+                    element: document.querySelector('#app'),
+                    periods: periods,
+                    normal: {
+                        Monday: [
+                            {type: 'A', begin: '0825', end: '0945'},
+                            {type: 'Brunch', begin: '0945', end: '1000'},
+                            {type: 'B', begin: '1000', end: '1115'},
+                            {type: 'C', begin: '1125', end: '1240'},
+                            {type: 'Lunch', begin: '1240', end: '1320'},
+                            {type: 'F', begin: '1320', end: '1435'}
+                        ],
+                        Tuesday: [
+                            {type: 'D', begin: '0825', end: '0945'},
+                            {type: 'Brunch', begin: '0945', end: '1000'},
+                            {type: 'Flex', begin: '1000', end: '1050'},
+                            {type: 'E', begin: '1100', end: '1215'},
+                            {type: 'Lunch', begin: '1215', end: '1255'},
+                            {type: 'A', begin: '1255', end: '1415'},
+                            {type: 'G', begin: '1425', end: '1540'}
+                        ],
+                        Wednesday: [
+                            {type: 'B', begin: '0825', end: '0950'},
+                            {type: 'Brunch', begin: '0950', end: '1005'},
+                            {type: 'C', begin: '1005', end: '1125'},
+                            {type: 'D', begin: '1135', end: '1255'},
+                            {type: 'Lunch', begin: '1255', end: '1335'},
+                            {type: 'F', begin: '1335', end: '1455'},
+                        ],
+                        Thursday: [
+                            {type: 'E', begin: '0825', end: '0950'},
+                            {type: 'Brunch', begin: '0950', end: '1005'},
+                            {type: 'Flex', begin: '1005', end: '1055'},
+                            {type: 'B', begin: '1105', end: '1215'},
+                            {type: 'Lunch', begin: '1215', end: '1255'},
+                            {type: 'A', begin: '1255', end: '1405'},
+                            {type: 'G', begin: '1415', end: '1535'},
+                        ],
+                        Friday: [
+                            {type: 'C', begin: '0825', end: '0940'},
+                            {type: 'Brunch', begin: '0940', end: '0955'},
+                            {type: 'D', begin: '0955', end: '1105'},
+                            {type: 'E', begin: '1115', end: '1225'},
+                            {type: 'Lunch', begin: '1225', end: '1305'},
+                            {type: 'F', begin: '1305', end: '1415'},
+                            {type: 'G', begin: '1425', end: '1535'}
+                        ]
+                    },
+                    alternates: alternates,
+                    offset: 0,
+                    update: true
+                });
+            }
+        }
+    };
+    xmlHttp.open("GET", "https://orbiit.github.io/gunn-web-app/alt-schedules-2017-18-object.json", true);
+    xmlHttp.send(null);
+    localStorage.getItem('global.theme') === 'dark' ? document.body.classList.add('dark') : document.body.classList.add('light');
+</script>
+</body>
 </html>

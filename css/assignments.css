@@ -1,196 +1,268 @@
 .confetti {
-  position: fixed;
-  margin: -60px;
-  z-index: 1000;
-  pointer-events: none;
+    position: fixed;
+    margin: -60px;
+    z-index: 1000;
+    pointer-events: none;
 }
 
 /* ASSIGNMENT */
 button.material.icon.asgn-done-btn {
-  width: 48px;
-  height: 48px;
-  vertical-align: middle;
-  margin-left: -16px;
-  color: inherit;
-  text-shadow: inherit;
+    width: 48px;
+    height: 48px;
+    vertical-align: middle;
+    margin-left: -16px;
+    color: inherit;
+    text-shadow: inherit;
 }
+
 .schedule-container .asgn-done-btn {
-  transition: background-color .2s;
+    transition: background-color .2s;
 }
+
 .schedule-container .asgn-done-btn:hover {
-  background-color: var(--ripple);
+    background-color: var(--ripple);
 }
+
 .asgn-done-btn .material-icons {
-  pointer-events: none;
-  padding: 10px; /* otherwise the text shadow gets clipped */
+    pointer-events: none;
+    padding: 10px; /* otherwise the text shadow gets clipped */
 }
+
 .asgn-line {
-  font-size: 14px;
-  position: relative;
+    font-size: 14px;
+    position: relative;
 }
+
 .asgn-line .asgn-category {
-  margin-right: 10px;
+    margin-right: 10px;
 }
+
 .asgn-due-date {
-  color: var(--secondary);
-  margin-left: 10px;
+    color: var(--secondary);
+    margin-left: 10px;
 }
+
 .asgn-text {
-  cursor: pointer;
-  font-size: 16px;
+    cursor: pointer;
+    font-size: 16px;
 }
+
 .asgn-is-done {
-  text-decoration: line-through;
-  opacity: 0.5;
+    text-decoration: line-through;
+    opacity: 0.5;
 }
+
 .asgn-upcoming .asgn-is-done button.material.icon.asgn-done-btn {
-  color: var(--theme);
+    color: var(--theme);
 }
+
 .asgn-text:hover, .tab-focus .asgn-text:focus {
-  text-decoration: underline;
+    text-decoration: underline;
 }
+
 .asgn-due, .asgn-overdue {
-  font-weight: bold;
-  color: white;
-  text-shadow: none;
-  background-color: #f44336;
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  margin-right: 10px;
-  font-size: 12px;
+    font-weight: bold;
+    color: white;
+    text-shadow: none;
+    background-color: #f44336;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    font-size: 12px;
 }
+
 .asgn-overdue {
-  background-color: #FF9800;
-  color: black;
+    background-color: #FF9800;
+    color: black;
 }
+
 .asgn-line::after {
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: 24px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 24px;
 }
+
 .asgn-importance-1:not(.asgn-is-done)::after {
-  content: '!';
-  color: var(--secondary);
+    content: '!';
+    color: var(--secondary);
 }
+
 .asgn-importance-2:not(.asgn-is-done)::after {
-  content: '!!!';
-  color: #2196F3;
+    content: '!!!';
+    color: #2196F3;
 }
 
 /* BADGES */
 .asgn-category {
-  display: inline-flex;
-  height: 32px;
-  border-radius: 16px;
-  padding: 0 12px;
-  align-items: center;
-  background-color: #969896;
-  color: white;
-  font-size: 14px;
-  text-shadow: none;
-  color: black;
+    display: inline-flex;
+    height: 32px;
+    border-radius: 16px;
+    padding: 0 12px;
+    align-items: center;
+    background-color: #969896;
+    color: white;
+    font-size: 14px;
+    text-shadow: none;
+    color: black;
 }
-.asgn-category-homework { background-color: #8abeb7; }
-.asgn-category-preparation { background-color: #b294bb; }
-.asgn-category-worksheet { background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
-.asgn-category-reading { background-color: #cc6666; }
-.asgn-category-quiz { background-color: #b5bd68; }
-.asgn-category-test { background-color: #81a2be; }
-.asgn-category-exam { background-color: #de935f; }
-.asgn-category-presentation { background-color: #f0c674; }
-.asgn-category-materials { background-color: #a3685a; }
-.asgn-category-lab { background-color: #373b41; color: white; }
-.asgn-category-other { background-color: #969896; }
+
+.asgn-category-homework {
+    background-color: #8abeb7;
+}
+
+.asgn-category-preparation {
+    background-color: #b294bb;
+}
+
+.asgn-category-worksheet {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.asgn-category-reading {
+    background-color: #cc6666;
+}
+
+.asgn-category-quiz {
+    background-color: #b5bd68;
+}
+
+.asgn-category-test {
+    background-color: #81a2be;
+}
+
+.asgn-category-exam {
+    background-color: #de935f;
+}
+
+.asgn-category-presentation {
+    background-color: #f0c674;
+}
+
+.asgn-category-materials {
+    background-color: #a3685a;
+}
+
+.asgn-category-lab {
+    background-color: #373b41;
+    color: white;
+}
+
+.asgn-category-other {
+    background-color: #969896;
+}
 
 /* ADD ASSIGNMENT BUTTONS */
 button.add-asgn {
-  float: right;
-  color: inherit;
-  text-shadow: inherit;
+    float: right;
+    color: inherit;
+    text-shadow: inherit;
 }
+
 .add-asgn i {
-  pointer-events: none;
+    pointer-events: none;
 }
+
 .schedule-container button.add-asgn {
-  opacity: 0;
-  pointer-events: none;
-  transition: all .2s;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .2s;
 }
+
 .schedule-container .schedule-period:hover .add-asgn {
-  opacity: 1;
-  pointer-events: all;
+    opacity: 1;
+    pointer-events: all;
 }
 
 /* EDITOR */
 #asgn-editor .content button {
-  vertical-align: middle;
+    vertical-align: middle;
 }
+
 #asgn-content {
-  -webkit-appearance: none;
-  border: none;
-  background: none;
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  resize: vertical;
-  background-color: var(--fill);
-  border-radius: 10px;
-  color: inherit;
+    -webkit-appearance: none;
+    border: none;
+    background: none;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    resize: vertical;
+    background-color: var(--fill);
+    border-radius: 10px;
+    color: inherit;
 }
+
 #asgn-delete {
-  float: left;
+    float: left;
 }
+
 .importance button {
-  margin-left: 10px;
-  color: var(--theme);
-  transition: all .2s;
+    margin-left: 10px;
+    color: var(--theme);
+    transition: all .2s;
 }
-#low-imp { --theme: #9E9E9E; }
-#medium-imp { --theme: #607D8B; }
-#high-imp { --theme: #2196F3; }
+
+#low-imp {
+    --theme: #9E9E9E;
+}
+
+#medium-imp {
+    --theme: #607D8B;
+}
+
+#high-imp {
+    --theme: #2196F3;
+}
 
 /* ASSYNC STATUS */
 .assync-status {
-  border-radius: 5px;
-  position: fixed;
-  bottom: 56px;
-  margin: 10px;
-  left: 50%;
-  transform: translate(-50%);
-  pointer-events: none;
-  background-color: #27ae60;
-  color: white;
-  padding: 5px 10px;
-  font-size: 14px;
-  transition: opacity .2s, background-color .2s;
-  z-index: 7;
+    border-radius: 5px;
+    position: fixed;
+    bottom: 56px;
+    margin: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    pointer-events: none;
+    background-color: #27ae60;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    transition: opacity .2s, background-color .2s;
+    z-index: 7;
 }
+
 .assync-disappearing {
-  animation: fade-out .5s 2s forwards;
+    animation: fade-out .5s 2s forwards;
 }
+
 .assync-hidden {
-  opacity: 0;
+    opacity: 0;
 }
+
 .assync-error {
-  background-color: #e74c3c;
+    background-color: #e74c3c;
 }
 
 /* ASSYNC SETTINGS */
 #assync-auth-wrapper button, #assync-auth-wrapper .notmaterial-input {
-  vertical-align: middle;
+    vertical-align: middle;
 }
+
 .is-using-assync .not-using-assync, .isnt-using-assync .using-assync, .is-loading :not(.loading-assync), .loading-assync {
-  display: none;
+    display: none;
 }
+
 .is-loading .loading-assync {
-  display: block;
+    display: block;
 }
+
 #assync-id, #join-assync-id {
-  font-family: monospace;
+    font-family: monospace;
 }
+
 button.assync-refresh {
-  float: right;
-  margin-left: 10px;
+    float: right;
+    margin-left: 10px;
 }

@@ -1,73 +1,94 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Colour Picker Test - UGWA</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
-      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
-      .colourpicker-window {
-        border: 1px solid black;
-        padding: 5px;
-        font-size: 0;
-      }
-      .colourpicker-input {
-        display: block;
-        border: none;
-        padding: 0;
-        width: 380px;
-        font-size: 20px;
-        height: 20px;
-      }
-      .colourpicker-svslider {
-        width: 360px;
-        height: 360px;
-        display: inline-block;
-      }
-      .colourpicker-svindicator {
-        border: 1px solid white;
-        border-radius: 50%;
-        height: 5px;
-        width: 5px;
-        margin-left: -3px;
-        margin-top: -3px;
-        box-shadow: 0 0 3px rgba(0,0,0,0.3), inset 0 0 3px rgba(0,0,0,0.3);
-      }
-      .colourpicker-hueslider {
-        width: 20px;
-        height: 360px;
-        display: inline-block;
-      }
-      .colourpicker-hueindicator {
-        border: 1px solid white;
-        border-width: 1px 0;
-        margin-top: -1px;
-        width: 100%;
-        box-shadow: 0 0 3px rgba(0,0,0,0.3);
-      }
-      #bleh {
-        color: black;
-      }
-      #what {
-        color: white;
-      }
+        body {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-family: sans-serif;
+        }
+
+        input, button, select, textarea {
+            font: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .colourpicker-window {
+            border: 1px solid black;
+            padding: 5px;
+            font-size: 0;
+        }
+
+        .colourpicker-input {
+            display: block;
+            border: none;
+            padding: 0;
+            width: 380px;
+            font-size: 20px;
+            height: 20px;
+        }
+
+        .colourpicker-svslider {
+            width: 360px;
+            height: 360px;
+            display: inline-block;
+        }
+
+        .colourpicker-svindicator {
+            border: 1px solid white;
+            border-radius: 50%;
+            height: 5px;
+            width: 5px;
+            margin-left: -3px;
+            margin-top: -3px;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3), inset 0 0 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .colourpicker-hueslider {
+            width: 20px;
+            height: 360px;
+            display: inline-block;
+        }
+
+        .colourpicker-hueindicator {
+            border: 1px solid white;
+            border-width: 1px 0;
+            margin-top: -1px;
+            width: 100%;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+        }
+
+        #bleh {
+            color: black;
+        }
+
+        #what {
+            color: white;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Colour Picker Test</h1>
-    <p>type in console: <code>picker</code></p>
-    <p id="bleh">0</p>
-    <p id="what">0</p>
-    <button type="button" onclick="picker.trigger(this)">show colour picker</button>
-    <script src="js/colour.min.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      var picker=new ColourPicker(e=>{
-        p.innerHTML=q.innerHTML=picker.darkness();
-        p.style.backgroundColor=q.style.backgroundColor=e;
-      });
-      var p=document.querySelector('#bleh'),
-      q=document.querySelector('#what');
-      picker.colour="#FF594C";
-    </script>
-  </body>
+</head>
+<body>
+<h1>Colour Picker Test</h1>
+<p>type in console: <code>picker</code></p>
+<p id="bleh">0</p>
+<p id="what">0</p>
+<button type="button" onclick="picker.trigger(this)">show colour picker</button>
+<script src="js/colour.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var picker = new ColourPicker(e => {
+        p.innerHTML = q.innerHTML = picker.darkness();
+        p.style.backgroundColor = q.style.backgroundColor = e;
+    });
+    var p = document.querySelector('#bleh'),
+        q = document.querySelector('#what');
+    picker.colour = "#FF594C";
+</script>
+</body>
 </html>

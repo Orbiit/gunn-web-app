@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Campus Map</title>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    
+
     <style>
-      body {
-        max-width: 1000px;
-        margin: 20px auto;
-        padding: 0 20px;
-        font-family: sans-serif;
-      }
-      #map {
-        height: 100%;
-      }
-      html, body {
-        height: 90%;
-        margin: 0;
-        padding: 0;
-      }
+        body {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-family: sans-serif;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        html, body {
+            height: 90%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Campus Map</h1>
-    <div id="map"></div>
-    
-    <!-- Maps API Key (i just generated one at random, feel free to make a new one if you want) -->
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap">
-    </script>
-    
-    <script>
+</head>
+<body>
+<h1>Campus Map</h1>
+<div id="map"></div>
+
+<!-- Maps API Key (i just generated one at random, feel free to make a new one if you want) -->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_NvT8EI28SqW-3qKVNEfMOJ9NftkDmk&callback=initMap">
+</script>
+
+<script>
     // Loads map of Gunn,
     // Sizes appropriately
 
     var mapOverlay;
 
     function initMap() {
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 18,
-        center: {lat: 37.400922, lng: -122.133584}
-      });
-      map.setMapTypeId('satellite');
-       var imageBounds = {
-    north: 37.402294,
-    south: 37.398824,
-    east: -122.130923,
-    west: -122.136685
-  };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 18,
+            center: {lat: 37.400922, lng: -122.133584}
+        });
+        map.setMapTypeId('satellite');
+        var imageBounds = {
+            north: 37.402294,
+            south: 37.398824,
+            east: -122.130923,
+            west: -122.136685
+        };
 
-  historicalOverlay = new google.maps.GroundOverlay(
-      'http://i.imgur.com/cnsWqDz.png',
-      imageBounds);
-  historicalOverlay.setMap(map);
+        historicalOverlay = new google.maps.GroundOverlay(
+            'http://i.imgur.com/cnsWqDz.png',
+            imageBounds);
+        historicalOverlay.setMap(map);
     }
-    </script>                                                                                
-  </body>
+</script>
+</body>
 </html>
 

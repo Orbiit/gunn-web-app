@@ -1,95 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>Interstudent Comm.</title>
     <meta name="description" content="Indirectly suggested by someone who wrote on the board in the AP CS classroom."/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
-      #preview {
-        font-weight: bold;
-        white-space: pre-wrap;
-      }
-      .strikethrough {
-        color: red;
-        font-weight: normal;
-        text-decoration: line-through;
-      }
-      .note {
-        font-weight: normal;
-      }
+        #preview {
+            font-weight: bold;
+            white-space: pre-wrap;
+        }
+
+        .strikethrough {
+            color: red;
+            font-weight: normal;
+            text-decoration: line-through;
+        }
+
+        .note {
+            font-weight: normal;
+        }
     </style>
-  </head>
-  <body>
-    <textarea id="messages" rows="8" cols="80" readonly></textarea>
-    <p><input id="messager" placeholder="Send a message"></p>
-    <p id="preview"></p>
-    <p>Only consonants, numbers, and a few punctuation marks are allowed.</p>
-    <script>
-const params = new URL(location).searchParams;
-const FETCH_DELAY = +params.get('fetch-delay') || 1000;
-const jsonStore = params.get('json-store') || 'https://www.jsonstore.io/7f1880d826cfd2c1a617d0ebb33638d52d31111dd392d4ecd0aab6213d3d221b';
-const MAX_LENGTH = 50;
-const username = params.get('name');
-const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?<>0-9\-=[\];'/~#%^&*(){}|":+]|\s+$|^\s+|\s+(?=\s)/gi;
-if (!username) {
-  params.set('name', prompt('Username:').replace(illegalChars, ''));
-  window.location.replace('?' + params);
-}
-function genID() {
-  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
-}
-const output = document.getElementById('messages');
-const input = document.getElementById('messager');
-const preview = document.getElementById('preview');
-let nextMessageGetTimeoutID = null;
-function getMessages() {
-  if (nextMessageGetTimeoutID) {
-    clearTimeout(nextMessageGetTimeoutID);
-    nextMessageGetTimeoutID = null;
-  }
-  fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
-    const isAtBottom = output.scrollHeight - output.scrollTop === output.clientHeight;
-    output.value = Object.values(messages).map(m => m.replace(illegalChars, '')).join('\n');
-    if (isAtBottom) output.scrollTop = output.scrollHeight;
-    nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
-  });
-}
-getMessages();
-input.addEventListener('keydown', e => {
-  if (e.keyCode === 13) {
-    input.value = input.value.slice(0, MAX_LENGTH).replace(illegalChars, '');
-    if (input.value) {
-      fetch(jsonStore + '/' + genID(), {
-        method: 'POST',
-        headers: {'Content-type': 'application/json'},
-        body: JSON.stringify(`[${username}] ${input.value}`)
-      }).then(getMessages);
-      input.value = '';
-      clearChildren(preview);
+</head>
+<body>
+<textarea id="messages" rows="8" cols="80" readonly></textarea>
+<p><input id="messager" placeholder="Send a message"></p>
+<p id="preview"></p>
+<p>Only consonants, numbers, and a few punctuation marks are allowed.</p>
+<script>
+    const params = new URL(location).searchParams;
+    const FETCH_DELAY = +params.get('fetch-delay') || 1000;
+    const jsonStore = params.get('json-store') || 'https://www.jsonstore.io/7f1880d826cfd2c1a617d0ebb33638d52d31111dd392d4ecd0aab6213d3d221b';
+    const MAX_LENGTH = 50;
+    const username = params.get('name');
+    const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?<>0-9\-=[\];'/~#%^&*(){}|":+]|\s+$|^\s+|\s+(?=\s)/gi;
+    if (!username) {
+        params.set('name', prompt('Username:').replace(illegalChars, ''));
+        window.location.replace('?' + params);
     }
-  }
-});
-function clearChildren(elem) {
-  while (elem.firstChild) elem.removeChild(elem.firstChild);
-}
-input.addEventListener('input', e => {
-  clearChildren(preview);
-  let match, i = 0;
-  while (match = illegalChars.exec(input.value)) {
-    preview.appendChild(document.createTextNode(input.value.slice(i, match.index)));
-    const strike = document.createElement('span');
-    strike.classList.add('strikethrough');
-    i = match.index + match[0].length;
-    strike.appendChild(document.createTextNode(input.value.slice(match.index, i)));
-    preview.appendChild(strike);
-  }
-  preview.appendChild(document.createTextNode(input.value.slice(i)));
-  const note = document.createElement('span');
-  note.classList.add('note');
-  note.textContent = ` (${input.value.length} / ${MAX_LENGTH})`;
-  preview.appendChild(note);
-});
-    </script>
-  </body>
+
+    function genID() {
+        return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+    }
+
+    const output = document.getElementById('messages');
+    const input = document.getElementById('messager');
+    const preview = document.getElementById('preview');
+    let nextMessageGetTimeoutID = null;
+
+    function getMessages() {
+        if (nextMessageGetTimeoutID) {
+            clearTimeout(nextMessageGetTimeoutID);
+            nextMessageGetTimeoutID = null;
+        }
+        fetch(jsonStore).then(r => r.json()).then(({result: messages}) => {
+            const isAtBottom = output.scrollHeight - output.scrollTop === output.clientHeight;
+            output.value = Object.values(messages).map(m => m.replace(illegalChars, '')).join('\n');
+            if (isAtBottom) output.scrollTop = output.scrollHeight;
+            nextMessageGetTimeoutID = setTimeout(getMessages, FETCH_DELAY);
+        });
+    }
+
+    getMessages();
+    input.addEventListener('keydown', e => {
+        if (e.keyCode === 13) {
+            input.value = input.value.slice(0, MAX_LENGTH).replace(illegalChars, '');
+            if (input.value) {
+                fetch(jsonStore + '/' + genID(), {
+                    method: 'POST',
+                    headers: {'Content-type': 'application/json'},
+                    body: JSON.stringify(`[${username}] ${input.value}`)
+                }).then(getMessages);
+                input.value = '';
+                clearChildren(preview);
+            }
+        }
+    });
+
+    function clearChildren(elem) {
+        while (elem.firstChild) elem.removeChild(elem.firstChild);
+    }
+
+    input.addEventListener('input', e => {
+        clearChildren(preview);
+        let match, i = 0;
+        while (match = illegalChars.exec(input.value)) {
+            preview.appendChild(document.createTextNode(input.value.slice(i, match.index)));
+            const strike = document.createElement('span');
+            strike.classList.add('strikethrough');
+            i = match.index + match[0].length;
+            strike.appendChild(document.createTextNode(input.value.slice(match.index, i)));
+            preview.appendChild(strike);
+        }
+        preview.appendChild(document.createTextNode(input.value.slice(i)));
+        const note = document.createElement('span');
+        note.classList.add('note');
+        note.textContent = ` (${input.value.length} / ${MAX_LENGTH})`;
+        preview.appendChild(note);
+    });
+</script>
+</body>
 </html>

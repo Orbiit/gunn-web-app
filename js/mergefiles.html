@@ -1,61 +1,86 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>File Merger - UGWA</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <style>
-      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}a:hover{text-decoration:underline;}
-    </style>
-  </head>
-  <body>
-    <h1>file merger</h1>
-    <p>list of files, separated by spaces, relative to <code>https://orbiit.github.io/gunn-web-app/</code></p>
-    <p><input type="text" id="files"></p>
-    <p>output (should minify):</p>
-    <textarea id="output" rows="8" cols="80"></textarea>
-    <p>minify, say, <a href="http://kangax.github.io/html-minifier/">html</a>, <a href="https://css.github.io/csso/csso.html">css</a>, or <a href="https://andrewsun.com/tools/javascript-minifier/">js</a> (select uglify-es to support arrow functions and such)</p>
-    <p><strong>ignore the below muahhehe</strong></p>
-    <p>css/main.css css/material.css css/colourpicker.css css/datepicker.css css/periodcustomisation.css schedule/schedule.css</p>
-    <p>js/main.js js/material.js js/footer.js js/schedule.js js/lists.js js/barcodes.js schedule/app.js js/date.min.js js/colour.min.js js/code39.min.js touchy/rotate1.min.js</p>
-    <script type="text/javascript">
-      function ajax(url,callback,error) {
-        var xmlHttp=new XMLHttpRequest();
-        xmlHttp.onreadystatechange=()=>{
-          if (xmlHttp.readyState===4) xmlHttp.status===200?callback(xmlHttp.responseText):error?error(xmlHttp.status):0;
-        };
-        xmlHttp.open("GET",'../'+url,true);
-        xmlHttp.send(null);
-      }
-      var files=document.querySelector('#files'),
-      output=document.querySelector('#output');
-      files.addEventListener("change",e=>{
-        files.disabled=true;
-        var urls=files.value.split(' '),
-        content=[],
-        problems=[],
-        loaded=0;
-        function allGood() {
-          if (~content.indexOf(null)) {
-            output.value=`these files don't want to be touched: ${problems.join(', ')}`;
-          } else {
-            output.value=content.join('');
-          }
-          files.disabled=false;
+        body {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-family: sans-serif;
         }
-        for (var i=0;i<urls.length;i++) (i=>{
-            ajax(urls[i],e=>{
-              loaded++;
-              content[i]=e;
-              if (loaded===urls.length) allGood();
-            },e=>{
-              loaded++;
-              content[i]=null;
-              problems.push(urls[i]);
-              if (loaded===urls.length) allGood();
+
+        input, button, select, textarea {
+            font: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>file merger</h1>
+<p>list of files, separated by spaces, relative to <code>https://orbiit.github.io/gunn-web-app/</code></p>
+<p><input id="files" type="text"></p>
+<p>output (should minify):</p>
+<textarea cols="80" id="output" rows="8"></textarea>
+<p>minify, say, <a href="http://kangax.github.io/html-minifier/">html</a>, <a
+        href="https://css.github.io/csso/csso.html">css</a>, or <a
+        href="https://andrewsun.com/tools/javascript-minifier/">js</a> (select uglify-es to support arrow functions and
+    such)</p>
+<p><strong>ignore the below muahhehe</strong></p>
+<p>css/main.css css/material.css css/colourpicker.css css/datepicker.css css/periodcustomisation.css
+    schedule/schedule.css</p>
+<p>js/main.js js/material.js js/footer.js js/schedule.js js/lists.js js/barcodes.js schedule/app.js js/date.min.js
+    js/colour.min.js js/code39.min.js touchy/rotate1.min.js</p>
+<script type="text/javascript">
+    function ajax(url, callback, error) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = () => {
+            if (xmlHttp.readyState === 4) xmlHttp.status === 200 ? callback(xmlHttp.responseText) : error ? error(xmlHttp.status) : 0;
+        };
+        xmlHttp.open("GET", '../' + url, true);
+        xmlHttp.send(null);
+    }
+
+    var files = document.querySelector('#files'),
+        output = document.querySelector('#output');
+    files.addEventListener("change", e => {
+        files.disabled = true;
+        var urls = files.value.split(' '),
+            content = [],
+            problems = [],
+            loaded = 0;
+
+        function allGood() {
+            if (~content.indexOf(null)) {
+                output.value = `these files don't want to be touched: ${problems.join(', ')}`;
+            } else {
+                output.value = content.join('');
+            }
+            files.disabled = false;
+        }
+
+        for (var i = 0; i < urls.length; i++) (i => {
+            ajax(urls[i], e => {
+                loaded++;
+                content[i] = e;
+                if (loaded === urls.length) allGood();
+            }, e => {
+                loaded++;
+                content[i] = null;
+                problems.push(urls[i]);
+                if (loaded === urls.length) allGood();
             });
-          })(i);
-      },false);
-    </script>
-  </body>
+        })(i);
+    }, false);
+</script>
+</body>
 </html>

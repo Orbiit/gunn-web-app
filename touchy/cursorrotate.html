@@ -1,62 +1,84 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Rotate for Mouse Test - UGWA</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
-      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
-      body {
-        overflow: hidden;
-      }
-      img {
-        border: 1px solid black;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-      .zoom-rotate {
-        background-color: white;
-        border-radius: 50%;
-        height: 50px;
-        width: 50px;
-        pointer-events: none;
-        box-shadow: 0 0 3px rgba(0,0,0,0.3);
-        position: fixed;
-        margin-left: -25px;
-        margin-top: -25px;
-      }
-      .zoom-dial {
-        background-color: red;
-        position: absolute;
-        top: 5px;
-        bottom: 50%;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        width: 1px;
-      }
-      @keyframes popup {
-        from {transform:scale(0);}
-        to {transform:scale(1);}
-      }
+        body {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-family: sans-serif;
+        }
+
+        input, button, select, textarea {
+            font: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        img {
+            border: 1px solid black;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .zoom-rotate {
+            background-color: white;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            pointer-events: none;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            margin-left: -25px;
+            margin-top: -25px;
+        }
+
+        .zoom-dial {
+            background-color: red;
+            position: absolute;
+            top: 5px;
+            bottom: 50%;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 1px;
+        }
+
+        @keyframes popup {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
     </style>
-  </head>
-  <body>
-    <h1>Rotate for Mouse Test</h1>
-    <p><strong>with two fingers</strong> you can pan, roate, and zoom!</p>
-    <p>and with just one finger all you can do is pan.</p>
-    <p><strong>with a cursor</strong>... all you can really do is pan. lol</p>
-    <p>you can use a scroll wheel to zoom though</p>
-    <p>or right click and move your mouse around to rotate</p>
-    <img src="../images/gunnmap.svg" alt="bleh" id="img">
-    <script src="rotate1.min.js" charset="utf-8"></script>
-    <script type="text/javascript">
-var img=document.querySelector('#img');
-zoomImage(img);
-    </script>
-  </body>
+</head>
+<body>
+<h1>Rotate for Mouse Test</h1>
+<p><strong>with two fingers</strong> you can pan, roate, and zoom!</p>
+<p>and with just one finger all you can do is pan.</p>
+<p><strong>with a cursor</strong>... all you can really do is pan. lol</p>
+<p>you can use a scroll wheel to zoom though</p>
+<p>or right click and move your mouse around to rotate</p>
+<img src="../images/gunnmap.svg" alt="bleh" id="img">
+<script src="rotate1.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var img = document.querySelector('#img');
+    zoomImage(img);
+</script>
+</body>
 </html>

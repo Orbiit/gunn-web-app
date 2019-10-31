@@ -1,280 +1,366 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Day view</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style>
-      * {
-        -webkit-tap-highlight-color: transparent;
-      }
-      :focus {
-        outline: none;
-      }
-      button, select, textarea, input {
-        font: inherit;
-        -webkit-appearance: none;
-      }
-      input[type="search"]::-webkit-search-decoration,
-      input[type="search"]::-webkit-search-cancel-button,
-      input[type="search"]::-webkit-search-results-button,
-      input[type="search"]::-webkit-search-results-decoration {
-        display: none;
-      }
-      input[type=number]::-webkit-inner-spin-button,
-      input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-      html, body {
-        width: 100%;
-        height: 100%;
-      }
-      body {
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-        line-height: 1;
-        font-size: 0;
-        background-color: black;
-      }
-      .day {
-        max-width: 500px;
-        min-height: 100%;
-        margin: 0 auto;
-      }
-      .day.light {
-        background-color: #fafafa;
-        color: rgba(0,0,0,0.87);
-      }
-      .day.dark {
-        background-color: #303030;
-        color: #fff;
-      }
-      .day .date {
-        text-align: center;
-        padding-top: 20px;
-        padding-bottom: 10px;
-      }
-      .day .date input {
-        font-size: 56px;
-        color: inherit;
-        border: none;
-        background: none;
-        line-height: 1;
-        margin: 0 10px;
-        border-bottom: 1px solid;
-        transition: all .2s;
-      }
-      .day.light .date input {
-        border-color: rgba(0,0,0,0.1);
-      }
-      .day.dark .date input {
-        border-color: rgba(255,255,255,0.1);
-      }
-      .day .date input:focus {
-        border-color: #ff594c;
-      }
-      .day .weekday {
-        text-transform: uppercase;
-        font-size: 25px;
-        text-align: center;
-        display: block;
-        margin-bottom: 20px;
-      }
-      .day.light .weekday {
-        color: rgba(0,0,0,0.3);
-      }
-      .day.dark .weekday {
-        color: rgba(255,255,255,0.4);
-      }
-      .day .events {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-      .day .events li {
-        padding: 20px 30px;
-        margin: 10px 0;
-        transition: box-shadow .05s;
-      }
-      .day .events li.starts {
-        margin-left: 10px;
-        padding-left: 20px;
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
-      }
-      .day .events li.ends {
-        margin-right: 10px;
-        padding-right: 20px;
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-        transition: all .2s;
-      }
-      .day .events li.light {
-        color: rgba(0,0,0,0.8);
-      }
-      .day .events li.dark {
-        color: rgba(255,255,255,0.9);
-      }
-      .day .events li:focus {
-        box-shadow: 0 1px 8px rgba(0,0,0,0.5);
-      }
-      .day ul li span {
-        display: block;
-        white-space: pre;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .day .events li .name {
-        font-size: 16px;
-        margin-bottom: 5px;
-      }
-      .day .events li .description {
-        font-size: 14px;
-        opacity: 0.8;
-        line-height: 1.5;
-      }
-      .day .periods {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-      .day .periods li {
-        padding: 20px;
-        margin: 10px;
-        border-radius: 2px;
-        position: relative;
-        transition: all .2s;
-      }
-      .day .periods li:focus {
-        margin: 15px 5px;
-        box-shadow: 0 1px 8px rgba(0,0,0,0.3);
-      }
-      .day .periods li.transparent:focus {
-        box-shadow: none;
-      }
-      .day .periods li:not(.transparent)::before {
-        content: attr(data-period);
-        position: absolute;
-        top: 0;
-        right: 0;
-        pointer-events: none;
-        font-size: 80px;
-        opacity: 0.4;
-        margin: 10px 20px;
-      }
-      .day .periods li .name {
-        font-size: 36px;
-        margin-bottom: 5px;
-        height: 1.2em;
-      }
-      .day .periods li span {
-        font-size: 16px;
-        height: 0;
-        overflow: hidden;
-        transition: all .2s;
-      }
-      .day .periods li .description {
-        height: 1.2em;
-      }
-      .day .periods li:focus span:not(.name) {
-        height: 1.2em;
-        padding-top: 10px;
-      }
-      .day .periods li em {
-        font-style: normal;
-      }
-      .day .periods li.light, .day.light .periods li.transparent {
-        color: rgba(0,0,0,0.64);
-        stroke: rgba(0,0,0,0.8);
-      }
-      .day .periods li.dark, .day.dark .periods li.transparent {
-        color: rgba(255,255,255,0.72);
-        stroke: rgba(255,255,255,0.9);
-      }
-      .day .periods li.light .name, .day .periods li.light em, .day.light .periods li.transparent .name, .day.light .periods li.transparent em {
-        color: rgba(0,0,0,0.8);
-      }
-      .day .periods li.dark .name, .day .periods li.dark em, .day.dark .periods li.transparent .name, .day.dark .periods li.transparent em {
-        color: rgba(255,255,255,0.9);
-      }
-      .day .periods li svg {
-        width: 40px;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        fill: none;
-      }
-      .day .periods li svg path {
-        transform-origin: center;
-        transform: translate(0,-4px) rotate(-45deg);
-        stroke-dasharray: 10;
-        stroke-dashoffset: 10;
-        transition: all .2s;
-      }
-      .day .periods li:focus svg path {
-        transform: translate(0,4px) rotate(-45deg);
-        stroke-dashoffset: 0;
-      }
-      .day hr {
-        width: 50%;
-        border: none;
-        border-bottom: 1px solid;
-        margin: 20px auto;
-      }
-      .day.light hr {
-        border-color: rgba(0,0,0,0.1);
-      }
-      .day.dark hr {
-        border-color: rgba(255,255,255,0.1);
-      }
-      /* TEMP */
-      .day .logo {
-        text-align: center;
-        margin: 0;
-        padding-bottom: 20px;
-      }
-      .day .logo img {
-        width: 50px;
-        opacity: 0.15;
-      }
-      .day.dark .logo img {
-        filter: invert();
-        -webkit-filter: invert();
-      }
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :focus {
+            outline: none;
+        }
+
+        button, select, textarea, input {
+            font: inherit;
+            -webkit-appearance: none;
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1;
+            font-size: 0;
+            background-color: black;
+        }
+
+        .day {
+            max-width: 500px;
+            min-height: 100%;
+            margin: 0 auto;
+        }
+
+        .day.light {
+            background-color: #fafafa;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .day.dark {
+            background-color: #303030;
+            color: #fff;
+        }
+
+        .day .date {
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 10px;
+        }
+
+        .day .date input {
+            font-size: 56px;
+            color: inherit;
+            border: none;
+            background: none;
+            line-height: 1;
+            margin: 0 10px;
+            border-bottom: 1px solid;
+            transition: all .2s;
+        }
+
+        .day.light .date input {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .day.dark .date input {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .day .date input:focus {
+            border-color: #ff594c;
+        }
+
+        .day .weekday {
+            text-transform: uppercase;
+            font-size: 25px;
+            text-align: center;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .day.light .weekday {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .day.dark .weekday {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .day .events {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .day .events li {
+            padding: 20px 30px;
+            margin: 10px 0;
+            transition: box-shadow .05s;
+        }
+
+        .day .events li.starts {
+            margin-left: 10px;
+            padding-left: 20px;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+
+        .day .events li.ends {
+            margin-right: 10px;
+            padding-right: 20px;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+            transition: all .2s;
+        }
+
+        .day .events li.light {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        .day .events li.dark {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .day .events li:focus {
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .day ul li span {
+            display: block;
+            white-space: pre;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .day .events li .name {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .day .events li .description {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .day .periods {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .day .periods li {
+            padding: 20px;
+            margin: 10px;
+            border-radius: 2px;
+            position: relative;
+            transition: all .2s;
+        }
+
+        .day .periods li:focus {
+            margin: 15px 5px;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .day .periods li.transparent:focus {
+            box-shadow: none;
+        }
+
+        .day .periods li:not(.transparent)::before {
+            content: attr(data-period);
+            position: absolute;
+            top: 0;
+            right: 0;
+            pointer-events: none;
+            font-size: 80px;
+            opacity: 0.4;
+            margin: 10px 20px;
+        }
+
+        .day .periods li .name {
+            font-size: 36px;
+            margin-bottom: 5px;
+            height: 1.2em;
+        }
+
+        .day .periods li span {
+            font-size: 16px;
+            height: 0;
+            overflow: hidden;
+            transition: all .2s;
+        }
+
+        .day .periods li .description {
+            height: 1.2em;
+        }
+
+        .day .periods li:focus span:not(.name) {
+            height: 1.2em;
+            padding-top: 10px;
+        }
+
+        .day .periods li em {
+            font-style: normal;
+        }
+
+        .day .periods li.light, .day.light .periods li.transparent {
+            color: rgba(0, 0, 0, 0.64);
+            stroke: rgba(0, 0, 0, 0.8);
+        }
+
+        .day .periods li.dark, .day.dark .periods li.transparent {
+            color: rgba(255, 255, 255, 0.72);
+            stroke: rgba(255, 255, 255, 0.9);
+        }
+
+        .day .periods li.light .name, .day .periods li.light em, .day.light .periods li.transparent .name, .day.light .periods li.transparent em {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        .day .periods li.dark .name, .day .periods li.dark em, .day.dark .periods li.transparent .name, .day.dark .periods li.transparent em {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .day .periods li svg {
+            width: 40px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            fill: none;
+        }
+
+        .day .periods li svg path {
+            transform-origin: center;
+            transform: translate(0, -4px) rotate(-45deg);
+            stroke-dasharray: 10;
+            stroke-dashoffset: 10;
+            transition: all .2s;
+        }
+
+        .day .periods li:focus svg path {
+            transform: translate(0, 4px) rotate(-45deg);
+            stroke-dashoffset: 0;
+        }
+
+        .day hr {
+            width: 50%;
+            border: none;
+            border-bottom: 1px solid;
+            margin: 20px auto;
+        }
+
+        .day.light hr {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .day.dark hr {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* TEMP */
+        .day .logo {
+            text-align: center;
+            margin: 0;
+            padding-bottom: 20px;
+        }
+
+        .day .logo img {
+            width: 50px;
+            opacity: 0.15;
+        }
+
+        .day.dark .logo img {
+            filter: invert();
+            -webkit-filter: invert();
+        }
     </style>
-  </head>
-  <body>
-    <div class="day light">
-      <div class="date">
+</head>
+<body>
+<div class="day light">
+    <div class="date">
         <input class="month" type="text" value="Aug">
         <input class="datenum" type="text" value="30">
-      </div>
-      <span class="weekday">thursday</span>
-      <ul class="events">
-        <li style="background-color: #3F51B5;" class="dark" tabindex="0"><span class="name">PIE donation days</span><span class="description">We really need money.</span></li>
-        <li style="background-color: #E91E63;" class="dark starts ends" tabindex="0"><span class="name">Turkey feast</span><span class="description">We promised you first class seating and instead forced you to stand in the rain.</span></li>
-        <li style="background-color: #FF9800;" class="dark starts" tabindex="0"><span class="name">Día de los Muertos</span><span class="description">A Japanese holiday celebrated in Sweden.</span></li>
-      </ul>
-      <hr>
-      <ul class="periods">
-        <li data-period="B" style="background-color: #2196F3;" class="dark" tabindex="0"><span class="name">Period B</span><span>3:00am &ndash; 6:00pm</span><span>started <em>5 minutes</em> ago</span><span class="description">ended in <em>5 minutes</em> ago</span><span>lasts for <em>5 minutes</em></span><svg viewBox="0 0 40 40"><path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path></svg></li>
-        <li class="transparent" tabindex="0"><span class="name">Brunch</span><span>3:00am &ndash; 6:00pm</span><span>started <em>5 minutes</em> ago</span><span class="description">ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span><svg viewBox="0 0 40 40"><path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path></svg></li>
-        <li data-period="C" style="background-color: #8BC34A;" class="dark" tabindex="0"><span class="name">Period C</span><span>3:00am &ndash; 6:00pm</span><span class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span><svg viewBox="0 0 40 40"><path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path></svg></li>
-        <li data-period="D" style="background-color: #673AB7;" class="dark" tabindex="0"><span class="name">Period D</span><span>3:00am &ndash; 6:00pm</span><span class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span><svg viewBox="0 0 40 40"><path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path></svg></li>
-        <li class="transparent" tabindex="0"><span class="name">Lunch</span><span>3:00am &ndash; 6:00pm</span><span class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span><svg viewBox="0 0 40 40"><path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path></svg></li>
-        <li data-period="F" style="background-color: #9C27B0;" class="dark" tabindex="0"><span class="name">very long class name muahaha</span><span>3:00am &ndash; 6:00pm</span><span class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span><svg viewBox="0 0 40 40"><path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path></svg></li>
-      </ul>
-      <hr>
-      <!-- temporary -->
-      <p class="logo"><img src="../favicon/safari-pinned-tab.svg" alt="UGWA"></p>
     </div>
-    <script src="../js/inputFitContent.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      for (let s=document.querySelectorAll('.day .date input'),i=s.length;i--;) fitContent(s[i],1);
-    </script>
-  </body>
-  <!-- MADE BY SEAN -->
+    <span class="weekday">thursday</span>
+    <ul class="events">
+        <li class="dark" style="background-color: #3F51B5;" tabindex="0"><span
+                class="name">PIE donation days</span><span class="description">We really need money.</span></li>
+        <li class="dark starts ends" style="background-color: #E91E63;" tabindex="0"><span
+                class="name">Turkey feast</span><span class="description">We promised you first class seating and instead forced you to stand in the rain.</span>
+        </li>
+        <li class="dark starts" style="background-color: #FF9800;" tabindex="0"><span
+                class="name">Día de los Muertos</span><span
+                class="description">A Japanese holiday celebrated in Sweden.</span></li>
+    </ul>
+    <hr>
+    <ul class="periods">
+        <li class="dark" data-period="B" style="background-color: #2196F3;" tabindex="0"><span
+                class="name">Period B</span><span>3:00am &ndash; 6:00pm</span><span>started <em>5 minutes</em> ago</span><span
+                class="description">ended in <em>5 minutes</em> ago</span><span>lasts for <em>5 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+                <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path>
+            </svg>
+        </li>
+        <li class="transparent" tabindex="0"><span class="name">Brunch</span><span>3:00am &ndash; 6:00pm</span><span>started <em>5 minutes</em> ago</span><span
+                class="description">ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+                <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path>
+            </svg>
+        </li>
+        <li class="dark" data-period="C" style="background-color: #8BC34A;" tabindex="0"><span
+                class="name">Period C</span><span>3:00am &ndash; 6:00pm</span><span class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+                <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path>
+            </svg>
+        </li>
+        <li class="dark" data-period="D" style="background-color: #673AB7;" tabindex="0"><span
+                class="name">Period D</span><span>3:00am &ndash; 6:00pm</span><span class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+                <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path>
+            </svg>
+        </li>
+        <li class="transparent" tabindex="0"><span class="name">Lunch</span><span>3:00am &ndash; 6:00pm</span><span
+                class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+                <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path>
+            </svg>
+        </li>
+        <li class="dark" data-period="F" style="background-color: #9C27B0;" tabindex="0"><span class="name">very long class name muahaha</span><span>3:00am &ndash; 6:00pm</span><span
+                class="description">starting <em>5 minutes</em></span><span>ending in <em>5 minutes</em></span><span>lasts for <em>5 minutes</em></span>
+            <svg viewBox="0 0 40 40">
+                <path d="M10 20H30M20 30V10" transform="rotate(-45 20,20)"></path>
+            </svg>
+        </li>
+    </ul>
+    <hr>
+    <!-- temporary -->
+    <p class="logo"><img alt="UGWA" src="../favicon/safari-pinned-tab.svg"></p>
+</div>
+<script charset="utf-8" src="../js/inputFitContent.js"></script>
+<script type="text/javascript">
+    for (let s = document.querySelectorAll('.day .date input'), i = s.length; i--;) fitContent(s[i], 1);
+</script>
+</body>
+<!-- MADE BY SEAN -->
 </html>

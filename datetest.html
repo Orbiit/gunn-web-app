@@ -1,48 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Date Picker Test - UGWA</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <style>
-      body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
-      .datepicker-wrapper {
-        height: 500px;
-        width: 210px;
-      }
-      .datepicker-dayheadings {
-        background-color: rgba(255,255,255,0.8);
-      }
-      .datepicker-days {
-        padding-top: 20px;
-      }
-      .datepicker-monthalt {
-        background-color: rgba(0,0,0,0.1);
-      }
-      .datepicker-month {
-        color: rgba(0,0,0,0.3);
-        font-size: 3em;
-        display: block;
-        text-align: center;
-        width: 100%;
-      }
-      .datepicker-day {
-        cursor: pointer;
-      }
-      .datepicker-day.datepicker-selected {
-        background-color: #FF594C;
-        color: white;
-      }
+        body {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-family: sans-serif;
+        }
+
+        input, button, select, textarea {
+            font: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .datepicker-wrapper {
+            height: 500px;
+            width: 210px;
+        }
+
+        .datepicker-dayheadings {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .datepicker-days {
+            padding-top: 20px;
+        }
+
+        .datepicker-monthalt {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .datepicker-month {
+            color: rgba(0, 0, 0, 0.3);
+            font-size: 3em;
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .datepicker-day {
+            cursor: pointer;
+        }
+
+        .datepicker-day.datepicker-selected {
+            background-color: #FF594C;
+            color: white;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Date Picker Test</h1>
-    <p>type in console: <code>picker</code></p>
-    <p>months are 0-indexed; dates and years are 1-indexed; as per JS</p>
-    <script src="js/date.min.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      var picker=new DatePicker({d:11,m:8,y:2017},{d:1,m:5,y:2018});
-      document.body.appendChild(picker.wrapper);
-    </script>
-  </body>
+</head>
+<body>
+<h1>Date Picker Test</h1>
+<p>type in console: <code>picker</code></p>
+<p>months are 0-indexed; dates and years are 1-indexed; as per JS</p>
+<script src="js/date.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var picker = new DatePicker({d: 11, m: 8, y: 2017}, {d: 1, m: 5, y: 2018});
+    document.body.appendChild(picker.wrapper);
+</script>
+</body>
 </html>

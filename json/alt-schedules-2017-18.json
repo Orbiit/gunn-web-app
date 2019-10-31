@@ -1,1 +1,5154 @@
-[{"dayname":"Tuesday","day":2,"monthname":"August","month":8,"date":15,"description":"Extended D period, shorter FlexTime","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":57,"totalminutes":597}},{"name":"Brunch","start":{"hour":9,"minute":57,"totalminutes":597},"end":{"hour":10,"minute":12,"totalminutes":612}},{"name":"Flex","start":{"hour":10,"minute":12,"totalminutes":612},"end":{"hour":10,"minute":50,"totalminutes":650}},{"name":"E","start":{"hour":11,"minute":0,"totalminutes":660},"end":{"hour":12,"minute":15,"totalminutes":735}},{"name":"Lunch","start":{"hour":12,"minute":15,"totalminutes":735},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"A","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":14,"minute":15,"totalminutes":855}},{"name":"G","start":{"hour":14,"minute":25,"totalminutes":865},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Monday","day":1,"monthname":"August","month":8,"date":28,"description":"Alternate schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Tuesday","day":2,"monthname":"August","month":8,"date":29,"description":"Alternate schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Wednesday","day":3,"monthname":"August","month":8,"date":30,"description":"Alternate schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Thursday","day":4,"monthname":"August","month":8,"date":31,"description":"Alternate schedule & Back to School Night","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"BACK TO SCHOOL NIGHT","start":{"hour":18,"minute":0,"totalminutes":1080},"end":{"hour":9,"minute":null,"totalminutes":null}}]},{"dayname":"Friday","day":5,"monthname":"September","month":9,"date":1,"description":"Minimum Day","periods":[{"name":"C","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":15,"totalminutes":555}},{"name":"D","start":{"hour":9,"minute":25,"totalminutes":565},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":25,"totalminutes":625}},{"name":"E","start":{"hour":10,"minute":25,"totalminutes":625},"end":{"hour":11,"minute":10,"totalminutes":670}},{"name":"F","start":{"hour":11,"minute":20,"totalminutes":680},"end":{"hour":12,"minute":5,"totalminutes":725}},{"name":"G","start":{"hour":12,"minute":15,"totalminutes":735},"end":{"hour":13,"minute":0,"totalminutes":780}}]},{"dayname":"Monday","day":1,"monthname":"September","month":9,"date":4,"description":"HOLIDAY","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"September","month":9,"date":5,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Wednesday","day":3,"monthname":"September","month":9,"date":6,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Thursday","day":4,"monthname":"September","month":9,"date":7,"description":"4-day-week Schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. Meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Friday","day":5,"monthname":"September","month":9,"date":8,"description":"Assembly schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Assembly for 9th/10th graders in Titan Gym 11th/12th graders to Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":10,"minute":40,"totalminutes":640}},{"name":"Assembly for 11th/12th graders in Titan Gym 9th/10th graders to Flex","start":{"hour":10,"minute":50,"totalminutes":650},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Monday","day":1,"monthname":"October","month":10,"date":2,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Tuesday","day":2,"monthname":"October","month":10,"date":3,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Wednesday","day":3,"monthname":"October","month":10,"date":4,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Thursday","day":4,"monthname":"October","month":10,"date":5,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Friday","day":5,"monthname":"October","month":10,"date":6,"description":"STAFF DEV. (no students)","periods":[]},{"dayname":"Monday","day":1,"monthname":"October","month":10,"date":9,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Tuesday","day":2,"monthname":"October","month":10,"date":10,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Wednesday","day":3,"monthname":"October","month":10,"date":11,"description":"PSAT and Grade-level assemblies","periods":[{"name":"No afternoon classes","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":12,"minute":0,"totalminutes":720}},{"name":"Staff Collaboration","start":{"hour":13,"minute":0,"totalminutes":780},"end":{"hour":15,"minute":45,"totalminutes":945}}]},{"dayname":"Thursday","day":4,"monthname":"October","month":10,"date":12,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Friday","day":5,"monthname":"October","month":10,"date":13,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Monday","day":1,"monthname":"November","month":11,"date":6,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Tuesday","day":2,"monthname":"November","month":11,"date":7,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Wednesday","day":3,"monthname":"November","month":11,"date":8,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meetings","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Thursday","day":4,"monthname":"November","month":11,"date":9,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Friday","day":5,"monthname":"November","month":11,"date":10,"description":"HOLIDAY","periods":[]},{"dayname":"Thursday","day":4,"monthname":"November","month":11,"date":16,"description":"Turkey Feast extended lunch","periods":[{"name":"E","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":46,"totalminutes":586}},{"name":"Brunch","start":{"hour":9,"minute":56,"totalminutes":596},"end":{"hour":10,"minute":11,"totalminutes":611}},{"name":"Flex","start":{"hour":10,"minute":11,"totalminutes":611},"end":{"hour":10,"minute":57,"totalminutes":657}},{"name":"B","start":{"hour":11,"minute":7,"totalminutes":667},"end":{"hour":12,"minute":13,"totalminutes":733}},{"name":"Extended Lunch","start":{"hour":12,"minute":13,"totalminutes":733},"end":{"hour":13,"minute":13,"totalminutes":793}},{"name":"A","start":{"hour":13,"minute":13,"totalminutes":793},"end":{"hour":14,"minute":19,"totalminutes":859}},{"name":"G","start":{"hour":14,"minute":29,"totalminutes":869},"end":{"hour":15,"minute":35,"totalminutes":935}}]},{"dayname":"Monday","day":1,"monthname":"November","month":11,"date":20,"description":"THANKSGIVING HOLIDAY","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"November","month":11,"date":21,"description":"THANKSGIVING HOLIDAY","periods":[]},{"dayname":"Wednesday","day":3,"monthname":"November","month":11,"date":22,"description":"THANKSGIVING HOLIDAY","periods":[]},{"dayname":"Thursday","day":4,"monthname":"November","month":11,"date":23,"description":"THANKSGIVING HOLIDAY","periods":[]},{"dayname":"Friday","day":5,"monthname":"November","month":11,"date":24,"description":"THANKSGIVING HOLIDAY","periods":[]},{"dayname":"Thursday","day":4,"monthname":"December","month":12,"date":7,"description":"Extended lunch for Holiday staff luncheon","periods":[{"name":"E","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":46,"totalminutes":586}},{"name":"Brunch","start":{"hour":9,"minute":56,"totalminutes":596},"end":{"hour":10,"minute":11,"totalminutes":611}},{"name":"Flex","start":{"hour":10,"minute":11,"totalminutes":611},"end":{"hour":10,"minute":57,"totalminutes":657}},{"name":"B","start":{"hour":11,"minute":7,"totalminutes":667},"end":{"hour":12,"minute":13,"totalminutes":733}},{"name":"Extended Lunch","start":{"hour":12,"minute":13,"totalminutes":733},"end":{"hour":13,"minute":13,"totalminutes":793}},{"name":"A","start":{"hour":13,"minute":13,"totalminutes":793},"end":{"hour":14,"minute":19,"totalminutes":859}},{"name":"G","start":{"hour":14,"minute":29,"totalminutes":869},"end":{"hour":15,"minute":35,"totalminutes":935}}]},{"dayname":"Tuesday","day":2,"monthname":"December","month":12,"date":19,"description":"Final Exam schedule","periods":[{"name":"B","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":25,"totalminutes":625}},{"name":"D","start":{"hour":10,"minute":30,"totalminutes":630},"end":{"hour":12,"minute":10,"totalminutes":730}},{"name":"Break with NO LUNCH SERVED","start":{"hour":12,"minute":10,"totalminutes":730},"end":{"hour":12,"minute":45,"totalminutes":765}},{"name":"Zero & H Period Finals","start":{"hour":12,"minute":45,"totalminutes":765},"end":{"hour":14,"minute":25,"totalminutes":865}}]},{"dayname":"Wednesday","day":3,"monthname":"December","month":12,"date":20,"description":"Final Exam schedule","periods":[{"name":"A","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":20,"totalminutes":620}},{"name":"C","start":{"hour":10,"minute":30,"totalminutes":630},"end":{"hour":12,"minute":10,"totalminutes":730}},{"name":"Lunch","start":{"hour":12,"minute":10,"totalminutes":730},"end":{"hour":12,"minute":45,"totalminutes":765}},{"name":"G","start":{"hour":12,"minute":45,"totalminutes":765},"end":{"hour":14,"minute":25,"totalminutes":865}}]},{"dayname":"Thursday","day":4,"monthname":"December","month":12,"date":21,"description":"Final Exam schedule","periods":[{"name":"E","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":20,"totalminutes":620}},{"name":"F","start":{"hour":10,"minute":30,"totalminutes":630},"end":{"hour":12,"minute":10,"totalminutes":730}}]},{"dayname":"Friday","day":5,"monthname":"December","month":12,"date":22,"description":"WINTER BREAK","periods":[]},{"dayname":"Monday","day":1,"monthname":"December","month":12,"date":25,"description":"WINTER BREAK","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"December","month":12,"date":26,"description":"WINTER BREAK","periods":[]},{"dayname":"Wednesday","day":3,"monthname":"December","month":12,"date":27,"description":"WINTER BREAK","periods":[]},{"dayname":"Thursday","day":4,"monthname":"December","month":12,"date":28,"description":"WINTER BREAK","periods":[]},{"dayname":"Friday","day":5,"monthname":"December","month":12,"date":29,"description":"WINTER BREAK","periods":[]},{"dayname":"Monday","day":1,"monthname":"January","month":1,"date":1,"description":"WINTER BREAK","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"January","month":1,"date":2,"description":"WINTER BREAK","periods":[]},{"dayname":"Wednesday","day":3,"monthname":"January","month":1,"date":3,"description":"WINTER BREAK","periods":[]},{"dayname":"Thursday","day":4,"monthname":"January","month":1,"date":4,"description":"WINTER BREAK","periods":[]},{"dayname":"Friday","day":5,"monthname":"January","month":1,"date":5,"description":"WINTER BREAK","periods":[]},{"dayname":"Monday","day":1,"monthname":"January","month":1,"date":8,"description":"Teacher work day (no students)","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"January","month":1,"date":9,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Wednesday","day":3,"monthname":"January","month":1,"date":10,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Thursday","day":4,"monthname":"January","month":1,"date":11,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Friday","day":5,"monthname":"January","month":1,"date":12,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Monday","day":1,"monthname":"January","month":1,"date":15,"description":"MLK HOLIDAY","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"January","month":1,"date":16,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Wednesday","day":3,"monthname":"January","month":1,"date":17,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Thursday","day":4,"monthname":"January","month":1,"date":18,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Friday","day":5,"monthname":"January","month":1,"date":19,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Tuesday","day":2,"monthname":"February","month":2,"date":6,"description":"AMC math test schedule","periods":[{"name":"AMC Math Test for test-takers only","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"D","start":{"hour":10,"minute":0,"totalminutes":600},"end":{"hour":11,"minute":8,"totalminutes":668}},{"name":"E","start":{"hour":11,"minute":18,"totalminutes":678},"end":{"hour":12,"minute":26,"totalminutes":746}},{"name":"Lunch","start":{"hour":12,"minute":26,"totalminutes":746},"end":{"hour":13,"minute":9,"totalminutes":789}},{"name":"A","start":{"hour":13,"minute":9,"totalminutes":789},"end":{"hour":14,"minute":17,"totalminutes":857}},{"name":"G","start":{"hour":14,"minute":27,"totalminutes":867},"end":{"hour":15,"minute":35,"totalminutes":935}}]},{"dayname":"Monday","day":1,"monthname":"February","month":2,"date":12,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Tuesday","day":2,"monthname":"February","month":2,"date":13,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Wednesday","day":3,"monthname":"February","month":2,"date":14,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Thursday","day":4,"monthname":"February","month":2,"date":15,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Friday","day":5,"monthname":"February","month":2,"date":16,"description":"Staff Development Day (no students)","periods":[]},{"dayname":"Monday","day":1,"monthname":"February","month":2,"date":19,"description":"PRESIDENTS' DAY HOLIDAY","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"February","month":2,"date":20,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Wednesday","day":3,"monthname":"February","month":2,"date":21,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Thursday","day":4,"monthname":"February","month":2,"date":22,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Friday","day":5,"monthname":"February","month":2,"date":23,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Monday","day":1,"monthname":"March","month":3,"date":12,"description":"LOCAL HOLIDAY","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"March","month":3,"date":13,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff Collaboration","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Wednesday","day":3,"monthname":"March","month":3,"date":14,"description":"Clash of the Titans & 4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":0,"totalminutes":660}},{"name":"E","start":{"hour":11,"minute":10,"totalminutes":670},"end":{"hour":12,"minute":30,"totalminutes":750}},{"name":"Clash of the Titans extended lunch","start":{"hour":12,"minute":30,"totalminutes":750},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Thursday","day":4,"monthname":"March","month":3,"date":15,"description":"4-day-week schedule","periods":[{"name":"A","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"B","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"C","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"F","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}},{"name":"Staff/Dept. meeting","start":{"hour":15,"minute":5,"totalminutes":905},"end":{"hour":15,"minute":40,"totalminutes":940}}]},{"dayname":"Friday","day":5,"monthname":"March","month":3,"date":16,"description":"4-day-week schedule","periods":[{"name":"D","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":50,"totalminutes":590}},{"name":"Brunch","start":{"hour":9,"minute":50,"totalminutes":590},"end":{"hour":10,"minute":5,"totalminutes":605}},{"name":"Flex","start":{"hour":10,"minute":5,"totalminutes":605},"end":{"hour":11,"minute":25,"totalminutes":685}},{"name":"E","start":{"hour":11,"minute":35,"totalminutes":695},"end":{"hour":12,"minute":55,"totalminutes":775}},{"name":"Lunch","start":{"hour":12,"minute":55,"totalminutes":775},"end":{"hour":13,"minute":35,"totalminutes":815}},{"name":"G","start":{"hour":13,"minute":35,"totalminutes":815},"end":{"hour":14,"minute":55,"totalminutes":895}}]},{"dayname":"Friday","day":5,"monthname":"March","month":3,"date":30,"description":"Minimum Day schedule","periods":[{"name":"C","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":15,"totalminutes":555}},{"name":"D","start":{"hour":9,"minute":25,"totalminutes":565},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":25,"totalminutes":625}},{"name":"E","start":{"hour":10,"minute":25,"totalminutes":625},"end":{"hour":11,"minute":10,"totalminutes":670}},{"name":"F","start":{"hour":11,"minute":20,"totalminutes":680},"end":{"hour":12,"minute":5,"totalminutes":725}},{"name":"G","start":{"hour":12,"minute":15,"totalminutes":735},"end":{"hour":13,"minute":0,"totalminutes":780}}]},{"dayname":"Monday","day":1,"monthname":"April","month":4,"date":2,"description":"SPRING BREAK","periods":[]},{"dayname":"Tuesday","day":2,"monthname":"April","month":4,"date":3,"description":"SPRING BREAK","periods":[]},{"dayname":"Wednesday","day":3,"monthname":"April","month":4,"date":4,"description":"SPRING BREAK","periods":[]},{"dayname":"Thursday","day":4,"monthname":"April","month":4,"date":5,"description":"SPRING BREAK","periods":[]},{"dayname":"Friday","day":5,"monthname":"April","month":4,"date":6,"description":"SPRING BREAK","periods":[]},{"dayname":"Thursday","day":4,"monthname":"May","month":5,"date":17,"description":"Extended Lunch schedule for StaffVolunteer Luncheon","periods":[{"name":"E","start":{"hour":8,"minute":25,"totalminutes":505},"end":{"hour":9,"minute":46,"totalminutes":586}},{"name":"Brunch","start":{"hour":9,"minute":56,"totalminutes":596},"end":{"hour":10,"minute":11,"totalminutes":611}},{"name":"Flex","start":{"hour":10,"minute":11,"totalminutes":611},"end":{"hour":10,"minute":57,"totalminutes":657}},{"name":"B","start":{"hour":11,"minute":7,"totalminutes":667},"end":{"hour":12,"minute":13,"totalminutes":733}},{"name":"Extended Lunch","start":{"hour":12,"minute":13,"totalminutes":733},"end":{"hour":13,"minute":13,"totalminutes":793}},{"name":"A","start":{"hour":13,"minute":13,"totalminutes":793},"end":{"hour":14,"minute":19,"totalminutes":859}},{"name":"G","start":{"hour":14,"minute":29,"totalminutes":869},"end":{"hour":15,"minute":35,"totalminutes":935}}]},{"dayname":"Monday","day":1,"monthname":"May","month":5,"date":28,"description":"MEMORIAL DAY HOLIDAY","periods":[]},{"dayname":"Wednesday","day":3,"monthname":"May","month":5,"date":30,"description":"Final Exam schedule","periods":[{"name":"B","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":20,"totalminutes":620}},{"name":"D","start":{"hour":10,"minute":30,"totalminutes":630},"end":{"hour":12,"minute":10,"totalminutes":730}},{"name":"Break with NO LUNCH SERVED","start":{"hour":12,"minute":10,"totalminutes":730},"end":{"hour":12,"minute":45,"totalminutes":765}},{"name":"Zero & H Period Finals","start":{"hour":12,"minute":45,"totalminutes":765},"end":{"hour":14,"minute":25,"totalminutes":865}}]},{"dayname":"Thursday","day":4,"monthname":"May","month":5,"date":31,"description":"Final Exam schedule","periods":[{"name":"A","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":20,"totalminutes":620}},{"name":"C","start":{"hour":10,"minute":30,"totalminutes":630},"end":{"hour":12,"minute":10,"totalminutes":730}},{"name":"Lunch","start":{"hour":12,"minute":10,"totalminutes":730},"end":{"hour":12,"minute":45,"totalminutes":765}},{"name":"G","start":{"hour":12,"minute":45,"totalminutes":765},"end":{"hour":14,"minute":25,"totalminutes":865}}]},{"dayname":"Friday","day":5,"monthname":"June","month":6,"date":1,"description":"Final Exam schedule LAST DAY OF SCHOOL","periods":[{"name":"E","start":{"hour":8,"minute":30,"totalminutes":510},"end":{"hour":10,"minute":10,"totalminutes":610}},{"name":"Brunch","start":{"hour":10,"minute":10,"totalminutes":610},"end":{"hour":10,"minute":20,"totalminutes":620}},{"name":"F","start":{"hour":10,"minute":30,"totalminutes":630},"end":{"hour":12,"minute":10,"totalminutes":730}}]}]
+[
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "August",
+    "month": 8,
+    "date": 15,
+    "description": "Extended D period, shorter FlexTime",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 57,
+          "totalminutes": 597
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 57,
+          "totalminutes": 597
+        },
+        "end": {
+          "hour": 10,
+          "minute": 12,
+          "totalminutes": 612
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 12,
+          "totalminutes": 612
+        },
+        "end": {
+          "hour": 10,
+          "minute": 50,
+          "totalminutes": 650
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 0,
+          "totalminutes": 660
+        },
+        "end": {
+          "hour": 12,
+          "minute": 15,
+          "totalminutes": 735
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 15,
+          "totalminutes": 735
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "A",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 14,
+          "minute": 15,
+          "totalminutes": 855
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 14,
+          "minute": 25,
+          "totalminutes": 865
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "August",
+    "month": 8,
+    "date": 28,
+    "description": "Alternate schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "August",
+    "month": 8,
+    "date": 29,
+    "description": "Alternate schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "August",
+    "month": 8,
+    "date": 30,
+    "description": "Alternate schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "August",
+    "month": 8,
+    "date": 31,
+    "description": "Alternate schedule & Back to School Night",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "BACK TO SCHOOL NIGHT",
+        "start": {
+          "hour": 18,
+          "minute": 0,
+          "totalminutes": 1080
+        },
+        "end": {
+          "hour": 9,
+          "minute": null,
+          "totalminutes": null
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "September",
+    "month": 9,
+    "date": 1,
+    "description": "Minimum Day",
+    "periods": [
+      {
+        "name": "C",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 15,
+          "totalminutes": 555
+        }
+      },
+      {
+        "name": "D",
+        "start": {
+          "hour": 9,
+          "minute": 25,
+          "totalminutes": 565
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 25,
+          "totalminutes": 625
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 10,
+          "minute": 25,
+          "totalminutes": 625
+        },
+        "end": {
+          "hour": 11,
+          "minute": 10,
+          "totalminutes": 670
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 11,
+          "minute": 20,
+          "totalminutes": 680
+        },
+        "end": {
+          "hour": 12,
+          "minute": 5,
+          "totalminutes": 725
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 12,
+          "minute": 15,
+          "totalminutes": 735
+        },
+        "end": {
+          "hour": 13,
+          "minute": 0,
+          "totalminutes": 780
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "September",
+    "month": 9,
+    "date": 4,
+    "description": "HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "September",
+    "month": 9,
+    "date": 5,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "September",
+    "month": 9,
+    "date": 6,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "September",
+    "month": 9,
+    "date": 7,
+    "description": "4-day-week Schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. Meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "September",
+    "month": 9,
+    "date": 8,
+    "description": "Assembly schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Assembly for 9th/10th graders in Titan Gym 11th/12th graders to Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 10,
+          "minute": 40,
+          "totalminutes": 640
+        }
+      },
+      {
+        "name": "Assembly for 11th/12th graders in Titan Gym 9th/10th graders to Flex",
+        "start": {
+          "hour": 10,
+          "minute": 50,
+          "totalminutes": 650
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "October",
+    "month": 10,
+    "date": 2,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "October",
+    "month": 10,
+    "date": 3,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "October",
+    "month": 10,
+    "date": 4,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "October",
+    "month": 10,
+    "date": 5,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "October",
+    "month": 10,
+    "date": 6,
+    "description": "STAFF DEV. (no students)",
+    "periods": []
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "October",
+    "month": 10,
+    "date": 9,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "October",
+    "month": 10,
+    "date": 10,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "October",
+    "month": 10,
+    "date": 11,
+    "description": "PSAT and Grade-level assemblies",
+    "periods": [
+      {
+        "name": "No afternoon classes",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 12,
+          "minute": 0,
+          "totalminutes": 720
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 13,
+          "minute": 0,
+          "totalminutes": 780
+        },
+        "end": {
+          "hour": 15,
+          "minute": 45,
+          "totalminutes": 945
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "October",
+    "month": 10,
+    "date": 12,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "October",
+    "month": 10,
+    "date": 13,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "November",
+    "month": 11,
+    "date": 6,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "November",
+    "month": 11,
+    "date": 7,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "November",
+    "month": 11,
+    "date": 8,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meetings",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "November",
+    "month": 11,
+    "date": 9,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "November",
+    "month": 11,
+    "date": 10,
+    "description": "HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "November",
+    "month": 11,
+    "date": 16,
+    "description": "Turkey Feast extended lunch",
+    "periods": [
+      {
+        "name": "E",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 46,
+          "totalminutes": 586
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 56,
+          "totalminutes": 596
+        },
+        "end": {
+          "hour": 10,
+          "minute": 11,
+          "totalminutes": 611
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 11,
+          "totalminutes": 611
+        },
+        "end": {
+          "hour": 10,
+          "minute": 57,
+          "totalminutes": 657
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 11,
+          "minute": 7,
+          "totalminutes": 667
+        },
+        "end": {
+          "hour": 12,
+          "minute": 13,
+          "totalminutes": 733
+        }
+      },
+      {
+        "name": "Extended Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 13,
+          "totalminutes": 733
+        },
+        "end": {
+          "hour": 13,
+          "minute": 13,
+          "totalminutes": 793
+        }
+      },
+      {
+        "name": "A",
+        "start": {
+          "hour": 13,
+          "minute": 13,
+          "totalminutes": 793
+        },
+        "end": {
+          "hour": 14,
+          "minute": 19,
+          "totalminutes": 859
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 14,
+          "minute": 29,
+          "totalminutes": 869
+        },
+        "end": {
+          "hour": 15,
+          "minute": 35,
+          "totalminutes": 935
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "November",
+    "month": 11,
+    "date": 20,
+    "description": "THANKSGIVING HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "November",
+    "month": 11,
+    "date": 21,
+    "description": "THANKSGIVING HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "November",
+    "month": 11,
+    "date": 22,
+    "description": "THANKSGIVING HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "November",
+    "month": 11,
+    "date": 23,
+    "description": "THANKSGIVING HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "November",
+    "month": 11,
+    "date": 24,
+    "description": "THANKSGIVING HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "December",
+    "month": 12,
+    "date": 7,
+    "description": "Extended lunch for Holiday staff luncheon",
+    "periods": [
+      {
+        "name": "E",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 46,
+          "totalminutes": 586
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 56,
+          "totalminutes": 596
+        },
+        "end": {
+          "hour": 10,
+          "minute": 11,
+          "totalminutes": 611
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 11,
+          "totalminutes": 611
+        },
+        "end": {
+          "hour": 10,
+          "minute": 57,
+          "totalminutes": 657
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 11,
+          "minute": 7,
+          "totalminutes": 667
+        },
+        "end": {
+          "hour": 12,
+          "minute": 13,
+          "totalminutes": 733
+        }
+      },
+      {
+        "name": "Extended Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 13,
+          "totalminutes": 733
+        },
+        "end": {
+          "hour": 13,
+          "minute": 13,
+          "totalminutes": 793
+        }
+      },
+      {
+        "name": "A",
+        "start": {
+          "hour": 13,
+          "minute": 13,
+          "totalminutes": 793
+        },
+        "end": {
+          "hour": 14,
+          "minute": 19,
+          "totalminutes": 859
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 14,
+          "minute": 29,
+          "totalminutes": 869
+        },
+        "end": {
+          "hour": 15,
+          "minute": 35,
+          "totalminutes": 935
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "December",
+    "month": 12,
+    "date": 19,
+    "description": "Final Exam schedule",
+    "periods": [
+      {
+        "name": "B",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 25,
+          "totalminutes": 625
+        }
+      },
+      {
+        "name": "D",
+        "start": {
+          "hour": 10,
+          "minute": 30,
+          "totalminutes": 630
+        },
+        "end": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        }
+      },
+      {
+        "name": "Break with NO LUNCH SERVED",
+        "start": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        },
+        "end": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        }
+      },
+      {
+        "name": "Zero & H Period Finals",
+        "start": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        },
+        "end": {
+          "hour": 14,
+          "minute": 25,
+          "totalminutes": 865
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "December",
+    "month": 12,
+    "date": 20,
+    "description": "Final Exam schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 20,
+          "totalminutes": 620
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 10,
+          "minute": 30,
+          "totalminutes": 630
+        },
+        "end": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        },
+        "end": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        },
+        "end": {
+          "hour": 14,
+          "minute": 25,
+          "totalminutes": 865
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "December",
+    "month": 12,
+    "date": 21,
+    "description": "Final Exam schedule",
+    "periods": [
+      {
+        "name": "E",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 20,
+          "totalminutes": 620
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 10,
+          "minute": 30,
+          "totalminutes": 630
+        },
+        "end": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "December",
+    "month": 12,
+    "date": 22,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "December",
+    "month": 12,
+    "date": 25,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "December",
+    "month": 12,
+    "date": 26,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "December",
+    "month": 12,
+    "date": 27,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "December",
+    "month": 12,
+    "date": 28,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "December",
+    "month": 12,
+    "date": 29,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "January",
+    "month": 1,
+    "date": 1,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "January",
+    "month": 1,
+    "date": 2,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "January",
+    "month": 1,
+    "date": 3,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "January",
+    "month": 1,
+    "date": 4,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "January",
+    "month": 1,
+    "date": 5,
+    "description": "WINTER BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "January",
+    "month": 1,
+    "date": 8,
+    "description": "Teacher work day (no students)",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "January",
+    "month": 1,
+    "date": 9,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "January",
+    "month": 1,
+    "date": 10,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "January",
+    "month": 1,
+    "date": 11,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "January",
+    "month": 1,
+    "date": 12,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "January",
+    "month": 1,
+    "date": 15,
+    "description": "MLK HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "January",
+    "month": 1,
+    "date": 16,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "January",
+    "month": 1,
+    "date": 17,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "January",
+    "month": 1,
+    "date": 18,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "January",
+    "month": 1,
+    "date": 19,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "February",
+    "month": 2,
+    "date": 6,
+    "description": "AMC math test schedule",
+    "periods": [
+      {
+        "name": "AMC Math Test for test-takers only",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "D",
+        "start": {
+          "hour": 10,
+          "minute": 0,
+          "totalminutes": 600
+        },
+        "end": {
+          "hour": 11,
+          "minute": 8,
+          "totalminutes": 668
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 18,
+          "totalminutes": 678
+        },
+        "end": {
+          "hour": 12,
+          "minute": 26,
+          "totalminutes": 746
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 26,
+          "totalminutes": 746
+        },
+        "end": {
+          "hour": 13,
+          "minute": 9,
+          "totalminutes": 789
+        }
+      },
+      {
+        "name": "A",
+        "start": {
+          "hour": 13,
+          "minute": 9,
+          "totalminutes": 789
+        },
+        "end": {
+          "hour": 14,
+          "minute": 17,
+          "totalminutes": 857
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 14,
+          "minute": 27,
+          "totalminutes": 867
+        },
+        "end": {
+          "hour": 15,
+          "minute": 35,
+          "totalminutes": 935
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "February",
+    "month": 2,
+    "date": 12,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "February",
+    "month": 2,
+    "date": 13,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "February",
+    "month": 2,
+    "date": 14,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "February",
+    "month": 2,
+    "date": 15,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "February",
+    "month": 2,
+    "date": 16,
+    "description": "Staff Development Day (no students)",
+    "periods": []
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "February",
+    "month": 2,
+    "date": 19,
+    "description": "PRESIDENTS' DAY HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "February",
+    "month": 2,
+    "date": 20,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "February",
+    "month": 2,
+    "date": 21,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "February",
+    "month": 2,
+    "date": 22,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "February",
+    "month": 2,
+    "date": 23,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "March",
+    "month": 3,
+    "date": 12,
+    "description": "LOCAL HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "March",
+    "month": 3,
+    "date": 13,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff Collaboration",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "March",
+    "month": 3,
+    "date": 14,
+    "description": "Clash of the Titans & 4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 0,
+          "totalminutes": 660
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 10,
+          "totalminutes": 670
+        },
+        "end": {
+          "hour": 12,
+          "minute": 30,
+          "totalminutes": 750
+        }
+      },
+      {
+        "name": "Clash of the Titans extended lunch",
+        "start": {
+          "hour": 12,
+          "minute": 30,
+          "totalminutes": 750
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "March",
+    "month": 3,
+    "date": 15,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      },
+      {
+        "name": "Staff/Dept. meeting",
+        "start": {
+          "hour": 15,
+          "minute": 5,
+          "totalminutes": 905
+        },
+        "end": {
+          "hour": 15,
+          "minute": 40,
+          "totalminutes": 940
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "March",
+    "month": 3,
+    "date": 16,
+    "description": "4-day-week schedule",
+    "periods": [
+      {
+        "name": "D",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 50,
+          "totalminutes": 590
+        },
+        "end": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 5,
+          "totalminutes": 605
+        },
+        "end": {
+          "hour": 11,
+          "minute": 25,
+          "totalminutes": 685
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 11,
+          "minute": 35,
+          "totalminutes": 695
+        },
+        "end": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 55,
+          "totalminutes": 775
+        },
+        "end": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 13,
+          "minute": 35,
+          "totalminutes": 815
+        },
+        "end": {
+          "hour": 14,
+          "minute": 55,
+          "totalminutes": 895
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "March",
+    "month": 3,
+    "date": 30,
+    "description": "Minimum Day schedule",
+    "periods": [
+      {
+        "name": "C",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 15,
+          "totalminutes": 555
+        }
+      },
+      {
+        "name": "D",
+        "start": {
+          "hour": 9,
+          "minute": 25,
+          "totalminutes": 565
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 25,
+          "totalminutes": 625
+        }
+      },
+      {
+        "name": "E",
+        "start": {
+          "hour": 10,
+          "minute": 25,
+          "totalminutes": 625
+        },
+        "end": {
+          "hour": 11,
+          "minute": 10,
+          "totalminutes": 670
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 11,
+          "minute": 20,
+          "totalminutes": 680
+        },
+        "end": {
+          "hour": 12,
+          "minute": 5,
+          "totalminutes": 725
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 12,
+          "minute": 15,
+          "totalminutes": 735
+        },
+        "end": {
+          "hour": 13,
+          "minute": 0,
+          "totalminutes": 780
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "April",
+    "month": 4,
+    "date": 2,
+    "description": "SPRING BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Tuesday",
+    "day": 2,
+    "monthname": "April",
+    "month": 4,
+    "date": 3,
+    "description": "SPRING BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "April",
+    "month": 4,
+    "date": 4,
+    "description": "SPRING BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "April",
+    "month": 4,
+    "date": 5,
+    "description": "SPRING BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "April",
+    "month": 4,
+    "date": 6,
+    "description": "SPRING BREAK",
+    "periods": []
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "May",
+    "month": 5,
+    "date": 17,
+    "description": "Extended Lunch schedule for StaffVolunteer Luncheon",
+    "periods": [
+      {
+        "name": "E",
+        "start": {
+          "hour": 8,
+          "minute": 25,
+          "totalminutes": 505
+        },
+        "end": {
+          "hour": 9,
+          "minute": 46,
+          "totalminutes": 586
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 9,
+          "minute": 56,
+          "totalminutes": 596
+        },
+        "end": {
+          "hour": 10,
+          "minute": 11,
+          "totalminutes": 611
+        }
+      },
+      {
+        "name": "Flex",
+        "start": {
+          "hour": 10,
+          "minute": 11,
+          "totalminutes": 611
+        },
+        "end": {
+          "hour": 10,
+          "minute": 57,
+          "totalminutes": 657
+        }
+      },
+      {
+        "name": "B",
+        "start": {
+          "hour": 11,
+          "minute": 7,
+          "totalminutes": 667
+        },
+        "end": {
+          "hour": 12,
+          "minute": 13,
+          "totalminutes": 733
+        }
+      },
+      {
+        "name": "Extended Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 13,
+          "totalminutes": 733
+        },
+        "end": {
+          "hour": 13,
+          "minute": 13,
+          "totalminutes": 793
+        }
+      },
+      {
+        "name": "A",
+        "start": {
+          "hour": 13,
+          "minute": 13,
+          "totalminutes": 793
+        },
+        "end": {
+          "hour": 14,
+          "minute": 19,
+          "totalminutes": 859
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 14,
+          "minute": 29,
+          "totalminutes": 869
+        },
+        "end": {
+          "hour": 15,
+          "minute": 35,
+          "totalminutes": 935
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Monday",
+    "day": 1,
+    "monthname": "May",
+    "month": 5,
+    "date": 28,
+    "description": "MEMORIAL DAY HOLIDAY",
+    "periods": []
+  },
+  {
+    "dayname": "Wednesday",
+    "day": 3,
+    "monthname": "May",
+    "month": 5,
+    "date": 30,
+    "description": "Final Exam schedule",
+    "periods": [
+      {
+        "name": "B",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 20,
+          "totalminutes": 620
+        }
+      },
+      {
+        "name": "D",
+        "start": {
+          "hour": 10,
+          "minute": 30,
+          "totalminutes": 630
+        },
+        "end": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        }
+      },
+      {
+        "name": "Break with NO LUNCH SERVED",
+        "start": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        },
+        "end": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        }
+      },
+      {
+        "name": "Zero & H Period Finals",
+        "start": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        },
+        "end": {
+          "hour": 14,
+          "minute": 25,
+          "totalminutes": 865
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Thursday",
+    "day": 4,
+    "monthname": "May",
+    "month": 5,
+    "date": 31,
+    "description": "Final Exam schedule",
+    "periods": [
+      {
+        "name": "A",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 20,
+          "totalminutes": 620
+        }
+      },
+      {
+        "name": "C",
+        "start": {
+          "hour": 10,
+          "minute": 30,
+          "totalminutes": 630
+        },
+        "end": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        }
+      },
+      {
+        "name": "Lunch",
+        "start": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        },
+        "end": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        }
+      },
+      {
+        "name": "G",
+        "start": {
+          "hour": 12,
+          "minute": 45,
+          "totalminutes": 765
+        },
+        "end": {
+          "hour": 14,
+          "minute": 25,
+          "totalminutes": 865
+        }
+      }
+    ]
+  },
+  {
+    "dayname": "Friday",
+    "day": 5,
+    "monthname": "June",
+    "month": 6,
+    "date": 1,
+    "description": "Final Exam schedule LAST DAY OF SCHOOL",
+    "periods": [
+      {
+        "name": "E",
+        "start": {
+          "hour": 8,
+          "minute": 30,
+          "totalminutes": 510
+        },
+        "end": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        }
+      },
+      {
+        "name": "Brunch",
+        "start": {
+          "hour": 10,
+          "minute": 10,
+          "totalminutes": 610
+        },
+        "end": {
+          "hour": 10,
+          "minute": 20,
+          "totalminutes": 620
+        }
+      },
+      {
+        "name": "F",
+        "start": {
+          "hour": 10,
+          "minute": 30,
+          "totalminutes": 630
+        },
+        "end": {
+          "hour": 12,
+          "minute": 10,
+          "totalminutes": 730
+        }
+      }
+    ]
+  }
+]

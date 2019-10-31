@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  <head>
+<head>
     <title>Unofficial Gunn Web App (UGWA)</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <script type="text/javascript">
-      window.errors = '';
-      window.errorLogger = null;
-      if (window.addEventListener) {
-        window.addEventListener('error', function(e) {
-          if (e.message) {
-            errors += '\n' + (e.error && e.error.stack ? e.error.stack
-              : e.message + ' at ' + e.filename + ':' + e.lineno + ':' + e.colno);
-          } else {
-            errors += '\nProblem loading ' + (e.target.src || e.target.href);
-          }
-          if (errorLogger) errorLogger.value = errors;
-          window.onerror = null;
-        }, true);
-        window.addEventListener('unhandledrejection', function(e) {
-          errors += '\n' + (e.reason && (e.reason.stack || e.reason.message || e.reason));
-          if (errorLogger) errorLogger.value = errors;
-        }, false);
-      }
-      window.onerror = function(message, source, lineno, colno, error) {
-        if (colno) {
-          lineno += ':' + colno;
+        window.errors = '';
+        window.errorLogger = null;
+        if (window.addEventListener) {
+            window.addEventListener('error', function (e) {
+                if (e.message) {
+                    errors += '\n' + (e.error && e.error.stack ? e.error.stack
+                        : e.message + ' at ' + e.filename + ':' + e.lineno + ':' + e.colno);
+                } else {
+                    errors += '\nProblem loading ' + (e.target.src || e.target.href);
+                }
+                if (errorLogger) errorLogger.value = errors;
+                window.onerror = null;
+            }, true);
+            window.addEventListener('unhandledrejection', function (e) {
+                errors += '\n' + (e.reason && (e.reason.stack || e.reason.message || e.reason));
+                if (errorLogger) errorLogger.value = errors;
+            }, false);
         }
-        errors += '\n' + (error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
-        if (errorLogger) errorLogger.value = errors;
-      };
-      if (navigator.serviceWorker) {
-        navigator.serviceWorker.addEventListener('message', function(e) {
-          if (e.data.error) {
-            errors += '\n' + e.data.error;
+        window.onerror = function (message, source, lineno, colno, error) {
+            if (colno) {
+                lineno += ':' + colno;
+            }
+            errors += '\n' + (error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
             if (errorLogger) errorLogger.value = errors;
-          }
-        });
-      }
+        };
+        if (navigator.serviceWorker) {
+            navigator.serviceWorker.addEventListener('message', function (e) {
+                if (e.data.error) {
+                    errors += '\n' + e.data.error;
+                    if (errorLogger) errorLogger.value = errors;
+                }
+            });
+        }
     </script>
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -70,7 +70,21 @@
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- /STYLES -->
     <script type="text/javascript">
-      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];},length:0,key(){return null;}}}
+        if (!window.cookie) try {
+            window.cookie = localStorage;
+        } catch (e) {
+            window.cookie = {
+                getItem(a) {
+                    return cookie[a];
+                }, setItem(a, b) {
+                    cookie[a] = b;
+                }, removeItem(a) {
+                    delete cookie[a];
+                }, length: 0, key() {
+                    return null;
+                }
+            }
+        }
     </script>
     <!-- SCRIPTS -->
     <script src="js/l10n.js" charset="utf-8"></script>
@@ -88,180 +102,253 @@
     <script src="schedule/app.js" charset="utf-8"></script>
     <script src="touchy/rotate1.min.js" charset="utf-8"></script>
     <!-- /SCRIPTS -->
-  </head>
-  <body>
-    <!-- NOAPPDESIGN -->
-    <script type="text/javascript">
-      if (window.location.protocol.slice(0, 4) === 'http' && window.location.hostname !== 'localhost') window.location.replace('.');
-    </script>
-    <!-- /NOAPPDESIGN -->
-    <script type="text/javascript">
-      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
-    </script>
+</head>
+<body>
+<!-- NOAPPDESIGN -->
+<script type="text/javascript">
+    if (window.location.protocol.slice(0, 4) === 'http' && window.location.hostname !== 'localhost') window.location.replace('.');
+</script>
+<!-- /NOAPPDESIGN -->
+<script type="text/javascript">
+    document.body.className = `${cookie.getItem('global.theme') || 'light'} footer-${cookie.getItem('[gunn-web-app] section') || 'schedule'}`;
+</script>
 
-    <div id="footer">
-      <ul>
+<div id="footer">
+    <ul>
         <li data-section="utilities" tabindex="0"><i class="material-icons">&#xE869;</i><span>{{utilities}}</span></li>
         <li data-section="clubs" tabindex="0"><i class="material-icons">&#xE886;</i><span>{{clubs}}</span></li>
         <li data-section="schedule" tabindex="0"><i class="material-icons">&#xE8B5;</i><span>{{schedule}}</span></li>
         <li data-section="staff" tabindex="0"><i class="material-icons">&#xE7FB;</i><span>{{staff}}</span></li>
-        <li data-section="options" tabindex="0"><i class="material-icons"><div id="notif"></div>&#xE8B8;</i><span>{{options}}</span></li>
-      </ul>
-    </div>
+        <li data-section="options" tabindex="0"><i class="material-icons">
+            <div id="notif"></div>&#xE8B8;</i><span>{{options}}</span></li>
+    </ul>
+</div>
 
-    <div class="section utilities">
-      <h1>{{barcode}}</h1>
-      <p>{{barcode-desc-before-link}}<a href="https://en.wikipedia.org/wiki/Code_39" target="_blank" rel="noopener noreferrer">{{wikipedia}}</a>{{barcode-desc-after-link}}</p>
-      <ul id='barcode'><li class="right"><button class="material" id='addbarcode'>{{add-barcode}}</button></li></ul>
+<div class="section utilities">
+    <h1>{{barcode}}</h1>
+    <p>{{barcode-desc-before-link}}<a href="https://en.wikipedia.org/wiki/Code_39" target="_blank"
+                                      rel="noopener noreferrer">{{wikipedia}}</a>{{barcode-desc-after-link}}</p>
+    <ul id='barcode'>
+        <li class="right">
+            <button class="material" id='addbarcode'>{{add-barcode}}</button>
+        </li>
+    </ul>
 
-      <h1>{{support}}<button class="material icon to-right"><i class="material-icons" id="hide-support">expand_less</i></button></h1>
-      <p class="secondary">{{sponsor}}</p>
-      <ul class="material-list three-line short collapsible" id="support-list">
-        <li><span class="primary">{{s1a}}</span><a href="sms:741-741">{{s1b}}</a><span class="secondary">{{s1c}}</span></li>
-        <li><span class="primary">{{s2a}}</span><a href="tel:800-273-8256">{{s2b}}</a><span class="secondary">{{s2c}}</span></li>
-        <li><span class="primary">{{s3a}}</span><a href="tel:855-278-4204">{{s3b}}</a><span class="secondary">{{s3c}}</span></li>
-        <li><span class="primary">{{s4a}}</span><a href="tel:650-579-0350">{{s4b}}</a><span class="secondary">{{s4c}}</span></li>
-        <li><span class="primary">{{s5a}}</span><a href="tel:408-379-9085">{{s5b}}</a><span class="secondary">{{s5c}}</span></li>
-        <li><span class="primary">{{s6a}}</span><a href="tel:866-488-7386">{{s6b}}</a><span class="secondary">{{s6c}}</span></li>
-      </ul>
+    <h1>{{support}}
+        <button class="material icon to-right"><i class="material-icons" id="hide-support">expand_less</i></button>
+    </h1>
+    <p class="secondary">{{sponsor}}</p>
+    <ul class="material-list three-line short collapsible" id="support-list">
+        <li><span class="primary">{{s1a}}</span><a href="sms:741-741">{{s1b}}</a><span class="secondary">{{s1c}}</span>
+        </li>
+        <li><span class="primary">{{s2a}}</span><a href="tel:800-273-8256">{{s2b}}</a><span
+                class="secondary">{{s2c}}</span></li>
+        <li><span class="primary">{{s3a}}</span><a href="tel:855-278-4204">{{s3b}}</a><span
+                class="secondary">{{s3c}}</span></li>
+        <li><span class="primary">{{s4a}}</span><a href="tel:650-579-0350">{{s4b}}</a><span
+                class="secondary">{{s4c}}</span></li>
+        <li><span class="primary">{{s5a}}</span><a href="tel:408-379-9085">{{s5b}}</a><span
+                class="secondary">{{s5c}}</span></li>
+        <li><span class="primary">{{s6a}}</span><a href="tel:866-488-7386">{{s6b}}</a><span
+                class="secondary">{{s6c}}</span></li>
+    </ul>
 
-      <a href="http://gpac.tk" class="ad" target="_blank" rel="noopener noreferrer"><span class="ad-badge">{{ad}}</span>{{martin-ad}}</a>
+    <a href="http://gpac.tk" class="ad" target="_blank" rel="noopener noreferrer"><span class="ad-badge">{{ad}}</span>{{martin-ad}}</a>
 
-      <h1>{{minscore}}</h1>
-      <p>{{current-grade}}<span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span></p>
-      <p>{{finals-worth}}<span class="percent-wrapper"><input type="text" id="finals-worth" value="15.00"><span>%</span></span></p>
-      <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
-      <p id="grade-output"></p>
+    <h1>{{minscore}}</h1>
+    <p>{{current-grade}}<span class="percent-wrapper"><input type="text" id="current-grade" value="95.00"><span>%</span></span>
+    </p>
+    <p>{{finals-worth}}<span class="percent-wrapper"><input type="text" id="finals-worth"
+                                                            value="15.00"><span>%</span></span></p>
+    <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade"
+                                                         value="90.00"><span>%</span></span></p>
+    <p id="grade-output"></p>
 
-      <h1>{{comm}}<a href="./prev-chats.html" target="_blank" rel="noopener noreferrer" class="chat-history"><button class="material" disabled>{{prev-chats}}</button></a></h1>
-      <textarea class="textarea" id="chat" readonly></textarea>
-      <button class="material ripple-light raised" id="open-chat" disabled>{{open-chat}}</button>
-      <div id="chatter">
-        <p class="send-msg-wrapper"><input type="text" placeholder="..." id="msg-content"><button class="material" id="send">{{send}}</button></p>
+    <h1>{{comm}}<a href="./prev-chats.html" target="_blank" rel="noopener noreferrer" class="chat-history">
+        <button class="material" disabled>{{prev-chats}}</button>
+    </a></h1>
+    <textarea class="textarea" id="chat" readonly></textarea>
+    <button class="material ripple-light raised" id="open-chat" disabled>{{open-chat}}</button>
+    <div id="chatter">
+        <p class="send-msg-wrapper"><input type="text" placeholder="..." id="msg-content">
+            <button class="material" id="send">{{send}}</button>
+        </p>
         <p id="preview"></p>
         <p>{{msg-note}}</p>
-      </div>
-
-      <h1>{{map}}</h1>
-      <p class="center" id="maptoggle"></p>
-      <p><strong>{{for-image}}</strong>{{image-instruct}}</p>
-      <p><strong>{{for-gmaps}}</strong>{{gmaps-instruct}}</p>
-      <img src="images/newmap.min.png" id='mapimage' alt="The map image failed to load :(">
-      <div id="mapgoogle"></div>
     </div>
 
-    <div class="section clubs">
-      <h1>{{clubs}}<div class="search-wrapper"><i class="material-icons">&#xE8B6;</i><input type="search" id='clubsearch' placeholder="Search clubs" class="notmaterial-input"><button class="material icon" id="clubclear"><i class="material-icons">&#xe14c;</i></button></div></h1>
-      <p>{{clubs-disclaimer-before-link}}<a href="https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/" target="_blank" rel="noopener noreferrer">{{clubs-disclaimer-link}}</a>{{clubs-disclaimer-after-link}}</p>
+    <h1>{{map}}</h1>
+    <p class="center" id="maptoggle"></p>
+    <p><strong>{{for-image}}</strong>{{image-instruct}}</p>
+    <p><strong>{{for-gmaps}}</strong>{{gmaps-instruct}}</p>
+    <img src="images/newmap.min.png" id='mapimage' alt="The map image failed to load :(">
+    <div id="mapgoogle"></div>
+</div>
 
-      <ul class="material-list three-line short clickables" id='clubs'></ul>
-      <div class="lists-enabled center">
+<div class="section clubs">
+    <h1>{{clubs}}
+        <div class="search-wrapper"><i class="material-icons">&#xE8B6;</i><input type="search" id='clubsearch'
+                                                                                 placeholder="Search clubs"
+                                                                                 class="notmaterial-input">
+            <button class="material icon" id="clubclear"><i class="material-icons">&#xe14c;</i></button>
+        </div>
+    </h1>
+    <p>{{clubs-disclaimer-before-link}}<a
+            href="https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/" target="_blank"
+            rel="noopener noreferrer">{{clubs-disclaimer-link}}</a>{{clubs-disclaimer-after-link}}</p>
+
+    <ul class="material-list three-line short clickables" id='clubs'></ul>
+    <div class="lists-enabled center">
         <p>{{lists-disabled}}</p>
         <button class="material ripple-light raised">{{turn-back-on}}</button>
-      </div>
     </div>
+</div>
 
-    <div class="section schedule">
-      <span id='seconds'></span>
+<div class="section schedule">
+    <span id='seconds'></span>
 
-      <span id="asgn-sec-ins-before-pt"></span>
+    <span id="asgn-sec-ins-before-pt"></span>
 
-      <p class="center"><button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button><button class='material' id="datepicker">{{select-date}}</button><button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button></p>
-      <p class="center get-error" id="alternateerror"></p>
-      <div id="schedulewrapper"></div>
+    <p class="center">
+        <button class="material icon" id="plihieraux"><i class="material-icons">&#xE5CB;</i></button>
+        <button class='material' id="datepicker">{{select-date}}</button>
+        <button class="material icon" id="plimorgaux"><i class="material-icons">&#xE5CC;</i></button>
+    </p>
+    <p class="center get-error" id="alternateerror"></p>
+    <div id="schedulewrapper"></div>
 
-      <div id="weekwrapper"></div>
+    <div id="weekwrapper"></div>
 
-      <span id="asgn-sec-ins-after-pt"></span>
+    <span id="asgn-sec-ins-after-pt"></span>
 
-      <h1>{{events}}</h1>
-      <ul class="material-list two-line" id='events'></ul>
-    </div>
+    <h1>{{events}}</h1>
+    <ul class="material-list two-line" id='events'></ul>
+</div>
 
-    <div class="section staff">
-      <h1>{{staff-list}}<div class="search-wrapper"><i class="material-icons">&#xE8B6;</i><input type="search" id='staffsearch' placeholder="Search staff" class="notmaterial-input"><button class="material icon" id="staffclear"><i class="material-icons">&#xe14c;</i></button></div></h1>
-      <p>{{staff-disclaimer-before-link}}<a href="https://gunn.pausd.org/connect/staff-directory" target="_blank" rel="noopener noreferrer">{{staff-disclaimer-link}}</a>{{staff-disclaimer-after-link}}</p>
+<div class="section staff">
+    <h1>{{staff-list}}
+        <div class="search-wrapper"><i class="material-icons">&#xE8B6;</i><input type="search" id='staffsearch'
+                                                                                 placeholder="Search staff"
+                                                                                 class="notmaterial-input">
+            <button class="material icon" id="staffclear"><i class="material-icons">&#xe14c;</i></button>
+        </div>
+    </h1>
+    <p>{{staff-disclaimer-before-link}}<a href="https://gunn.pausd.org/connect/staff-directory" target="_blank"
+                                          rel="noopener noreferrer">{{staff-disclaimer-link}}</a>{{staff-disclaimer-after-link}}
+    </p>
 
-      <ul class="material-list three-line short clickables" id='staff'></ul>
-      <div class="lists-enabled center">
+    <ul class="material-list three-line short clickables" id='staff'></ul>
+    <div class="lists-enabled center">
         <p>{{lists-disabled}}</p>
         <button class="material ripple-light raised">{{turn-back-on}}</button>
-      </div>
+    </div>
+</div>
+
+<div class="section options">
+    <h1>{{announcements}}
+        <button class="material icon" id="prev-psa" disabled><i class="material-icons">&#xE5CB;</i></button>
+        <button class="material icon" id="next-psa" disabled><i class="material-icons">&#xE5CC;</i></button>
+        <span id="new-psa">{{new}}</span></h1>
+    <div class="material-card block-of-text" id="psa">{{loading}}</div>
+
+    <p>{{before-version}}<strong>{VERSION}</strong>{{after-version}}</p>
+
+    <h1>{{theme}}</h1>
+    <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>{{light-theme}}</label>
+        </p>
+        <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>{{dark-theme}}</label>
+        </p>
+        <p class='radio-wrapper is-joke'><input type="radio" name="theme" value="neither" class="material-radio"><label>{{neither-theme}}</label><span
+                class="joke-explanation">{{this-is-joke}}</span></p>
     </div>
 
-    <div class="section options">
-      <h1>{{announcements}}<button class="material icon" id="prev-psa" disabled><i class="material-icons">&#xE5CB;</i></button><button class="material icon" id="next-psa" disabled><i class="material-icons">&#xE5CC;</i></button><span id="new-psa">{{new}}</span></h1>
-      <div class="material-card block-of-text" id="psa">{{loading}}</div>
+    <h1>{{time-formatting}}</h1>
+    <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="hour" value="h12"
+                                        class="material-radio"><label>{{12h}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="hour" value="h24"
+                                        class="material-radio"><label>{{24h}}</label></p>
+        <p class='radio-wrapper is-joke'><input type="radio" name="hour" value="h0" class="material-radio"><label>{{no-hour}}</label><span
+                class="joke-explanation">{{this-is-joke}}</span></p>
+    </div>
 
-      <p>{{before-version}}<strong>{VERSION}</strong>{{after-version}}</p>
+    <h2>{{title-compact}}</h2>
+    <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="format" value="full"
+                                        class="material-radio"><label>{{units}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="format" value="compact" class="material-radio"><label>{{numbers}}</label>
+        </p>
+    </div>
+    <div class="center">
+        <button class="material ripple-light raised" id="disable-lists">{{disable-lists}}</button>
+    </div>
 
-      <h1>{{theme}}</h1>
-      <div class="radios-wrapper">
-        <p class='radio-wrapper'><input type="radio" name="theme" value="light" class="material-radio"><label>{{light-theme}}</label></p>
-        <p class='radio-wrapper'><input type="radio" name="theme" value="dark" class="material-radio"><label>{{dark-theme}}</label></p>
-        <p class='radio-wrapper is-joke'><input type="radio" name="theme" value="neither" class="material-radio"><label>{{neither-theme}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
-      </div>
+    <h1>{{periods}}</h1>
+    <p>{{periods-desc}}</p>
+    <a id="periodcustomisermarker"></a>
+    <p><label><span class="material-switch" id="self" tabindex="0"></span>{{show-self-toggle}}</label></p>
+    <p><label><span class="material-switch" id="show0" tabindex="0"></span>{{show0}}</label></p>
+    <p><label><span class="material-switch" id="hide-preps" tabindex="0"></span>{{hide-preps}}</label></p>
+    <button class="material raised" id="edit-h">{{edit-h}}</button>
 
-      <h1>{{time-formatting}}</h1>
-      <div class="radios-wrapper">
-        <p class='radio-wrapper'><input type="radio" name="hour" value="h12" class="material-radio"><label>{{12h}}</label></p>
-        <p class='radio-wrapper'><input type="radio" name="hour" value="h24" class="material-radio"><label>{{24h}}</label></p>
-        <p class='radio-wrapper is-joke'><input type="radio" name="hour" value="h0" class="material-radio"><label>{{no-hour}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
-      </div>
+    <h1>{{assignments}}</h1>
+    <p><label><span class="material-switch" id="toggle-pd-add-asgn" tabindex="0"></span>{{toggle-pd-add-asgn}}</label>
+    </p>
 
-      <h2>{{title-compact}}</h2>
-      <div class="radios-wrapper">
-        <p class='radio-wrapper'><input type="radio" name="format" value="full" class="material-radio"><label>{{units}}</label></p>
-        <p class='radio-wrapper'><input type="radio" name="format" value="compact" class="material-radio"><label>{{numbers}}</label></p>
-      </div>
-      <div class="center"><button class="material ripple-light raised" id="disable-lists">{{disable-lists}}</button></div>
+    <h2>{{asgn-display}}</h2>
+    <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="asgn-display" value="before" class="material-radio"><label>{{asgn-before}}</label>
+        </p>
+        <p class='radio-wrapper'><input type="radio" name="asgn-display" value="after" class="material-radio"><label>{{asgn-after}}</label>
+        </p>
+        <p class='radio-wrapper is-joke'><input type="radio" name="asgn-display" value="none"
+                                                class="material-radio"><label>{{asgn-none}}</label><span
+                class="joke-explanation">{{this-is-joke}}</span></p>
+    </div>
 
-      <h1>{{periods}}</h1>
-      <p>{{periods-desc}}</p>
-      <a id="periodcustomisermarker"></a>
-      <p><label><span class="material-switch" id="self" tabindex="0"></span>{{show-self-toggle}}</label></p>
-      <p><label><span class="material-switch" id="show0" tabindex="0"></span>{{show0}}</label></p>
-      <p><label><span class="material-switch" id="hide-preps" tabindex="0"></span>{{hide-preps}}</label></p>
-      <button class="material raised" id="edit-h">{{edit-h}}</button>
+    <h2>{{asgn-sort}}</h2>
+    <div class="radios-wrapper">
+        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="chrono-primero"
+                                        class="material-radio"><label>{{asgn-chrono-primero}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="important-importance"
+                                        class="material-radio"><label>{{asgn-important-importance}}</label></p>
+        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="aLgOriThMs" class="material-radio"><label>{{asgn-algorithms}}</label>
+        </p>
+    </div>
 
-      <h1>{{assignments}}</h1>
-      <p><label><span class="material-switch" id="toggle-pd-add-asgn" tabindex="0"></span>{{toggle-pd-add-asgn}}</label></p>
-
-      <h2>{{asgn-display}}</h2>
-      <div class="radios-wrapper">
-        <p class='radio-wrapper'><input type="radio" name="asgn-display" value="before" class="material-radio"><label>{{asgn-before}}</label></p>
-        <p class='radio-wrapper'><input type="radio" name="asgn-display" value="after" class="material-radio"><label>{{asgn-after}}</label></p>
-        <p class='radio-wrapper is-joke'><input type="radio" name="asgn-display" value="none" class="material-radio"><label>{{asgn-none}}</label><span class="joke-explanation">{{this-is-joke}}</span></p>
-      </div>
-
-      <h2>{{asgn-sort}}</h2>
-      <div class="radios-wrapper">
-        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="chrono-primero" class="material-radio"><label>{{asgn-chrono-primero}}</label></p>
-        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="important-importance" class="material-radio"><label>{{asgn-important-importance}}</label></p>
-        <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="aLgOriThMs" class="material-radio"><label>{{asgn-algorithms}}</label></p>
-      </div>
-
-      <h2>{{assync}}</h2>
-      <p>{{assync-desc}}</p>
-      <div id="assync-auth-wrapper">
+    <h2>{{assync}}</h2>
+    <p>{{assync-desc}}</p>
+    <div id="assync-auth-wrapper">
         <div class="not-using-assync">
-          <p><button class="material raised" id="create-assync" disabled>{{create-assync}}</button>{{or-assync}}<input type="text" id="join-assync-id" class="notmaterial-input" disabled> <button class="material raised" id="join-assync" disabled>{{join-assync}}</button></p>
+            <p>
+                <button class="material raised" id="create-assync" disabled>{{create-assync}}</button>
+                {{or-assync}}<input type="text" id="join-assync-id" class="notmaterial-input" disabled>
+                <button class="material raised" id="join-assync" disabled>{{join-assync}}</button>
+            </p>
         </div>
         <div class="using-assync">
-          <p>{{assync-id}}<span id="assync-id"></span><button class="material raised" id="leave-assync">{{leave-assync}}</button></p>
+            <p>{{assync-id}}<span id="assync-id"></span>
+                <button class="material raised" id="leave-assync">{{leave-assync}}</button>
+            </p>
         </div>
         <p class="loading-assync">{{loading-assync}}</p>
-      </div>
+    </div>
 
-      <h1>{{languages}}</h1>
-      <div id="langs"></div>
+    <h1>{{languages}}</h1>
+    <div id="langs"></div>
 
-      <h1>{{transfer}}</h1>
-      <p><button class="material raised" id="export-copy">{{export-copy}}</button> <button class="material raised" id="export-file">{{export-file}}</button></p>
-      <textarea class="textarea" id="transfer-copypaste"></textarea>
-      <p>{{import-file}}<input type="file" id="import-file" accept="application/json"><button class="material raised" id="import">{{import}}</button></p>
+    <h1>{{transfer}}</h1>
+    <p>
+        <button class="material raised" id="export-copy">{{export-copy}}</button>
+        <button class="material raised" id="export-file">{{export-file}}</button>
+    </p>
+    <textarea class="textarea" id="transfer-copypaste"></textarea>
+    <p>{{import-file}}<input type="file" id="import-file" accept="application/json">
+        <button class="material raised" id="import">{{import}}</button>
+    </p>
 
-      <div class="block-of-text">
+    <div class="block-of-text">
         <h1>{{add-ugwa}}</h1>
         <p><strong>{{desktop}}</strong>{{desktop-instruct}}</p>
         <p><strong>{{chromebook}}</strong>{{chromebook-instruct}}</p>
@@ -269,99 +356,129 @@
         <p><strong>{{android}}</strong>{{android-instruct}}</p>
 
         <h1>{{bugs}}</h1>
-        <p>{{before-gh-link}}<a href="https://github.com/Orbiit/gunn-web-app/issues/new" target="_blank" rel="noopener noreferrer">{{gh-link}}</a>{{inter-link}}<a href="mailto:sy24484@pausd.us" target="_blank" rel="noopener noreferrer">{{sean-email}}</a>{{after-email}}</p>
+        <p>{{before-gh-link}}<a href="https://github.com/Orbiit/gunn-web-app/issues/new" target="_blank"
+                                rel="noopener noreferrer">{{gh-link}}</a>{{inter-link}}<a href="mailto:sy24484@pausd.us"
+                                                                                          target="_blank"
+                                                                                          rel="noopener noreferrer">{{sean-email}}</a>{{after-email}}
+        </p>
         <p>{{browsers}}</p>
 
         <h1>{{about}}</h1>
         <p>{{intent}}</p>
-        <p>{{before-source-link}}<a href="https://github.com/Orbiit/gunn-web-app" target="_blank" rel="noopener noreferrer">{{github}}</a>{{after-source-link}}</p>
-        <p>{{other-versions}}<a href="https://orbiit.github.io/gunn-web-app/schedule/" target="_blank" rel="noopener noreferrer">{{gunn-schedule}}</a>{{inter-link-1}}<a href="https://orbiit.github.io/gunn-web-app/lite/">{{ugwita}}</a>{{inter-link-2}}<a href="https://orbiit.github.io/ugwa2/" target="_blank" rel="noopener noreferrer">{{ugwa2}}</a>{{inter-link-3}}<a href="https://orbiit.github.io/ugwisha/" target="_blank" rel="noopener noreferrer">{{ugwisha}}</a>{{after-links}}</p>
+        <p>{{before-source-link}}<a href="https://github.com/Orbiit/gunn-web-app" target="_blank"
+                                    rel="noopener noreferrer">{{github}}</a>{{after-source-link}}</p>
+        <p>{{other-versions}}<a href="https://orbiit.github.io/gunn-web-app/schedule/" target="_blank"
+                                rel="noopener noreferrer">{{gunn-schedule}}</a>{{inter-link-1}}<a
+                href="https://orbiit.github.io/gunn-web-app/lite/">{{ugwita}}</a>{{inter-link-2}}<a
+                href="https://orbiit.github.io/ugwa2/" target="_blank" rel="noopener noreferrer">{{ugwa2}}</a>{{inter-link-3}}<a
+                href="https://orbiit.github.io/ugwisha/" target="_blank" rel="noopener noreferrer">{{ugwisha}}</a>{{after-links}}
+        </p>
         <p>{{lonely}}</p>
-        <p>{{other-apps}}<a href="https://itunes.apple.com/us/app/thegunnapp/id1141159201" target="_blank" rel="noopener noreferrer">{{tga-ios}}</a>{{inter-link-4}}<a href="https://play.google.com/store/apps/details?id=xyz.dchen.thegunnapp" target="_blank" rel="noopener noreferrer">{{tga-android}}</a>{{inter-link-5}}<a href="https://nugwa.sord.cf/" target="_blank" rel="noopener noreferrer">{{nugwa}}</a>{{after-apps}}</p>
+        <p>{{other-apps}}<a href="https://itunes.apple.com/us/app/thegunnapp/id1141159201" target="_blank"
+                            rel="noopener noreferrer">{{tga-ios}}</a>{{inter-link-4}}<a
+                href="https://play.google.com/store/apps/details?id=xyz.dchen.thegunnapp" target="_blank"
+                rel="noopener noreferrer">{{tga-android}}</a>{{inter-link-5}}<a href="https://nugwa.sord.cf/"
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer">{{nugwa}}</a>{{after-apps}}
+        </p>
 
         <h1>{{credits}}</h1>
-        <p><a href="https://sheeptester.github.io/" target="_blank" rel="noopener noreferrer">{{sean}}</a>{{sean-creds}}</p>
-        <p><a href="https://poolehenry.github.io/" target="_blank" rel="noopener noreferrer">{{henry}}</a>{{henry-creds}}</p>
-        <p><a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">{{search}}</a>{{inter-comma}}<a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">{{so}}</a>{{inter-and}}<a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">{{mdn}}</a>{{service-creds}}</p>
+        <p><a href="https://sheeptester.github.io/" target="_blank" rel="noopener noreferrer">{{sean}}</a>{{sean-creds}}
+        </p>
+        <p><a href="https://poolehenry.github.io/" target="_blank" rel="noopener noreferrer">{{henry}}</a>{{henry-creds}}
+        </p>
+        <p><a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">{{search}}</a>{{inter-comma}}<a
+                href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">{{so}}</a>{{inter-and}}<a
+                href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">{{mdn}}</a>{{service-creds}}
+        </p>
         <p>{{feature-based}}</p>
-        <p>{{before-material}}<a href="https://material.io/" target="_blank" rel="noopener noreferrer">{{material}}</a>{{after-material}}</p>
-      </div>
+        <p>{{before-material}}<a href="https://material.io/" target="_blank" rel="noopener noreferrer">{{material}}</a>{{after-material}}
+        </p>
+    </div>
 
-      <h1>{{control-centre}}</h1>
-      <p>{{control-centre-desc}}</p>
-      <p class="center">
+    <h1>{{control-centre}}</h1>
+    <p>{{control-centre-desc}}</p>
+    <p class="center">
         <button class="material ripple-light raised" id="reload">{{reload}}</button>
         <button class="material ripple-light raised" id="trick-cache">{{trick-cache}}</button>
-      </p>
+    </p>
 
-      <h2>{{errors}}</h2>
-      <span id="insert-error-log-here"></span>
-    </div>
+    <h2>{{errors}}</h2>
+    <span id="insert-error-log-here"></span>
+</div>
 
-    <div id="staffcontact" class="material-dialog">
-      <h1>{{staff-name}}</h1>
-      <div class="content"></div>
-      <div class="buttons">
+<div id="staffcontact" class="material-dialog">
+    <h1>{{staff-name}}</h1>
+    <div class="content"></div>
+    <div class="buttons">
         <button class="material red close">{{close}}</button>
-      </div>
     </div>
+</div>
 
-    <div id="clubinfo" class="material-dialog">
-      <h1>{{club-name}}</h1>
-      <div class="content"></div>
-      <div class="buttons">
+<div id="clubinfo" class="material-dialog">
+    <h1>{{club-name}}</h1>
+    <div class="content"></div>
+    <div class="buttons">
         <button class="material red" id="club-add-list"></button>
         <button class="material red close">{{close}}</button>
-      </div>
     </div>
+</div>
 
-    <div id="asgn-editor" class="material-dialog">
-      <h1>{{edit-asgn}}</h1>
-      <div class="content">
+<div id="asgn-editor" class="material-dialog">
+    <h1>{{edit-asgn}}</h1>
+    <div class="content">
         <textarea class="asgn-text-edit" id="asgn-content"></textarea>
-        <p>{{asgn-before-pd}}<span class="material-dropdown" id="period-drop"></span>{{asgn-between-pd-date}}<button class="material" id="date"></button>{{asgn-after-date}}</p>
+        <p>{{asgn-before-pd}}<span class="material-dropdown" id="period-drop"></span>{{asgn-between-pd-date}}
+            <button class="material" id="date"></button>
+            {{asgn-after-date}}
+        </p>
         <p>{{category}}<span class="material-dropdown" id="cat-drop"></span></p>
-        <p class="importance">{{importance}}<button class="material" id="low-imp">{{low}}</button><button class="material" id="medium-imp">{{medium}}</button><button class="material" id="high-imp">{{high}}</button></p>
-      </div>
-      <div class="buttons">
+        <p class="importance">{{importance}}
+            <button class="material" id="low-imp">{{low}}</button>
+            <button class="material" id="medium-imp">{{medium}}</button>
+            <button class="material" id="high-imp">{{high}}</button>
+        </p>
+    </div>
+    <div class="buttons">
         <button class="material red" id="asgn-delete">{{delete-asgn}}</button>
         <button class="material red close" id="asgn-cancel">{{cancel-asgn}}</button>
         <button class="material red close" id="asgn-save">{{save-asgn}}</button>
-      </div>
     </div>
+</div>
 
-    <div id="h-editor" class="material-dialog">
-      <h1>{{h-editor}}</h1>
-      <div class="content" id="h-days"></div>
-      <div class="buttons">
+<div id="h-editor" class="material-dialog">
+    <h1>{{h-editor}}</h1>
+    <div class="content" id="h-days"></div>
+    <div class="buttons">
         <button class="material red close">{{ok}}</button>
-      </div>
     </div>
+</div>
 
-    <div class="ios-cover" id="ios-add-to-home-screen">
-      <div class="ios-dialog">
+<div class="ios-cover" id="ios-add-to-home-screen">
+    <div class="ios-dialog">
         <h1>{{want-ugwa-normal}}</h1>
         <div class="ios-safari">
-          <p class="ios-small">{{safari-only}}</p>
-          <p>{{b4-share-icon}}<span class="ios-img ios-share-icon"></span>{{b4-add-home}}<strong>{{add-home}}</strong>{{b4-add-home-img}}<span class="ios-img ios-add-home"></span>{{b4-add}}<span class="ios-add">{{add}}</span>{{after-add}}</p>
+            <p class="ios-small">{{safari-only}}</p>
+            <p>{{b4-share-icon}}<span class="ios-img ios-share-icon"></span>{{b4-add-home}}<strong>{{add-home}}</strong>{{b4-add-home-img}}<span
+                    class="ios-img ios-add-home"></span>{{b4-add}}<span class="ios-add">{{add}}</span>{{after-add}}</p>
         </div>
         <div class="ios-not-safari">
-          <p>{{use-safari}}</p>
+            <p>{{use-safari}}</p>
         </div>
         <div class="ios-button-div">
-          <button class="material ripple-dark" id="ios-no-thanks">{{naw}}</button>
+            <button class="material ripple-dark" id="ios-no-thanks">{{naw}}</button>
         </div>
-      </div>
-      <div class="ios-ok">{{heaucques}}</div>
     </div>
+    <div class="ios-ok">{{heaucques}}</div>
+</div>
 
-    <textarea id="error-log" class="error-log" placeholder="Errors will be logged here." required></textarea>
-    <noscript>
-      <textarea id="error-log" class="error-log" required>Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea>
-    </noscript>
-    <script type="text/javascript">
-      errorLogger = document.getElementById('error-log');
-      errorLogger.value = errors;
-    </script>
-  </body>
+<textarea id="error-log" class="error-log" placeholder="Errors will be logged here." required></textarea>
+<noscript>
+    <textarea id="error-log" class="error-log" required>Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea>
+</noscript>
+<script type="text/javascript">
+    errorLogger = document.getElementById('error-log');
+    errorLogger.value = errors;
+</script>
+</body>
 </html>

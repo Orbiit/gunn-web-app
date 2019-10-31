@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
-  <head>
+<head>
     <title>UGWA Lite</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -31,25 +31,38 @@
     <script src="../js/altScheduleGenerator.js" charset="utf-8"></script>
     <script src="data.js" charset="utf-8"></script>
     <script src="main.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <p id="timeleft"></p>
-    <div><button type="button" id="yesterday">&lt;</button><button type="button" id="dateselect">Select date</button><button type="button" id="tomorrow">&gt;</button> <button type="button" id="today">Today</button></div>
-    <div id="dateselectwrapper">
-      <p><label>Select month:</label><select id="monthselect"></select><button type="button" id="monthselectdone">Select</button></p>
-      <p><label>Select date:</label><input type="number" id="dateinput"><button type="button" id="dateinputdone">Select</button><span id="dateinputerror"></span></p>
-      <button type="button" id="dateselectcancel">Cancel</button>
-    </div>
-    <div id="schedule"></div>
-    <div id="settings">
-      <h2>Settings</h2>
-      <p><button type="button" id="refreshalts">Refresh alternate schedules</button></p>
-      <p><input type="checkbox" name="offline" id="offline"><label for="offline">Work offline? (works only on <a href="https://caniuse.com/#feat=serviceworkers">these browsers</a> &mdash; don't uncheck while offline! :P)</label></p>
-      <p><input type="checkbox" name="theme" id="theme"><label for="theme">Dark theme?</label></p>
-    </div>
-    <div id="notes">
-      <h2>Notes</h2>
-      <textarea id="notesinput"></textarea>
-    </div>
-  </body>
+</head>
+<body>
+<p id="timeleft"></p>
+<div>
+    <button type="button" id="yesterday">&lt;</button>
+    <button type="button" id="dateselect">Select date</button>
+    <button type="button" id="tomorrow">&gt;</button>
+    <button type="button" id="today">Today</button>
+</div>
+<div id="dateselectwrapper">
+    <p><label>Select month:</label><select id="monthselect"></select>
+        <button type="button" id="monthselectdone">Select</button>
+    </p>
+    <p><label>Select date:</label><input type="number" id="dateinput">
+        <button type="button" id="dateinputdone">Select</button>
+        <span id="dateinputerror"></span></p>
+    <button type="button" id="dateselectcancel">Cancel</button>
+</div>
+<div id="schedule"></div>
+<div id="settings">
+    <h2>Settings</h2>
+    <p>
+        <button type="button" id="refreshalts">Refresh alternate schedules</button>
+    </p>
+    <p><input type="checkbox" name="offline" id="offline"><label for="offline">Work offline? (works only on <a
+            href="https://caniuse.com/#feat=serviceworkers">these browsers</a> &mdash; don't uncheck while offline! :P)</label>
+    </p>
+    <p><input type="checkbox" name="theme" id="theme"><label for="theme">Dark theme?</label></p>
+</div>
+<div id="notes">
+    <h2>Notes</h2>
+    <textarea id="notesinput"></textarea>
+</div>
+</body>
 </html>

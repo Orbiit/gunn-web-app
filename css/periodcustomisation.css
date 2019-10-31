@@ -1,88 +1,100 @@
 .customiser-wrapper {
-  display: flex;
-  margin: 20px 0;
+    display: flex;
+    margin: 20px 0;
 }
+
 button.customiser-colour {
-  width: 36px;
-  background-size: cover;
-  background-position: center;
+    width: 36px;
+    background-size: cover;
+    background-position: center;
 }
+
 .customiser-inputwrapper {
-  position: relative;
-  flex: auto;
-  margin: 0 20px;
-  line-height: 1;
+    position: relative;
+    flex: auto;
+    margin: 0 20px;
+    line-height: 1;
 }
+
 .customiser-label {
-  font-size: 16px;
-  position: absolute;
-  top: 16px;
-  height: 1em;
-  transition: all .2s;
-  pointer-events: none;
-  color: var(--secondary);
+    font-size: 16px;
+    position: absolute;
+    top: 16px;
+    height: 1em;
+    transition: all .2s;
+    pointer-events: none;
+    color: var(--secondary);
 }
+
 .customiser-inputwrapper.filled .customiser-label {
-  font-size: 12px;
-  top: -4px;
+    font-size: 12px;
+    top: -4px;
 }
+
 .customiser-inputwrapper.focus .customiser-label {
-  font-size: 12px;
-  color: var(--theme);
-  top: -4px;
+    font-size: 12px;
+    color: var(--theme);
+    top: -4px;
 }
+
 body.light .customiser-inputwrapper.focus .customiser-label {
-  opacity: 0.87;
+    opacity: 0.87;
 }
+
 .customiser-input {
-  font-size: 16px;
-  background: none;
-  padding: 0;
-  border: 0;
-  position: absolute;
-  color: inherit;
-  top: 16px;
-  cursor: pointer;
-  width: 100%;
+    font-size: 16px;
+    background: none;
+    padding: 0;
+    border: 0;
+    position: absolute;
+    color: inherit;
+    top: 16px;
+    cursor: pointer;
+    width: 100%;
 }
+
 .customiser-line {
-  position: absolute;
-  height: 1px;
-  top: 32px;
-  margin-top: 8px;
-  width: 100%;
-  transition: all .2s;
-  pointer-events: none;
-  background-color: var(--input-line);
+    position: absolute;
+    height: 1px;
+    top: 32px;
+    margin-top: 8px;
+    width: 100%;
+    transition: all .2s;
+    pointer-events: none;
+    background-color: var(--input-line);
 }
+
 .customiser-inputwrapper.hover .customiser-line {
-  height: 2px;
-  background-color: var(--colour);
+    height: 2px;
+    background-color: var(--colour);
 }
+
 .customiser-inputwrapper.focus .customiser-line {
-  height: 2px;
-  background-color: var(--theme);
+    height: 2px;
+    background-color: var(--theme);
 }
+
 .customiser-colourwrapper {
-  width: 133.75px;
-  margin-right: -6.75px;
-  margin-top: 5.25px;
+    width: 133.75px;
+    margin-right: -6.75px;
+    margin-top: 5.25px;
 }
+
 .customiser-materialcolour {
-  margin-right: 6.75px;
-  margin-top: 6.75px;
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: var(--pure-contrast);
+    margin-right: 6.75px;
+    margin-top: 6.75px;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: var(--pure-contrast);
 }
 
 .customiser-image {
-  -webkit-appearance: none;
-  width: 0;
-  min-width: 100%;
-  box-sizing: border-box;
-  margin-top: 10px;
+    -webkit-appearance: none;
+    width: 0;
+    min-width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
 }
