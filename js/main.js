@@ -360,12 +360,6 @@ window.addEventListener("load",e=>{
       importCode(transferTextarea.value);
     }
   });
-  // TEMP: remove after 2019-12-13
-  document.getElementById('ronnie-trigger').addEventListener('click', e => {
-    document.getElementById('ronnie-tab').classList.add('show');
-    // Don't load image until it is opened
-    document.querySelector('#ronnie-tab img').src = './images/finals-study-cram-slam.jpg'
-  });
   const MAX_LENGTH = 50;
   const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?0-9\-;'/~#%&()":]|\s+$|^\s+|\s+(?=\s)/gi;
   const trim = /\s+$|^\s+|\s+(?=\s)/g;
