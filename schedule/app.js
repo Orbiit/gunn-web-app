@@ -155,7 +155,9 @@ function scheduleApp(options={}) {
         innerHTML += str;
         if (setTitle) {
           if (options.compact) document.title = compactStr;
-          else document.title = str.replace(/<[^>]+>/g, '');
+          else document.title = str.replace(/<[^>]+>/g, '')
+            .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"').replace(/&amp;/g, '&');
         }
       }
       for (var period of periods) {
