@@ -713,6 +713,13 @@ function initSchedule() {
       setTimeout(()=>{
         document.addEventListener("click",close,false);
       },0);
+      if (datepicker.selectedelem) {
+        if (datepicker.selectedelem.scrollIntoViewIfNeeded) {
+          datepicker.selectedelem.scrollIntoViewIfNeeded();
+        } else {
+          datepicker.selectedelem.scrollIntoView();
+        }
+      }
     }
   },false);
   yesterdayer.addEventListener("click",e=>{
