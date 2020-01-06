@@ -291,6 +291,24 @@ function initSchedule() {
   dueDateTrigger.addEventListener('click', e => {
     dueDate.wrapper.classList.remove('hide');
     document.addEventListener('click', closeDueDatePicker);
+    if (dueDate.selectedelem) {
+      if (dueDate.selectedelem.scrollIntoViewIfNeeded) {
+        dueDate.selectedelem.scrollIntoViewIfNeeded();
+      } else {
+        dueDate.selectedelem.scrollIntoView();
+      }
+    }
+    const { y, m, d } = dueDate.start
+    const temp = new Date(y, m, d)
+    while (dueDate.compare({d:temp.getDate(),m:temp.getMonth(),y:temp.getFullYear()}, dueDate.end) <= 0) {
+      const elem = dueDate.dates.querySelector(`.datepicker-day[data-date="${temp.getDate()}"][data-month="${temp.getMonth()}"][data-year="${temp.getFullYear()}"]`);
+      if (isSchoolDay(temp)) {
+        elem.classList.remove('there-is-no-school');
+      } else {
+        elem.classList.add('there-is-no-school');
+      }
+      temp.setDate(temp.getDate() + 1);
+    }
     e.stopPropagation();
   });
   dueDate.onchange = date => {
@@ -701,7 +719,6 @@ function initSchedule() {
   datepicker.wrapper.classList.add('hide');
   datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);
-  let noSchoolDaysMarked = false
   document.querySelector('#datepicker').addEventListener("click",e=>{
     if (datepicker.wrapper.classList.contains('hide')) {
       datepicker.wrapper.classList.remove('hide');
@@ -721,17 +738,16 @@ function initSchedule() {
           datepicker.selectedelem.scrollIntoView();
         }
       }
-      if (!noSchoolDaysMarked) {
-        const { y, m, d } = datepicker.start
-        const temp = new Date(y, m, d)
-        while (datepicker.compare({d:temp.getDate(),m:temp.getMonth(),y:temp.getFullYear()}, datepicker.end) <= 0) {
-          if (!isSchoolDay(temp)) {
-            const elem = datepicker.dates.querySelector(`.datepicker-day[data-date="${temp.getDate()}"][data-month="${temp.getMonth()}"][data-year="${temp.getFullYear()}"]`);
-            elem.classList.add('there-is-no-school');
-          }
-          temp.setDate(temp.getDate() + 1);
+      const { y, m, d } = datepicker.start
+      const temp = new Date(y, m, d)
+      while (datepicker.compare({d:temp.getDate(),m:temp.getMonth(),y:temp.getFullYear()}, datepicker.end) <= 0) {
+        const elem = datepicker.dates.querySelector(`.datepicker-day[data-date="${temp.getDate()}"][data-month="${temp.getMonth()}"][data-year="${temp.getFullYear()}"]`);
+        if (isSchoolDay(temp)) {
+          elem.classList.remove('there-is-no-school');
+        } else {
+          elem.classList.add('there-is-no-school');
         }
-        noSchoolDaysMarked = true
+        temp.setDate(temp.getDate() + 1);
       }
     }
   },false);
