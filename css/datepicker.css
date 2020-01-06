@@ -57,8 +57,7 @@
 .datepicker-day.datepicker-today:not(.datepicker-selected) {
   color: var(--theme);
 }
-.datepicker-day:not(.datepicker-today):not(.datepicker-selected):first-child,
-.datepicker-day:not(.datepicker-today):not(.datepicker-selected):last-child {
+.there-is-no-school {
   color: var(--disabled);
 }
 .datepicker-days::-webkit-scrollbar {

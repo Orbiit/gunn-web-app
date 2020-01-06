@@ -701,6 +701,7 @@ function initSchedule() {
   datepicker.wrapper.classList.add('hide');
   datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);
+  let noSchoolDaysMarked = false
   document.querySelector('#datepicker').addEventListener("click",e=>{
     if (datepicker.wrapper.classList.contains('hide')) {
       datepicker.wrapper.classList.remove('hide');
@@ -719,6 +720,18 @@ function initSchedule() {
         } else {
           datepicker.selectedelem.scrollIntoView();
         }
+      }
+      if (!noSchoolDaysMarked) {
+        const { y, m, d } = datepicker.start
+        const temp = new Date(y, m, d)
+        while (datepicker.compare({d:temp.getDate(),m:temp.getMonth(),y:temp.getFullYear()}, datepicker.end) <= 0) {
+          if (!isSchoolDay(temp)) {
+            const elem = datepicker.dates.querySelector(`.datepicker-day[data-date="${temp.getDate()}"][data-month="${temp.getMonth()}"][data-year="${temp.getFullYear()}"]`);
+            elem.classList.add('there-is-no-school');
+          }
+          temp.setDate(temp.getDate() + 1);
+        }
+        noSchoolDaysMarked = true
       }
     }
   },false);
