@@ -23,7 +23,7 @@ langs.en = {
     'gmaps-instruct': " Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
     'club-list': 'Club list',
     'clubs-disclaimer-before-link': "Please note that club information was taken from the administration's ",
-    'clubs-disclaimer-link': 'chartered club list as of September 13th, 2019',
+    'clubs-disclaimer-link': 'chartered club list as of January 30th, 2020',
     'clubs-disclaimer-after-link': ', so attribute inaccuracies to them.',
     'lists-disabled': "You've disabled the club and staff lists",
     'turn-back-on': 'Turn back on',
