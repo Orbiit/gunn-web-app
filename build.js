@@ -1,7 +1,20 @@
 const UglifyJS = require("uglify-es");
 const minify = require('html-minifier').minify;
 const fs = require('fs');
+const crypto = require('crypto');
 const path = require('path');
+
+// Recreating md5 is good idea
+// https://stackoverflow.com/questions/5878682/node-js-hash-string#comment25376847_11869589
+function md5 (str) {
+  return require('crypto').createHash('md5').update(str).digest('hex')
+}
+
+// meh whatever
+// https://stackoverflow.com/a/26815894
+if (!fs.existsSync(path.resolve(__dirname, './source-maps/'))){
+  fs.mkdirSync(path.resolve(__dirname, './source-maps/'));
+}
 
 function readFile(file) {
   return new Promise((res, rej) => {
@@ -51,23 +64,31 @@ readFile('./appdesign.html').then(html => {
           minifyCSS: true,
           minifyJS: (text, inline) => {
             // https://github.com/kangax/html-minifier/blob/gh-pages/src/htmlminifier.js
+            const id = `source-maps/${md5(text)}.js`
             const start = text.match(/^\s*<!--.*/);
             const code = start ? text.slice(start[0].length).replace(/\n\s*-->\s*$/, '') : text;
             const result = UglifyJS.minify(code, {
               compress: {
-                drop_console: true,
                 keep_fargs: false,
-                unused: false, // it gets rid of initMap for being useless
                 warnings: true
               },
               parse: {
                 bare_returns: inline
               },
+              sourceMap: {
+                // filename: id,
+                url: id + '.map'
+              },
               toplevel: true
             });
+            if (result.warnings) {
+              console.log(result.warnings);
+            }
             if (result.error) {
+              console.log(result.error)
               return text;
             }
+            writeFile(id + '.map', result.map)
             return result.code.replace(/;$/, '');
           },
           processConditionalComments: true,
@@ -85,7 +106,7 @@ readFile('./appdesign.html').then(html => {
           useShortDoctype: true
         }
       );
-      writeFile('./index.html', result);
+      writeFile('./index.html', result)
     });
   });
 });

@@ -5,37 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <script type="text/javascript">
-      window.errors = '';
       window.errorLogger = null;
-      function logError (errorText) {
-        errors += '\n' + errorText;
-        if (errorLogger) errorLogger.value = errors;
+      window.logError = function (errorText) {
+        if (!window.errors) {
+          window.errors = '[!] If this covers your screen, then UGWA has crashed! Please send a screenshot or copy and paste this error to sy24484@pausd.us\n'
+        }
+        window.errors += '\n' + errorText;
+        if (window.errorLogger) window.errorLogger.value = window.errors;
         console.error('[BIG WUCKY]\n' + errorText);
       }
       if (window.addEventListener) {
         window.addEventListener('error', function(e) {
           if (e.message) {
-            logError(e.error && e.error.stack ? e.error.stack
+            window.logError(e.error && e.error.stack && e.message.indexOf('Uncaught SyntaxError') !== 0 ? e.error.stack
               : e.message + ' at ' + e.filename + ':' + e.lineno + ':' + e.colno);
           } else {
-            logError('Problem loading ' + (e.target.src || e.target.href));
+            window.logError('Problem loading ' + (e.target.src || e.target.href));
           }
           window.onerror = null;
         }, true);
         window.addEventListener('unhandledrejection', function(e) {
-          logError(e.reason && (e.reason.stack || e.reason.message || e.reason));
+          window.logError(e.reason && (e.reason.stack || e.reason.message || e.reason));
         }, false);
       }
       window.onerror = function(message, source, lineno, colno, error) {
         if (colno) {
           lineno += ':' + colno;
         }
-        logError(error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
+        window.logError(error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
       };
       if (navigator.serviceWorker) {
         navigator.serviceWorker.addEventListener('message', function(e) {
           if (e.data.error) {
-            logError(e.data.error);
+            window.logError(e.data.error);
           }
         });
       }
@@ -71,7 +73,12 @@
     <link rel="stylesheet" href="schedule/schedule.css">
     <!-- /STYLES -->
     <script type="text/javascript">
-      if (!window.cookie) try {window.cookie=localStorage;} catch (e) {window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];},length:0,key(){return null;}}}
+      if (!window.cookie) try {
+        window.cookie=localStorage;
+      } catch (e) {
+        window.cookie={getItem(a){return cookie[a];},setItem(a,b){cookie[a]=b;},removeItem(a){delete cookie[a];},length:0,key(){return null;}}
+        logError(e)
+      }
     </script>
     <!-- SCRIPTS -->
     <script src="js/l10n.js" charset="utf-8"></script>
@@ -97,7 +104,8 @@
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
-      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'} hidden`;
+      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
+      if (window.addHiddenToBody) document.body.classList.add('hidden')
     </script>
 
     <div id="footer">
@@ -356,13 +364,13 @@
       <div class="ios-ok">{{heaucques}}</div>
     </div>
 
-    <textarea id="error-log" class="error-log" placeholder="Errors will be logged here." required></textarea>
+    <textarea id="error-log" class="error-log" placeholder="Errors will be logged here." readonly required></textarea>
     <noscript>
-      <textarea id="error-log" class="error-log" required>Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea>
+      <textarea id="error-log" class="error-log" readonly required>Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea>
     </noscript>
     <script type="text/javascript">
-      errorLogger = document.getElementById('error-log');
-      errorLogger.value = errors;
+      window.errorLogger = document.getElementById('error-log');
+      window.errorLogger.value = window.errors || '';
     </script>
   </body>
 </html>

@@ -9,7 +9,7 @@ window.addEventListener("load",e=>{
         const regex = new RegExp(pattern.slice(2), 'i');
         return str => regex.test(str);
       } catch (e) {
-        //
+        logError(e)
       }
     }
     pattern = pattern.toLowerCase();
@@ -178,7 +178,6 @@ window.addEventListener("load",e=>{
             if (snake.length > idealLength) snake.splice(0, 1);
             render();
           }, 200);
-          console.log(snake);
           render();
         };
         // clicker game

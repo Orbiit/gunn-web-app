@@ -393,7 +393,7 @@ function initSchedule() {
       refresh.style.display = null;
       refresh.click();
     }).catch(err => {
-      console.log(err);
+      logError(err);
       wrapper.className = 'isnt-using-assync';
     });
   });
@@ -412,7 +412,7 @@ function initSchedule() {
       refresh.style.display = null;
       refresh.click();
     }).catch(err => {
-      console.log(err);
+      logError(err);
       wrapper.className = 'isnt-using-assync';
     });
   });
@@ -847,7 +847,7 @@ function initSchedule() {
             })
             .catch(err => {
               imageInput.disabled = false;
-              console.log(err);
+              logError(err);
               alert(localize('cannot'));
             });
         } else {
@@ -872,7 +872,7 @@ function initSchedule() {
             })
             .catch(err => {
               imageInput.disabled = false;
-              console.log(err);
+              logError(err);
             });
         }
       });

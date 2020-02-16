@@ -16,7 +16,7 @@ function code39(chars,canvaselem) {
     canvas.style.imageRendering='-o-crisp-edges';
     canvas.style.imageRendering='pixelated';
     canvas.style.msInterpolationMode='nearest-neighbor';
-  } catch (e) {}
+  } catch (e) {logError(e)}
   chars='*'+chars.toUpperCase().replace(/[^A-Z0-9\-\. \+/\$%]/g,'')+'*';
   canvas.height=100;
   canvas.width=chars.length*16-1;

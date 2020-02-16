@@ -7,6 +7,9 @@
  * @param {barcodes.js} barcode - the barcode to display
  */
 
+function logError (error) {
+  window.logError(error)
+}
 function ajax(url,callback,error) {
   var xmlHttp=new XMLHttpRequest();
   xmlHttp.onreadystatechange=()=>{
@@ -79,7 +82,9 @@ let savedClubs = {}, onSavedClubsUpdate = null;
 if (cookie.getItem('[gunn-web-app] club-list.spring18-19')) {
   try {
     savedClubs = JSON.parse(cookie.getItem('[gunn-web-app] club-list.spring18-19'));
-  } catch (e) {}
+  } catch (e) {
+    logError(e)
+  }
 }
 function saveSavedClubs() {
   cookie.setItem('[gunn-web-app] club-list.spring18-19', JSON.stringify(savedClubs));
@@ -88,6 +93,8 @@ function saveSavedClubs() {
 
 let onOptionsTab;
 
+// In case something breaks, it won't add hidden
+window.addHiddenToBody = true
 window.addEventListener("load",e=>{
   // onload is important because that's when the localization is loaded, probably
   document.title = localize('appname');
@@ -113,11 +120,8 @@ window.addEventListener("load",e=>{
   // frames for some reason?)
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
-      // Do features after, in order of how quick and/or important they are
       attemptFns([
         initPSA,
-        initSchedule,
-        // (order beyond this point doesn't really matter)
         initControlCentre,
         makeNavBarRipple,
         initTabfocus,
@@ -127,6 +131,16 @@ window.addEventListener("load",e=>{
         initMaps,
         initChat,
       ])
+      try {
+        initSchedule()
+      } catch (err) {
+        logError(err.stack || err.message || err)
+        // Yank error log back over the screen
+        const errorLog = document.getElementById('error-log');
+        errorLog.classList.remove('textarea');
+        errorLog.classList.add('error-log');
+        document.body.appendChild(errorLog)
+      }
     })
   })
 
@@ -233,7 +247,10 @@ function initPSA () {
           fetch(`./psa/${psaData[id]}.html`)
             .then(r => r.ok ? r.text() : Promise.reject(r.status))
             .then(html => psas[id] = html)
-            .catch(err => localize('psa-error') + err))
+            .catch(err => {
+              logError(err);
+              return localize('psa-error') + err
+            }))
           .then(html => {
             if (currentPsa === id) {
               const [year, month, date] = psaData[id].split('-').map(Number);
@@ -263,6 +280,7 @@ function initPSA () {
       });
     })
     .catch(err => {
+      logError(err)
       document.getElementById('psa').textContent = localize('psa-error') + err;
     });
 }
@@ -394,11 +412,11 @@ function initSaveCodeManager () {
       })).then(() => {
         window.location.reload();
       }).catch(e => {
-        console.log(e);
+        logError(e);
         alert(localize('import-problem') + '\n\n' + e.stack);
       });
     } catch (e) {
-      console.log(e);
+      logError(e);
       alert(localize('import-problem') + '\n\n' + e.stack);
     }
   }
@@ -537,6 +555,7 @@ function initChat () {
         }
       }
     }).catch(e => {
+      logError(e)
       output.value += 'Could not load chat.\n' + e;
       input.disabled = true;
       sendInput.disabled = true;
@@ -607,10 +626,10 @@ function localizePage () {
         };
       };
     }, err => {
-      console.log(':( Couldn\'t register service worker', err);
+      logError(err);
     });
   } catch (e) {
-    console.log('oof', e);
+    logError(e);
   }
 }
 
@@ -620,7 +639,6 @@ function initErrorLog () {
   logInsertPt.parentNode.replaceChild(errorLog, logInsertPt);
   errorLog.classList.add('textarea');
   errorLog.classList.remove('error-log');
-  errorLog.readOnly = true;
   errorLog.placeholder = localize('errors', 'placeholders');
 }
 

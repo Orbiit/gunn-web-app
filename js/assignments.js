@@ -253,7 +253,7 @@ class AssyncManager {
       })
       .then(({result, ok}) => ok ? result : Promise.reject(result))
       .catch(err => {
-        console.log(err);
+        logError(err);
         this.setStatus('problem', 'load');
         return Promise.reject(err);
       });
@@ -274,7 +274,7 @@ class AssyncManager {
       })
       .then(({ok}) => ok ? null : Promise.reject())
       .catch(err => {
-        console.log(err);
+        logError(err);
         this.setStatus('problem', 'sav');
         return Promise.reject(err);
       });
@@ -358,7 +358,8 @@ class AssignmentsManager {
   }
 
   updateAssignment(asgn) {
-    return this.assyncAccount.save('UPDATE', asgn).catch(() => {
+    return this.assyncAccount.save('UPDATE', asgn).catch(err => {
+      logError(err)
       this.failureQueue.push(['UPDATE', asgn]); // it's ok if the assignment gets JSONified
       this.saveFailures();
       return Promise.reject();
@@ -366,7 +367,8 @@ class AssignmentsManager {
   }
 
   deleteAssignment(id) {
-    return this.assyncAccount.save('DELETE', id).catch(() => {
+    return this.assyncAccount.save('DELETE', id).catch(err => {
+      logError(err)
       this.failureQueue.push(['DELETE', id]);
       this.saveFailures();
       return Promise.reject();
@@ -422,6 +424,7 @@ function initAssignments({
     loadJSON = JSON.parse(loadJSON);
     if (!Array.isArray(loadJSON)) throw 'something';
   } catch (e) {
+    logError(e)
     loadJSON = [];
   }
   const manager = new AssignmentsManager(loadJSON, assyncID);
@@ -430,6 +433,7 @@ function initAssignments({
       manager.failureQueue = JSON.parse(cookie.getItem(failQueueCookie));
       if (!Array.isArray(manager.failureQueue)) throw 'a ball';
     } catch (e) {
+      logError(e)
       manager.failureQueue = [];
     }
     manager.saveFailures = () => {
@@ -583,9 +587,7 @@ function initAssignments({
           methods.todayIs();
           rerender();
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(logError);
     },
     insertButton(btn) {
       heading.insertBefore(btn, addBtn);
