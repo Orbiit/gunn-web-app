@@ -7,34 +7,35 @@
     <script type="text/javascript">
       window.errors = '';
       window.errorLogger = null;
+      function logError (errorText) {
+        errors += '\n' + errorText;
+        if (errorLogger) errorLogger.value = errors;
+        console.error('[BIG WUCKY]\n' + errorText);
+      }
       if (window.addEventListener) {
         window.addEventListener('error', function(e) {
           if (e.message) {
-            errors += '\n' + (e.error && e.error.stack ? e.error.stack
+            logError(e.error && e.error.stack ? e.error.stack
               : e.message + ' at ' + e.filename + ':' + e.lineno + ':' + e.colno);
           } else {
-            errors += '\nProblem loading ' + (e.target.src || e.target.href);
+            logError('Problem loading ' + (e.target.src || e.target.href));
           }
-          if (errorLogger) errorLogger.value = errors;
           window.onerror = null;
         }, true);
         window.addEventListener('unhandledrejection', function(e) {
-          errors += '\n' + (e.reason && (e.reason.stack || e.reason.message || e.reason));
-          if (errorLogger) errorLogger.value = errors;
+          logError(e.reason && (e.reason.stack || e.reason.message || e.reason));
         }, false);
       }
       window.onerror = function(message, source, lineno, colno, error) {
         if (colno) {
           lineno += ':' + colno;
         }
-        errors += '\n' + (error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
-        if (errorLogger) errorLogger.value = errors;
+        logError(error && error.stack ? error.stack : message + ' at ' + source + ':' + lineno);
       };
       if (navigator.serviceWorker) {
         navigator.serviceWorker.addEventListener('message', function(e) {
           if (e.data.error) {
-            errors += '\n' + e.data.error;
-            if (errorLogger) errorLogger.value = errors;
+            logError(e.data.error);
           }
         });
       }
@@ -74,6 +75,7 @@
     </script>
     <!-- SCRIPTS -->
     <script src="js/l10n.js" charset="utf-8"></script>
+    <script src="js/altScheduleGenerator.js" charset="utf-8"></script>
     <script src="js/main.js" charset="utf-8"></script>
     <script src="js/date.js" charset="utf-8"></script>
     <script src="js/colour.min.js" charset="utf-8"></script>
@@ -84,7 +86,6 @@
     <script src="js/assignments.js" charset="utf-8"></script>
     <script src="js/lists.js" charset="utf-8"></script>
     <script src="js/barcodes.js" charset="utf-8"></script>
-    <script src="js/altScheduleGenerator.js" charset="utf-8"></script>
     <script src="schedule/app.js" charset="utf-8"></script>
     <script src="touchy/rotate1.min.js" charset="utf-8"></script>
     <!-- /SCRIPTS -->
@@ -96,7 +97,7 @@
     </script>
     <!-- /NOAPPDESIGN -->
     <script type="text/javascript">
-      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
+      document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'} hidden`;
     </script>
 
     <div id="footer">

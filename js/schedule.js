@@ -284,31 +284,9 @@ function initSchedule() {
     ]
   );
   const dueDate = new DatePicker(...datePickerRange);
-  function closeDueDatePicker() {
-    dueDate.wrapper.classList.add('hide');
-    document.removeEventListener('click', closeDueDatePicker);
-  }
+  dueDate.isSchoolDay = isSchoolDay
   dueDateTrigger.addEventListener('click', e => {
-    dueDate.wrapper.classList.remove('hide');
-    document.addEventListener('click', closeDueDatePicker);
-    if (dueDate.selectedelem) {
-      if (dueDate.selectedelem.scrollIntoViewIfNeeded) {
-        dueDate.selectedelem.scrollIntoViewIfNeeded();
-      } else {
-        dueDate.selectedelem.scrollIntoView();
-      }
-    }
-    const { y, m, d } = dueDate.start
-    const temp = new Date(y, m, d)
-    while (dueDate.compare({d:temp.getDate(),m:temp.getMonth(),y:temp.getFullYear()}, dueDate.end) <= 0) {
-      const elem = dueDate.dates.querySelector(`.datepicker-day[data-date="${temp.getDate()}"][data-month="${temp.getMonth()}"][data-year="${temp.getFullYear()}"]`);
-      if (isSchoolDay(temp)) {
-        elem.classList.remove('there-is-no-school');
-      } else {
-        elem.classList.add('there-is-no-school');
-      }
-      temp.setDate(temp.getDate() + 1);
-    }
+    dueDate.open()
     e.stopPropagation();
   });
   dueDate.onchange = date => {
@@ -317,8 +295,6 @@ function initSchedule() {
       D: date.d
     });
   };
-  dueDate.wrapper.classList.add('hide');
-  dueDate.wrapper.style.position='absolute';
   contentInput.placeholder = localize('assignment', 'placeholders');
   let selectedImportance;
   function setImportance(importance) {
@@ -715,41 +691,11 @@ function initSchedule() {
   while (datepicker.compare({d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}, datepicker.end) <= 0 && !isSchoolDay(d)) {
     d.setDate(d.getDate() + 1);
   }
+  datepicker.isSchoolDay = isSchoolDay
   datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
-  datepicker.wrapper.classList.add('hide');
-  datepicker.wrapper.style.position='fixed';
   document.body.appendChild(datepicker.wrapper);
   document.querySelector('#datepicker').addEventListener("click",e=>{
-    if (datepicker.wrapper.classList.contains('hide')) {
-      datepicker.wrapper.classList.remove('hide');
-      function close(e) {
-        if (!datepicker.wrapper.contains(e.target)) {
-          datepicker.wrapper.classList.add('hide');
-          document.removeEventListener("click",close,false);
-        }
-      }
-      setTimeout(()=>{
-        document.addEventListener("click",close,false);
-      },0);
-      if (datepicker.selectedelem) {
-        if (datepicker.selectedelem.scrollIntoViewIfNeeded) {
-          datepicker.selectedelem.scrollIntoViewIfNeeded();
-        } else {
-          datepicker.selectedelem.scrollIntoView();
-        }
-      }
-      const { y, m, d } = datepicker.start
-      const temp = new Date(y, m, d)
-      while (datepicker.compare({d:temp.getDate(),m:temp.getMonth(),y:temp.getFullYear()}, datepicker.end) <= 0) {
-        const elem = datepicker.dates.querySelector(`.datepicker-day[data-date="${temp.getDate()}"][data-month="${temp.getMonth()}"][data-year="${temp.getFullYear()}"]`);
-        if (isSchoolDay(temp)) {
-          elem.classList.remove('there-is-no-school');
-        } else {
-          elem.classList.add('there-is-no-school');
-        }
-        temp.setDate(temp.getDate() + 1);
-      }
-    }
+    datepicker.open()
   },false);
   yesterdayer.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
@@ -808,15 +754,20 @@ function initSchedule() {
   function addPeriodCustomisers(elem) {
     function period(name,id,colour='#FF594C',val='') {
       let isImage = colour[0] !== '#';
+      let init = true
       var div=document.createElement("div"),
       pickertrigger=document.createElement("button"),
       picker=new ColourPicker(e=>{
         if (isImage) return;
         pickertrigger.style.backgroundColor=e;
-        if (scheduleapp) scheduleapp.setPeriod(id,'',e);
+        if (scheduleapp) scheduleapp.setPeriod(id,'',e, !init);
+        if (init) {
+          init = false
+        } else {
+          if (periodstyles[id].update) periodstyles[id].update();
+          cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
+        }
         options[letras.indexOf(id)][1]=e;
-        if (periodstyles[id].update) periodstyles[id].update();
-        cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
         if (picker.darkness()>125) {
           pickertrigger.classList.add('ripple-dark');
           pickertrigger.classList.remove('ripple-light');
@@ -844,7 +795,7 @@ function initSchedule() {
         input.wrapper.classList.add('filled');
       }
       input.input.addEventListener("change",e=>{
-        if (scheduleapp) scheduleapp.setPeriod(id,input.input.value);
+        if (scheduleapp) scheduleapp.setPeriod(id,input.input.value, true);
         options[letras.indexOf(id)][0]=input.input.value;
         if (periodstyles[id].update) periodstyles[id].update();
         cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
@@ -887,7 +838,7 @@ function initSchedule() {
               isImage = true;
               // intentionally not resetting backgroundColor because transparency meh
               pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
-              if (scheduleapp) scheduleapp.setPeriod(id,'',imageInput.value);
+              if (scheduleapp) scheduleapp.setPeriod(id,'',imageInput.value, true);
               options[letras.indexOf(id)][1]=imageInput.value;
               if (periodstyles[id].update) periodstyles[id].update();
               cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
@@ -907,7 +858,7 @@ function initSchedule() {
               isImage = false;
               pickertrigger.style.backgroundColor = picker.colour;
               pickertrigger.style.backgroundImage = null;
-              if (scheduleapp) scheduleapp.setPeriod(id,'',picker.colour);
+              if (scheduleapp) scheduleapp.setPeriod(id,'',picker.colour, true);
               options[letras.indexOf(id)][1]=picker.colour;
               if (periodstyles[id].update) periodstyles[id].update();
               cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));

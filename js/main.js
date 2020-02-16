@@ -89,7 +89,9 @@ function saveSavedClubs() {
 let onOptionsTab;
 
 window.addEventListener("load",e=>{
+  // onload is important because that's when the localization is loaded, probably
   document.title = localize('appname');
+  document.body.classList.remove('hidden')
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga');
     document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize('anti-ugwaga')}</span></div>`;
@@ -100,8 +102,55 @@ window.addEventListener("load",e=>{
   }
   days=localize('days').split('  '),
   months=localize('months').split('  ');
+  // Do things that make the app visually change to the user first
+  attemptFns([
+    setTheme,
+    localizePage,
+    initErrorLog,
+    showIOSDialog,
+  ])
+  // Allow page to render the localization (seems to require two animation
+  // frames for some reason?)
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      // Do features after, in order of how quick and/or important they are
+      attemptFns([
+        initPSA,
+        initSchedule,
+        // (order beyond this point doesn't really matter)
+        initControlCentre,
+        makeNavBarRipple,
+        initTabfocus,
+        initSecondsCounter,
+        initGradeCalc,
+        initSaveCodeManager,
+        initMaps,
+        initChat,
+      ])
+    })
+  })
+
+},false);
+
+function attemptFns (fns) {
+  for (const fn of fns) {
+    try {
+      fn()
+    } catch (err) {
+      logError(err.stack || err.message || err)
+    }
+  }
+}
+
+function initSchedule () {
   schedulesReady.then(initSchedule);
+}
+
+function makeNavBarRipple () {
   ripple("#footer > ul > li, button.material");
+}
+
+function initTabfocus () {
   let tabFocus = false;
   document.addEventListener('keydown', e => {
   	if (e.keyCode === 9 || e.keyCode === 13) {
@@ -119,6 +168,9 @@ window.addEventListener("load",e=>{
       document.body.classList.remove('tab-focus');
     }
   });
+}
+
+function setTheme () {
   if (cookie.getItem('global.theme'))
     document.querySelector(`input[name=theme][value=${cookie.getItem('global.theme')}]`).checked=true;
   else
@@ -129,6 +181,9 @@ window.addEventListener("load",e=>{
     t.checked = true;
     cookie.setItem('global.theme',e.target.value);
   },false));
+}
+
+function initSecondsCounter () {
   var secondsCounter=document.querySelector('#seconds');
   function updateSeconds() {
     var d=new Date();
@@ -143,6 +198,9 @@ window.addEventListener("load",e=>{
     setTimeout(updateSeconds,1010-d.getMilliseconds());
   }
   updateSeconds();
+}
+
+function initPSA () {
   fetch('./psa/psas.json')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(psaData => {
@@ -207,6 +265,9 @@ window.addEventListener("load",e=>{
     .catch(err => {
       document.getElementById('psa').textContent = localize('psa-error') + err;
     });
+}
+
+function initGradeCalc () {
   var gradeCalc = {
     current: document.getElementById('current-grade'),
     worth: document.getElementById('finals-worth'),
@@ -248,6 +309,9 @@ window.addEventListener("load",e=>{
       setOutput();
     });
   });
+}
+
+function initMaps () {
   zoomImage(document.querySelector('#mapimage'));
   var maptoggle=document.querySelector('#maptoggle');
   var btn=document.createElement("button"),
@@ -285,13 +349,18 @@ window.addEventListener("load",e=>{
   },false);
   btn.appendChild(btncontent);
   maptoggle.appendChild(btn);
+}
+
+function initControlCentre () {
   document.getElementById('reload').addEventListener('click', e => {
     window.location.reload();
   });
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + Date.now();
   });
+}
 
+function initSaveCodeManager () {
   const exportCopyBtn = document.getElementById('export-copy');
   const exportFileBtn = document.getElementById('export-file');
   const transferTextarea = document.getElementById('transfer-copypaste');
@@ -360,6 +429,9 @@ window.addEventListener("load",e=>{
       importCode(transferTextarea.value);
     }
   });
+}
+
+function initChat () {
   const MAX_LENGTH = 50;
   const illegalChars = /[^bcdfghjklmnpqrstvwxyz .,!?0-9\-;'/~#%&()":]|\s+$|^\s+|\s+(?=\s)/gi;
   const trim = /\s+$|^\s+|\s+(?=\s)/g;
@@ -470,6 +542,9 @@ window.addEventListener("load",e=>{
       sendInput.disabled = true;
     });
   });
+}
+
+function showIOSDialog () {
   const ua = navigator.userAgent;
   if (/iPad|iPhone|iPod/.test(ua) && !navigator.standalone && !cookie.getItem('[gunn-web-app] no-thx-ios')) {
     const theThing = document.getElementById('ios-add-to-home-screen');
@@ -481,6 +556,9 @@ window.addEventListener("load",e=>{
       cookie.setItem('[gunn-web-app] no-thx-ios', true);
     });
   }
+}
+
+function localizePage () {
   function getHTMLString(id) {
     return localize(id, 'html');
   }
@@ -534,6 +612,9 @@ window.addEventListener("load",e=>{
   } catch (e) {
     console.log('oof', e);
   }
+}
+
+function initErrorLog () {
   const errorLog = document.getElementById('error-log');
   const logInsertPt = document.getElementById('insert-error-log-here');
   logInsertPt.parentNode.replaceChild(errorLog, logInsertPt);
@@ -541,7 +622,7 @@ window.addEventListener("load",e=>{
   errorLog.classList.remove('error-log');
   errorLog.readOnly = true;
   errorLog.placeholder = localize('errors', 'placeholders');
-},false);
+}
 
 // TEMP: Measure UGWA openings per 10 min interval
 function measure () {

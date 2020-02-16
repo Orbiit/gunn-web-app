@@ -233,10 +233,12 @@ function scheduleApp(options={}) {
       options.offset=o;
       container.innerHTML=generateDay(options.offset);
     },
-    setPeriod(id,name,colour) {
+    setPeriod(id,name,colour,update) {
       if (name) options.periods[id].label=name;
       if (colour) options.periods[id].colour=colour;
-      container.innerHTML=generateDay(options.offset);
+      if (update) {
+        container.innerHTML=generateDay(options.offset);
+      }
     },
     getWeek() {
       var actualtoday=new Date(),week=[];
@@ -261,8 +263,6 @@ function scheduleApp(options={}) {
     getPeriodSpan
   };
   var timeout;
-  if (options.update) returnval.update();
-  else container.innerHTML=generateDay(options.offset);
   elem.appendChild(container);
   return returnval;
 }
