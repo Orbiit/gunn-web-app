@@ -4,7 +4,9 @@
   "description": "ugwa",
   "main": "build.js",
   "author": "l'shep",
-  "dependencies": {},
+  "dependencies": {
+    "colors": "^1.4.0"
+  },
   "devDependencies": {
     "clean-css": "^4.1.11",
     "html-minifier": "^3.5.16",

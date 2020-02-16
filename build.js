@@ -3,6 +3,7 @@ const minify = require('html-minifier').minify;
 const fs = require('fs');
 const crypto = require('crypto');
 const path = require('path');
+const colours = require('colors/safe')
 
 // Recreating md5 is good idea
 // https://stackoverflow.com/questions/5878682/node-js-hash-string#comment25376847_11869589
@@ -12,9 +13,9 @@ function md5 (str) {
 
 // meh whatever
 // https://stackoverflow.com/a/26815894
-if (!fs.existsSync(path.resolve(__dirname, './source-maps/'))){
-  fs.mkdirSync(path.resolve(__dirname, './source-maps/'));
-}
+// if (!fs.existsSync(path.resolve(__dirname, './source-maps/'))){
+//   fs.mkdirSync(path.resolve(__dirname, './source-maps/'));
+// }
 
 function readFile(file) {
   return new Promise((res, rej) => {
@@ -25,7 +26,9 @@ function readFile(file) {
   });
 }
 function writeFile(file, contents) {
-  fs.writeFile(path.resolve(__dirname, file), contents, console.log);
+  fs.writeFile(path.resolve(__dirname, file), contents, () => {
+    console.log(colours.cyan(file + ' written'))
+  });
 }
 
 const date = new Date().toDateString();
@@ -69,26 +72,28 @@ readFile('./appdesign.html').then(html => {
             const code = start ? text.slice(start[0].length).replace(/\n\s*-->\s*$/, '') : text;
             const result = UglifyJS.minify(code, {
               compress: {
-                keep_fargs: false,
-                warnings: true
+                keep_fargs: false
               },
               parse: {
                 bare_returns: inline
               },
-              sourceMap: {
-                // filename: id,
-                url: id + '.map'
-              },
+              // sourceMap: {
+              //   // filename: id,
+              //   url: id + '.map'
+              // },
+              warnings: false, // Warnings weren't very helpful bc I mushed everything together oof
               toplevel: true
             });
-            if (result.warnings) {
-              console.log(result.warnings);
+            if (result.warnings && result.warnings.length) {
+              console.log(colours.bold.underline.yellow('WARNING'));
+              console.log(colours.yellow(result.warnings.join('\n')));
             }
             if (result.error) {
-              console.log(result.error)
+              console.log(colours.bold.underline.red('PROBLEM'));
+              console.log(colours.red(JSON.stringify(result.error, null, 2)))
               return text;
             }
-            writeFile(id + '.map', result.map)
+            // writeFile(id + '.map', result.map)
             return result.code.replace(/;$/, '');
           },
           processConditionalComments: true,

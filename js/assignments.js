@@ -422,7 +422,7 @@ function initAssignments({
 }) {
   try {
     loadJSON = JSON.parse(loadJSON);
-    if (!Array.isArray(loadJSON)) throw 'something';
+    if (!Array.isArray(loadJSON)) loadJSON = [];
   } catch (e) {
     logError(e)
     loadJSON = [];
@@ -431,7 +431,7 @@ function initAssignments({
   if (failQueueCookie) {
     try {
       manager.failureQueue = JSON.parse(cookie.getItem(failQueueCookie));
-      if (!Array.isArray(manager.failureQueue)) throw 'a ball';
+      if (!Array.isArray(manager.failureQueue)) manager.failureQueue = [];
     } catch (e) {
       logError(e)
       manager.failureQueue = [];
