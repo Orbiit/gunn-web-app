@@ -467,6 +467,9 @@ function initSchedule() {
   var selfDays;
   var eventsul=document.querySelector('#events'),events={},
   months=localize('months').split('  ');
+  const eventsHeading = document.createElement('h1')
+  eventsHeading.textContent = localize('events')
+  eventsul.parentNode.insertBefore(eventsHeading, eventsul)
   function renderEvents() {
     var offset=scheduleapp.offset,d=new Date();
     eventsul.innerHTML=`<li><span class="secondary center">${localize('loading')}</span></li>`;

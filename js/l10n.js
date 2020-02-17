@@ -28,7 +28,6 @@ langs.en = {
     'lists-disabled': "You've disabled the club and staff lists",
     'turn-back-on': 'Turn back on',
     'select-date': 'select date',
-    events: 'Events',
     'staff-list': 'Staff list',
     'before-version': 'You are using the ',
     'after-version': ' version.',
@@ -293,7 +292,8 @@ langs.en = {
     p0: 'Zero period',
     'dead-club': 'This club no longer exists at Gunn.',
     'psa-date': 'Created on {D}.',
-    'psa-error': 'Could not load PSA: '
+    'psa-error': 'Could not load PSA: ',
+    events: 'Events',
   },
   placeholders: {
     clubs: 'Search clubs',
