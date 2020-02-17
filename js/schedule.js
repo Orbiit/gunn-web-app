@@ -708,6 +708,18 @@ function initSchedule() {
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
   },false);
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+      if (document.body.classList.contains('footer-schedule') && e.target.tagName !== 'INPUT' &&
+        e.target.tagName !== 'TEXTAREA') {
+        if (e.key === 'ArrowLeft') {
+          yesterdayer.click()
+        } else {
+          tomorrower.click()
+        }
+      }
+    }
+  })
   const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
   if (viewingDate) {
     const [y, m, d] = viewingDate[1].split('-').map(Number);
