@@ -784,6 +784,23 @@ p.secondary {
   vertical-align: middle;
 }
 
+.material-card.previewing-future-notice {
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  align-items: center;
+  padding: 12px;
+  padding-left: 24px;
+  margin: 20px;
+  z-index: 1;
+  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+}
+.previewing-future-notice > span {
+  flex: auto;
+}
+
 .ad {
   display: block;
   border-radius: 5px;

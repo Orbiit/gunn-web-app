@@ -294,6 +294,9 @@ langs.en = {
     'psa-date': 'Created on {D}.',
     'psa-error': 'Could not load PSA: ',
     events: 'Events',
+    'previewing-future': 'This is the schedule for the next school day.',
+    'return-today': 'Show today\'s schedule',
+    'close-future': 'OK'
   },
   placeholders: {
     clubs: 'Search clubs',

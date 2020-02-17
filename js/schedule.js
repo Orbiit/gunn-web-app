@@ -688,11 +688,43 @@ function initSchedule() {
     }
   }
   // skip to next school day
+  let previewingFuture = false
   if (scheduleapp.endOfDay) {
     d.setDate(d.getDate() + 1);
+    previewingFuture = true
   }
   while (datepicker.compare({d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}, datepicker.end) <= 0 && !isSchoolDay(d)) {
     d.setDate(d.getDate() + 1);
+    previewingFuture = true
+  }
+  if (previewingFuture) {
+    previewingFuture = document.createElement('div')
+    previewingFuture.className = 'material-card previewing-future-notice'
+    const span = document.createElement('span')
+    span.textContent = localize('previewing-future')
+    previewingFuture.appendChild(span)
+    const todayBtn = document.createElement('button')
+    todayBtn.className = 'material'
+    todayBtn.textContent = localize('return-today')
+    todayBtn.addEventListener('click', e => {
+      let d=new Date()
+      datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}
+      previewingFuture.remove()
+      previewingFuture = null
+    })
+    ripple(todayBtn)
+    previewingFuture.appendChild(todayBtn)
+    const closeBtn = document.createElement('button')
+    closeBtn.className = 'material'
+    closeBtn.textContent = localize('close-future')
+    closeBtn.addEventListener('click', e => {
+      previewingFuture.remove()
+      previewingFuture = null
+    })
+    ripple(closeBtn)
+    previewingFuture.appendChild(closeBtn)
+    const parent = document.querySelector('.section.schedule')
+    parent.insertBefore(previewingFuture, parent.firstChild)
   }
   datepicker.isSchoolDay = isSchoolDay
   datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
@@ -703,10 +735,18 @@ function initSchedule() {
   yesterdayer.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.start) >= 0) datepicker.day=proposal;
+    if (previewingFuture) {
+      previewingFuture.remove()
+      previewingFuture = null
+    }
   },false);
   tomorrower.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
+    if (previewingFuture) {
+      previewingFuture.remove()
+      previewingFuture = null
+    }
   },false);
   document.addEventListener('keydown', e => {
     if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
