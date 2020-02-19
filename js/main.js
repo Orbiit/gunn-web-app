@@ -642,11 +642,3 @@ function initErrorLog () {
   errorLog.placeholder = localize('errors', 'placeholders');
 }
 
-// TEMP: Measure UGWA openings per 10 min interval
-function measure () {
-  fetch(`https://sheep.thingkingland.app/counter/UGWA_${
-    new Date().toISOString().slice(0, 15)
-  }/increment`, { method: 'POST' })
-}
-measure()
-setInterval(measure, 10 * 60 * 1000) // Every 10 min, ish
