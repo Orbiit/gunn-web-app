@@ -139,7 +139,7 @@ function scheduleApp(options={}) {
             P: getPeriodSpan(period=getPeriodName(periods.length-1)),
             T: `<strong>${compactTime=getUsefulTimePhrase(totalminute-periods[periods.length-1].end.totalminutes)}</strong>`
           })
-        }</p>`,compactStr=localize('appname'),returnval.endOfDay = totalminute - periods[i].end.totalminutes > 60; // after school (endOfDay is an hour past)
+        }</p>`,compactStr=localize('appname'),returnval.endOfDay = totalminute - periods[periods.length - 1].end.totalminutes >= 60; // after school (endOfDay is an hour past)
         else if (totalminute>=periods[i].start.totalminutes) str=`<div class="schedule-periodprogress"><div style="width: ${(totalminute-periods[i].start.totalminutes)/(periods[i].end.totalminutes-periods[i].start.totalminutes)*100}%;"></div></div><p class="schedule-endingin">${
           localizeTime('ending', {
             P: getPeriodSpan(period=getPeriodName(i)),
@@ -264,5 +264,6 @@ function scheduleApp(options={}) {
   };
   var timeout;
   elem.appendChild(container);
+  generateDay() // Calculate endOfDay, but don't render the HTML yet
   return returnval;
 }
