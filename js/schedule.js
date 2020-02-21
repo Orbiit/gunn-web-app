@@ -651,30 +651,28 @@ function initSchedule() {
     getAssignments(date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan);
     },
+    autorender: false,
     // customSchedule(date, y, m, d, wd)
   });
+  onSavedClubsUpdate = scheduleapp.render
   asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
   const yesterdayer = document.querySelector('#plihieraux');
   const tomorrower = document.querySelector('#plimorgaux');
   var datepicker=new DatePicker(...datePickerRange),
   d=new Date();
-  const tempD = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
-  tempD.d--;
-  yesterdayer.disabled = datepicker.compare(tempD, datepicker.start) < 0;
-  tempD.d += 2;
-  tomorrower.disabled = datepicker.compare(tempD, datepicker.end) > 0;
-  tempD.d--;
   datepicker.onchange=e=>{
-    e.d--;
-    yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
-    e.d += 2;
-    tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
-    e.d--;
+    if (scheduleapp.options.autorender) {
+      e.d--;
+      yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
+      e.d += 2;
+      tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
+      e.d--;
+    }
     if (e!==null) {
       var d=new Date(e.y,e.m,e.d).getTime(),
       today=new Date().getTime();
       scheduleapp.offset=Math.floor((d-today)/86400000)+1;
-      makeWeekHappen();
+      if (scheduleapp.options.autorender) makeWeekHappen();
     }
   };
   scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
@@ -687,6 +685,7 @@ function initSchedule() {
       return normalschedule[d.getDay()];
     }
   }
+  datepicker.isSchoolDay = isSchoolDay
   // skip to next school day
   let previewingFuture = false
   if (scheduleapp.endOfDay) {
@@ -696,6 +695,17 @@ function initSchedule() {
   while (datepicker.compare({d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}, datepicker.end) <= 0 && !isSchoolDay(d)) {
     d.setDate(d.getDate() + 1);
     previewingFuture = true
+  }
+  datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
+  // set from ?date= parameter in URL
+  const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
+  if (viewingDate) {
+    const [y, m, d] = viewingDate[1].split('-').map(Number);
+    const proposal = {y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d};
+    if (datepicker.inrange(proposal)) {
+      datepicker.day = proposal;
+      previewingFuture = false
+    }
   }
   if (previewingFuture) {
     previewingFuture = document.createElement('div')
@@ -726,9 +736,22 @@ function initSchedule() {
     const parent = document.querySelector('.section.schedule')
     parent.insertBefore(previewingFuture, parent.firstChild)
   }
-  datepicker.isSchoolDay = isSchoolDay
-  datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   document.body.appendChild(datepicker.wrapper);
+
+  // Date setting is done, so we can now autorender
+  scheduleapp.options.autorender = true
+  // Begin to autoupdate
+  scheduleapp.update()
+  makeWeekHappen()
+  // Disable buttons accordingly
+  const selectedDay = datepicker.day
+  selectedDay.d--;
+  yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0;
+  selectedDay.d += 2;
+  tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0;
+  selectedDay.d--;
+
+  // Date control buttons
   document.querySelector('#datepicker').addEventListener("click",e=>{
     datepicker.open()
   },false);
@@ -760,12 +783,6 @@ function initSchedule() {
       }
     }
   })
-  const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
-  if (viewingDate) {
-    const [y, m, d] = viewingDate[1].split('-').map(Number);
-    const proposal = {y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d};
-    if (datepicker.inrange(proposal)) datepicker.day = proposal;
-  }
 
   /* CUSTOMISE PERIODS */
   var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
@@ -850,7 +867,9 @@ function initSchedule() {
         input.wrapper.classList.add('filled');
       }
       input.input.addEventListener("change",e=>{
-        if (scheduleapp) scheduleapp.setPeriod(id,input.input.value, true);
+        // `null` for third input means do not change `colour`
+        // (`setPeriod` checks whether third input is truthy)
+        if (scheduleapp) scheduleapp.setPeriod(id,input.input.value, null, true);
         options[letras.indexOf(id)][0]=input.input.value;
         if (periodstyles[id].update) periodstyles[id].update();
         cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));

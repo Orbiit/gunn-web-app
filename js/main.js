@@ -7,7 +7,10 @@
  * @param {barcodes.js} barcode - the barcode to display
  */
 
-function logError (error) {
+// Using `const` (or `let`) will not set it to `window` so it won't result in
+// an infinite recursive loop.
+// Alternative methods: use a different name (I'm too lazy to do this though)
+const logError = function (error) {
   window.logError(error)
 }
 function ajax(url,callback,error) {
@@ -641,4 +644,3 @@ function initErrorLog () {
   errorLog.classList.remove('error-log');
   errorLog.placeholder = localize('errors', 'placeholders');
 }
-

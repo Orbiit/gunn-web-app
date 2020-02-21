@@ -203,41 +203,61 @@ function scheduleApp(options={}) {
     return innerHTML;
   }
   if (!options.offset) options.offset=0;
-  function refocus() {
-    if (options.update) container.innerHTML=generateDay(options.offset);
-  }
+  /**
+   * onBlur runs once when the tab loses focus. This is to prevent Google from
+   * using the current time in the tab title for the site name in Google Search
+   * (see #82). I think this is fine because mobile devices won't need the tab
+   * title, and those who do need the tab title probably fire blur reliably.
+   */
   function onBlur() {
     setTitle = true;
+    // Recalculate the schedule to update the title.
     generateDay(options.offset);
     window.removeEventListener('blur', onBlur, false);
   }
   window.addEventListener('blur', onBlur, false);
+  const checkSpeed = 50 // Every 50 ms
+  let lastMinute, timeoutID
   var returnval={
     options,
     element:elem,
+    render () {
+      container.innerHTML=generateDay(options.offset);
+    },
     update() {
       options.update=true;
-      container.innerHTML=generateDay(options.offset);
-      clearTimeout(timeout);
-      timeout=setTimeout(returnval.update,(60-new Date().getSeconds())*1000);
-      window.addEventListener("focus",refocus,false);
-      onSavedClubsUpdate = refocus;
+      returnval.render()
+
+      if (timeoutID) clearTimeout(timeoutID);
+      lastMinute = new Date().toISOString().slice(0, 16)
+      function checkMinute () {
+        const currentMinute = new Date().toISOString().slice(0, 16)
+        if (currentMinute !== lastMinute) {
+          returnval.render()
+          lastMinute = currentMinute
+        }
+        if (options.update) {
+          timeoutID = setTimeout(checkMinute, checkSpeed)
+        } else {
+          animationID = null
+        }
+      }
+      timeoutID = setTimeout(checkMinute, checkSpeed)
     },
     stopupdate() {
       options.update=false;
-      clearTimeout(t);
-      window.removeEventListener("focus",refocus,false);
+      window.cancelAnimationFrame(animationID);
     },
     get offset() {return options.offset},
     set offset(o) {
       options.offset=o;
-      container.innerHTML=generateDay(options.offset);
+      if (options.autorender) returnval.render()
     },
     setPeriod(id,name,colour,update) {
       if (name) options.periods[id].label=name;
       if (colour) options.periods[id].colour=colour;
       if (update) {
-        container.innerHTML=generateDay(options.offset);
+        returnval.render()
       }
     },
     getWeek() {
