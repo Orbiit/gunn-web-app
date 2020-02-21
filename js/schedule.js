@@ -182,7 +182,7 @@ function initSchedule() {
     formatOptions[6] = togglePdAsgn.classList.contains('checked') ? 'yes' : 'no';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     scheduleapp.options.displayAddAsgn = formatOptions[6] === 'yes';
-    scheduleapp.update();
+    scheduleapp.render();
   });
   const prepSwitch = document.getElementById('hide-preps');
   if (formatOptions[9] === 'prepnt') prepSwitch.classList.add('checked');
@@ -429,7 +429,7 @@ function initSchedule() {
       cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable());
     },
     rerender() {
-      scheduleapp.update();
+      scheduleapp.render();
     },
     getDefaultDate() {
       return datepicker.day;
@@ -1006,7 +1006,7 @@ function initSchedule() {
         hPeriods[day] = null;
         label.textContent = days[day];
       }
-      scheduleapp.update();
+      scheduleapp.render();
       cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
     });
     wrapper.appendChild(checkbox);
@@ -1025,7 +1025,7 @@ function initSchedule() {
       r => {
         range.range = r.map(n => Math.round(n * (MAX_TIME - MIN_TIME) / STEP) * STEP / (MAX_TIME - MIN_TIME));
         hPeriods[day] = range.range.map(n => Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME));
-        scheduleapp.update();
+        scheduleapp.render();
         cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
       },
       r => {
