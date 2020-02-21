@@ -165,7 +165,7 @@ function initSchedule() {
   toEach('input[name=asgn-sort]',t=>t.addEventListener("click",e=>{
     formatOptions[5] = e.target.value;
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
-    asgnThing.todayIs(getPeriodSpan, new Date(), e.target.value);
+    asgnThing.todayIs(getPeriodSpan, now(), e.target.value);
   },false));
   const showZero = document.getElementById('show0');
   if (formatOptions[8]==='yes') showZero.classList.add('checked');
@@ -439,7 +439,7 @@ function initSchedule() {
     assyncID
   });
   asgnThing.insertButton(refresh);
-  asgnThing.todayIs(getPeriodSpan, new Date(), formatOptions[5]);
+  asgnThing.todayIs(getPeriodSpan, now(), formatOptions[5]);
   asgnThing.displaySection(formatOptions[4]);
   if (assyncID) {
     refresh.click();
@@ -471,7 +471,7 @@ function initSchedule() {
   eventsHeading.textContent = localize('events')
   eventsul.parentNode.insertBefore(eventsHeading, eventsul)
   function renderEvents() {
-    var offset=scheduleapp.offset,d=new Date();
+    var offset=scheduleapp.offset,d=now();
     eventsul.innerHTML=`<li><span class="secondary center">${localize('loading')}</span></li>`;
     function actuallyRenderEvents(items) {
       var innerHTML=``;
@@ -659,7 +659,7 @@ function initSchedule() {
   const yesterdayer = document.querySelector('#plihieraux');
   const tomorrower = document.querySelector('#plimorgaux');
   var datepicker=new DatePicker(...datePickerRange),
-  d=new Date();
+  d=now();
   datepicker.onchange=e=>{
     if (scheduleapp.options.autorender) {
       e.d--;
@@ -670,7 +670,7 @@ function initSchedule() {
     }
     if (e!==null) {
       var d=new Date(e.y,e.m,e.d).getTime(),
-      today=new Date().getTime();
+      today=currentTime();
       scheduleapp.offset=Math.floor((d-today)/86400000)+1;
       if (scheduleapp.options.autorender) makeWeekHappen();
     }
@@ -717,7 +717,7 @@ function initSchedule() {
     todayBtn.className = 'material'
     todayBtn.textContent = localize('return-today')
     todayBtn.addEventListener('click', e => {
-      let d=new Date()
+      let d=now()
       datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}
       previewingFuture.remove()
       previewingFuture = null
@@ -854,7 +854,7 @@ function initSchedule() {
       pickertrigger.classList.add('material');
       pickertrigger.classList.add('customiser-colour');
       if (isImage) {
-        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`;
         if (periodstyles[id].update) periodstyles[id].update(); // colour input already triggers this, so we only need to update image
       }
       pickertrigger.addEventListener("click",e=>{
@@ -911,7 +911,7 @@ function initSchedule() {
               imageInput.disabled = false;
               isImage = true;
               // intentionally not resetting backgroundColor because transparency meh
-              pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+              pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`;
               if (scheduleapp) scheduleapp.setPeriod(id,'',imageInput.value, true);
               options[letras.indexOf(id)][1]=imageInput.value;
               if (periodstyles[id].update) periodstyles[id].update();

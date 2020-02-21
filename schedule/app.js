@@ -106,7 +106,7 @@ function scheduleApp(options={}) {
     };
   }
   function generateDay(offset=0) {
-    var d=new Date(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
+    var d=now(),innerHTML,day,checkfuture=true,totalminute=d.getMinutes()+d.getHours()*60;
     if (offset!==0) d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset),checkfuture=false;
     const {
       periods,
@@ -229,9 +229,9 @@ function scheduleApp(options={}) {
       returnval.render()
 
       if (timeoutID) clearTimeout(timeoutID);
-      lastMinute = new Date().toISOString().slice(0, 16)
+      lastMinute = now().toISOString().slice(0, 16)
       function checkMinute () {
-        const currentMinute = new Date().toISOString().slice(0, 16)
+        const currentMinute = now().toISOString().slice(0, 16)
         if (currentMinute !== lastMinute) {
           returnval.render()
           lastMinute = currentMinute
@@ -261,7 +261,7 @@ function scheduleApp(options={}) {
       }
     },
     getWeek() {
-      var actualtoday=new Date(),week=[];
+      var actualtoday=now(),week=[];
       today=new Date(actualtoday.getFullYear(),actualtoday.getMonth(),actualtoday.getDate()+options.offset);
       for (var i=0;i<7;i++) {
         var d=new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay()+i),

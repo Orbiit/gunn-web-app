@@ -13,6 +13,15 @@
 const logError = function (error) {
   window.logError(error)
 }
+function now () {
+  return new Date(currentTime())
+}
+// Be able to simulate other times
+function currentTime () {
+  // return new Date(2020, 2 - 1, 20, 10, 0).getTime()
+  // return Date.now() - 1000 * 60 * 60 * 4.5
+  return Date.now()
+}
 function ajax(url,callback,error) {
   var xmlHttp=new XMLHttpRequest();
   xmlHttp.onreadystatechange=()=>{
@@ -58,7 +67,7 @@ const lastDay = "2020-06-04T23:59:59.999-07:00";
 const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 function refreshAlts() {
   return getAlternateSchedules().then(alts => {
-    const today = new Date();
+    const today = now();
     alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
     cookie.setItem("[gunn-web-app] alts.2019-20", JSON.stringify(alts));
   });
@@ -203,7 +212,7 @@ function setTheme () {
 function initSecondsCounter () {
   var secondsCounter=document.querySelector('#seconds');
   function updateSeconds() {
-    var d=new Date();
+    var d=now();
     secondsCounter.innerHTML=('0'+d.getSeconds()).slice(-2);
     secondsCounter.style.setProperty('--rotation',`rotate(${d.getSeconds()*6}deg)`);
     if (d.getSeconds()===0) {
@@ -377,7 +386,7 @@ function initControlCentre () {
     window.location.reload();
   });
   document.getElementById('trick-cache').addEventListener('click', e => {
-    window.location = '?' + Date.now();
+    window.location = '?' + currentTime();
   });
 }
 
@@ -466,7 +475,7 @@ function initChat () {
   document.getElementById('open-chat').addEventListener('click', e => {
     document.body.classList.add('chat-enabled');
     output.value = 'Loading...\n';
-    fetch('./chats.txt?v=' + Date.now()).then(r => r.text()).then(urls => {
+    fetch('./chats.txt?v=' + currentTime()).then(r => r.text()).then(urls => {
       urls = urls.split(/\r?\n/);
       jsonStore = urls.find(url => url[0] === 'h');
       if (!jsonStore) return Promise.reject('No current chat open.');
@@ -540,10 +549,10 @@ function initChat () {
       while (true) {
         let message = await getInput;
         if (message && message !== lastMessage) {
-          fetch(jsonStore + '/' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2), {
+          fetch(jsonStore + '/' + currentTime().toString(36) + '-' + Math.random().toString(36).slice(2), {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
-            body: JSON.stringify(`${new Date().toISOString().slice(5, 16).replace('T', ' ')} - ${username}|${message}`)
+            body: JSON.stringify(`${now().toISOString().slice(5, 16).replace('T', ' ')} - ${username}|${message}`)
           }).then(getMessages);
           lastMessage = message;
           messages++;

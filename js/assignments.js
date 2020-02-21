@@ -23,11 +23,11 @@ function createConfetti(x, y) {
     });
   }
   document.body.appendChild(canvas);
-  const start = Date.now();
+  const start = currentTime();
   let lastTime = start;
   (function paint() {
     c.clearRect(0, 0, CONFETTI_RADIUS * 2, CONFETTI_RADIUS * 2);
-    const now = Date.now();
+    const now = currentTime();
     const elapsed = now - lastTime;
     for (let i = confetti.length; i--;) {
       const confetto = confetti[i];
@@ -61,7 +61,7 @@ const assignmentsById = {};
 let currentId = 0;
 
 function generateID() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  return currentTime().toString(36) + Math.random().toString(36).slice(2);
 }
 
 class Assignment {

@@ -378,7 +378,7 @@ window.addEventListener("load",e=>{
   if (clubSearchValue) {
     clubsearch.value = clubSearchValue[1];
   } else {
-    clubsearch.value = ['', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', ''][new Date().getDay()];
+    clubsearch.value = ['', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', ''][now().getDay()];
   }
   clubsearch.addEventListener("input", doClubSearch,false);
   clubsearch.placeholder = localizePlaceholder('clubs');

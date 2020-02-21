@@ -1,4 +1,4 @@
-// Date format names:
+now()// Date format names:
 // weird = the weird {d, m, y} object format that this uses for some reason
 // js = JavaScript Date object
 class DatePicker {
@@ -133,7 +133,7 @@ class DatePicker {
     this.wrapper.appendChild(dates);
 
     // Mark today
-    var t=this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(new Date()))];
+    var t=this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(now()))];
     if (t) t.elem.classList.add('datepicker-today');
 
     if (this.selected && (t = this.dates[DatePicker.weirdToString(this.selected)])) {
