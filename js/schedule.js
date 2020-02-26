@@ -667,6 +667,10 @@ function initSchedule() {
       e.d += 2;
       tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
       e.d--;
+      if (previewingFuture) {
+        previewingFuture.remove()
+        previewingFuture = null
+      }
     }
     if (e!==null) {
       var d=new Date(e.y,e.m,e.d).getTime(),
@@ -758,18 +762,10 @@ function initSchedule() {
   yesterdayer.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.start) >= 0) datepicker.day=proposal;
-    if (previewingFuture) {
-      previewingFuture.remove()
-      previewingFuture = null
-    }
   },false);
   tomorrower.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
-    if (previewingFuture) {
-      previewingFuture.remove()
-      previewingFuture = null
-    }
   },false);
   document.addEventListener('keydown', e => {
     if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {

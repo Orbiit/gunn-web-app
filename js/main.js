@@ -20,6 +20,8 @@ function now () {
 function currentTime () {
   // return new Date(2020, 2 - 1, 20, 10, 0).getTime()
   // return Date.now() - 1000 * 60 * 60 * 4.5
+  // const temp = 1582684859857
+  // return (Date.now() - temp) * 1000 + temp
   return Date.now()
 }
 function ajax(url,callback,error) {
