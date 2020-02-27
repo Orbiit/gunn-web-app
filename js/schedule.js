@@ -563,8 +563,9 @@ function initSchedule() {
   function identifyPeriod(name) {
     name = name.toLowerCase();
     if (~name.indexOf("period")) {
-      let letter = /\b[a-g]\b/.exec(name);
-      if (letter) return letter[0].toUpperCase();
+      // Detect PeriodE/PeriodG (2020-03-31)
+      let letter = /(?:\b|period)([a-g])\b/i.exec(name);
+      if (letter) return letter[1].toUpperCase();
     }
     if (~name.indexOf("self")) return "SELF";
     else if (~name.indexOf("flex")
