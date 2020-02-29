@@ -340,7 +340,7 @@ const availableLangs = {
 };
 const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
   ? Object.keys(availableLangs)
-  : ['en', 'en-gt'];
+  : ['en', 'en-gt', 'fr'];
 if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   let lang = 'en';
   if (navigator.languages) {
