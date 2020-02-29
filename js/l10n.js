@@ -334,6 +334,7 @@ const availableLangs = {
   'en': 'English',
   'en-gt': 'English (Google Translated through Chinese)',
   'es': 'español',
+  'fr': 'français',
   'test': 'le language test',
   'x-mleng': "L'leng"
 };
