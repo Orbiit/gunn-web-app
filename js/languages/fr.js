@@ -53,7 +53,7 @@ langs.fr = {
     ok: 'OK',
     'add-ugwa': "Pour ajouter UGWA à votre écran d'accueil",
     desktop: 'Ordinateur de Bureau',
-    'desktop-instruct': '—bookmark this page or pin this tab (right click on the tab and select "Pin tab")',
+    'desktop-instruct': '—marquez cette page ou épinglez cet onglet (faites un clic droit sur l\'onglet et sélectionnez "Onglet Pin")',
     chromebook: 'Chromebook',
     'chromebook-instruct': "—épingler cette page à l'étagère (menu > more tools > add to shelf)",
     ios: 'iOS',
