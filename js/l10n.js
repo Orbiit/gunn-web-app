@@ -334,12 +334,13 @@ const availableLangs = {
   'en': 'English',
   'en-gt': 'English (Google Translated through Chinese)',
   'es': 'español',
+  'fr': 'français',
   'test': 'le language test',
   'x-mleng': "L'leng"
 };
 const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
   ? Object.keys(availableLangs)
-  : ['en', 'en-gt'];
+  : ['en', 'en-gt', 'fr'];
 if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   let lang = 'en';
   if (navigator.languages) {
