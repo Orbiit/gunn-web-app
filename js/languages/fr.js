@@ -101,7 +101,7 @@ langs.fr = {
     mdn: 'MDN',
     'service-creds': ' ont aidé.',
     'feature-based': 'Beaucoup de fonctionnalités basées sur le Gunn App originale.',
-    'before-material': 'Conception basée sur les icônes, les couleurs et les spécifications de',
+    'before-material': 'Conception basée sur les icônes, les couleurs et les spécifications de ',
     material: 'Conception Matérielle',
     'after-material': ".",
     languages: 'Langues',
