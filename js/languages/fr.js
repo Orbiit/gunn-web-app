@@ -15,7 +15,7 @@ langs.fr = {
     'finals-worth': 'Partie de la note déterminée par le test final: ',
     'min-grade': 'La note minimum acceptable: ',
     map: 'Carte',
-    'for-image': "Pour l'image",
+    'for-image': "Pour l'image:",
     'image-instruct': ' Vous pouvez utiliser un doigt pour effectuer un panoramique ou deux pour tourner, zoomer et effectuer un panoramique. Vous pouvez utiliser votre souris pour faire glisser, faire défiler pour zoomer ou cliquer avec le bouton droit pour tourner.',
     'for-gmaps': 'Pour Google Maps:',
     'gmaps-instruct': " Fonctionne uniquement lorsque vous êtes connecté à Internet. Si vous êtes sur l'écran tactile et ne pouvez pas faire défiler vers le haut, essayez de faire défiler les boutons.",
