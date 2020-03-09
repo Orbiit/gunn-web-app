@@ -500,8 +500,9 @@ function initSchedule() {
     if (events[offset]) actuallyRenderEvents(events[offset]);
     else {
       const dateDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset).toISOString();
+      const isMarch11 = dateDate.slice(0, 10) === '2020-03-11'
       ajax(
-        `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${dateDate}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
+        `https://www.googleapis.com/calendar/v3/calendars/${isMarch11 ? 'a0id1212epbc9eel40c4mggfkg' : 'u5mgb2vlddfj70d7frf3r015h0'}@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${dateDate}&timeMax=${new Date(d.getFullYear(),d.getMonth(),d.getDate()+offset+1).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
         json=>{
           json=JSON.parse(json).items;
           var e = [];
