@@ -193,7 +193,10 @@ langs.en = {
     new: 'NEW',
     'hide-preps': 'Hide periods with "prep" in their names from the schedule?',
     'martin-ad': 'Martin\'s GPA Calculation Website',
-    ad: 'Compelling utility'
+    ad: 'Compelling utility',
+    'coronavirus-heading': 'School\'s closed!',
+    'coronavirus-subtitle': 'Until Friday, April 10, don\'t trust what UGWA says.',
+    'coronavirus-pausd': 'PAUSD updates about the coronavirus'
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',

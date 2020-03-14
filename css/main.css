@@ -821,3 +821,99 @@ p.secondary {
   margin-right: 10px;
   text-transform: uppercase;
 }
+
+/* TEMP? At least until the end of spring break. */
+.coronavirus-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.coronavirus-ended {
+  display: none;
+}
+.coronavirus-mask {
+  position: relative;
+  width: 600px;
+  height: 300px;
+  background-image: url('../images/false-sense-of-security.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+}
+.coronavirus-content {
+  font-size: 16px;
+  color: black;
+  padding: 40px;
+  overflow: auto;
+  max-height: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 750px) {
+  .coronavirus-mask {
+    width: 80vw;
+    height: 40vw;
+  }
+  .coronavirus-content {
+    padding: 5.33333333vw;
+  }
+}
+.coronavirus-heading {
+  font-weight: normal;
+  margin-top: 0;
+}
+.coronavirus-links a {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: inherit;
+}
+.coronavirus-links a:hover {
+  text-decoration: none;
+}
+#close-coronavirus {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: inherit;
+  float: right;
+  margin-top: 10px;
+}
+@media (min-width: 620px) {
+  #close-coronavirus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 40px;
+  }
+}
+.mask-strap {
+  position: absolute;
+  border-top: 10px solid white;
+  width: 100vw;
+  margin: 0 -10px;
+  z-index: -1;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+.strap-i, .strap-ii {
+  top: 10px;
+}
+.strap-iii, .strap-iv {
+  bottom: 10px;
+}
+.strap-i, .strap-iv {
+  left: 100%;
+  transform-origin: left;
+}
+.strap-ii, .strap-iii {
+  right: 100%;
+  transform-origin: right;
+}
+.strap-i, .strap-iii {
+  transform: rotate(-10deg);
+}
+.strap-ii, .strap-iv {
+  transform: rotate(10deg);
+}

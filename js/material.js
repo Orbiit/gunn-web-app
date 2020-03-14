@@ -231,7 +231,7 @@ window.addEventListener("load",e=>{
       radio.focus();
     },false);
   });
-  toEach('.material-dialog > .buttons > button.close',t=>{
+  toEach('.material-dialog > .buttons > .close',t=>{
     t.addEventListener("click",e=>{
       t.parentNode.parentNode.classList.remove('show');
     },false);

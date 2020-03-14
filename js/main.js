@@ -144,6 +144,7 @@ window.addEventListener("load",e=>{
         initSaveCodeManager,
         initMaps,
         initChat,
+        initCoronavirusClose
       ])
       try {
         initSchedule()
@@ -170,12 +171,28 @@ function attemptFns (fns) {
   }
 }
 
+// TEMP?
+// 2020-04-10 23:59.999 local time
+const springBreakEnd = 1586588399999
+function initCoronavirusClose () {
+  const wrapper = document.getElementById('coronavirus-window')
+  const closeBtn = document.getElementById('close-coronavirus')
+  wrapper.addEventListener('click', e => {
+    if (e.target === wrapper || e.target === closeBtn) {
+      document.body.removeChild(wrapper)
+    }
+  })
+  if (currentTime() < springBreakEnd) {
+    wrapper.classList.remove('coronavirus-ended')
+  }
+}
+
 function initSchedule () {
   schedulesReady.then(initSchedule);
 }
 
 function makeNavBarRipple () {
-  ripple("#footer > ul > li, button.material");
+  ripple("#footer > ul > li, .material");
 }
 
 function initTabfocus () {

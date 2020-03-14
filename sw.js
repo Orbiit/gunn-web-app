@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ugwa-sw-1583889790931';
+const CACHE_NAME = 'ugwa-sw-1584149581137';
 const urlsToCache = [
   './',
   'images/newmap.min.png',
@@ -20,7 +20,9 @@ const urlsToCache = [
   'json/clubs.json',
   'json/staff.json',
   'js/languages/en-gt.js',
-  'js/languages/fr.js'
+  'js/languages/fr.js',
+  // TEMP?
+  'images/false-sense-of-security.svg'
 ];
 
 function sendError(msg) {

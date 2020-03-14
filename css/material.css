@@ -6,7 +6,7 @@
   font-size: 12px;
   color: var(--secondary);
 }
-div.ripple {
+.ripple {
   position: absolute;
   height: 20px;
   width: 20px;
@@ -18,7 +18,7 @@ div.ripple {
   /*z-index: -1;*/
   background-color: var(--ripple);
 }
-div.ripple.ripple-focus {
+.ripple.ripple-focus {
   margin: auto;
   top: 0;
   left: 0;
@@ -32,45 +32,47 @@ div.ripple.ripple-focus {
   from {transform: scale(1.05);}
   to {transform: scale(0.95);}
 }
-button.material {
+.material {
   text-transform: uppercase;
   font-size: 14px;
+  line-height: 14px;
   border: none;
   background: none;
   cursor: pointer;
   overflow: hidden;
   display: inline-block;
   position: relative;
-  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
   border-radius: 2px;
   font-weight: bold;
-  padding: 0 16px;
+  padding: 11px 16px;
   vertical-align: bottom;
   color: var(--colour);
   margin: 0;
 }
-button.material.icon {
+.material.icon {
   width: 36px;
   padding: 0;
   border-radius: 50%;
   text-align: center;
   font-size: 0;
 }
-button.material.red {
+.material.red {
   color: var(--theme);
 }
-button.material.raised {
+.material.raised {
   background-color: var(--theme);
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
 }
-.tab-focus button.material:focus {
+.tab-focus .material:focus {
   box-shadow: 0 0 0 5px var(--focus);
 }
-.schedule-container button.material {
+.schedule-container .material {
   transition: background-color .2s;
 }
-.schedule-container button.material:hover {
+.schedule-container .material:hover {
   background-color: var(--ripple);
 }
 .material-switch {
