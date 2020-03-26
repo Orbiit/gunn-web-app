@@ -13,13 +13,13 @@ function ripple(elem) {
     r.style.left=(x-rect.left)+'px';
     r.style.top=(y-rect.top)+'px';
     elem.appendChild(r);
-    var start=new Date().getTime(),
+    var start=currentTime(),
     dest=Math.max(rect.width,rect.height)/10,
     duration=dest*31,
     fade=false,fadestart;
     function updateScale() {
-      var elapsed=(new Date().getTime()-start)/duration,
-      fadeelapsed=(new Date().getTime()-fadestart)/500;
+      var elapsed=(currentTime()-start)/duration,
+      fadeelapsed=(currentTime()-fadestart)/500;
       if (fade&&fadeelapsed>1) {
         elem.removeChild(r);
         r=null;
@@ -31,7 +31,7 @@ function ripple(elem) {
       }
     }
     function mouseup(e) {
-      fade=true,fadestart=new Date().getTime();
+      fade=true,fadestart=currentTime();
       document.removeEventListener('mouseup',mouseup,false);
       document.removeEventListener('touchend',mouseup,false);
       if (e.type==="touchend") lasttap=fadestart;
@@ -42,7 +42,7 @@ function ripple(elem) {
   }
   var lasttap=0;
   elem.addEventListener("mousedown",e=>{
-    if (new Date().getTime()-lasttap>100) mousedown(e.clientX,e.clientY);
+    if (currentTime()-lasttap>100) mousedown(e.clientX,e.clientY);
   },false);
   elem.addEventListener("touchstart",e=>{
     mousedown(e.touches[0].clientX,e.touches[0].clientY);
@@ -231,7 +231,7 @@ window.addEventListener("load",e=>{
       radio.focus();
     },false);
   });
-  toEach('.material-dialog > .buttons > button.close',t=>{
+  toEach('.material-dialog > .buttons > .close',t=>{
     t.addEventListener("click",e=>{
       t.parentNode.parentNode.classList.remove('show');
     },false);

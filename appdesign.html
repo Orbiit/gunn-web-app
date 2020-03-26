@@ -118,6 +118,7 @@
         border-radius: 2px;
         z-index: 1000;
         pointer-events: none;
+        letter-spacing: 1px;
       }
       `
     </script>
@@ -126,6 +127,24 @@
       document.body.className=`${cookie.getItem('global.theme')||'light'} footer-${cookie.getItem('[gunn-web-app] section')||'schedule'}`;
       if (window.addHiddenToBody) document.body.classList.add('hidden')
     </script>
+
+    <!-- TEMP? This is surreal. -->
+    <div class="coronavirus-cover coronavirus-ended" id="coronavirus-window">
+      <div class="coronavirus-mask">
+        <div class="coronavirus-content">
+          <h1 class="coronavirus-heading">{{coronavirus-heading}}</h1>
+          <p>{{coronavirus-subtitle}}</p>
+          <div class="coronavirus-links">
+            <a class="material ripple-light" href="https://www.pausd.org/explore-pausd/news/categories/coronavirus" target="_blank" rel="noopener noreferrer">{{coronavirus-pausd}}</a>
+          </div>
+          <button class="material" id="close-coronavirus">{{close}}</button>
+        </div>
+        <div class="mask-strap strap-i"></div>
+        <div class="mask-strap strap-ii"></div>
+        <div class="mask-strap strap-iii"></div>
+        <div class="mask-strap strap-iv"></div>
+      </div>
+    </div>
 
     <div id="footer">
       <ul>

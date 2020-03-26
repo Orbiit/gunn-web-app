@@ -165,7 +165,7 @@ function initSchedule() {
   toEach('input[name=asgn-sort]',t=>t.addEventListener("click",e=>{
     formatOptions[5] = e.target.value;
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
-    asgnThing.todayIs(getPeriodSpan, new Date(), e.target.value);
+    asgnThing.todayIs(getPeriodSpan, now(), e.target.value);
   },false));
   const showZero = document.getElementById('show0');
   if (formatOptions[8]==='yes') showZero.classList.add('checked');
@@ -182,7 +182,7 @@ function initSchedule() {
     formatOptions[6] = togglePdAsgn.classList.contains('checked') ? 'yes' : 'no';
     cookie.setItem('[gunn-web-app] scheduleapp.formatOptions',formatOptions.join('.'));
     scheduleapp.options.displayAddAsgn = formatOptions[6] === 'yes';
-    scheduleapp.update();
+    scheduleapp.render();
   });
   const prepSwitch = document.getElementById('hide-preps');
   if (formatOptions[9] === 'prepnt') prepSwitch.classList.add('checked');
@@ -429,7 +429,7 @@ function initSchedule() {
       cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable());
     },
     rerender() {
-      scheduleapp.update();
+      scheduleapp.render();
     },
     getDefaultDate() {
       return datepicker.day;
@@ -439,7 +439,7 @@ function initSchedule() {
     assyncID
   });
   asgnThing.insertButton(refresh);
-  asgnThing.todayIs(getPeriodSpan, new Date(), formatOptions[5]);
+  asgnThing.todayIs(getPeriodSpan, now(), formatOptions[5]);
   asgnThing.displaySection(formatOptions[4]);
   if (assyncID) {
     refresh.click();
@@ -471,7 +471,7 @@ function initSchedule() {
   eventsHeading.textContent = localize('events')
   eventsul.parentNode.insertBefore(eventsHeading, eventsul)
   function renderEvents() {
-    var offset=scheduleapp.offset,d=new Date();
+    var offset=scheduleapp.offset,d=now();
     eventsul.innerHTML=`<li><span class="secondary center">${localize('loading')}</span></li>`;
     function actuallyRenderEvents(items) {
       var innerHTML=``;
@@ -563,8 +563,9 @@ function initSchedule() {
   function identifyPeriod(name) {
     name = name.toLowerCase();
     if (~name.indexOf("period")) {
-      let letter = /\b[a-g]\b/.exec(name);
-      if (letter) return letter[0].toUpperCase();
+      // Detect PeriodE/PeriodG (2020-03-31)
+      let letter = /(?:\b|period)([a-g])\b/i.exec(name);
+      if (letter) return letter[1].toUpperCase();
     }
     if (~name.indexOf("self")) return "SELF";
     else if (~name.indexOf("flex")
@@ -651,30 +652,32 @@ function initSchedule() {
     getAssignments(date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan);
     },
+    autorender: false,
     // customSchedule(date, y, m, d, wd)
   });
+  onSavedClubsUpdate = scheduleapp.render
   asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
   const yesterdayer = document.querySelector('#plihieraux');
   const tomorrower = document.querySelector('#plimorgaux');
   var datepicker=new DatePicker(...datePickerRange),
-  d=new Date();
-  const tempD = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
-  tempD.d--;
-  yesterdayer.disabled = datepicker.compare(tempD, datepicker.start) < 0;
-  tempD.d += 2;
-  tomorrower.disabled = datepicker.compare(tempD, datepicker.end) > 0;
-  tempD.d--;
+  d=now();
   datepicker.onchange=e=>{
-    e.d--;
-    yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
-    e.d += 2;
-    tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
-    e.d--;
+    if (scheduleapp.options.autorender) {
+      e.d--;
+      yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
+      e.d += 2;
+      tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
+      e.d--;
+      if (previewingFuture) {
+        previewingFuture.remove()
+        previewingFuture = null
+      }
+    }
     if (e!==null) {
       var d=new Date(e.y,e.m,e.d).getTime(),
-      today=new Date().getTime();
+      today=currentTime();
       scheduleapp.offset=Math.floor((d-today)/86400000)+1;
-      makeWeekHappen();
+      if (scheduleapp.options.autorender) makeWeekHappen();
     }
   };
   scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
@@ -687,6 +690,7 @@ function initSchedule() {
       return normalschedule[d.getDay()];
     }
   }
+  datepicker.isSchoolDay = isSchoolDay
   // skip to next school day
   let previewingFuture = false
   if (scheduleapp.endOfDay) {
@@ -696,6 +700,17 @@ function initSchedule() {
   while (datepicker.compare({d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}, datepicker.end) <= 0 && !isSchoolDay(d)) {
     d.setDate(d.getDate() + 1);
     previewingFuture = true
+  }
+  datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
+  // set from ?date= parameter in URL
+  const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
+  if (viewingDate) {
+    const [y, m, d] = viewingDate[1].split('-').map(Number);
+    const proposal = {y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d};
+    if (datepicker.inrange(proposal)) {
+      datepicker.day = proposal;
+      previewingFuture = false
+    }
   }
   if (previewingFuture) {
     previewingFuture = document.createElement('div')
@@ -707,7 +722,7 @@ function initSchedule() {
     todayBtn.className = 'material'
     todayBtn.textContent = localize('return-today')
     todayBtn.addEventListener('click', e => {
-      let d=new Date()
+      let d=now()
       datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}
       previewingFuture.remove()
       previewingFuture = null
@@ -726,27 +741,32 @@ function initSchedule() {
     const parent = document.querySelector('.section.schedule')
     parent.insertBefore(previewingFuture, parent.firstChild)
   }
-  datepicker.isSchoolDay = isSchoolDay
-  datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()};
   document.body.appendChild(datepicker.wrapper);
+
+  // Date setting is done, so we can now autorender
+  scheduleapp.options.autorender = true
+  // Begin to autoupdate
+  scheduleapp.update()
+  makeWeekHappen()
+  // Disable buttons accordingly
+  const selectedDay = datepicker.day
+  selectedDay.d--;
+  yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0;
+  selectedDay.d += 2;
+  tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0;
+  selectedDay.d--;
+
+  // Date control buttons
   document.querySelector('#datepicker').addEventListener("click",e=>{
     datepicker.open()
   },false);
   yesterdayer.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.start) >= 0) datepicker.day=proposal;
-    if (previewingFuture) {
-      previewingFuture.remove()
-      previewingFuture = null
-    }
   },false);
   tomorrower.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
     if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
-    if (previewingFuture) {
-      previewingFuture.remove()
-      previewingFuture = null
-    }
   },false);
   document.addEventListener('keydown', e => {
     if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
@@ -760,12 +780,6 @@ function initSchedule() {
       }
     }
   })
-  const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search);
-  if (viewingDate) {
-    const [y, m, d] = viewingDate[1].split('-').map(Number);
-    const proposal = {y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d};
-    if (datepicker.inrange(proposal)) datepicker.day = proposal;
-  }
 
   /* CUSTOMISE PERIODS */
   var materialcolours='f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(' ');
@@ -837,7 +851,7 @@ function initSchedule() {
       pickertrigger.classList.add('material');
       pickertrigger.classList.add('customiser-colour');
       if (isImage) {
-        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`;
         if (periodstyles[id].update) periodstyles[id].update(); // colour input already triggers this, so we only need to update image
       }
       pickertrigger.addEventListener("click",e=>{
@@ -850,7 +864,9 @@ function initSchedule() {
         input.wrapper.classList.add('filled');
       }
       input.input.addEventListener("change",e=>{
-        if (scheduleapp) scheduleapp.setPeriod(id,input.input.value, true);
+        // `null` for third input means do not change `colour`
+        // (`setPeriod` checks whether third input is truthy)
+        if (scheduleapp) scheduleapp.setPeriod(id,input.input.value, null, true);
         options[letras.indexOf(id)][0]=input.input.value;
         if (periodstyles[id].update) periodstyles[id].update();
         cookie.setItem('[gunn-web-app] scheduleapp.options',JSON.stringify(options));
@@ -892,7 +908,7 @@ function initSchedule() {
               imageInput.disabled = false;
               isImage = true;
               // intentionally not resetting backgroundColor because transparency meh
-              pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${Date.now()})`;
+              pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`;
               if (scheduleapp) scheduleapp.setPeriod(id,'',imageInput.value, true);
               options[letras.indexOf(id)][1]=imageInput.value;
               if (periodstyles[id].update) periodstyles[id].update();
@@ -987,7 +1003,7 @@ function initSchedule() {
         hPeriods[day] = null;
         label.textContent = days[day];
       }
-      scheduleapp.update();
+      scheduleapp.render();
       cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
     });
     wrapper.appendChild(checkbox);
@@ -1006,7 +1022,7 @@ function initSchedule() {
       r => {
         range.range = r.map(n => Math.round(n * (MAX_TIME - MIN_TIME) / STEP) * STEP / (MAX_TIME - MIN_TIME));
         hPeriods[day] = range.range.map(n => Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME));
-        scheduleapp.update();
+        scheduleapp.render();
         cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods));
       },
       r => {
