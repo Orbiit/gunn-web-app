@@ -192,9 +192,9 @@ langs.fr = {
     new: 'NOUVEAU',
     'hide-preps': 'Masquer les périodes avec "prep" dans leurs noms dans l\'horaire?',
     'martin-ad': 'Site Web de calcul GPA de Martin',
-    ad: 'Utilité convaincante'
+    ad: 'Utilité convaincante',
     'coronavirus-heading': "L'école est fermée!",
-    'coronavirus-subtitle': "Jusqu'au vendredi 10 avril, ne faites pas confiance à ce que dit l'UGWA.",
+    'coronavirus-subtitle': "Jusqu'au vendredi 1 mai, ne faites pas confiance à ce que dit l'UGWA.",
     'coronavirus-pausd': 'Mises à jour PAUSD sur le coronavirus'
   },
   other: {
