@@ -173,7 +173,7 @@ function attemptFns (fns) {
 
 // TEMP?
 // 2020-04-10 23:59.999 local time
-const springBreakEnd = 1586588399999
+const springBreakEnd = 1588402799999
 function initCoronavirusClose () {
   const wrapper = document.getElementById('coronavirus-window')
   const closeBtn = document.getElementById('close-coronavirus')
