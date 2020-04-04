@@ -171,9 +171,7 @@ function attemptFns (fns) {
   }
 }
 
-// TEMP?
-// 2020-04-10 23:59.999 local time
-const springBreakEnd = 1588402799999
+// TEMP? Remove when updating to next year
 function initCoronavirusClose () {
   const wrapper = document.getElementById('coronavirus-window')
   const closeBtn = document.getElementById('close-coronavirus')
@@ -182,9 +180,6 @@ function initCoronavirusClose () {
       document.body.removeChild(wrapper)
     }
   })
-  if (currentTime() < springBreakEnd) {
-    wrapper.classList.remove('coronavirus-ended')
-  }
 }
 
 function initSchedule () {

@@ -195,7 +195,7 @@ langs.en = {
     'martin-ad': 'Martin\'s GPA Calculation Website',
     ad: 'Compelling utility',
     'coronavirus-heading': 'School\'s closed!',
-    'coronavirus-subtitle': 'Until Friday, May 1, don\'t trust what UGWA says.',
+    'coronavirus-subtitle': 'Don\'t trust what UGWA says for the rest of the school year.',
     'coronavirus-pausd': 'PAUSD updates about the coronavirus'
   },
   other: {
