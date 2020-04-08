@@ -93,7 +93,8 @@ function numberToDate(number) {
   return new Date(number * 86400000 + startTime);
 }
 function randomColourFromString(str) {
-  return "#" + (btoa(str).replace(/[^0-9a-f]/gi, "") + "000000").slice(0,6);
+  // https://gist.github.com/leodutra/3044325
+  return "#" + (btoa(str.replace(/[^A-z\u00C0-\u00ff]/g, '')).replace(/[^0-9a-f]/gi, "") + "000000").slice(0,6);
 }
 function doThings() {
   console.log(alternateSchedules);
