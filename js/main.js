@@ -18,9 +18,9 @@ function now () {
 }
 // Be able to simulate other times
 function currentTime () {
-  // return new Date(2020, 2 - 1, 20, 10, 0).getTime()
+  // return new Date(2020, 2, 10, 13, 23).getTime()
   // return Date.now() - 1000 * 60 * 60 * 4.5
-  // const temp = 1582684859857
+  // const temp = new Date(2020, 2, 10, 13, 23).getTime()
   // return (Date.now() - temp) * 1000 + temp
   return Date.now()
 }
@@ -171,9 +171,7 @@ function attemptFns (fns) {
   }
 }
 
-// TEMP?
-// 2020-04-10 23:59.999 local time
-const springBreakEnd = 1586588399999
+// TEMP? Remove when updating to next year
 function initCoronavirusClose () {
   const wrapper = document.getElementById('coronavirus-window')
   const closeBtn = document.getElementById('close-coronavirus')
@@ -182,9 +180,6 @@ function initCoronavirusClose () {
       document.body.removeChild(wrapper)
     }
   })
-  if (currentTime() < springBreakEnd) {
-    wrapper.classList.remove('coronavirus-ended')
-  }
 }
 
 function initSchedule () {

@@ -57,6 +57,7 @@
   border-radius: 50%;
   text-align: center;
   font-size: 0;
+  line-height: normal;
 }
 .material.red {
   color: var(--theme);
