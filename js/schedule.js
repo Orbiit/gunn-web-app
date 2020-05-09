@@ -778,8 +778,11 @@ function initSchedule() {
     todayBtn.addEventListener('click', e => {
       let d=now()
       datepicker.day = {d:d.getDate(),m:d.getMonth(),y:d.getFullYear()}
-      previewingFuture.remove()
-      previewingFuture = null
+      // Probably will be removed by datepicker's onchange handler
+      if (previewingFuture) {
+        previewingFuture.remove()
+        previewingFuture = null
+      }
     })
     ripple(todayBtn)
     previewingFuture.appendChild(todayBtn)

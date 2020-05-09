@@ -19,7 +19,7 @@ function now () {
 // Be able to simulate other times
 function currentTime () {
   // return new Date(2020, 2, 10, 13, 23).getTime()
-  // return Date.now() - 1000 * 60 * 60 * 4.5
+  // return Date.now() + 1000 * 60 * 60 * 24 * 3.5
   // const temp = new Date(2020, 2, 10, 13, 23).getTime()
   // return (Date.now() - temp) * 1000 + temp
   return Date.now()
