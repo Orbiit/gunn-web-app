@@ -194,7 +194,7 @@ langs.fr = {
     'martin-ad': 'Site Web de calcul GPA de Martin',
     ad: 'Utilité convaincante',
     'coronavirus-heading': "L'école est fermée!",
-    'coronavirus-subtitle': "Jusqu'au vendredi 1 mai, ne faites pas confiance à ce que dit l'UGWA.",
+    'coronavirus-subtitle': "Ne faites pas confiance à ce que dit l’UGWA pour le reste de l’année scolaire.",
     'coronavirus-pausd': 'Mises à jour PAUSD sur le coronavirus'
   },
   other: {
