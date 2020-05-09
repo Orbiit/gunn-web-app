@@ -50,6 +50,44 @@ normalschedule=[
   ],
   null
 ];
+
+// TEMP: coronavirus AP
+normalschedule = new Array(7).fill(null)
+// https://apcoronavirusupdates.collegeboard.org/students/taking-ap-exams/ap-exam-schedule
+const apSchedule = Object.fromEntries(Object.entries({
+  '5-11': ['Physics C: Mechanics', 'Physics C: Electricity and Magnetism', 'United States Government and Politics'],
+  '5-12': ['Latin', 'Calculus AB, Calculus BC', 'Human Geography'],
+  '5-13': ['Physics 2: Algebra-Based', 'English Literature and Composition', 'European History'],
+  '5-14': ['Spanish Literature and Culture', 'Chemistry', 'Physics 1: Algebra-Based'],
+  '5-15': ['Art History', 'United States History', 'Computer Science A'],
+  '5-18': ['Chinese Language and Culture', 'Biology', 'Environmental Science'],
+  '5-19': ['Music Theory', 'Psychology', 'Japanese Language and Culture, Italian Language and Culture'],
+  '5-20': ['German Language and Culture', 'English Language and Composition', 'Microeconomics'],
+  '5-21': ['French Language and Culture', 'World History: Modern', 'Macroeconomics'],
+  '5-22': ['Comparative Government and Politics', 'Statistics', 'Spanish Language and Culture']
+}).map(([date, [ap1, ap2, ap3]]) => {
+  return [
+    date,
+    [
+      // AP exams are usually 50 minutes, except the more expensive language exams, which are shorter:
+      // 1 question: 45 + 5 = 50
+      // 2 questions: 25 + 5 + 15 + 5 = 30 + 20 = 50 (also music theory)
+      // <30 min for world language exams
+      // https://apcentral.collegeboard.org/pdf/ap-testing-guide-2020.pdf P35-37
+      {name:ap1,start:{hour:9,minute:0,totalminutes:540}},
+      {name:ap2,start:{hour:11,minute:0,totalminutes:660}},
+      {name:ap3,start:{hour:13,minute:0,totalminutes:780}}
+    ].map(obj => {
+      // Match world languages
+      const length = obj.name.includes('Language') && !obj.name.includes('English') ? 30 : 50
+      obj.end = {...obj.start}
+      obj.end.minute += length
+      obj.end.totalminutes += length
+      return obj
+    })
+  ]
+}))
+
 const datePickerRange = [{d:13,m:7,y:2019},{d:4,m:5,y:2020}]; // change for new school year, months are 0-indexed
 const IMAGE_CACHE = 'ugwa-img-cache-YEET';
 function cacheBackground(url, pd) {
@@ -516,6 +554,10 @@ function initSchedule() {
           }
           events[offset]=e;
           if (scheduleapp.offset===offset) actuallyRenderEvents(events[offset]);
+
+          // TEMP: coronavirus AP
+          return
+
           const date = dateDate.slice(5, 10);
           var alternateJSON = json.filter(ev => altSchedRegex.test(ev.summary));
           var altSched = toAlternateSchedules(alternateJSON);
@@ -645,7 +687,9 @@ function initSchedule() {
     element:document.querySelector('#schedulewrapper'),
     periods:periodstyles,
     normal:normalschedule,
-    alternates:alternates,
+    // alternates:alternates,
+    // TEMP: coronavirus AP
+    alternates: {},
     selfDays: selfDays,
     hPeriods,
     offset:0,
@@ -665,7 +709,11 @@ function initSchedule() {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan);
     },
     autorender: false,
-    // customSchedule(date, y, m, d, wd)
+    customSchedule(date, y, m, d, wd) {
+      if (apSchedule[`${m+1}-${d}`]) {
+        return apSchedule[`${m+1}-${d}`]
+      }
+    }
   });
   onSavedClubsUpdate = scheduleapp.render
   asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
@@ -694,13 +742,7 @@ function initSchedule() {
   };
   scheduleapp.options.isSummer = (y, m, d) => !datepicker.inrange({y: y, m: m, d: d});
   function isSchoolDay(d) {
-    if (scheduleapp.options.isSummer(d.getFullYear(), d.getMonth(), d.getDate())) {
-      return false;
-    } else if (alternates[(d.getMonth()+1)+'-'+d.getDate()]) {
-      return alternates[(d.getMonth()+1)+'-'+d.getDate()].periods.length;
-    } else {
-      return normalschedule[d.getDay()];
-    }
+    return scheduleapp.getSchedule(d).periods.length
   }
   datepicker.isSchoolDay = isSchoolDay
   // skip to next school day

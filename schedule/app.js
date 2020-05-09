@@ -280,7 +280,8 @@ function scheduleApp(options={}) {
       }
       return week;
     },
-    getPeriodSpan
+    getPeriodSpan,
+    getSchedule
   };
   var timeout;
   elem.appendChild(container);
