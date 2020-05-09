@@ -171,7 +171,7 @@ function attemptFns (fns) {
   }
 }
 
-// TEMP? Remove when updating to next year
+// TEMP: Remove when lockdown ends
 function initCoronavirusClose () {
   const wrapper = document.getElementById('coronavirus-window')
   const closeBtn = document.getElementById('close-coronavirus')
@@ -180,6 +180,7 @@ function initCoronavirusClose () {
       document.body.removeChild(wrapper)
     }
   })
+  // wrapper.classList.remove('coronavirus-ended')
 }
 
 function initSchedule () {
