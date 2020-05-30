@@ -3,7 +3,7 @@ const EARLIEST_AM_HOUR = 6;
 const HTMLnewlineRegex = /<\/?(p|div|br).*?>|\),? *(?=[A-Z0-9])/g;
 const noHTMLRegex = /<.*?>/g;
 const noNbspRegex = /&nbsp;/g;
-const timeGetterRegex = /\(?(1?[0-9]):([0-9]{2}) *(?:-|–) *(1?[0-9]):([0-9]{2}) *(pm)?\)?/;
+const timeGetterRegex = /\(?(1?[0-9])(?::([0-9]{2}))? *(?:am)? *(?:-|–) *(1?[0-9])(?::([0-9]{2}))? *(noon|pm)?\)?/;
 const newLineRegex = /\r?\n/g;
 const noNewLineBeforeTimeRegex = /\n\(/g; // hack for 2019-09-06 schedule
 
@@ -33,11 +33,11 @@ function parseAlternate(summary, description) {
         return;
       }
 
-      let [, sH, sM, eH, eM, pm] = times;
+      let [, sH, sM = 0, eH, eM = 0, pm] = times;
 
       sH = +sH; sM = +sM; eH = +eH; eM = +eM;
-      if (sH < EARLIEST_AM_HOUR || pm) sH += 12;
-      if (eH < EARLIEST_AM_HOUR || pm) eH += 12;
+      if (sH < EARLIEST_AM_HOUR || pm === 'pm') sH += 12;
+      if (eH < EARLIEST_AM_HOUR || pm === 'pm') eH += 12;
       const startTime = sH * 60 + sM,
       endTime = eH * 60 + eM;
 
