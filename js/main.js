@@ -68,7 +68,6 @@ const firstDay = "2019-08-13T00:00:00.000-07:00";
 const lastDay = "2020-06-04T23:59:59.999-07:00";
 const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 function refreshAlts() {
-  return Promise.resolve() // TEMP: coronavirus AP
   return getAlternateSchedules().then(alts => {
     const today = now();
     alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
