@@ -51,6 +51,41 @@ normalschedule=[
   null
 ];
 
+// TEMP: Gunn EOY lol
+const startDropOff = { hour: 8, minute: 0, totalminutes: 8 * 60 }
+const endDropOff = { hour: 12, minute: 0, totalminutes: 12 * 60 }
+const dropOffSchedule = Object.fromEntries([
+  // Stereotypical Chinese names?
+  [4, 'A-Che Chi-Gri Gu-Lee Lel-Mo Mu-She Shi-Wan Wang-Z'.split(' '), 'Seniors'],
+  [9, 'A-Cha Che-Fa Fe-Ja Je-Ma Me-Ram Ran-Tam Tan-Z'.split(' '), 'Juniors'],
+  [8, 'A-Ch Ch-D E-Ha He-Ki Ko-L M-Pi Po-Si So-V W-Z'.split(' '), 'Freshmen & Sophomores']
+].map(([date, names, grade]) => {
+  const periods = []
+  let hour = 8
+  for (const name of names) {
+    periods.push({
+      name: grade + ' ' + name.replace(/-/g, '–'),
+      start: { hour, minute: 0, totalminutes: hour * 60 },
+      end: { hour: hour + 1, minute: 0, totalminutes: (hour + 1) * 60 }
+    })
+    hour++
+  }
+  return [
+    date,
+    periods
+  ]
+}))
+dropOffSchedule[10] = [{ name: 'Sophomores Make-up (All Students)', start: startDropOff, end: endDropOff }]
+dropOffSchedule[11] = [{ name: 'Freshman Make-up (All Students)', start: startDropOff, end: endDropOff }]
+const dropOffSeniorsEPeriod = dropOffSchedule[4].find(pd => pd.start.hour === 11)
+dropOffSeniorsEPeriod.customName = dropOffSeniorsEPeriod.name
+dropOffSeniorsEPeriod.customName += '—Period E for others'
+dropOffSeniorsEPeriod.name = 'E'
+const dropOffSeniorsFPeriod = dropOffSchedule[4].find(pd => pd.start.hour === 13)
+dropOffSeniorsFPeriod.customName = dropOffSeniorsFPeriod.name
+dropOffSeniorsFPeriod.customName += '—Period F for others'
+dropOffSeniorsFPeriod.name = 'F'
+
 const datePickerRange = [{d:13,m:7,y:2019},{d:4,m:5,y:2020}]; // change for new school year, months are 0-indexed
 const IMAGE_CACHE = 'ugwa-img-cache-YEET';
 function cacheBackground(url, pd) {
@@ -667,7 +702,11 @@ function initSchedule() {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan);
     },
     autorender: false,
-    // customSchedule(date, y, m, d, wd)
+    customSchedule(date, y, m, d, wd) {
+      if (y === 2020 && m + 1 === 6 && dropOffSchedule[d]) {
+        return dropOffSchedule[d]
+      }
+    }
   });
   onSavedClubsUpdate = scheduleapp.render
   asgnThing.todayIs(); // rerender now that the customization has loaded properly into periodstyles
