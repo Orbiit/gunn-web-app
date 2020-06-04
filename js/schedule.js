@@ -716,11 +716,12 @@ function initSchedule() {
   d=now();
   datepicker.onchange=e=>{
     if (scheduleapp.options.autorender) {
-      e.d--;
-      yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
-      e.d += 2;
-      tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
-      e.d--;
+      // TEMP?
+      // e.d--;
+      // yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
+      // e.d += 2;
+      // tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
+      // e.d--;
       if (previewingFuture) {
         previewingFuture.remove()
         previewingFuture = null
@@ -799,12 +800,13 @@ function initSchedule() {
   scheduleapp.update()
   makeWeekHappen()
   // Disable buttons accordingly
-  const selectedDay = datepicker.day
-  selectedDay.d--;
-  yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0;
-  selectedDay.d += 2;
-  tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0;
-  selectedDay.d--;
+  // TEMP?
+  // const selectedDay = datepicker.day
+  // selectedDay.d--;
+  // yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0;
+  // selectedDay.d += 2;
+  // tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0;
+  // selectedDay.d--;
 
   // Date control buttons
   document.querySelector('#datepicker').addEventListener("click",e=>{
@@ -812,11 +814,13 @@ function initSchedule() {
   },false);
   yesterdayer.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d-1,m:datepicker.day.m,y:datepicker.day.y};
-    if (datepicker.compare(proposal, datepicker.start) >= 0) datepicker.day=proposal;
+    // TEMP?
+    /*if (datepicker.compare(proposal, datepicker.start) >= 0)*/ datepicker.day=proposal;
   },false);
   tomorrower.addEventListener("click",e=>{
     var proposal={d:datepicker.day.d+1,m:datepicker.day.m,y:datepicker.day.y};
-    if (datepicker.compare(proposal, datepicker.end) <= 0) datepicker.day=proposal;
+    // TEMP?
+    /*if (datepicker.compare(proposal, datepicker.end) <= 0)*/ datepicker.day=proposal;
   },false);
   document.addEventListener('keydown', e => {
     if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
