@@ -196,7 +196,9 @@ langs.en = {
     ad: 'Compelling utility',
     'coronavirus-heading': 'School\'s closed!',
     'coronavirus-subtitle': 'Don\'t trust what UGWA says for the rest of the school year.',
-    'coronavirus-pausd': 'PAUSD updates about the coronavirus'
+    'coronavirus-pausd': 'PAUSD updates about the coronavirus',
+    kevin: 'Kevin',
+    'kevin-creds': ' for the French translation.',
   },
   other: {
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
