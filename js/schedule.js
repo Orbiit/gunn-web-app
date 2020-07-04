@@ -9,6 +9,8 @@ VERSION=4,
 FORMATTING_VERSION='6',
 normalschedule=[
   null,
+  // Keeping old schedule in case the school ever returns to it if the pandemic goes away
+  /*
   [
     {name:'A',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
     {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
@@ -48,8 +50,58 @@ normalschedule=[
     {name:'F',start:{hour:13,minute:5,totalminutes:785},end:{hour:14,minute:15,totalminutes:855}},
     {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:35,totalminutes:935}}
   ],
+  */
+  [
+    {name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30)},
+    {name: 'B', start: makeHMTM(10, 35), end: makeHMTM(11, 5)},
+    {name: 'C', start: makeHMTM(11, 10), end: makeHMTM(11, 40)},
+    {name: 'D', start: makeHMTM(11, 45), end: makeHMTM(12, 20)},
+    {name: 'Lunch', start: makeHMTM(12, 20), end: makeHMTM(12, 50)},
+    {name: 'E', start: makeHMTM(12, 55), end: makeHMTM(13, 25)},
+    {name: 'F', start: makeHMTM(13, 30), end: makeHMTM(14, 0)},
+    {name: 'G', start: makeHMTM(14, 5), end: makeHMTM(14, 35)},
+  ],
+  [
+    {name: 'A', start: makeHMTM(8, 30), end: makeHMTM(9, 45)},
+    {name: 'Brunch', start: makeHMTM(9, 45), end: makeHMTM(9, 55)},
+    {name: 'B', start: makeHMTM(10, 0), end: makeHMTM(11, 15)},
+    {name: 'C', start: makeHMTM(11, 20), end: makeHMTM(12, 40)},
+    {name: 'Lunch', start: makeHMTM(12, 45), end: makeHMTM(13, 15)},
+    {name: 'D', start: makeHMTM(13, 20), end: makeHMTM(14, 35)},
+    {name: 'Flex', start: makeHMTM(14, 40), end: makeHMTM(15, 10)},
+  ],
+  [
+    {name: 'E', start: makeHMTM(8, 30), end: makeHMTM(9, 45)},
+    {name: 'Brunch', start: makeHMTM(9, 45), end: makeHMTM(9, 55)},
+    {name: 'F', start: makeHMTM(10, 0), end: makeHMTM(11, 20)},
+    {name: 'SELF', start: makeHMTM(11, 25), end: makeHMTM(11, 55)},
+    {name: 'Lunch', start: makeHMTM(11, 55), end: makeHMTM(12, 25)},
+    {name: 'G', start: makeHMTM(12, 30), end: makeHMTM(13, 45)},
+    {name: 'Flex', start: makeHMTM(13, 45), end: makeHMTM(14, 45)},
+  ],
+  [
+    {name: 'A', start: makeHMTM(8, 30), end: makeHMTM(9, 45)},
+    {name: 'Brunch', start: makeHMTM(9, 45), end: makeHMTM(9, 55)},
+    {name: 'B', start: makeHMTM(10, 0), end: makeHMTM(11, 15)},
+    {name: 'C', start: makeHMTM(11, 20), end: makeHMTM(12, 40)},
+    {name: 'Lunch', start: makeHMTM(12, 45), end: makeHMTM(13, 15)},
+    {name: 'D', start: makeHMTM(13, 20), end: makeHMTM(14, 35)},
+    {name: 'Flex', start: makeHMTM(14, 40), end: makeHMTM(15, 10)},
+  ],
+  [
+    {name: 'E', start: makeHMTM(8, 30), end: makeHMTM(9, 45)},
+    {name: 'Brunch', start: makeHMTM(9, 45), end: makeHMTM(9, 55)},
+    {name: 'F', start: makeHMTM(10, 0), end: makeHMTM(11, 20)},
+    {name: 'SELF', start: makeHMTM(11, 25), end: makeHMTM(11, 55)},
+    {name: 'Lunch', start: makeHMTM(11, 55), end: makeHMTM(12, 25)},
+    {name: 'G', start: makeHMTM(12, 30), end: makeHMTM(13, 45)},
+    {name: 'Flex', start: makeHMTM(13, 45), end: makeHMTM(14, 45)},
+  ],
   null
 ];
+function makeHMTM (hour, minute = 0) {
+  return {hour,minute,totalminutes:hour * 60 + minute}
+}
 
 // TEMP: Gunn EOY lol
 const startDropOff = { hour: 8, minute: 0, totalminutes: 8 * 60 }
@@ -98,17 +150,18 @@ function initSchedule() {
   var letterPdFormat = localize('periodx'),
   periodstyles={
     NO_SCHOOL:{label:localize('no-school')},
+    // Default period names and styles
     "Brunch":{label:localize('brunch'),colour:"#90a4ae"},
     "Lunch":{label:localize('lunch'),colour:"#90a4ae"},
     "Flex":{label:localize('flex'),colour:"#455a64"},
     "SELF":{label:localize('self'),colour:"#455a64"},
-    "A":{label:letterPdFormat.replace('{X}', "A"),colour:"#f44336"},
-    "B":{label:letterPdFormat.replace('{X}', "B"),colour:"#2196F3"},
-    "C":{label:letterPdFormat.replace('{X}', "C"),colour:"#FFEB3B"},
-    "D":{label:letterPdFormat.replace('{X}', "D"),colour:"#795548"},
-    "E":{label:letterPdFormat.replace('{X}', "E"),colour:"#FF9800"},
-    "F":{label:letterPdFormat.replace('{X}', "F"),colour:"#9C27B0"},
-    "G":{label:letterPdFormat.replace('{X}', "G"),colour:"#4CAF50"},
+    "A":{label:letterPdFormat.replace('{X}', "1"),colour:"#f44336"},
+    "B":{label:letterPdFormat.replace('{X}', "2"),colour:"#2196F3"},
+    "C":{label:letterPdFormat.replace('{X}', "3"),colour:"#FFEB3B"},
+    "D":{label:letterPdFormat.replace('{X}', "4"),colour:"#795548"},
+    "E":{label:letterPdFormat.replace('{X}', "5"),colour:"#FF9800"},
+    "F":{label:letterPdFormat.replace('{X}', "6"),colour:"#9C27B0"},
+    "G":{label:letterPdFormat.replace('{X}', "7"),colour:"#4CAF50"},
     "H":{label:letterPdFormat.replace('{X}', "H"),colour:"#673AB7"},
     "0":{label:localize('p0'),colour:"#009688"}
   };
@@ -1011,13 +1064,13 @@ function initSchedule() {
   if (formatOptions[8] === 'yes') customiserAdder = customiserAdder
     (localize('p0'),'0',options[13][1],options[13][0]);
   customiserAdder
-    (letterPdFormat.replace('{X}', 'A'),'A',options[1][1],options[1][0])
-    (letterPdFormat.replace('{X}', 'B'),'B',options[2][1],options[2][0])
-    (letterPdFormat.replace('{X}', 'C'),'C',options[3][1],options[3][0])
-    (letterPdFormat.replace('{X}', 'D'),'D',options[4][1],options[4][0])
-    (letterPdFormat.replace('{X}', 'E'),'E',options[5][1],options[5][0])
-    (letterPdFormat.replace('{X}', 'F'),'F',options[6][1],options[6][0])
-    (letterPdFormat.replace('{X}', 'G'),'G',options[7][1],options[7][0])
+    (letterPdFormat.replace('{X}', '1'),'A',options[1][1],options[1][0])
+    (letterPdFormat.replace('{X}', '2'),'B',options[2][1],options[2][0])
+    (letterPdFormat.replace('{X}', '3'),'C',options[3][1],options[3][0])
+    (letterPdFormat.replace('{X}', '4'),'D',options[4][1],options[4][0])
+    (letterPdFormat.replace('{X}', '5'),'E',options[5][1],options[5][0])
+    (letterPdFormat.replace('{X}', '6'),'F',options[6][1],options[6][0])
+    (letterPdFormat.replace('{X}', '7'),'G',options[7][1],options[7][0])
     (letterPdFormat.replace('{X}', 'H'),'H',options[12][1],options[12][0])
     (localize('flex'),'Flex',options[8][1],options[8][0]);
   if (+formatOptions[3]) customiserAdder = customiserAdder
