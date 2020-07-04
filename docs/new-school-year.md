@@ -18,3 +18,11 @@
   ```
 
   This is for determining which year a month-date pair is in. [UGWA stores alternate schedules weirdly.](https://sheeptester.github.io/longer-tweets/ugwa-alt-schedules/)
+
+## Updating Ugwita
+
+Ugwita has been marked as deprecated. However, if you still want to update it,
+
+1. Change `firstDay` and `lastDay` in **lite/data.js**. This is the same as step 1 in the previous section (because UGWA copied from Ugwita).
+
+2. You'll also need to update `startDate` and `endDate` in **lite/main.js**; this is kind of like in step 3 where months are 0 indexed.
