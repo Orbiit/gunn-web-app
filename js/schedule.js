@@ -558,8 +558,8 @@ function initSchedule() {
           var altSched = toAlternateSchedules(alternateJSON);
           var ugwitaAltObj = {};
           var change = false;
-          if (cookie.getItem('[gunn-web-app] alts.2019-20'))
-            ugwitaAltObj = JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
+          if (cookie.getItem(ALT_KEY))
+            ugwitaAltObj = JSON.parse(cookie.getItem(ALT_KEY));
           var selfDay = json.find(ev => ev.summary.includes('SELF'));
           if (selfDay) {
             if (!selfDays.includes(date)) {
@@ -585,7 +585,7 @@ function initSchedule() {
             change = true;
           }
           if (change) {
-            cookie.setItem('[gunn-web-app] alts.2019-20', JSON.stringify(ugwitaAltObj));
+            cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj));
             scheduleapp.offset = scheduleapp.offset;
             makeWeekHappen();
           }
@@ -665,7 +665,7 @@ function initSchedule() {
     };
     return true;
   }
-  if (cookie.getItem('[gunn-web-app] alts.2019-20')) alternates=JSON.parse(cookie.getItem('[gunn-web-app] alts.2019-20'));
+  if (cookie.getItem(ALT_KEY)) alternates=JSON.parse(cookie.getItem(ALT_KEY));
   else alternates={};
   selfDays = alternates.self || [];
   for (var dayString in alternates) {

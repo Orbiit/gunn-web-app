@@ -66,12 +66,14 @@ const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
   + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o";
 const firstDay = "2019-08-13T00:00:00.000-07:00";
 const lastDay = "2020-06-04T23:59:59.999-07:00";
+const ALT_KEY = '[gunn-web-app] alts.2019-20'
+const LAST_YEARS_ALT_KEY = '[gunn-web-app] lite.alts'
 const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 function refreshAlts() {
   return getAlternateSchedules().then(alts => {
     const today = now();
     alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
-    cookie.setItem("[gunn-web-app] alts.2019-20", JSON.stringify(alts));
+    cookie.setItem(ALT_KEY, JSON.stringify(alts));
   });
 }
 function getAlternateSchedules() {
@@ -88,10 +90,10 @@ function getAlternateSchedules() {
     return alternateSchedules;
   });
 }
-const schedulesReady = cookie.getItem('[gunn-web-app] alts.2019-20') ? Promise.resolve() : refreshAlts();
+const schedulesReady = cookie.getItem(ALT_KEY) ? Promise.resolve() : refreshAlts();
 // END MASSIVE PASTE FROM UGWITA
 
-if (cookie.getItem('[gunn-web-app] lite.alts')) cookie.removeItem('[gunn-web-app] lite.alts'); // delete old 2019-20 alts; can remove by, er, how about 2019-09-01?
+if (cookie.getItem(LAST_YEARS_ALT_KEY)) cookie.removeItem(LAST_YEARS_ALT_KEY);
 let savedClubs = {}, onSavedClubsUpdate = null;
 if (cookie.getItem('[gunn-web-app] club-list.spring18-19')) {
   try {

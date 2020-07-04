@@ -15,3 +15,7 @@ Please give us your ideas/suggestions! :D
 
 ## Files used
 `build.js` reads `appdesign.html`, the source HTML, replaces the `<link>` tags with a `<style>` tag containing the contents of all the linked CSS files (in order), replaces the `<script>` tags with a `<script>` tag containing the contents of the linked JS files (in order), then minifies the entire thing and writes it to `index.html`.
+
+## Contingency
+
+Refer to [new-school-year.md](./docs/new-school-year.md) for updating UGWA to a new school year.
