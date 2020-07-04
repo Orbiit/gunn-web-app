@@ -4,6 +4,9 @@ now()// Date format names:
 class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor(start,end,elem) {
+    this._days=localize('ds').split('  '),
+    this._months=localize('mos').split('  ');
+    const [days, months] = [this._days, this._months]
     this.start=start;
     this.end=end;
     this.min = DatePicker.weirdToJS(start).getTime();
@@ -36,7 +39,7 @@ class DatePicker {
         } else entry.notinrange=true;
         if (i===0&&lastmonth!==today.getMonth()) {
           lastmonth=today.getMonth();
-          entry.newMonth = months[lastmonth]+today.getFullYear().toString().slice(-2)
+          entry.newMonth = `${months[lastmonth]} '${today.getFullYear().toString().slice(-2)}`
         }
       }
       this.weeks.push(week)
@@ -82,8 +85,7 @@ class DatePicker {
   _createElements () {
     if (this.created) return
     this.created = true
-    var days=localize('ds').split('  '),
-    months=localize('mos').split('  ');
+    const days = this._days
 
     // header
     this.header=document.createElement("div");

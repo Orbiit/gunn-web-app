@@ -215,7 +215,7 @@ langs.en = {
     'barcode-default': 'Intellectual student',
     'barcode-student-placeholder': "Whose ID is this?",
     ds: 'S  M  T  W  &Theta;  F  S',
-    mos: 'jan  feb  mar  apr  may  jun  jul  aug  sep  oct  nov  dec',
+    mos: 'Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec',
     'no-school': 'No school today!',
     flex: 'Flex',
     brunch: 'Brunch',
