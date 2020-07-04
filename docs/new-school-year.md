@@ -6,6 +6,8 @@
 
   - You should set `LAST_YEARS_ALT_KEY` in **js/main.js** to last year's `ALT_KEY` so that it clears the stored alternate schedules.
 
+  - **NOTE: You might not want to do this until after the school has released alternate schedules on their Google Calendar**, so it only force updates when it's ready.
+
 3. Update `datePickerRange` in **js/schedule.js** to have the first and last days of the school year. Note that months are zero-indexed here, so August would be `m:7`. (This is for... the date picker range.)
 
 4. Update an if/else statement in the `ugwaifyAlternates` function in **js/schedule.js** to use the new school year's two years.

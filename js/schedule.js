@@ -86,7 +86,7 @@ dropOffSeniorsFPeriod.customName = dropOffSeniorsFPeriod.name
 dropOffSeniorsFPeriod.customName += '—Period F for others'
 dropOffSeniorsFPeriod.name = 'F'
 
-const datePickerRange = [{d:13,m:7,y:2019},{d:4,m:5,y:2020}]; // change for new school year, months are 0-indexed
+const datePickerRange = [{d:12,m:7,y:2020},{d:3,m:5,y:2021}]; // change for new school year, months are 0-indexed
 const IMAGE_CACHE = 'ugwa-img-cache-YEET';
 function cacheBackground(url, pd) {
   return Promise.all([
@@ -627,8 +627,8 @@ function initSchedule() {
     if (ugwitaData === undefined) return true;
     var [month, day] = dayString.split('-').map(Number);
     var date;
-    if (month > 6) date = new Date(2019, month - 1, day);
-    else date = new Date(2020, month - 1, day);
+    if (month > 6) date = new Date(2020, month - 1, day);
+    else date = new Date(2021, month - 1, day);
     const periods = [];
     if (ugwitaData !== null) {
       ugwitaData.forEach(p => {

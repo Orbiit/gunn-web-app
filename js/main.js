@@ -64,10 +64,13 @@ const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
   + "/events?singleEvents=true&fields="
   + encodeURIComponent("items(description,end(date,dateTime),start(date,dateTime),summary)")
   + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o";
-const firstDay = "2019-08-13T00:00:00.000-07:00";
-const lastDay = "2020-06-04T23:59:59.999-07:00";
+const firstDay = "2020-08-12T00:00:00.000-07:00";
+const lastDay = "2021-06-03T23:59:59.999-07:00";
 const ALT_KEY = '[gunn-web-app] alts.2019-20'
 const LAST_YEARS_ALT_KEY = '[gunn-web-app] lite.alts'
+// TODO: Uncomment when alternate schedules are out
+// const ALT_KEY = '[gunn-web-app] alts.2020-21'
+// const LAST_YEARS_ALT_KEY = '[gunn-web-app] alts.2019-20'
 const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 function refreshAlts() {
   return getAlternateSchedules().then(alts => {
