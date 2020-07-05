@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ugwa-sw-1591292789732';
+const CACHE_NAME = 'ugwa-sw-1593915099573';
 const urlsToCache = [
   './',
   'images/newmap.min.png',
