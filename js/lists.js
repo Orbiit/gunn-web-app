@@ -55,7 +55,7 @@ window.addEventListener("load",e=>{
       var staffnames=Object.keys(staff).sort((a,b)=>a[a.lastIndexOf(' ')+1].charCodeAt()-b[b.lastIndexOf(' ')+1].charCodeAt()),
       innerHTML=``;
       for (var i=0,arr=staffnames,len=arr.length,person=arr[i];i<len;i++,person=arr[i]) {
-        innerHTML+=`<li tabindex="0" data-person="${person}" data-search="${person} ${staff[person].jobTitle} ${staff[person].department||''}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${staff[person].department||''}</span></li>`;
+        innerHTML+=`<li tabindex="0" data-person="${person}" data-search="${person} ${staff[person].jobTitle} ${staff[person].department||''}"><span class="primary">${person}</span><span class="secondary">${staff[person].jobTitle}</span><span class="secondary">${(staff[person].email||'').replace('pausd.org', '...')}</span></li>`;
       }
       stafflist.innerHTML=innerHTML;
       ripple('#staff li');
@@ -247,9 +247,9 @@ window.addEventListener("load",e=>{
         }
       } else {
         let innerHTML = '';
-        innerHTML += `<p><strong>${localize('title')}</strong> ${person.jobTitle}</p>`;
-        innerHTML += `<p><strong>${localize('department')}</strong> ${person.department}</p>`;
-        innerHTML += `<p><strong>${localize('email')}</strong> <a href="mailto:${person.email}" target="_blank" rel="noopener noreferrer">${person.email}</a></p>`;
+        if (person.jobTitle) innerHTML += `<p><strong>${localize('title')}</strong> ${person.jobTitle}</p>`;
+        if (person.department) innerHTML += `<p><strong>${localize('department')}</strong> ${person.department}</p>`;
+        if (person.email) innerHTML += `<p><strong>${localize('email')}</strong> <a href="mailto:${person.email}" target="_blank" rel="noopener noreferrer">${person.email}</a></p>`;
         if (person.phone) innerHTML += `<p><strong>${localize('phone')}</strong> ${person.phone}</p>`;
         if (person.webpage) innerHTML += `<p><strong>${localize('website')}</strong> <a href="${person.webpage}" target="_blank" rel="noopener noreferrer">${person.webpage}</a></p>`;
         if (person.oc) innerHTML += `<p><strong>${localize('basement')}</strong> <a href="https://sheeptester.github.io/hello-world/elements.html" target="_blank" rel="noopener noreferrer">${localize('oc-basement')}</a></p>`;

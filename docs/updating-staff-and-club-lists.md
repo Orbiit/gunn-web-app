@@ -21,7 +21,7 @@ email: eval(teach.querySelector('.fsEmail > div > script').innerHTML.replace('se
 }
 ])))
 }
-JSON.stringify(r)
+JSON.stringify(r, null, '\t')
 ```
 
 You might want to update the last updated date in **js/l10n.js** in `staff-disclaimer-link`.
@@ -49,7 +49,7 @@ email:boop[9-i].textContent
 
 }
 delete r["Club Name"]
-JSON.stringify(r)
+JSON.stringify(r, null, '\t')
 ```
 
 You might want to update the last updated date in **js/l10n.js** in `clubs-disclaimer-link`.
