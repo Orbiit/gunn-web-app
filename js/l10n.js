@@ -290,7 +290,7 @@ langs.en = {
     'export-file-name': 'the-settings-of-a-great-intellectual-gunn-student.json',
     'assync-loading': 'Loading assignments...',
     'assync-loaded': 'Assignments loaded.',
-    'assync-loading-problem': 'There was a problem loading the assignments.',
+    'assync-loading-problem': 'Assync is no more. All saved assignments have been lost. Please turn off Assync in Options.', // TEMP
     'assync-saving': 'Saving changes...',
     'assync-saved': 'Changes saved.',
     'assync-saving-problem': 'There was a problem saving the changes.',

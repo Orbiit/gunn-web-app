@@ -175,6 +175,7 @@ button.add-asgn {
 }
 .assync-error {
   background-color: #e74c3c;
+  animation-delay: 100s;
 }
 
 /* ASSYNC SETTINGS */

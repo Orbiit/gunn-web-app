@@ -180,6 +180,8 @@
       <p>{{min-grade}}<span class="percent-wrapper"><input type="text" id="minimum-grade" value="90.00"><span>%</span></span></p>
       <p id="grade-output"></p>
 
+      <!-- TEMP because jsonstore is dead -->
+      <div style="display: none;">
       <h1>{{comm}}<a href="./prev-chats.html" target="_blank" rel="noopener noreferrer" class="chat-history"><button class="material">{{prev-chats}}</button></a></h1>
       <textarea class="textarea" id="chat" readonly></textarea>
       <button class="material ripple-light raised" id="open-chat">{{open-chat}}</button>
@@ -187,6 +189,7 @@
         <p class="send-msg-wrapper"><input type="text" placeholder="..." id="msg-content"><button class="material" id="send">{{send}}</button></p>
         <p id="preview"></p>
         <p>{{msg-note}}</p>
+      </div>
       </div>
 
       <h1>{{map}}</h1>
@@ -287,16 +290,23 @@
         <p class='radio-wrapper'><input type="radio" name="asgn-sort" value="aLgOriThMs" class="material-radio"><label>{{asgn-algorithms}}</label></p>
       </div>
 
+      <!-- TEMP because jsonstore is dead -->
+      <div style="display: none;">
       <h2>{{assync}}</h2>
       <p>{{assync-desc}}</p>
+      </div>
       <div id="assync-auth-wrapper">
+        <div style="display: none;">
         <div class="not-using-assync">
           <p><button class="material raised" id="create-assync" disabled>{{create-assync}}</button>{{or-assync}}<input type="text" id="join-assync-id" class="notmaterial-input" disabled> <button class="material raised" id="join-assync" disabled>{{join-assync}}</button></p>
+        </div>
         </div>
         <div class="using-assync">
           <p>{{assync-id}}<span id="assync-id"></span><button class="material raised" id="leave-assync">{{leave-assync}}</button></p>
         </div>
+        <div style="display: none;">
         <p class="loading-assync">{{loading-assync}}</p>
+        </div>
       </div>
 
       <h1>{{languages}}</h1>
