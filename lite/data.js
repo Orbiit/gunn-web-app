@@ -42,7 +42,7 @@ const normalSchedules = [
   null
 ];
 
-const firstDay = "2020-08-12T00:00:00.000-07:00";
+const firstDay = "2020-08-17T00:00:00.000-07:00";
 const lastDay = "2021-06-03T23:59:59.999-07:00";
 const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 

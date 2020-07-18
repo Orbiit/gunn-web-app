@@ -122,7 +122,7 @@ try {
 
 if (window.location.search === '?genalts') refreshAlts();
 
-const startDate = {year: 2020, month: 7, date: 12},
+const startDate = {year: 2020, month: 7, date: 17},
 endDate = {year: 2021, month: 5, date: 3};
 
 let alternateSchedules;

@@ -64,7 +64,7 @@ const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
   + "/events?singleEvents=true&fields="
   + encodeURIComponent("items(description,end(date,dateTime),start(date,dateTime),summary)")
   + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o";
-const firstDay = "2020-08-12T00:00:00.000-07:00";
+const firstDay = "2020-08-17T00:00:00.000-07:00";
 const lastDay = "2021-06-03T23:59:59.999-07:00";
 const ALT_KEY = '[gunn-web-app] alts.2019-20'
 const LAST_YEARS_ALT_KEY = '[gunn-web-app] lite.alts'

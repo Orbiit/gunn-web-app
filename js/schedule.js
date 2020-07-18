@@ -138,7 +138,7 @@ dropOffSeniorsFPeriod.customName = dropOffSeniorsFPeriod.name
 dropOffSeniorsFPeriod.customName += '—Period F for others'
 dropOffSeniorsFPeriod.name = 'F'
 
-const datePickerRange = [{d:12,m:7,y:2020},{d:3,m:5,y:2021}]; // change for new school year, months are 0-indexed
+const datePickerRange = [{d:17,m:7,y:2020},{d:3,m:5,y:2021}]; // change for new school year, months are 0-indexed
 const IMAGE_CACHE = 'ugwa-img-cache-YEET';
 function cacheBackground(url, pd) {
   return Promise.all([
