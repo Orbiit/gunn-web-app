@@ -1,0 +1,33 @@
+# Built things
+/index.html
+*.min.js
+/json/*.json
+
+# Irrelevant folders and files
+/cachetest/
+/designs/
+/games/
+/touchy/
+/js/*.html
+/js/datepicker2.js
+/js/inputFitContent.js
+/images/getpointtest.html
+/campusMap.html
+/colourtest.html
+/datetest.html
+/ios-add-to-home.html
+/prev-chats.html
+/psa.html
+/ugwa.ga-simulator.html
+
+# Gunn Schedule
+/schedule/*
+!/schedule/app.js
+
+# Ugwita
+/lite/
+/lite-updater.html
+
+# PSAs
+/psa/
+psa.html

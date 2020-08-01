@@ -7,7 +7,8 @@ langs.test = {
     options: 'Tasvenseutennas',
     'pausd-login': 'valse vuente PAUSD (SBEAUSPA)',
     barcode: 'Bakedu',
-    'barcode-desc-before-link': 'Asevuentenapseianvsemteineanseventpaiensauenteamsieoasuven. Avevu auvsu esn usn sent spa iea Code 39, legislabelas: ',
+    'barcode-desc-before-link':
+      'Asevuentenapseianvsemteineanseventpaiensauenteamsieoasuven. Avevu auvsu esn usn sent spa iea Code 39, legislabelas: ',
     wikipedia: 'Güiquipiedieaëeunte',
     'barcode-desc-after-link': '.',
     'add-barcode': 'm bakedu',
@@ -21,9 +22,11 @@ langs.test = {
     'for-gmaps': 'Pa Google Maps-fu:',
     'gmaps-instruct': " Aseve suansetne iruwodec, evausen tvapeunse'vente.",
     'club-list': 'Atakaa eve a usneven ap seunven tea vensea.',
-    'clubs-disclaimer-before-link': 'Ufus les veunte informaciones veunte chiets-',
+    'clubs-disclaimer-before-link':
+      'Ufus les veunte informaciones veunte chiets-',
     'clubs-disclaimer-link': 'doquements-de-Weteagúa-2019-e-a2tre',
-    'clubs-disclaimer-after-link': ' ja-ja. Veunte se vape vuente seona voente.',
+    'clubs-disclaimer-after-link':
+      ' ja-ja. Veunte se vape vuente seona voente.',
     'lists-disabled': "T'a disabl les lists du clubs e estafeuntes",
     'turn-back-on': 'aveseuvneteé',
     'select-date': 'kalaleve aoventeunevs-aventeutó',
@@ -47,7 +50,7 @@ langs.test = {
     'show-self': 'Serufu se bon?',
     'hide-self': 'Serufu se malbone tsí!',
     'control-centre': 'Kunteveunt geuntenvenque',
-    'control-centre-desc': "TSGDE ne vente? Vontenv sedfuent!",
+    'control-centre-desc': 'TSGDE ne vente? Vontenv sedfuent!',
     'attempt-update': 'ontevoent',
     reload: 'mata a TSGDE e vívale a TSGDE otravetsu',
     'trick-cache': 'cache se malbone',
@@ -108,21 +111,23 @@ langs.test = {
     'feature-based': 'See see ehks dahtah.',
     'before-material': 'Noh wuhn reedz dhihs soh ',
     material: 'ai kahn puht wahtehvuhr ai wahnt heeuhr',
-    'after-material': "."
+    'after-material': '.'
   },
   other: {
-    'anti-ugwaga': 'Tiseavente/vnentene kli a tse chiet bon we Tátentie Sunt vun chiet Gunn Desfocialente-Existentvente',
-    'psa-error': ", anuntse kuf!",
+    'anti-ugwaga':
+      'Tiseavente/vnentene kli a tse chiet bon we Tátentie Sunt vun chiet Gunn Desfocialente-Existentvente',
+    'psa-error': ', anuntse kuf!',
     'no-study-before-emph': 'Tatata vente',
-    'no-study-emph': "uf",
-    'no-study-after-emph': ", concero se bon",
-    'zero-error': "Les ceroes se malbones",
-    'minscore-before-emph': "",
+    'no-study-emph': 'uf',
+    'no-study-after-emph': ', concero se bon',
+    'zero-error': 'Les ceroes se malbones',
+    'minscore-before-emph': '',
     'minscore-after-emph': ' pa puf quente.',
-    'minscore-too-high-addendum': " Kelentenvunete!",
+    'minscore-too-high-addendum': ' Kelentenvunete!',
     gmaps: 'ku google maps-fu',
     image: 'ku imiganetuve-fu',
-    'gmaps-error': "Klala vente vunease vse klean menamse pun Google Maps fed, en keje yut erebe bensefu?",
+    'gmaps-error':
+      'Klala vente vunease vse klean menamse pun Google Maps fed, en keje yut erebe bensefu?',
     you: 'Túse',
     'barcode-default': 'Eshtu vone intellgivente',
     'barcode-student-placeholder': 'Uau ten veintendu ckakaen IVE ande?',
@@ -134,18 +139,20 @@ langs.test = {
     lunch: 'Luntsu',
     self: 'Serufu',
     periodx: 'Kest {X} von',
-    months: 'Anneragua  Weteagúa  Tof-tentesu  Kutakakvantantane  Tenseaprivent  Tensevenivent  Tensesetivent  Vútesente  Ánë  Tereskeble  Téreskeble  Tef du Clante',
+    months:
+      'Anneragua  Weteagúa  Tof-tentesu  Kutakakvantantane  Tenseaprivent  Tensevenivent  Tensesetivent  Vútesente  Ánë  Tereskeble  Téreskeble  Tef du Clante',
     loading: 'Sen...',
     'no-events': 'Kúku, vonensevuente :(',
     'events-error': ", problem d'éventes!",
-    days: 'Wakaka  Tunenvente  Túfente  Wont Ven  Weuntse  Centeveryeontuent  Cintenenveúntiste',
+    days:
+      'Wakaka  Tunenvente  Túfente  Wont Ven  Weuntse  Centeveryeontuent  Cintenenveúntiste',
     'default-alt-msg': 'TELE VOASN SE FVUVND',
     'period-name-label': 'Se von te se pof ',
     'enable-lists': 'Kulukata',
     'supreme-leader': 'Wuntevonwete',
     universe: 'Jevantesu',
     'blamed-teacher': 'Glúnte',
-    'staff-error': ", vase!",
+    'staff-error': ', vase!',
     title: 'Titlugu-',
     department: 'Departemente-',
     email: 'Ontevut-',
@@ -154,7 +161,8 @@ langs.test = {
     basement: 'Basemiento-',
     'oc-basement': "Basemiento d'OC",
     'sophomore-club': 'Sotieo-clubeunten',
-    'soph-desc': 'Tele av é on te se ux she ventensueaxuefl vontev 2021 (le claseunt que ske cvnet ventesa vonte redeghe gue SELF). Sle van teun!',
+    'soph-desc':
+      'Tele av é on te se ux she ventensueaxuefl vontev 2021 (le claseunt que ske cvnet ventesa vonte redeghe gue SELF). Sle van teun!',
     'soph-day': 'Ventenvunteoanwe',
     'soph-time': 'Feleseku',
     'soph-room': 'Valasenvunte',
@@ -176,10 +184,19 @@ langs.test = {
     staff: 'Retun'
   },
   times: {
-    duration({T: minutes}) {
-      if (minutes < 1) return 'defupié des dunf';
-      return (minutes >= 120 ? Math.floor(minutes / 60) + ' pokeunte' : minutes >= 60 ? 'tepoke' : '')
-        + (minutes % 60 === 0 ? '' : (minutes >= 60 ? ' etonze ' : '') + (minutes % 60 === 1 ? 'chiet' : (minutes % 60) + ' cheteunt'));
+    duration ({ T: minutes }) {
+      if (minutes < 1) return 'defupié des dunf'
+      return (
+        (minutes >= 120
+          ? Math.floor(minutes / 60) + ' pokeunte'
+          : minutes >= 60
+          ? 'tepoke'
+          : '') +
+        (minutes % 60 === 0
+          ? ''
+          : (minutes >= 60 ? ' etonze ' : '') +
+            (minutes % 60 === 1 ? 'chiet' : (minutes % 60) + ' cheteunt'))
+      )
     },
     date: "tönf-{D} e'deux {M}",
     ended: '{P} cleun tens {T}.',
@@ -192,4 +209,4 @@ langs.test = {
     'self-starting': '{T} toirchen kunt.',
     'self-ending': 'Jakevunteszen {T2} clar {T1}.'
   }
-};
+}

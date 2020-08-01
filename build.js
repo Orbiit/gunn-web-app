@@ -1,14 +1,17 @@
-const UglifyJS = require("uglify-es");
-const minify = require('html-minifier').minify;
-const fs = require('fs');
-const crypto = require('crypto');
-const path = require('path');
+const UglifyJS = require('uglify-es')
+const minify = require('html-minifier').minify
+const fs = require('fs')
+const crypto = require('crypto')
+const path = require('path')
 const colours = require('colors/safe')
 
 // Recreating md5 is good idea
 // https://stackoverflow.com/questions/5878682/node-js-hash-string#comment25376847_11869589
 function md5 (str) {
-  return require('crypto').createHash('md5').update(str).digest('hex')
+  return require('crypto')
+    .createHash('md5')
+    .update(str)
+    .digest('hex')
 }
 
 // meh whatever
@@ -17,24 +20,24 @@ function md5 (str) {
 //   fs.mkdirSync(path.resolve(__dirname, './source-maps/'));
 // }
 
-function readFile(file) {
+function readFile (file) {
   return new Promise((res, rej) => {
     fs.readFile(path.resolve(__dirname, file), 'utf8', (err, data) => {
-      if (err) rej(err);
-      else res(data);
-    });
-  });
+      if (err) rej(err)
+      else res(data)
+    })
+  })
 }
-function writeFile(file, contents) {
+function writeFile (file, contents) {
   fs.writeFile(path.resolve(__dirname, file), contents, () => {
     console.log(colours.cyan(file + ' written'))
-  });
+  })
 }
 
-const date = new Date().toDateString();
+const date = new Date().toDateString()
 readFile('./sw.js').then(cache => {
-  writeFile('./sw.js', cache.replace(/ugwa-sw-\d+/, 'ugwa-sw-' + Date.now()));
-});
+  writeFile('./sw.js', cache.replace(/ugwa-sw-\d+/, 'ugwa-sw-' + Date.now()))
+})
 /*
 readFile('./psa.html').then(html => {
   writeFile('./psa.html', html.replace(/(<strong data-version>).*?(<\/strong>)/, `$1${date}$2`));
@@ -42,18 +45,22 @@ readFile('./psa.html').then(html => {
 */
 
 readFile('./appdesign.html').then(html => {
-  const css = [];
-  html.replace(/<link rel="stylesheet" href="(.+)">/g, (_, url) => css.push('./' + url));
-  const js = [];
-  html.replace(/<script src="(.+)" charset="utf-8"><\/script>/g, (_, url) => js.push('./' + url));
+  const css = []
+  html.replace(/<link rel="stylesheet" href="(.+)">/g, (_, url) =>
+    css.push('./' + url)
+  )
+  const js = []
+  html.replace(/<script src="(.+)" charset="utf-8"><\/script>/g, (_, url) =>
+    js.push('./' + url)
+  )
   Promise.all(css.map(c => readFile(c))).then(css => {
-    css = css.join('\n').replace(/url\(('|")\.\./g, 'url($1.');
+    css = css.join('\n').replace(/url\(('|")\.\./g, 'url($1.')
     Promise.all(js.map(j => readFile(j))).then(js => {
       js = `(()=>{
         ${js.join('\n')}
         window.initMap = initMap;
         window.langs = langs;
-      })();`;
+      })();`
       const result = minify(
         html
           .replace(/<!-- STYLES [^]* \/STYLES -->/, `<style>${css}</style>`)
@@ -68,8 +75,10 @@ readFile('./appdesign.html').then(html => {
           minifyJS: (text, inline) => {
             // https://github.com/kangax/html-minifier/blob/gh-pages/src/htmlminifier.js
             const id = `source-maps/${md5(text)}.js`
-            const start = text.match(/^\s*<!--.*/);
-            const code = start ? text.slice(start[0].length).replace(/\n\s*-->\s*$/, '') : text;
+            const start = text.match(/^\s*<!--.*/)
+            const code = start
+              ? text.slice(start[0].length).replace(/\n\s*-->\s*$/, '')
+              : text
             const result = UglifyJS.minify(code, {
               compress: {
                 keep_fargs: false
@@ -83,18 +92,18 @@ readFile('./appdesign.html').then(html => {
               // },
               warnings: false, // Warnings weren't very helpful bc I mushed everything together oof
               toplevel: true
-            });
+            })
             if (result.warnings && result.warnings.length) {
-              console.log(colours.bold.underline.yellow('WARNING'));
-              console.log(colours.yellow(result.warnings.join('\n')));
+              console.log(colours.bold.underline.yellow('WARNING'))
+              console.log(colours.yellow(result.warnings.join('\n')))
             }
             if (result.error) {
-              console.log(colours.bold.underline.red('PROBLEM'));
+              console.log(colours.bold.underline.red('PROBLEM'))
               console.log(colours.red(JSON.stringify(result.error, null, 2)))
-              return text;
+              return text
             }
             // writeFile(id + '.map', result.map)
-            return result.code.replace(/;$/, '');
+            return result.code.replace(/;$/, '')
           },
           processConditionalComments: true,
           processScripts: ['text/html'],
@@ -110,8 +119,8 @@ readFile('./appdesign.html').then(html => {
           trimCustomFragments: true,
           useShortDoctype: true
         }
-      );
+      )
       writeFile('./index.html', result)
-    });
-  });
-});
+    })
+  })
+})

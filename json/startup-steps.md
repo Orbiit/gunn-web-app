@@ -9,24 +9,24 @@ The following lists most things related to the core [features of UGWA](./feature
 ### Data preparation (back end)
 
 - **options** requires parsing from localStorage
-- **period styles** requires *options*
-- **localization** requires *options*, possibly importing localization data for other languages
-- **time formatting** requires *options*, *localization*
-- **alternate schedule data** requires possibly fetching alternate schedules from the school, *options*
-- **get schedule** requires *alternate schedule data*, normal schedule data, *options*
-- **preview date** requires *current date* (by default)
-- **assignments** requires *options*, possibly fetching from Assync
+- **period styles** requires _options_
+- **localization** requires _options_, possibly importing localization data for other languages
+- **time formatting** requires _options_, _localization_
+- **alternate schedule data** requires possibly fetching alternate schedules from the school, _options_
+- **get schedule** requires _alternate schedule data_, normal schedule data, _options_
+- **preview date** requires _current date_ (by default)
+- **assignments** requires _options_, possibly fetching from Assync
 - **club/staff data** requires fetching the JSON files
 
 ### On DOM ready (front end)
 
-- **theme** requires *options*
-- **schedule rendering** requires *get schedule*, *localization*, *period styles*, *preview date*, *current time*, *assignments*, *club/staff data*, *options* (for displaying clubs during lunch), *time formatting*, getting events
-- **period status** requires *get schedule*, *current date*, *localization*, *time formatting*, *period styles*
-- **upcoming assignments** requires *assignments*, *current date*, *localization*, *options*, *period styles*
-- **period customization** requires *period styles*, *localization*
-- **display language** requires *localization*
-- **club/staff lists** requires *club/staff data*
+- **theme** requires _options_
+- **schedule rendering** requires _get schedule_, _localization_, _period styles_, _preview date_, _current time_, _assignments_, _club/staff data_, _options_ (for displaying clubs during lunch), _time formatting_, getting events
+- **period status** requires _get schedule_, _current date_, _localization_, _time formatting_, _period styles_
+- **upcoming assignments** requires _assignments_, _current date_, _localization_, _options_, _period styles_
+- **period customization** requires _period styles_, _localization_
+- **display language** requires _localization_
+- **club/staff lists** requires _club/staff data_
 
 ## Data formats
 

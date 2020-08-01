@@ -7,12 +7,12 @@
   bottom: 0;
   height: 50vh;
   width: 210px;
-  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.3);
   padding: 24px;
   border-radius: 2px;
   line-height: 1;
   padding-top: 64px;
-  transition: all .2s;
+  transition: all 0.2s;
   z-index: 2;
   background-color: var(--card);
 }
@@ -29,20 +29,20 @@
   font-size: 20px;
   height: 64px;
   box-shadow: inset 0 -1px 0 var(--light-border);
-  position:absolute;
-  display:flex;
-  width:100%;
-  top:0;
-  left:0;
-  z-index:1;
+  position: absolute;
+  display: flex;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 .datepicker-dayheading {
   flex: 1 0 0;
-  text-align:center;
+  text-align: center;
 }
 .datepicker-days {
   padding-top: 20px;
-  position:relative;
+  position: relative;
   height: 100%;
   box-sizing: border-box;
   overflow: auto;
@@ -57,12 +57,12 @@
   width: 100%;
   font-weight: 300;
   color: var(--ripple);
-  position:absolute;
+  position: absolute;
   z-index: -1;
 }
 .datepicker-week {
-  display:flex;
-  position:relative;
+  display: flex;
+  position: relative;
 }
 .datepicker-day {
   cursor: pointer;
@@ -70,7 +70,7 @@
   font-size: 14px;
   padding: 5px 0;
   flex: 1 0 0;
-  text-align:center;
+  text-align: center;
 }
 .datepicker-day.datepicker-selected {
   background-color: var(--theme);
