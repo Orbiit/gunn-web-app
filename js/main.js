@@ -25,21 +25,21 @@ function currentTime () {
   return Date.now()
 }
 function ajax (url, callback, error) {
-  var xmlHttp = new XMLHttpRequest()
+  const xmlHttp = new XMLHttpRequest()
   xmlHttp.onreadystatechange = () => {
     if (xmlHttp.readyState === 4)
-      xmlHttp.status === 200
-        ? callback(xmlHttp.responseText)
-        : error
-        ? error(xmlHttp.status)
-        : 0
+      if (xmlHttp.status === 200) {
+        callback(xmlHttp.responseText)
+      } else if (error) {
+        error(xmlHttp.status)
+      }
   }
   xmlHttp.open('GET', url, true)
   xmlHttp.send(null)
 }
 function toEach (query, fn) {
-  var elems = document.querySelectorAll(query)
-  for (var i = 0, len = elems.length; i < len; i++) fn(elems[i], i)
+  const elems = document.querySelectorAll(query)
+  for (let i = 0, len = elems.length; i < len; i++) fn(elems[i], i)
 }
 function escapeHTML (text) {
   return text
@@ -49,12 +49,12 @@ function escapeHTML (text) {
     .replace(/"/g, '&quot;')
 }
 function initMap () {
-  var map = new google.maps.Map(document.getElementById('mapgoogle'), {
+  const map = new google.maps.Map(document.getElementById('mapgoogle'), {
     zoom: 18,
     center: { lat: 37.400922, lng: -122.133584 }
   })
   map.setMapTypeId('satellite')
-  var imageBounds = {
+  const imageBounds = {
     north: 37.402294,
     south: 37.398824,
     east: -122.130923,
@@ -114,7 +114,7 @@ function getAlternateSchedules () {
       ).then(res => res.json())
     )
   ).then(results => {
-    let alternateSchedules = {}
+    const alternateSchedules = {}
     results
       .slice(1)
       .forEach(events =>
@@ -133,8 +133,8 @@ const schedulesReady = cookie.getItem(ALT_KEY)
 // END MASSIVE PASTE FROM UGWITA
 
 if (cookie.getItem(LAST_YEARS_ALT_KEY)) cookie.removeItem(LAST_YEARS_ALT_KEY)
-let savedClubs = {},
-  onSavedClubsUpdate = null
+let savedClubs = {}
+let onSavedClubsUpdate = null
 if (cookie.getItem('[gunn-web-app] club-list.spring18-19')) {
   try {
     savedClubs = JSON.parse(
@@ -172,8 +172,8 @@ window.addEventListener(
       })
       return
     }
-    ;(days = localize('days').split('  ')),
-      (months = localize('months').split('  '))
+    days = localize('days').split('  ')
+    months = localize('months').split('  ')
     // Do things that make the app visually change to the user first
     attemptFns([setTheme, localizePage, initErrorLog, showIOSDialog])
     // Allow page to render the localization (seems to require two animation
@@ -281,9 +281,9 @@ function setTheme () {
 }
 
 function initSecondsCounter () {
-  var secondsCounter = document.querySelector('#seconds')
+  const secondsCounter = document.querySelector('#seconds')
   function updateSeconds () {
-    var d = now()
+    const d = now()
     secondsCounter.innerHTML = ('0' + d.getSeconds()).slice(-2)
     secondsCounter.style.setProperty(
       '--rotation',
@@ -363,7 +363,7 @@ function initPSA () {
       Promise.resolve(
         document.body.className.includes('footer-options')
           ? null
-          : new Promise(res => (onOptionsTab = res))
+          : new Promise(resolve => (onOptionsTab = resolve))
       ).then(() => {
         onOptionsTab = null
         displayPsa(currentPsa)
@@ -382,18 +382,18 @@ function initPSA () {
 }
 
 function initGradeCalc () {
-  var gradeCalc = {
+  const gradeCalc = {
     current: document.getElementById('current-grade'),
     worth: document.getElementById('finals-worth'),
     minimum: document.getElementById('minimum-grade'),
     output: document.getElementById('grade-output')
   }
   function setOutput () {
-    var current = (+gradeCalc.current.value || 0) / 100,
-      worth = (+gradeCalc.worth.value || 0) / 100,
-      minimum = (+gradeCalc.minimum.value || 0) / 100,
-      result =
-        Math.round(((minimum - current * (1 - worth)) / worth) * 10000) / 100
+    const current = (+gradeCalc.current.value || 0) / 100
+    const worth = (+gradeCalc.worth.value || 0) / 100
+    const minimum = (+gradeCalc.minimum.value || 0) / 100
+    const result =
+      Math.round(((minimum - current * (1 - worth)) / worth) * 10000) / 100
     if (result <= 0) {
       gradeCalc.output.innerHTML = `${localize(
         'no-study-before-emph'
@@ -411,12 +411,12 @@ function initGradeCalc () {
     }
   }
   setOutput()
-  var badChars = /[^0-9.]|\.(?=[^.]*\.)/g
+  const badChars = /[^0-9.]|\.(?=[^.]*\.)/g
   ;[gradeCalc.current, gradeCalc.worth, gradeCalc.minimum].forEach(input => {
     input.addEventListener(
       'keypress',
       e => {
-        let char = String.fromCharCode(e.charCode)
+        const char = String.fromCharCode(e.charCode)
         if (!'0123456789.'.includes(char)) {
           e.preventDefault()
           return false
@@ -443,16 +443,16 @@ function initGradeCalc () {
 
 function initMaps () {
   zoomImage(document.querySelector('#mapimage'))
-  var maptoggle = document.querySelector('#maptoggle')
-  var btn = document.createElement('button'),
-    img = document.querySelector('#mapimage'),
-    google = document.querySelector('#mapgoogle'),
-    usingGoogle = false,
-    googleLoaded = false,
-    btncontent = document.createTextNode('')
-  ;(img.style.display = 'block'),
-    (google.style.display = 'none'),
-    (btncontent.nodeValue = localize('gmaps'))
+  const maptoggle = document.querySelector('#maptoggle')
+  const btn = document.createElement('button')
+  const img = document.querySelector('#mapimage')
+  const google = document.querySelector('#mapgoogle')
+  let usingGoogle = false
+  let googleLoaded = false
+  const btncontent = document.createTextNode('')
+  img.style.display = 'block'
+  google.style.display = 'none'
+  btncontent.nodeValue = localize('gmaps')
   btn.classList.add('material')
   ripple(btn)
   btn.addEventListener(
@@ -460,12 +460,12 @@ function initMaps () {
     e => {
       usingGoogle = !usingGoogle
       if (usingGoogle) {
-        ;(img.style.display = 'none'),
-          (google.style.display = 'block'),
-          (btncontent.nodeValue = localize('image'))
+        img.style.display = 'none'
+        google.style.display = 'block'
+        btncontent.nodeValue = localize('image')
         if (!googleLoaded) {
           googleLoaded = true
-          var script = document.createElement('script')
+          const script = document.createElement('script')
           script.onerror = () => {
             if (usingGoogle) btn.click()
             maptoggle.innerHTML = localize('gmaps-error')
@@ -475,9 +475,9 @@ function initMaps () {
           document.body.appendChild(script)
         }
       } else {
-        ;(img.style.display = 'block'),
-          (google.style.display = 'none'),
-          (btncontent.nodeValue = localize('gmaps'))
+        img.style.display = 'block'
+        google.style.display = 'none'
+        btncontent.nodeValue = localize('gmaps')
       }
     },
     false
@@ -597,9 +597,10 @@ function initChat () {
       .then(urls => {
         urls = urls.split(/\r?\n/)
         jsonStore = urls.find(url => url[0] === 'h')
-        if (!jsonStore) return Promise.reject('No current chat open.')
+        if (!jsonStore)
+          return Promise.reject(new Error('No current chat open.'))
         let newInput
-        getInput = new Promise(res => (newInput = res))
+        getInput = new Promise(resolve => (newInput = resolve))
         sendInput.addEventListener('click', e => {
           newInput(
             input.value
@@ -607,7 +608,7 @@ function initChat () {
               .slice(0, MAX_LENGTH)
               .replace(trim, '')
           )
-          getInput = new Promise(res => (newInput = res))
+          getInput = new Promise(resolve => (newInput = resolve))
           input.value = ''
           preview.textContent = ''
         })
@@ -617,8 +618,8 @@ function initChat () {
         input.addEventListener('input', e => {
           preview.textContent = ''
           if (!input.value) return
-          let match,
-            i = 0
+          let match
+          let i = 0
           while ((match = illegalChars.exec(input.value))) {
             preview.appendChild(
               document.createTextNode(input.value.slice(i, match.index))
@@ -650,8 +651,8 @@ function initChat () {
         cookie.setItem('[gunn-web-app] chat.username', username)
       })
       .then(async () => {
-        let nextMessageGetTimeoutID = null,
-          ratelimitTimeoutID = null
+        let nextMessageGetTimeoutID = null
+        let ratelimitTimeoutID = null
         function getMessages () {
           if (nextMessageGetTimeoutID) {
             clearTimeout(nextMessageGetTimeoutID)
@@ -684,10 +685,10 @@ function initChat () {
             })
         }
         getMessages()
-        let lastMessage,
-          messages = 0
+        let lastMessage
+        let messages = 0
         while (true) {
-          let message = await getInput
+          const message = await getInput
           if (message && message !== lastMessage) {
             fetch(
               jsonStore +
@@ -752,7 +753,7 @@ function localizePage () {
   function getHTMLString (id) {
     return localize(id, 'html')
   }
-  const langStringRegex = /\{\{([a-z0-9\-]+)\}\}/
+  const langStringRegex = /\{\{([a-z0-9-]+)\}\}/
   const textNodes = []
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
   while (walker.nextNode()) {

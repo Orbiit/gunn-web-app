@@ -1,29 +1,29 @@
-var options,
-  letras = [
-    0,
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'Flex',
-    'Brunch',
-    'Lunch',
-    'SELF',
-    'H',
-    '0'
-  ],
-  // period style save format version
-  // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
-  VERSION = 4,
-  // radios save format version
-  FORMATTING_VERSION = '6',
-  normalschedule = [
-    null,
-    // Keeping old schedule in case the school ever returns to it if the pandemic goes away
-    /*
+let options
+const letras = [
+  0,
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'Flex',
+  'Brunch',
+  'Lunch',
+  'SELF',
+  'H',
+  '0'
+]
+// period style save format version
+// WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
+const VERSION = 4
+// radios save format version
+const FORMATTING_VERSION = '6'
+const normalschedule = [
+  null,
+  // Keeping old schedule in case the school ever returns to it if the pandemic goes away
+  /*
   [
     {name:'A',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
     {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
@@ -64,49 +64,49 @@ var options,
     {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:35,totalminutes:935}}
   ],
   */
-    [
-      { name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30) },
-      { name: 'B', start: makeHMTM(10, 40), end: makeHMTM(11, 10) },
-      { name: 'C', start: makeHMTM(11, 20), end: makeHMTM(11, 50) },
-      { name: 'D', start: makeHMTM(12, 0), end: makeHMTM(12, 35) },
-      { name: 'Lunch', start: makeHMTM(12, 35), end: makeHMTM(13, 5) },
-      { name: 'E', start: makeHMTM(13, 15), end: makeHMTM(13, 45) },
-      { name: 'F', start: makeHMTM(13, 55), end: makeHMTM(14, 25) },
-      { name: 'G', start: makeHMTM(14, 35), end: makeHMTM(15, 5) }
-    ],
-    [
-      { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
-      { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
-      { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-      { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-      { name: 'D', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
-      { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
-    ],
-    [
-      { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-      { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
-      { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-      { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-      { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
-      { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
-    ],
-    [
-      { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
-      { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
-      { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-      { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-      { name: 'D', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
-      { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
-    ],
-    [
-      { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-      { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
-      { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-      { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-      { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) }
-    ],
-    null
-  ]
+  [
+    { name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30) },
+    { name: 'B', start: makeHMTM(10, 40), end: makeHMTM(11, 10) },
+    { name: 'C', start: makeHMTM(11, 20), end: makeHMTM(11, 50) },
+    { name: 'D', start: makeHMTM(12, 0), end: makeHMTM(12, 35) },
+    { name: 'Lunch', start: makeHMTM(12, 35), end: makeHMTM(13, 5) },
+    { name: 'E', start: makeHMTM(13, 15), end: makeHMTM(13, 45) },
+    { name: 'F', start: makeHMTM(13, 55), end: makeHMTM(14, 25) },
+    { name: 'G', start: makeHMTM(14, 35), end: makeHMTM(15, 5) }
+  ],
+  [
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
+    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
+    { name: 'D', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
+    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+  ],
+  [
+    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
+    { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
+    { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
+    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+  ],
+  [
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
+    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
+    { name: 'D', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
+    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+  ],
+  [
+    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
+    { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
+    { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) }
+  ],
+  null
+]
 function makeHMTM (hour, minute = 0) {
   return { hour, minute, totalminutes: hour * 60 + minute }
 }
@@ -181,46 +181,46 @@ function cacheBackground (url, pd) {
   ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
 }
 function initSchedule () {
-  var letterPdFormat = localize('periodx'),
-    periodstyles = {
-      NO_SCHOOL: { label: localize('no-school') },
-      // Default period names and styles
-      Brunch: { label: localize('brunch'), colour: '#90a4ae' },
-      Lunch: { label: localize('lunch'), colour: '#90a4ae' },
-      Flex: { label: localize('flex'), colour: '#455a64' },
-      SELF: { label: localize('self'), colour: '#455a64' },
-      A: { label: letterPdFormat.replace('{X}', '1'), colour: '#f44336' },
-      B: { label: letterPdFormat.replace('{X}', '2'), colour: '#2196F3' },
-      C: { label: letterPdFormat.replace('{X}', '3'), colour: '#FFEB3B' },
-      D: { label: letterPdFormat.replace('{X}', '4'), colour: '#795548' },
-      E: { label: letterPdFormat.replace('{X}', '5'), colour: '#FF9800' },
-      F: { label: letterPdFormat.replace('{X}', '6'), colour: '#9C27B0' },
-      G: { label: letterPdFormat.replace('{X}', '7'), colour: '#4CAF50' },
-      H: { label: letterPdFormat.replace('{X}', 'H'), colour: '#673AB7' },
-      '0': { label: localize('p0'), colour: '#009688' }
-    }
+  const letterPdFormat = localize('periodx')
+  const periodstyles = {
+    NO_SCHOOL: { label: localize('no-school') },
+    // Default period names and styles
+    Brunch: { label: localize('brunch'), colour: '#90a4ae' },
+    Lunch: { label: localize('lunch'), colour: '#90a4ae' },
+    Flex: { label: localize('flex'), colour: '#455a64' },
+    SELF: { label: localize('self'), colour: '#455a64' },
+    A: { label: letterPdFormat.replace('{X}', '1'), colour: '#f44336' },
+    B: { label: letterPdFormat.replace('{X}', '2'), colour: '#2196F3' },
+    C: { label: letterPdFormat.replace('{X}', '3'), colour: '#FFEB3B' },
+    D: { label: letterPdFormat.replace('{X}', '4'), colour: '#795548' },
+    E: { label: letterPdFormat.replace('{X}', '5'), colour: '#FF9800' },
+    F: { label: letterPdFormat.replace('{X}', '6'), colour: '#9C27B0' },
+    G: { label: letterPdFormat.replace('{X}', '7'), colour: '#4CAF50' },
+    H: { label: letterPdFormat.replace('{X}', 'H'), colour: '#673AB7' },
+    '0': { label: localize('p0'), colour: '#009688' }
+  }
   if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
     options = JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.options'))
     if (options[0] !== VERSION) {
-      switch (options[0]) {
-        case 1:
-          options.push([periodstyles.SELF.label, periodstyles.SELF.colour])
-        case 2:
-          options.push([periodstyles.H.label, periodstyles.H.colour])
-        case 3:
-          options.push([periodstyles[0].label, periodstyles[0].colour])
+      if (options[0] <= 1) {
+        options.push([periodstyles.SELF.label, periodstyles.SELF.colour])
+      }
+      if (options[0] <= 2) {
+        options.push([periodstyles.H.label, periodstyles.H.colour])
+      }
+      if (options[0] <= 3) {
+        options.push([periodstyles[0].label, periodstyles[0].colour])
 
-          options[0] = VERSION
-          break
-        default:
-          options = null
+        options[0] = VERSION
+      } else {
+        options = null
       }
     }
   }
   if (!options) {
     options = [VERSION]
     for (
-      var i = 0, arr = letras, len = arr.length, l = arr[i];
+      let i = 0, arr = letras, len = arr.length, l = arr[i];
       i < len;
       i++, l = arr[i]
     )
@@ -241,7 +241,9 @@ function initSchedule () {
     'no',
     'preps'
   ]
-  var formatOptions = cookie.getItem('[gunn-web-app] scheduleapp.formatOptions')
+  const formatOptions = cookie.getItem(
+    '[gunn-web-app] scheduleapp.formatOptions'
+  )
     ? cookie.getItem('[gunn-web-app] scheduleapp.formatOptions').split('.')
     : defaultThings
   if (formatOptions[0] === '1') {
@@ -447,8 +449,8 @@ function initSchedule () {
   function getPeriodSpan (pd) {
     // yay hoisting (see three lines above)
     if (!periodstyles[pd]) return '???' // just in case
-    let css,
-      colour = periodstyles[pd].colour
+    let css
+    const colour = periodstyles[pd].colour
     if (colour[0] === '#') {
       css = `background-color:${colour};color:${getFontColour(colour)};`
     } else {
@@ -476,9 +478,9 @@ function initSchedule () {
   const contentInput = document.getElementById('asgn-content')
   contentInput.addEventListener('keydown', e => {
     if (e.keyCode === 13) {
-      asgn_saveBtn.click()
+      asgnSaveBtn.click()
     } else if (e.keyCode === 27) {
-      asgn_cancelBtn.click()
+      asgnCancelBtn.click()
     }
   })
   const dueDateTrigger = document.getElementById('date')
@@ -547,17 +549,17 @@ function initSchedule () {
   })
 
   const editorDialog = document.getElementById('asgn-editor')
-  const asgn_deleteBtn = document.getElementById('asgn-delete')
-  const asgn_cancelBtn = document.getElementById('asgn-cancel')
-  const asgn_saveBtn = document.getElementById('asgn-save')
+  const asgnDeleteBtn = document.getElementById('asgn-delete')
+  const asgnCancelBtn = document.getElementById('asgn-cancel')
+  const asgnSaveBtn = document.getElementById('asgn-save')
   let currentCancelFn, onDeleteClick, onSaveClick
-  asgn_deleteBtn.addEventListener('click', e => {
+  asgnDeleteBtn.addEventListener('click', e => {
     if (onDeleteClick) onDeleteClick()
   })
-  asgn_cancelBtn.addEventListener('click', e => {
+  asgnCancelBtn.addEventListener('click', e => {
     if (currentCancelFn) currentCancelFn()
   })
-  asgn_saveBtn.addEventListener('click', e => {
+  asgnSaveBtn.addEventListener('click', e => {
     if (onSaveClick) onSaveClick()
   })
   editorDialog.appendChild(dueDate.wrapper)
@@ -703,18 +705,17 @@ function initSchedule () {
     refresh.click()
   }
 
-  var scheduleapp
-  var weekwrapper = document.querySelector('#weekwrapper')
+  const weekwrapper = document.querySelector('#weekwrapper')
   function makeWeekHappen () {
-    var innerHTML = '',
-      days = localize('ds').split('  '),
-      week = scheduleapp.getWeek()
-    for (var i = 0; i < 7; i++) {
+    let innerHTML = ''
+    const days = localize('ds').split('  ')
+    const week = scheduleapp.getWeek()
+    for (let i = 0; i < 7; i++) {
       innerHTML += `<div${week[i].today ? ' class="today"' : ''}><h1>${
         days[i]
       }</h1>`
       for (
-        var j = 0, arr = week[i], len = arr.length, period = arr[j];
+        let j = 0, arr = week[i], len = arr.length, period = arr[j];
         j < len;
         j++, period = arr[j]
       )
@@ -730,28 +731,27 @@ function initSchedule () {
     weekwrapper.innerHTML = innerHTML
     renderEvents()
   }
-  var altSchedRegex = /schedule|extended|holiday|no students|break|development/i
-  var selfDays
-  var eventsul = document.querySelector('#events'),
-    events = {},
-    months = localize('months').split('  ')
+  const altSchedRegex = /schedule|extended|holiday|no students|break|development/i
+  const eventsul = document.querySelector('#events')
+  const events = {}
+  const months = localize('months').split('  ')
   const eventsHeading = document.createElement('h1')
   eventsHeading.textContent = localize('events')
   eventsul.parentNode.insertBefore(eventsHeading, eventsul)
   function renderEvents () {
-    var offset = scheduleapp.offset,
-      d = now()
+    const offset = scheduleapp.offset
+    const d = now()
     eventsul.innerHTML = `<li><span class="secondary center">${localize(
       'loading'
     )}</span></li>`
     function actuallyRenderEvents (items) {
-      var innerHTML = ``
+      let innerHTML = ``
       if (items.length) {
-        for (var i = 0; i < items.length; i++) {
-          var timerange = ''
+        for (let i = 0; i < items.length; i++) {
+          let timerange = ''
           if (items[i].start) {
-            var start = new Date(items[i].start),
-              end = new Date(items[i].end)
+            const start = new Date(items[i].start)
+            const end = new Date(items[i].end)
             if (formatOptions[1] === '0')
               timerange = `${start.getMinutes()} &ndash; ${end.getMinutes()}`
             else if (formatOptions[1] === '24')
@@ -803,8 +803,8 @@ function initSchedule () {
         ).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
         json => {
           json = JSON.parse(json).items
-          var e = []
-          for (var i = 0; i < json.length; i++) {
+          const e = []
+          for (let i = 0; i < json.length; i++) {
             e[i] = {
               start: json[i].start.dateTime,
               end: json[i].end.dateTime,
@@ -818,13 +818,15 @@ function initSchedule () {
             actuallyRenderEvents(events[offset])
 
           const date = dateDate.slice(5, 10)
-          var alternateJSON = json.filter(ev => altSchedRegex.test(ev.summary))
-          var altSched = toAlternateSchedules(alternateJSON)
-          var ugwitaAltObj = {}
-          var change = false
+          const alternateJSON = json.filter(ev =>
+            altSchedRegex.test(ev.summary)
+          )
+          const altSched = toAlternateSchedules(alternateJSON)
+          let ugwitaAltObj = {}
+          let change = false
           if (cookie.getItem(ALT_KEY))
             ugwitaAltObj = JSON.parse(cookie.getItem(ALT_KEY))
-          var selfDay = json.find(ev => ev.summary.includes('SELF'))
+          const selfDay = json.find(ev => ev.summary.includes('SELF'))
           if (selfDay) {
             if (!selfDays.includes(date)) {
               selfDays.push(date)
@@ -860,7 +862,7 @@ function initSchedule () {
           }
           if (change) {
             cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
-            scheduleapp.offset = scheduleapp.offset
+            if (scheduleapp.options.autorender) scheduleapp.render()
             makeWeekHappen()
           }
         },
@@ -878,7 +880,7 @@ function initSchedule () {
     name = name.toLowerCase()
     if (~name.indexOf('period')) {
       // Detect PeriodE/PeriodG (2020-03-31)
-      let letter = /(?:\b|period)([a-g])\b/i.exec(name)
+      const letter = /(?:\b|period)([a-g])\b/i.exec(name)
       if (letter) return letter[1].toUpperCase()
     }
     if (~name.indexOf('self')) return 'SELF'
@@ -893,7 +895,7 @@ function initSchedule () {
     else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
     else return name
   }
-  var daynames = localize('days').split('  ')
+  const daynames = localize('days').split('  ')
   function toTraditionalUGWATime (minutes) {
     return {
       totalminutes: minutes,
@@ -904,8 +906,8 @@ function initSchedule () {
   const PASSING_LENGTH = 10
   function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
     if (ugwitaData === undefined) return true
-    var [month, day] = dayString.split('-').map(Number)
-    var date
+    const [month, day] = dayString.split('-').map(Number)
+    let date
     if (month > 6) date = new Date(2020, month - 1, day)
     else date = new Date(2021, month - 1, day)
     const periods = []
@@ -946,19 +948,19 @@ function initSchedule () {
   }
   if (cookie.getItem(ALT_KEY)) alternates = JSON.parse(cookie.getItem(ALT_KEY))
   else alternates = {}
-  selfDays = alternates.self || []
-  for (var dayString in alternates) {
+  const selfDays = alternates.self || []
+  for (const dayString in alternates) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
   }
-  for (var i = 0; i < letras.length; i++) {
+  for (let i = 0; i < letras.length; i++) {
     if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
     periodstyles[letras[i]].label = options[i][0]
     periodstyles[letras[i]].colour = options[i][1]
   }
   const hPeriods =
     JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
-  scheduleapp = scheduleApp({
+  const scheduleapp = scheduleApp({
     element: document.querySelector('#schedulewrapper'),
     periods: periodstyles,
     normal: normalschedule,
@@ -992,8 +994,8 @@ function initSchedule () {
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
   const yesterdayer = document.querySelector('#plihieraux')
   const tomorrower = document.querySelector('#plimorgaux')
-  var datepicker = new DatePicker(...datePickerRange),
-    d = now()
+  const datepicker = new DatePicker(...datePickerRange)
+  const d = now()
   datepicker.onchange = e => {
     if (scheduleapp.options.autorender) {
       // TEMP?
@@ -1008,8 +1010,8 @@ function initSchedule () {
       }
     }
     if (e !== null) {
-      var d = new Date(e.y, e.m, e.d).getTime(),
-        today = currentTime()
+      const d = new Date(e.y, e.m, e.d).getTime()
+      const today = currentTime()
       scheduleapp.offset = Math.floor((d - today) / 86400000) + 1
       if (scheduleapp.options.autorender) makeWeekHappen()
     }
@@ -1057,7 +1059,7 @@ function initSchedule () {
     todayBtn.className = 'material'
     todayBtn.textContent = localize('return-today')
     todayBtn.addEventListener('click', e => {
-      let d = now()
+      const d = now()
       datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
       // Probably will be removed by datepicker's onchange handler
       if (previewingFuture) {
@@ -1106,26 +1108,26 @@ function initSchedule () {
   yesterdayer.addEventListener(
     'click',
     e => {
-      var proposal = {
+      const proposal = {
         d: datepicker.day.d - 1,
         m: datepicker.day.m,
         y: datepicker.day.y
       }
       // TEMP?
-      /*if (datepicker.compare(proposal, datepicker.start) >= 0)*/ datepicker.day = proposal
+      /* if (datepicker.compare(proposal, datepicker.start) >= 0) */ datepicker.day = proposal
     },
     false
   )
   tomorrower.addEventListener(
     'click',
     e => {
-      var proposal = {
+      const proposal = {
         d: datepicker.day.d + 1,
         m: datepicker.day.m,
         y: datepicker.day.y
       }
       // TEMP?
-      /*if (datepicker.compare(proposal, datepicker.end) <= 0)*/ datepicker.day = proposal
+      /* if (datepicker.compare(proposal, datepicker.end) <= 0) */ datepicker.day = proposal
     },
     false
   )
@@ -1152,14 +1154,14 @@ function initSchedule () {
   })
 
   /* CUSTOMISE PERIODS */
-  var materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
+  const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
     ' '
   )
   function materialInput (labeltext) {
-    var inputwrapper = document.createElement('div'),
-      label = document.createElement('label'),
-      input = document.createElement('input'),
-      line = document.createElement('div')
+    const inputwrapper = document.createElement('div')
+    const label = document.createElement('label')
+    const input = document.createElement('input')
+    const line = document.createElement('div')
     inputwrapper.classList.add('customiser-inputwrapper')
     label.classList.add('customiser-label')
     label.innerHTML = labeltext
@@ -1216,31 +1218,31 @@ function initSchedule () {
     function period (name, id, colour = '#FF594C', val = '') {
       let isImage = colour[0] !== '#'
       let init = true
-      var div = document.createElement('div'),
-        pickertrigger = document.createElement('button'),
-        picker = new ColourPicker(e => {
-          if (isImage) return
-          pickertrigger.style.backgroundColor = e
-          if (scheduleapp) scheduleapp.setPeriod(id, '', e, !init)
-          if (init) {
-            init = false
-          } else {
-            if (periodstyles[id].update) periodstyles[id].update()
-            cookie.setItem(
-              '[gunn-web-app] scheduleapp.options',
-              JSON.stringify(options)
-            )
-          }
-          options[letras.indexOf(id)][1] = e
-          if (picker.darkness() > 125) {
-            pickertrigger.classList.add('ripple-dark')
-            pickertrigger.classList.remove('ripple-light')
-          } else {
-            pickertrigger.classList.add('ripple-light')
-            pickertrigger.classList.remove('ripple-dark')
-          }
-        }),
-        input = materialInput(name)
+      const div = document.createElement('div')
+      const pickertrigger = document.createElement('button')
+      const picker = new ColourPicker(e => {
+        if (isImage) return
+        pickertrigger.style.backgroundColor = e
+        if (scheduleapp) scheduleapp.setPeriod(id, '', e, !init)
+        if (init) {
+          init = false
+        } else {
+          if (periodstyles[id].update) periodstyles[id].update()
+          cookie.setItem(
+            '[gunn-web-app] scheduleapp.options',
+            JSON.stringify(options)
+          )
+        }
+        options[letras.indexOf(id)][1] = e
+        if (picker.darkness() > 125) {
+          pickertrigger.classList.add('ripple-dark')
+          pickertrigger.classList.remove('ripple-light')
+        } else {
+          pickertrigger.classList.add('ripple-light')
+          pickertrigger.classList.remove('ripple-dark')
+        }
+      })
+      const input = materialInput(name)
       div.classList.add('customiser-wrapper')
       ripple(pickertrigger)
       pickertrigger.classList.add('material')
@@ -1280,15 +1282,15 @@ function initSchedule () {
       )
       div.appendChild(input.wrapper)
       elem.appendChild(div)
-      var t = document.createElement('div')
+      const t = document.createElement('div')
       t.classList.add('customiser-colourwrapper')
       for (
-        var i = 0, arr = materialcolours, len = arr.length, c = arr[i];
+        let i = 0, arr = materialcolours, len = arr.length, c = arr[i];
         i < len;
         i++, c = arr[i]
       )
         (c => {
-          var s = document.createElement('span')
+          const s = document.createElement('span')
           s.classList.add('customiser-materialcolour')
           s.addEventListener(
             'click',
@@ -1300,7 +1302,7 @@ function initSchedule () {
           s.style.backgroundColor = c
           t.appendChild(s)
         })('#' + c)
-      var s = document.createElement('span')
+      const s = document.createElement('span')
       s.classList.add('customiser-materialcolour')
       s.classList.add('customiser-blackwhite')
       s.addEventListener(
@@ -1382,8 +1384,8 @@ function initSchedule () {
     }
     return period
   }
-  var periodCustomisers = document.createDocumentFragment()
-  var customiserAdder = addPeriodCustomisers(periodCustomisers)
+  const periodCustomisers = document.createDocumentFragment()
+  let customiserAdder = addPeriodCustomisers(periodCustomisers)
   if (formatOptions[8] === 'yes')
     customiserAdder = customiserAdder(
       localize('p0'),

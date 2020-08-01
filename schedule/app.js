@@ -1,4 +1,4 @@
-var days, months
+let days, months
 function localizeTime (id, params = {}) {
   let entry = localize(id, 'times')
   if (typeof entry === 'function') {
@@ -30,8 +30,8 @@ function getFontColour (colour) {
     : 'white'
 }
 function scheduleApp (options = {}) {
-  var elem,
-    container = document.createElement('div')
+  let elem
+  const container = document.createElement('div')
   if (options.element) elem = options.element
   else elem = document.createElement('div')
   container.classList.add('schedule-container')
@@ -42,7 +42,7 @@ function scheduleApp (options = {}) {
     return options.periods[name] || { label: name, colour: '#000' }
   }
   function getHumanTime (messytime) {
-    var hr = +messytime.slice(0, 2) % 24
+    const hr = +messytime.slice(0, 2) % 24
     if (options.h0Joke) return +messytime.slice(2) + ''
     else if (options.h24) return `${hr}:${messytime.slice(2)}`
     else
@@ -84,14 +84,14 @@ function scheduleApp (options = {}) {
   let setTitle = false
   const dayToPrime = { 1: 2, 2: 3, 3: 5, 4: 7, 5: 11 }
   function getSchedule (d, includeZero = options.show0) {
-    const ano = d.getFullYear(),
-      mez = d.getMonth(),
-      dia = d.getDate(),
-      weekday = d.getDay()
-    let alternate = false,
-      summer = false
-    var isSELF = isSELFDay(mez, dia)
-    var periods
+    const ano = d.getFullYear()
+    const mez = d.getMonth()
+    const dia = d.getDate()
+    const weekday = d.getDay()
+    let alternate = false
+    let summer = false
+    const isSELF = isSELFDay(mez, dia)
+    let periods
     function getPeriodName (index) {
       return periods[index].name === 'Flex' && isSELF
         ? 'SELF'
@@ -104,7 +104,7 @@ function scheduleApp (options = {}) {
       summer = true
       periods = []
     } else if (options.alternates[mez + 1 + '-' + dia]) {
-      var sched = options.alternates[mez + 1 + '-' + dia]
+      const sched = options.alternates[mez + 1 + '-' + dia]
       alternate = sched
       periods = sched.periods.slice()
     } else if (options.normal[weekday] && options.normal[weekday].length) {
@@ -153,14 +153,14 @@ function scheduleApp (options = {}) {
     }
   }
   function generateDay (offset = 0) {
-    var d = now(),
-      innerHTML,
-      day,
-      checkfuture = true,
-      totalminute = d.getMinutes() + d.getHours() * 60
-    if (offset !== 0)
-      (d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)),
-        (checkfuture = false)
+    let d = now()
+    let innerHTML
+    let checkfuture = true
+    const totalminute = d.getMinutes() + d.getHours() * 60
+    if (offset !== 0) {
+      d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
+      checkfuture = false
+    }
     const {
       periods,
       alternate,
@@ -169,7 +169,7 @@ function scheduleApp (options = {}) {
       isSELF,
       date: { ano, mez, dia, weekday }
     } = getSchedule(d)
-    day = days[weekday]
+    const day = days[weekday]
     innerHTML = `<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez +
       1}-${dia}`}">${localizeTime('date', { M: months[mez], D: dia })}</a></h3>`
     const assignments = options.getAssignments(d)
@@ -196,23 +196,24 @@ function scheduleApp (options = {}) {
         )}</strong>`
       })}</span>`
       if (checkfuture) {
-        for (var i = 0; i < periods.length; i++)
+        for (let i = 0; i < periods.length; i++)
           if (totalminute < periods[i].end.totalminutes) break
-        var str
-        var compactTime, period, compactStr
-        if (i >= periods.length)
-          (str = `<p class="schedule-endingin">${localizeTime('ended', {
+        let str
+        let compactTime, period, compactStr
+        if (i >= periods.length) {
+          str = `<p class="schedule-endingin">${localizeTime('ended', {
             P: getPeriodSpan((period = getPeriodName(periods.length - 1))),
             T: `<strong>${(compactTime = getUsefulTimePhrase(
               totalminute - periods[periods.length - 1].end.totalminutes
             ))}</strong>`
-          })}</p>`),
-            (compactStr = localize('appname')),
-            (returnval.endOfDay =
-              totalminute - periods[periods.length - 1].end.totalminutes >= 60)
+          })}</p>`
+          compactStr = localize('appname')
+          returnval.endOfDay =
+            totalminute - periods[periods.length - 1].end.totalminutes >= 60
+        }
         // after school (endOfDay is an hour past)
-        else if (totalminute >= periods[i].start.totalminutes)
-          (str = `<div class="schedule-periodprogress"><div style="width: ${((totalminute -
+        else if (totalminute >= periods[i].start.totalminutes) {
+          str = `<div class="schedule-periodprogress"><div style="width: ${((totalminute -
             periods[i].start.totalminutes) /
             (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
             100}%;"></div></div><p class="schedule-endingin">${localizeTime(
@@ -223,20 +224,22 @@ function scheduleApp (options = {}) {
                 periods[i].end.totalminutes - totalminute
               ))}</strong>`
             }
-          )}</p>`),
-            (compactStr = localizeTime('ending-short', { T: compactTime }))
+          )}</p>`
+          compactStr = localizeTime('ending-short', { T: compactTime })
+        }
         // during a period
-        else
-          (str = `<p class="schedule-endingin">${localizeTime('starting', {
+        else {
+          str = `<p class="schedule-endingin">${localizeTime('starting', {
             P: getPeriodSpan((period = getPeriodName(i))),
             T: `<strong>${(compactTime = getUsefulTimePhrase(
               periods[i].start.totalminutes - totalminute
             ))}</strong>`
-          })}</p>`),
-            (compactStr = localizeTime('starting-short', {
-              T: compactTime,
-              P: getPeriod(period).label
-            })) // passing period or before school
+          })}</p>`
+          compactStr = localizeTime('starting-short', {
+            T: compactTime,
+            P: getPeriod(period).label
+          }) // passing period or before school
+        }
         innerHTML += str
         if (setTitle) {
           if (options.compact) document.title = compactStr
@@ -249,8 +252,8 @@ function scheduleApp (options = {}) {
               .replace(/&amp;/g, '&')
         }
       }
-      for (var period of periods) {
-        var periodName = getPeriod(
+      for (const period of periods) {
+        const periodName = getPeriod(
           period.name === 'Flex' && isSELF ? 'SELF' : period.name
         )
         innerHTML += `<div class="schedule-period" style="${getCSS(
@@ -341,7 +344,7 @@ function scheduleApp (options = {}) {
   window.addEventListener('blur', onBlur, false)
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID
-  var returnval = {
+  const returnval = {
     options,
     element: elem,
     render () {
@@ -390,24 +393,24 @@ function scheduleApp (options = {}) {
       }
     },
     getWeek () {
-      var actualtoday = now(),
-        week = []
+      const actualtoday = now()
+      const week = []
       today = new Date(
         actualtoday.getFullYear(),
         actualtoday.getMonth(),
         actualtoday.getDate() + options.offset
       )
-      for (var i = 0; i < 7; i++) {
-        var d = new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate() - today.getDay() + i
-          ),
-          day = []
-        var isSELF = isSELFDay(d.getMonth(), d.getDate())
-        var sched = getSchedule(d).periods
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() - today.getDay() + i
+        )
+        const day = []
+        const isSELF = isSELFDay(d.getMonth(), d.getDate())
+        const sched = getSchedule(d).periods
         if (sched.length)
-          for (var period of sched) {
+          for (const period of sched) {
             // q stands for 'quick' because I'm too lazy to make a variable name
             // but I am not lazy enough to make a comment explaining it
             const q = getPeriod(
@@ -424,7 +427,7 @@ function scheduleApp (options = {}) {
     getPeriodSpan,
     getSchedule
   }
-  var timeout
+  let timeout
   elem.appendChild(container)
   generateDay() // Calculate endOfDay, but don't render the HTML yet
   return returnval

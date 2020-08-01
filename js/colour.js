@@ -1,12 +1,12 @@
 class ColourPicker {
   constructor (onchange = () => {}) {
-    ;(this.onchange = onchange),
-      (this.window = document.createElement('div')),
-      (this.input = document.createElement('input')),
-      (this.sv = document.createElement('div')),
-      (this.svindicator = document.createElement('div')),
-      (this.hue = document.createElement('div')),
-      (this.hueindicator = document.createElement('div'))
+    this.onchange = onchange
+    this.window = document.createElement('div')
+    this.input = document.createElement('input')
+    this.sv = document.createElement('div')
+    this.svindicator = document.createElement('div')
+    this.hue = document.createElement('div')
+    this.hueindicator = document.createElement('div')
     ColourPicker.css(
       this.window
     )`position:fixed``opacity:0``pointer-events:none`
@@ -25,10 +25,13 @@ class ColourPicker {
     )`position:relative``background-image: linear-gradient(0deg,black,transparent), linear-gradient(90deg,white,transparent)`
     this.sv.classList.add('colourpicker-svslider')
     ColourPicker.mouseMove(this.sv, (x, y) => {
-      var rect = this.sv.getBoundingClientRect()
-      ;(x = x - rect.left), (y = y - rect.top)
-      x > rect.width ? (x = rect.width) : x < 0 ? (x = 0) : 0
-      y > rect.height ? (y = rect.height) : y < 0 ? (y = 0) : 0
+      const rect = this.sv.getBoundingClientRect()
+      x = x - rect.left
+      y = y - rect.top
+      if (x > rect.width) x = rect.width
+      else if (x < 0) x = 0
+      if (y > rect.height) y = rect.height
+      else if (y < 0) y = 0
       this.svindicator.style.left = x + 'px'
       this.svindicator.style.top = y + 'px'
       this.hsv[1] = (x / rect.width) * 100
@@ -44,9 +47,10 @@ class ColourPicker {
     ColourPicker.css(this.hue)`position:relative`
     this.hue.classList.add('colourpicker-hueslider')
     ColourPicker.mouseMove(this.hue, (x, y) => {
-      var rect = this.hue.getBoundingClientRect()
+      const rect = this.hue.getBoundingClientRect()
       y = y - rect.top
-      y > rect.height ? (y = rect.height) : y < 0 ? (y = 0) : 0
+      if (y > rect.height) y = rect.height
+      else if (y < 0) y = 0
       this.hueindicator.style.top = y + 'px'
       this.hsv[0] = (y / rect.height) * 360
       this.sv.style.backgroundColor = `hsl(${this.hsv[0]},100%,50%)`
@@ -79,11 +83,12 @@ class ColourPicker {
     this.window.appendChild(this.hue)
     document.body.appendChild(this.window)
   }
+
   trigger (src) {
     ColourPicker.css(this.window)`opacity:1``pointer-events:all`
     if (src) {
-      var rect = src.getBoundingClientRect(),
-        windowrect = this.window.getBoundingClientRect()
+      const rect = src.getBoundingClientRect()
+      const windowrect = this.window.getBoundingClientRect()
       this.window.style.top =
         (rect.bottom + windowrect.height > window.innerHeight
           ? rect.top - windowrect.height < 0
@@ -97,7 +102,7 @@ class ColourPicker {
             : rect.right - windowrect.width
           : rect.left) + 'px'
     }
-    var dismiss = e => {
+    const dismiss = e => {
       if (!this.window.contains(e.target) && e.target !== src) {
         ColourPicker.css(this.window)`opacity:0``pointer-events:none`
         document.removeEventListener('click', dismiss, false)
@@ -105,12 +110,14 @@ class ColourPicker {
     }
     document.addEventListener('click', dismiss, false)
   }
+
   getHueGradient () {
-    var [s, l] = ColourPicker.SVtoSL(this.hsv[1], this.hsv[2])
+    const [s, l] = ColourPicker.SVtoSL(this.hsv[1], this.hsv[2])
     return `linear-gradient(hsl(0,${s}%,${l}%),hsl(60,${s}%,${l}%),hsl(120,${s}%,${l}%),hsl(180,${s}%,${l}%),hsl(240,${s}%,${l}%),hsl(300,${s}%,${l}%),hsl(0,${s}%,${l}%))`
   }
+
   getHex () {
-    var [r, g, b] = ColourPicker.HSVtoRGB(...this.hsv)
+    const [r, g, b] = ColourPicker.HSVtoRGB(...this.hsv)
     return (
       '#' +
       ('0' + r.toString(16)).slice(-2) +
@@ -118,6 +125,7 @@ class ColourPicker {
       ('0' + b.toString(16)).slice(-2)
     )
   }
+
   set colour (c) {
     c = c
       .toUpperCase()
@@ -144,29 +152,32 @@ class ColourPicker {
       this.onchange(this.input.value)
     } else this.input.value = this.getHex()
   }
+
   get colour () {
     return this.input.value
   }
+
   darkness () {
-    var [r, g, b] = ColourPicker.HSVtoRGB(...this.hsv)
+    const [r, g, b] = ColourPicker.HSVtoRGB(...this.hsv)
     return Math.round(
       (parseInt(r) * 299 + parseInt(g) * 587 + parseInt(b) * 114) / 1000
     )
   }
+
   static mouseMove (elem, fn) {
     elem.addEventListener(
       'mousedown',
       e => {
-        var move = e => {
-            fn(e.clientX, e.clientY)
-            e.preventDefault()
-          },
-          up = e => {
-            fn(e.clientX, e.clientY)
-            document.removeEventListener('mousemove', move, false)
-            document.removeEventListener('mouseup', up, false)
-            e.preventDefault()
-          }
+        const move = e => {
+          fn(e.clientX, e.clientY)
+          e.preventDefault()
+        }
+        const up = e => {
+          fn(e.clientX, e.clientY)
+          document.removeEventListener('mousemove', move, false)
+          document.removeEventListener('mouseup', up, false)
+          e.preventDefault()
+        }
         document.addEventListener('mousemove', move, false)
         document.addEventListener('mouseup', up, false)
         e.preventDefault()
@@ -176,16 +187,16 @@ class ColourPicker {
     elem.addEventListener(
       'touchstart',
       e => {
-        var move = e => {
-            fn(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
-            e.preventDefault()
-          },
-          up = e => {
-            fn(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
-            document.removeEventListener('touchmove', move, { passive: false })
-            document.removeEventListener('touchend', up, { passive: false })
-            e.preventDefault()
-          }
+        const move = e => {
+          fn(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
+          e.preventDefault()
+        }
+        const up = e => {
+          fn(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
+          document.removeEventListener('touchmove', move, { passive: false })
+          document.removeEventListener('touchend', up, { passive: false })
+          e.preventDefault()
+        }
         document.addEventListener('touchmove', move, { passive: false })
         document.addEventListener('touchend', up, { passive: false })
         e.preventDefault()
@@ -193,6 +204,7 @@ class ColourPicker {
       { passive: false }
     )
   }
+
   static css (elem) {
     function setCSS ([declaration]) {
       elem.style.setProperty(
@@ -203,10 +215,12 @@ class ColourPicker {
     }
     return setCSS
   }
+
   // ranges: 255, 360, 100 (figure out what that means yourself)
   static SVtoSL (s, v) {
-    ;(s /= 100), (v /= 100)
-    var _l = (2 - s) * v
+    s /= 100
+    v /= 100
+    let _l = (2 - s) * v
     _l = [
       Math.round(((s * v) / (_l <= 1 ? _l : 2 - _l)) * 100),
       Math.round(_l * 50)
@@ -214,18 +228,21 @@ class ColourPicker {
     if (isNaN(_l[0])) _l[0] = 0
     return _l
   }
+
   static SLtoSV (s, l) {
-    ;(l /= 50), (s /= 100)
+    l /= 50
+    s /= 100
     s *= l <= 1 ? l : 2 - l
     return [Math.round(((2 * s) / (l + s)) * 100), Math.round((l + s) * 50)]
   }
+
   static RGBtoHSV (r, g, b) {
-    var max = Math.max(r, g, b),
-      min = Math.min(r, g, b),
-      d = max - min,
-      h,
-      s = max === 0 ? 0 : d / max,
-      v = max / 255
+    const max = Math.max(r, g, b)
+    const min = Math.min(r, g, b)
+    const d = max - min
+    let h
+    const s = max === 0 ? 0 : d / max
+    const v = max / 255
     switch (max) {
       case min:
         h = 0
@@ -245,34 +262,47 @@ class ColourPicker {
     }
     return [Math.round(h * 360), Math.round(s * 100), Math.round(v * 100)]
   }
+
   static HSVtoRGB (h, s, v) {
-    var r, g, b, i, f, p, q, t
-    ;(h /= 360),
-      (s /= 100),
-      (v /= 100),
-      (i = Math.floor(h * 6)),
-      (f = h * 6 - i),
-      (p = v * (1 - s)),
-      (q = v * (1 - f * s)),
-      (t = v * (1 - (1 - f) * s))
+    let r, g, b
+    h /= 360
+    s /= 100
+    v /= 100
+    const i = Math.floor(h * 6)
+    const f = h * 6 - i
+    const p = v * (1 - s)
+    const q = v * (1 - f * s)
+    const t = v * (1 - (1 - f) * s)
     switch (i % 6) {
       case 0:
-        ;(r = v), (g = t), (b = p)
+        r = v
+        g = t
+        b = p
         break
       case 1:
-        ;(r = q), (g = v), (b = p)
+        r = q
+        g = v
+        b = p
         break
       case 2:
-        ;(r = p), (g = v), (b = t)
+        r = p
+        g = v
+        b = t
         break
       case 3:
-        ;(r = p), (g = q), (b = v)
+        r = p
+        g = q
+        b = v
         break
       case 4:
-        ;(r = t), (g = p), (b = v)
+        r = t
+        g = p
+        b = v
         break
       case 5:
-        ;(r = v), (g = p), (b = q)
+        r = v
+        g = p
+        b = q
         break
     }
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]

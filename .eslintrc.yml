@@ -1,0 +1,6 @@
+---
+rules:
+  no-var: 'error'
+  # TEMP until UGWA switches to ES modules
+  no-undef: 'off'
+  no-unused-vars: 'off'

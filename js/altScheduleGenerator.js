@@ -20,7 +20,7 @@ function parseAlternate (summary, description) {
         .replace(HTMLnewlineRegex, '\n')
         .replace(noHTMLRegex, '')
         .replace(noNbspRegex, ' ')
-    let periods = []
+    const periods = []
     description.split(newLineRegex).map(str => {
       let times
       const name = str
@@ -45,8 +45,8 @@ function parseAlternate (summary, description) {
       eM = +eM
       if (sH < EARLIEST_AM_HOUR || pm === 'pm') sH += 12
       if (eH < EARLIEST_AM_HOUR || pm === 'pm') eH += 12
-      const startTime = sH * 60 + sM,
-        endTime = eH * 60 + eM
+      const startTime = sH * 60 + sM
+      const endTime = eH * 60 + eM
 
       const duplicatePeriod = periods.findIndex(p => p.start === startTime)
       if (~duplicatePeriod) {
@@ -70,7 +70,7 @@ function parseAlternate (summary, description) {
 }
 
 function toAlternateSchedules (eventItems, EARLIEST_AM_HOUR = 6) {
-  let altSchedules = {}
+  const altSchedules = {}
   for (let i = eventItems.length; i--; ) {
     const schedule = parseAlternate(
       eventItems[i].summary,

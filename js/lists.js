@@ -17,10 +17,10 @@ window.addEventListener(
       pattern = pattern.toLowerCase()
       return str => str.toLowerCase().includes(pattern)
     }
-    var listDisable = document.querySelector('#disable-lists')
+    const listDisable = document.querySelector('#disable-lists')
     if (cookie.getItem('[gunn-web-app] scheduleapp.loadLists') === null)
       cookie.setItem('[gunn-web-app] scheduleapp.loadLists', 'yes')
-    var loadLists =
+    const loadLists =
       cookie.getItem('[gunn-web-app] scheduleapp.loadLists') === 'yes'
     if (loadLists) {
       listDisable.addEventListener(
@@ -54,13 +54,13 @@ window.addEventListener(
       toEach('.lists-enabled', t => t.classList.remove('lists-enabled'))
       return
     }
-    var staff,
-      stafflist = document.querySelector('#staff'),
-      staffcontact = document.querySelector('#staffcontact'),
-      staffh1 = document.querySelector('#staffcontact h1'),
-      staffcontent = document.querySelector('#staffcontact .content'),
-      staffsearch = document.querySelector('#staffsearch'),
-      staffclear = document.querySelector('#staffclear')
+    let staff
+    const stafflist = document.querySelector('#staff')
+    const staffcontact = document.querySelector('#staffcontact')
+    const staffh1 = document.querySelector('#staffcontact h1')
+    const staffcontent = document.querySelector('#staffcontact .content')
+    const staffsearch = document.querySelector('#staffsearch')
+    const staffclear = document.querySelector('#staffclear')
     ajax(
       (window.location.protocol === 'file:'
         ? 'https://orbiit.github.io/gunn-web-app/'
@@ -75,14 +75,14 @@ window.addEventListener(
         // staff["Joshua Paley"].jobTitle=localize('blamed-teacher');
         // staff["Christina Woznicki"].woznicki=true;
         // staff["Casey O'Connell"].oc=true;
-        var staffnames = Object.keys(staff).sort(
-            (a, b) =>
-              a[a.lastIndexOf(' ') + 1].charCodeAt() -
-              b[b.lastIndexOf(' ') + 1].charCodeAt()
-          ),
-          innerHTML = ``
+        const staffnames = Object.keys(staff).sort(
+          (a, b) =>
+            a[a.lastIndexOf(' ') + 1].charCodeAt() -
+            b[b.lastIndexOf(' ') + 1].charCodeAt()
+        )
+        let innerHTML = ``
         for (
-          var i = 0, arr = staffnames, len = arr.length, person = arr[i];
+          let i = 0, arr = staffnames, len = arr.length, person = arr[i];
           i < len;
           i++, person = arr[i]
         ) {
@@ -110,11 +110,11 @@ window.addEventListener(
     stafflist.addEventListener(
       'click',
       e => {
-        var target = e.target
+        let target = e.target
         if (target.tagName === 'SPAN') target = target.parentNode
         if (target.tagName === 'LI' && !target.classList.contains('error')) {
           staffcontact.classList.add('show')
-          var personName = target.dataset.person
+          const personName = target.dataset.person
           staffh1.innerHTML = personName
           const person = staff[personName]
           if (person.game) {
@@ -175,7 +175,7 @@ window.addEventListener(
               }
               e.preventDefault()
             }
-            function getApplePos () {
+            const getApplePos = () => {
               let proposal
               do {
                 proposal = [
@@ -185,13 +185,13 @@ window.addEventListener(
               } while (inSnake(proposal))
               return proposal
             }
-            function inSnake (loc) {
+            const inSnake = loc => {
               for (const [x, y] of snake) {
                 if (loc[0] === x && loc[1] === y) return true
               }
               return false
             }
-            function render () {
+            const render = () => {
               c.clearRect(0, 0, 20, 20)
               c.fillStyle = '#FF594C'
               snake.forEach(([x, y]) => {
@@ -202,11 +202,8 @@ window.addEventListener(
                 : 'black'
               c.fillRect(apple[0], apple[1], 1, 1)
             }
-            let playing = false,
-              score,
-              snake,
-              apple,
-              idealLength
+            let playing = false
+            let score, snake, apple, idealLength
             let highScore =
               +cookie.getItem('[gunn-web-app] scheduleapp.snakeHighScore') || 0
             highScoreDisplay.textContent = highScore
@@ -259,21 +256,20 @@ window.addEventListener(
               render()
             }
             // clicker game
-            var btn = staffcontent.querySelector('.egg-btn'),
-              buyBtn = staffcontent.querySelector('.egg-buy-btn'),
-              clicks = staffcontent.querySelector('.egg-count'),
-              priceDisplay = staffcontent.querySelector('.egg-price'),
-              powerDisplay = staffcontent.querySelector('.egg-power'),
-              buyTBtn = staffcontent.querySelector('.egg-buy-t-btn'),
-              priceTDisplay = staffcontent.querySelector('.egg-t-price'),
-              extraDisplay = staffcontent.querySelector('.egg-extra'),
-              stats = timerStarted || {
-                count:
-                  +cookie.getItem('[gunn-web-app] scheduleapp.clicks') || 0,
-                power:
-                  +cookie.getItem('[gunn-web-app] scheduleapp.clickPower') || 1,
-                extra: 0
-              }
+            const btn = staffcontent.querySelector('.egg-btn')
+            const buyBtn = staffcontent.querySelector('.egg-buy-btn')
+            const clicks = staffcontent.querySelector('.egg-count')
+            const priceDisplay = staffcontent.querySelector('.egg-price')
+            const powerDisplay = staffcontent.querySelector('.egg-power')
+            const buyTBtn = staffcontent.querySelector('.egg-buy-t-btn')
+            const priceTDisplay = staffcontent.querySelector('.egg-t-price')
+            const extraDisplay = staffcontent.querySelector('.egg-extra')
+            const stats = timerStarted || {
+              count: +cookie.getItem('[gunn-web-app] scheduleapp.clicks') || 0,
+              power:
+                +cookie.getItem('[gunn-web-app] scheduleapp.clickPower') || 1,
+              extra: 0
+            }
             stats.clicks = clicks
             ripple(btn)
             ripple(buyBtn)
@@ -409,14 +405,14 @@ window.addEventListener(
       staffsearch.value = ''
       doStaffSearch()
     })
-    var clubs,
-      clublist = document.querySelector('#clubs'),
-      clubinfo = document.querySelector('#clubinfo'),
-      clubh1 = document.querySelector('#clubinfo h1'),
-      clubcontent = document.querySelector('#clubinfo .content'),
-      clubsearch = document.querySelector('#clubsearch'),
-      clubclear = document.querySelector('#clubclear'),
-      clubAddList = document.getElementById('club-add-list')
+    let clubs
+    const clublist = document.querySelector('#clubs')
+    const clubinfo = document.querySelector('#clubinfo')
+    const clubh1 = document.querySelector('#clubinfo h1')
+    const clubcontent = document.querySelector('#clubinfo .content')
+    const clubsearch = document.querySelector('#clubsearch')
+    const clubclear = document.querySelector('#clubclear')
+    const clubAddList = document.getElementById('club-add-list')
     ajax(
       (window.location.protocol === 'file:'
         ? 'https://orbiit.github.io/gunn-web-app/'
@@ -443,12 +439,12 @@ window.addEventListener(
           teacher: 'Florina Limburg',
           email: 'flimburg@pausd.org'
         }
-        var clubnames = Object.keys(clubs).sort((a, b) =>
-            a.toLowerCase() > b.toLowerCase() ? 1 : -1
-          ),
-          innerHTML = ``
+        const clubnames = Object.keys(clubs).sort((a, b) =>
+          a.toLowerCase() > b.toLowerCase() ? 1 : -1
+        )
+        let innerHTML = ``
         for (
-          var i = 0, arr = clubnames, len = arr.length, club = arr[i];
+          let i = 0, arr = clubnames, len = arr.length, club = arr[i];
           i < len;
           i++, club = arr[i]
         ) {
@@ -501,16 +497,17 @@ window.addEventListener(
           club.donation
         }</p>`
       clubcontent.innerHTML = innerHTML
-      var s = clubcontent.querySelectorAll('a:not([href])')
-      for (var i = 0; i < s.length; i++)
-        (s[i].href = s[i].textContent),
-          s[i].setAttribute('target', '_blank'),
-          s[i].setAttribute('rel', 'noopener noreferrer')
+      const s = clubcontent.querySelectorAll('a:not([href])')
+      for (let i = 0; i < s.length; i++) {
+        s[i].href = s[i].textContent
+        s[i].setAttribute('target', '_blank')
+        s[i].setAttribute('rel', 'noopener noreferrer')
+      }
     }
     clublist.addEventListener(
       'click',
       e => {
-        var target = e.target
+        let target = e.target
         if (target.tagName === 'SPAN') target = target.parentNode
         if (target.tagName === 'LI' && !target.classList.contains('error')) {
           showClub(target.dataset.club)

@@ -291,7 +291,9 @@ class AssyncManager {
         this.setStatus('loaded', 'sav')
         return r.json()
       })
-      .then(({ ok }) => (ok ? null : Promise.reject()))
+      .then(({ ok }) =>
+        ok ? null : Promise.reject(new Error('Assignment failed to save'))
+      )
       .catch(err => {
         logError(err)
         this.setStatus('problem', 'sav')
@@ -385,7 +387,7 @@ class AssignmentsManager {
       logError(err)
       this.failureQueue.push(['UPDATE', asgn]) // it's ok if the assignment gets JSONified
       this.saveFailures()
-      return Promise.reject()
+      return Promise.reject(new Error('Assignment failed to update'))
     })
   }
 
@@ -394,7 +396,7 @@ class AssignmentsManager {
       logError(err)
       this.failureQueue.push(['DELETE', id])
       this.saveFailures()
-      return Promise.reject()
+      return Promise.reject(new Error('Assigment failed to be deleted'))
     })
   }
 

@@ -5,10 +5,13 @@
   I USED THEIR JQUERY AS WELL TO TURN THEIR HELPFUL TABLE INTO JSON THAT I COPIED AND PASTED HERE
 */
 function code39 (chars, canvaselem) {
-  var canvas
+  let canvas
   if (canvaselem && canvaselem.tagName === 'CANVAS') canvas = canvaselem
-  else (canvas = document.createElement('canvas')), (canvaselem = undefined)
-  var c = canvas.getContext('2d')
+  else {
+    canvas = document.createElement('canvas')
+    canvaselem = undefined
+  }
+  const c = canvas.getContext('2d')
   try {
     canvas.style.imageRendering = 'optimizeSpeed'
     canvas.style.imageRendering = '-moz-crisp-edges'
@@ -19,16 +22,16 @@ function code39 (chars, canvaselem) {
   } catch (e) {
     logError(e)
   }
-  chars = '*' + chars.toUpperCase().replace(/[^A-Z0-9\-\. \+/\$%]/g, '') + '*'
+  chars = '*' + chars.toUpperCase().replace(/[^A-Z0-9\-. +/$%]/g, '') + '*'
   canvas.height = 100
   canvas.width = chars.length * 16 - 1
   if (canvaselem) c.clearRect(0, 0, canvas.width, canvas.height)
   c.fillStyle = 'white'
   c.fillRect(0, 0, canvas.width, canvas.height)
   c.fillStyle = 'black'
-  for (var i = 0, x = 0; i < chars.length; i++) {
-    var pattern = code39.values[chars[i]].toString(3)
-    for (var j = 0; j < pattern.length; j++)
+  for (let i = 0, x = 0; i < chars.length; i++) {
+    const pattern = code39.values[chars[i]].toString(3)
+    for (let j = 0; j < pattern.length; j++)
       switch (pattern[j]) {
         case '2':
           c.fillRect(x, 0, 3, canvas.height)

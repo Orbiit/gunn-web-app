@@ -1,7 +1,7 @@
 window.addEventListener(
   'load',
   e => {
-    var t = document.querySelector(
+    const t = document.querySelector(
       `#footer > ul > li[data-section="${cookie.getItem(
         '[gunn-web-app] section'
       ) || 'schedule'}"]`
@@ -14,9 +14,9 @@ window.addEventListener(
       cookie.setItem('[gunn-web-app] section', 'schedule')
       document.body.classList.add('footer-schedule')
     }
-    var ul = document.querySelector('#footer > ul')
+    const ul = document.querySelector('#footer > ul')
     function setSection (section) {
-      var t = ul.querySelector('.active')
+      const t = ul.querySelector('.active')
       if (t) {
         t.classList.remove('active')
         document.body.classList.remove('footer-' + t.dataset.section)
@@ -36,7 +36,7 @@ window.addEventListener(
     }
     function ulclick (e) {
       if (e.target !== ul && ul.contains(e.target)) {
-        var n = e.target
+        let n = e.target
         while (n.tagName !== 'LI') n = e.target.parentNode
         setSection(n.dataset.section)
       }

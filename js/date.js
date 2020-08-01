@@ -1,11 +1,11 @@
-now() // Date format names:
+// Date format names:
 // weird = the weird {d, m, y} object format that this uses for some reason
 // js = JavaScript Date object
 class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor (start, end, elem) {
-    ;(this._days = localize('ds').split('  ')),
-      (this._months = localize('mos').split('  '))
+    this._days = localize('ds').split('  ')
+    this._months = localize('mos').split('  ')
     const [days, months] = [this._days, this._months]
     this.start = start
     this.end = end
@@ -19,22 +19,18 @@ class DatePicker {
       : (this.wrapper = document.createElement('div'))
     this.wrapper.classList.add('datepicker-wrapper')
     this.wrapper.classList.add('hide')
-    var genesis = DatePicker.weirdToJS(start),
-      weeknum = 0,
-      apocalypse = DatePicker.weirdToJS(end).getTime(),
-      startday = genesis.getDay(),
-      today = new Date(start.y, start.m, start.d - startday),
-      monthalt = false,
-      lastmonth = today.getMonth()
+    let genesis = DatePicker.weirdToJS(start)
+    let weeknum = 0
+    const apocalypse = DatePicker.weirdToJS(end).getTime()
+    const startday = genesis.getDay()
+    let today = new Date(start.y, start.m, start.d - startday)
+    let monthalt = false
+    let lastmonth = today.getMonth()
     genesis = genesis.getTime()
     while (today.getTime() < apocalypse) {
       const week = []
-      for (var i = 0; i < days.length; i++) {
-        var today = new Date(
-          start.y,
-          start.m,
-          start.d - startday + weeknum * 7 + i
-        )
+      for (let i = 0; i < days.length; i++) {
+        today = new Date(start.y, start.m, start.d - startday + weeknum * 7 + i)
         const todayId = DatePicker.weirdToString(DatePicker.jsToWeird(today))
         const entry = { today }
         this.dates[todayId] = entry
@@ -57,6 +53,7 @@ class DatePicker {
       weeknum++
     }
   }
+
   open () {
     if (!this.created) this._createElements()
     if (this.wrapper.classList.contains('hide')) {
@@ -98,6 +95,7 @@ class DatePicker {
       }
     }
   }
+
   _createElements () {
     if (this.created) return
     this.created = true
@@ -106,8 +104,8 @@ class DatePicker {
     // header
     this.header = document.createElement('div')
     this.header.classList.add('datepicker-dayheadings')
-    for (var d of days) {
-      var t = document.createElement('span')
+    for (const d of days) {
+      const t = document.createElement('span')
       t.classList.add('datepicker-dayheading')
       t.innerHTML = d
       this.header.appendChild(t)
@@ -118,11 +116,11 @@ class DatePicker {
     const dates = document.createElement('div')
     dates.classList.add('datepicker-days')
     for (const weekDates of this.weeks) {
-      var week = document.createElement('div')
+      const week = document.createElement('div')
       week.classList.add('datepicker-week')
       for (const date of weekDates) {
         const entry = this.dates[date]
-        var day = document.createElement('span')
+        const day = document.createElement('span')
         entry.elem = day
         day.classList.add('datepicker-day')
         day.dataset.dateId = date
@@ -132,7 +130,7 @@ class DatePicker {
         }
         week.appendChild(day)
         if (entry.newMonth !== undefined) {
-          var t = document.createElement('span')
+          const t = document.createElement('span')
           t.classList.add('datepicker-month')
           t.innerHTML = entry.newMonth
           week.appendChild(t)
@@ -155,7 +153,7 @@ class DatePicker {
     this.wrapper.appendChild(dates)
 
     // Mark today
-    var t = this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(now()))]
+    let t = this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(now()))]
     if (t) t.elem.classList.add('datepicker-today')
 
     if (
@@ -165,9 +163,11 @@ class DatePicker {
       t.elem.classList.add('datepicker-selected')
     }
   }
+
   get day () {
     return this.selected
   }
+
   set day (day) {
     let t
     if (
@@ -190,28 +190,34 @@ class DatePicker {
     this.selected = day
     if (this.onchange) this.onchange(day)
   }
+
   inrange (day) {
-    var d = DatePicker.weirdToJS(day).getTime()
+    const d = DatePicker.weirdToJS(day).getTime()
     return !(d < this.min || d > this.max)
   }
+
   compare (d1, d2) {
     return (
       DatePicker.weirdToJS(d1).getTime() - DatePicker.weirdToJS(d2).getTime()
     )
   }
+
   static weirdToJS ({ y, m, d }) {
     return new Date(y, m, d)
   }
+
   static jsToWeird (d) {
     return { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
   }
+
   static weirdToString ({ y, m, d }) {
     // using dots bc some teachers use dots and since there's no leading zeroes
     // it wouldn't look like iso 8601 if i used hyphens
     return `${y}.${m}.${d}`
   }
+
   static purify (day) {
-    var d = new Date(day.y, day.m, day.d)
+    const d = new Date(day.y, day.m, day.d)
     return { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
   }
 }

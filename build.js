@@ -1,18 +1,8 @@
 const UglifyJS = require('uglify-es')
 const minify = require('html-minifier').minify
 const fs = require('fs')
-const crypto = require('crypto')
 const path = require('path')
 const colours = require('colors/safe')
-
-// Recreating md5 is good idea
-// https://stackoverflow.com/questions/5878682/node-js-hash-string#comment25376847_11869589
-function md5 (str) {
-  return require('crypto')
-    .createHash('md5')
-    .update(str)
-    .digest('hex')
-}
 
 // meh whatever
 // https://stackoverflow.com/a/26815894
@@ -21,7 +11,7 @@ function md5 (str) {
 // }
 
 function readFile (file) {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     fs.readFile(path.resolve(__dirname, file), 'utf8', (err, data) => {
       if (err) rej(err)
       else res(data)
@@ -74,7 +64,6 @@ readFile('./appdesign.html').then(html => {
           minifyCSS: true,
           minifyJS: (text, inline) => {
             // https://github.com/kangax/html-minifier/blob/gh-pages/src/htmlminifier.js
-            const id = `source-maps/${md5(text)}.js`
             const start = text.match(/^\s*<!--.*/)
             const code = start
               ? text.slice(start[0].length).replace(/\n\s*-->\s*$/, '')

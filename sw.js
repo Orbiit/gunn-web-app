@@ -1,3 +1,6 @@
+/* eslint-env worker */
+/* global caches, fetch */
+
 const CACHE_NAME = 'ugwa-sw-1595825262134'
 const urlsToCache = [
   './',

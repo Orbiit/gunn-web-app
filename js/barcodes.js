@@ -3,11 +3,11 @@ window.addEventListener(
   e => {
     const DEFAULT_BARCODE = '95000000' // more obvious that this is the default since it looks funny
 
-    var barcodeul = document.querySelector('#barcode'),
-      add = document.querySelector('#addbarcode'),
-      barcodes = [[localize('you'), DEFAULT_BARCODE]],
-      barcodeelems = []
-    let code = cookie.getItem('[gunn-web-app] barcode.ids')
+    const barcodeul = document.querySelector('#barcode')
+    const add = document.querySelector('#addbarcode')
+    let barcodes = [[localize('you'), DEFAULT_BARCODE]]
+    const barcodeelems = []
+    const code = cookie.getItem('[gunn-web-app] barcode.ids')
     if (code) {
       if (code[0] === 'A') barcodes = JSON.parse(code.slice(1))
       else
@@ -33,13 +33,13 @@ window.addEventListener(
       name = localize('barcode-default'),
       code = DEFAULT_BARCODE
     ] = []) {
-      var li = document.createElement('li'),
-        divcanvas = document.createElement('div'),
-        input = document.createElement('input'),
-        canvas = document.createElement('canvas'),
-        divbtn = document.createElement('div'),
-        removebtn = document.createElement('button'),
-        viewbtn = document.createElement('button')
+      let li = document.createElement('li')
+      let divcanvas = document.createElement('div')
+      let input = document.createElement('input')
+      let canvas = document.createElement('canvas')
+      let divbtn = document.createElement('div')
+      let removebtn = document.createElement('button')
+      let viewbtn = document.createElement('button')
       divcanvas.classList.add('canvas')
       const studentNameInput = document.createElement('input')
       studentNameInput.value = name
@@ -53,7 +53,7 @@ window.addEventListener(
         false
       )
       divcanvas.appendChild(studentNameInput)
-      //input.type='number';
+      // input.type = 'number'
       input.value = code
       input.classList.add('barcode-student-id')
       input.addEventListener(
@@ -113,8 +113,8 @@ window.addEventListener(
       barcodeelems.push([studentNameInput, input])
       return li
     }
-    var t = document.createDocumentFragment()
-    for (var i = 0; i < barcodes.length; i++) {
+    const t = document.createDocumentFragment()
+    for (let i = 0; i < barcodes.length; i++) {
       t.appendChild(newBarcodeLi(barcodes[i]))
     }
     barcodeul.insertBefore(t, add.parentNode)

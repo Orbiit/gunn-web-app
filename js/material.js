@@ -1,26 +1,26 @@
 function ripple (elem) {
   if (typeof elem === 'string') {
-    var s = document.querySelectorAll(elem)
-    for (var i = 0; i < s.length; i++) ripple(s[i])
+    const s = document.querySelectorAll(elem)
+    for (let i = 0; i < s.length; i++) ripple(s[i])
     return
   }
   function mousedown (x, y) {
-    var r = document.createElement('div'),
-      rect = elem.getBoundingClientRect()
+    let r = document.createElement('div')
+    const rect = elem.getBoundingClientRect()
     r.classList.add('ripple')
     if (elem.classList.contains('ripple-light')) r.classList.add('ripple-light')
     if (elem.classList.contains('ripple-dark')) r.classList.add('ripple-dark')
     r.style.left = x - rect.left + 'px'
     r.style.top = y - rect.top + 'px'
     elem.appendChild(r)
-    var start = currentTime(),
-      dest = Math.max(rect.width, rect.height) / 10,
-      duration = dest * 31,
-      fade = false,
-      fadestart
+    const start = currentTime()
+    const dest = Math.max(rect.width, rect.height) / 10
+    const duration = dest * 31
+    let fade = false
+    let fadestart
     function updateScale () {
-      var elapsed = (currentTime() - start) / duration,
-        fadeelapsed = (currentTime() - fadestart) / 500
+      const elapsed = (currentTime() - start) / duration
+      const fadeelapsed = (currentTime() - fadestart) / 500
       if (fade && fadeelapsed > 1) {
         elem.removeChild(r)
         r = null
@@ -32,7 +32,8 @@ function ripple (elem) {
       }
     }
     function mouseup (e) {
-      ;(fade = true), (fadestart = currentTime())
+      fade = true
+      fadestart = currentTime()
       document.removeEventListener('mouseup', mouseup, false)
       document.removeEventListener('touchend', mouseup, false)
       if (e.type === 'touchend') lasttap = fadestart
@@ -41,7 +42,7 @@ function ripple (elem) {
     document.addEventListener('mouseup', mouseup, false)
     document.addEventListener('touchend', mouseup, false)
   }
-  var lasttap = 0
+  let lasttap = 0
   elem.addEventListener(
     'mousedown',
     e => {
@@ -56,11 +57,11 @@ function ripple (elem) {
     },
     false
   )
-  var focusblob = document.createElement('div')
+  const focusblob = document.createElement('div')
   focusblob.classList.add('ripple')
   focusblob.classList.add('ripple-focus')
   /* elem.addEventListener("focus",e=>{
-    var rect=elem.getBoundingClientRect();
+    let rect=elem.getBoundingClientRect();
     focusblob.style.width=focusblob.style.height=(Math.max(rect.width,rect.height)*0.8)+'px';
     elem.appendChild(focusblob);
   },false);
@@ -142,9 +143,9 @@ function createRange (minRange = 0, onchange = NADA, oninput = NADA) {
   const selected = document.createElement('div')
   selected.classList.add('range-selected')
   range.appendChild(selected)
-  let min = 0,
-    max = 1,
-    controlling = null
+  let min = 0
+  let max = 1
+  let controlling = null
   function acceptInput (callListener = true) {
     if (max > 1) max = 1
     if (min < 0) min = 0
@@ -263,7 +264,7 @@ window.addEventListener(
   });
   */
     toEach('.radio-wrapper', t => {
-      var radio = t.querySelector('input[type=radio]')
+      const radio = t.querySelector('input[type=radio]')
       t.addEventListener(
         'click',
         e => {

@@ -164,7 +164,7 @@ langs.fr = {
     importance: 'Priorité:',
     low: 'basse',
     medium: 'moyenne',
-    high: 'élevé', //or maybe 'important'
+    high: 'élevé', // or maybe 'important'
     transfer: 'Transfert de paramètres entre appareils',
     'export-copy': "copier le code d'exportation",
     'export-file': "télécharger le code d'exportation",

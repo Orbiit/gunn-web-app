@@ -1,12 +1,16 @@
+/* exported sel, cre, ajax, ready, load */
+
 class Elem extends Array {
   constructor (elems) {
     if (!Array.isArray(elems)) elems = [elems]
     elems = elems.filter(a => a !== null && a !== undefined)
     super(...elems)
   }
+
   each (fn) {
-    for (var i = 0; i < this.length; i++) fn(this[i])
+    for (let i = 0; i < this.length; i++) fn(this[i])
   }
+
   click (fn) {
     this.each(e => {
       e.addEventListener(
@@ -22,12 +26,13 @@ class Elem extends Array {
     })
     return this
   }
+
   on (listeners, fn, touch = false) {
     if (!Array.isArray(listeners)) listeners = [listeners]
     this.each(e => {
       if (~listeners.indexOf('keydown') || ~listeners.indexOf('keypress'))
         e.hasKey = true
-      for (var i = 0; i < listeners.length; i++) {
+      for (let i = 0; i < listeners.length; i++) {
         e.addEventListener(
           listeners[i],
           ev => {
@@ -39,14 +44,16 @@ class Elem extends Array {
     })
     return this
   }
+
   sel (selector) {
-    var t = []
+    const t = []
     this.each(e => {
-      var s = e.querySelectorAll(selector)
-      for (var i = 0; i < s.length; i++) t.push(s[i])
+      const s = e.querySelectorAll(selector)
+      for (let i = 0; i < s.length; i++) t.push(s[i])
     })
     return new Elem(t)
   }
+
   prop (prop, newval) {
     if (newval !== undefined) {
       this.each(e => {
@@ -54,13 +61,14 @@ class Elem extends Array {
       })
       return this
     } else {
-      var t = []
+      const t = []
       this.each(e => {
         t.push(e[prop])
       })
       return t
     }
   }
+
   attr (attr, newval) {
     if (newval !== undefined) {
       this.each(e => {
@@ -68,13 +76,14 @@ class Elem extends Array {
       })
       return this
     } else {
-      var t = []
+      const t = []
       this.each(e => {
         t.push(e.getAttribute(attr))
       })
       return t
     }
   }
+
   html (newhtml) {
     if (newhtml !== undefined) {
       this.each(e => {
@@ -82,29 +91,32 @@ class Elem extends Array {
       })
       return this
     } else {
-      var t = []
+      const t = []
       this.each(e => {
         t.push(e.innerHTML)
       })
       return t
     }
   }
+
   child (n) {
-    var t = []
+    const t = []
     this.each(e => {
       t.push(e.children[n])
     })
     return new Elem(t)
   }
+
   parent () {
-    var t = []
+    const t = []
     this.each(e => {
       if (!~t.indexOf(e.parentNode)) t.push(e.parentNode)
     })
     return new Elem(t)
   }
+
   add (elems, pos = -1) {
-    var t = document.createDocumentFragment()
+    const t = document.createDocumentFragment()
     elems.each(e => {
       t.appendChild(e)
     })
@@ -117,26 +129,30 @@ class Elem extends Array {
     else this[0].insertBefore(t, this[0].children[pos])
     return this
   }
+
   addClass (...classes) {
     this.each(e => {
-      for (var i = 0; i < classes.length; i++) e.classList.add(classes[i])
+      for (let i = 0; i < classes.length; i++) e.classList.add(classes[i])
     })
     return this
   }
+
   removeClass (...classes) {
     this.each(e => {
-      for (var i = 0; i < classes.length; i++) e.classList.remove(classes[i])
+      for (let i = 0; i < classes.length; i++) e.classList.remove(classes[i])
     })
     return this
   }
+
   toggleClass (...classes) {
     this.each(e => {
-      for (var i = 0; i < classes.length; i++) e.classList.toggle(classes[i])
+      for (let i = 0; i < classes.length; i++) e.classList.toggle(classes[i])
     })
     return this
   }
+
   hasClass (theClass) {
-    var t = []
+    const t = []
     this.each(e => {
       t.push(e.classList.contains(theClass))
     })
@@ -144,25 +160,24 @@ class Elem extends Array {
   }
 }
 function sel (selector) {
-  var t = [],
-    s = document.querySelectorAll(selector)
-  for (var i = 0; i < s.length; i++) t.push(s[i])
+  const t = []
+  const s = document.querySelectorAll(selector)
+  for (let i = 0; i < s.length; i++) t.push(s[i])
   return new Elem(t)
 }
 function cre (tag, times = 1) {
-  var t = []
-  for (var i = 0; i < times; i++) t.push(document.createElement(tag))
+  const t = []
+  for (let i = 0; i < times; i++) t.push(document.createElement(tag))
   return new Elem(t)
 }
 function ajax (url, callback, error) {
-  var xmlHttp = new XMLHttpRequest()
+  const xmlHttp = new XMLHttpRequest()
   xmlHttp.onreadystatechange = () => {
-    if (xmlHttp.readyState === 4)
-      xmlHttp.status === 200
-        ? callback(xmlHttp.responseText)
-        : error
-        ? error(xmlHttp.responseText, xmlHttp.readyState, xmlHttp.status)
-        : 0
+    if (xmlHttp.readyState === 4) {
+      if (xmlHttp.status === 200) callback(xmlHttp.responseText)
+      else if (error)
+        error(xmlHttp.responseText, xmlHttp.readyState, xmlHttp.status)
+    }
   }
   xmlHttp.open('GET', url, true)
   xmlHttp.send(null)
