@@ -24,6 +24,7 @@
 # Gunn Schedule
 /schedule/*
 !/schedule/app.js
+!/schedule/schedule.css
 
 # Ugwita
 /lite/

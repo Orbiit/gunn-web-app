@@ -181,10 +181,7 @@ export function initLists () {
           const getApplePos = () => {
             let proposal
             do {
-              proposal = [
-                (Math.random() * 20) >> 0,
-                (Math.random() * 20) >> 0
-              ]
+              proposal = [(Math.random() * 20) >> 0, (Math.random() * 20) >> 0]
             } while (inSnake(proposal))
             return proposal
           }
@@ -236,9 +233,7 @@ export function initLists () {
                 playing = false
                 scoreDisplay.textContent =
                   score +
-                  ` (GAME OVER${
-                    score > highScore ? ' - NEW HIGH SCORE' : ''
-                  })`
+                  ` (GAME OVER${score > highScore ? ' - NEW HIGH SCORE' : ''})`
                 if (score > highScore) {
                   highScore = score
                   highScoreDisplay.textContent = highScore
@@ -299,10 +294,7 @@ export function initLists () {
               } else {
                 stats.count -= price
                 clicks.textContent = stats.count
-                cookie.setItem(
-                  '[gunn-web-app] scheduleapp.clicks',
-                  stats.count
-                )
+                cookie.setItem('[gunn-web-app] scheduleapp.clicks', stats.count)
 
                 stats.power++
                 powerDisplay.textContent = stats.power
@@ -327,10 +319,7 @@ export function initLists () {
               } else {
                 stats.count -= price
                 clicks.textContent = stats.count
-                cookie.setItem(
-                  '[gunn-web-app] scheduleapp.clicks',
-                  stats.count
-                )
+                cookie.setItem('[gunn-web-app] scheduleapp.clicks', stats.count)
 
                 stats.extra++
                 extraDisplay.textContent = stats.extra
@@ -370,9 +359,7 @@ export function initLists () {
               person.phone
             }</p>`
           if (person.webpage)
-            innerHTML += `<p><strong>${localize(
-              'website'
-            )}</strong> <a href="${
+            innerHTML += `<p><strong>${localize('website')}</strong> <a href="${
               person.webpage
             }" target="_blank" rel="noopener noreferrer">${
               person.webpage
@@ -480,9 +467,7 @@ export function initLists () {
     let innerHTML = ''
     innerHTML += `<p><strong>${localize('day')}</strong> ${club.day}</p>`
     innerHTML += `<p><strong>${localize('time')}</strong> ${club.time}</p>`
-    innerHTML += `<p><strong>${localize('location')}</strong> ${
-      club.room
-    }</p>`
+    innerHTML += `<p><strong>${localize('location')}</strong> ${club.room}</p>`
     innerHTML += `<p><strong>${localize('desc')}</strong> ${club.desc}</p>`
     innerHTML += `<p><strong>${localize('presidents')}</strong> ${
       club.president

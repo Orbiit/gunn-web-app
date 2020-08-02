@@ -22,16 +22,20 @@
 .totally-not-a-link {
   color: inherit;
 }
-.schedule-container .schedule-alternatemsg, .schedule-container .schedule-noschool, .schedule-container .schedule-end {
+.schedule-container .schedule-alternatemsg,
+.schedule-container .schedule-noschool,
+.schedule-container .schedule-end {
   font-size: 14px;
   text-align: center;
   display: block;
 }
-body.light .schedule-container .schedule-alternatemsg, body.light .schedule-container .schedule-noschool {
-  color: rgba(0,0,0,0.54);
+body.light .schedule-container .schedule-alternatemsg,
+body.light .schedule-container .schedule-noschool {
+  color: rgba(0, 0, 0, 0.54);
 }
-body.dark .schedule-container .schedule-alternatemsg, body.dark .schedule-container .schedule-noschool {
-  color: rgba(255,255,255,0.7);
+body.dark .schedule-container .schedule-alternatemsg,
+body.dark .schedule-container .schedule-noschool {
+  color: rgba(255, 255, 255, 0.7);
 }
 .schedule-container .schedule-noschool {
   margin: 15px 0;
@@ -41,7 +45,7 @@ body.dark .schedule-container .schedule-alternatemsg, body.dark .schedule-contai
 }
 .schedule-endinginperiod {
   padding: 5px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   border-radius: 2px;
   background-size: cover;
   background-position: center;
@@ -53,26 +57,26 @@ body.dark .schedule-container .schedule-alternatemsg, body.dark .schedule-contai
   overflow: hidden;
 }
 body.light .schedule-container .schedule-periodprogress {
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 body.dark .schedule-container .schedule-periodprogress {
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 .schedule-container .schedule-periodprogress > div {
   height: 100%;
   border-radius: 2px;
 }
 body.light .schedule-container .schedule-periodprogress > div {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 body.dark .schedule-container .schedule-periodprogress > div {
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 .schedule-container .schedule-period {
   margin: 14px 0;
   padding: 24px;
   border-radius: 2px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   font-size: 14px;
   background-size: cover;
   background-position: center;

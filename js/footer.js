@@ -57,8 +57,9 @@ export function initFooter () {
     },
     false
   )
-  document.body.classList.add(`footer-${cookie.getItem('[gunn-web-app] section') ||
-  'schedule'}`)
+  document.body.classList.add(
+    `footer-${cookie.getItem('[gunn-web-app] section') || 'schedule'}`
+  )
   if (optionsTabShown && document.body.className.includes('footer-options')) {
     optionsTabShown()
     optionsTabShown = null
