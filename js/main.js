@@ -1,4 +1,4 @@
-/* global google, fetch, confirm, alert, FileReader, NodeFilter */
+/* global google, fetch, confirm, alert, FileReader, Node */
 
 /**
  * URL params
@@ -714,15 +714,93 @@ function localizePage () {
   function getHTMLString (id) {
     return localize(id, 'html')
   }
-  const langStringRegex = /\{\{([a-z0-9-]+)\}\}/
-  const textNodes = []
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-  while (walker.nextNode()) {
-    const exec = langStringRegex.exec(walker.currentNode.nodeValue)
-    if (exec) {
-      textNodes.push(exec[1], walker.currentNode)
-      walker.currentNode.nodeValue = getHTMLString(exec[1])
+  function parseL10nString (l10nStr) {
+    const parts = []
+    const braceRegex = /{([a-z-/\d]+)\|?|}/g
+    let lastIndex = 0
+    let match
+    let nested = 0
+    while ((match = braceRegex.exec(l10nStr)) !== null) {
+      const [brace, arg] = match
+      if (brace[0] === '{') {
+        // Opening brace
+        if (nested === 0) {
+          parts.push({ text: l10nStr.slice(lastIndex, match.index) })
+          lastIndex = match.index + brace.length
+
+          parts.push({ arg })
+        }
+        nested++
+      } else {
+        // Closing brace
+        nested--
+        if (nested === 0) {
+          parts[parts.length - 1].localize = l10nStr.slice(
+            lastIndex,
+            match.index
+          )
+          lastIndex = match.index + brace.length
+        } else if (nested < 0) {
+          console.warn('Too many closing braces for', l10nStr)
+        }
+      }
     }
+    if (nested !== 0) {
+      console.warn('Too few closing braces for', l10nStr)
+    }
+    parts.push({ text: l10nStr.slice(lastIndex) })
+    return parts
+  }
+  function applyL10nToNodeFromStr (node, l10nStr) {
+    const l10n = parseL10nString(l10nStr)
+    const l10nArgs = {}
+    // childNodes is a live list, so it must be cloned if we're removing the
+    // nodes
+    for (const child of [...node.childNodes]) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.dataset.l10nArg) {
+          if (l10nArgs[child.dataset.l10nArg]) {
+            console.warn(
+              'Duplicate data-l10n-arg',
+              child.dataset.l10nArg,
+              'for',
+              l10nStr
+            )
+          }
+          l10nArgs[child.dataset.l10nArg] = child
+        } else {
+          console.warn(child, 'does not have a data-l10n-arg set for', l10nStr)
+        }
+      }
+      node.removeChild(child)
+    }
+    for (const item of l10n) {
+      if (item.text) {
+        node.appendChild(document.createTextNode(item.text))
+      } else if (item.arg) {
+        if (l10nArgs[item.arg]) {
+          if (item.localize) {
+            applyL10nToNodeFromStr(l10nArgs[item.arg], item.localize)
+          }
+          node.appendChild(l10nArgs[item.arg])
+          delete l10nArgs[item.arg]
+        } else {
+          console.warn('Missing l10n argument', item.arg, 'for', l10nStr)
+        }
+      }
+    }
+    const extraArgs = Object.keys(l10nArgs)
+    if (extraArgs.length) {
+      console.warn('Extra l10n arguments found for', l10nStr, ':', extraArgs)
+    }
+  }
+  function applyL10nToNode (node) {
+    applyL10nToNodeFromStr(node, getHTMLString(node.dataset.l10n))
+    delete node.dataset.l10n
+  }
+  // querySelectorAll returns a static list
+  for (const localizable of document.querySelectorAll('[data-l10n]')) {
+    applyL10nToNode(localizable)
   }
   const fragment = document.createDocumentFragment()
   publicLangs.forEach(lang => {
