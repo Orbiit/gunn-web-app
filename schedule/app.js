@@ -2,7 +2,7 @@ import { localize } from '../js/l10n.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { escapeHTML, now } from '../js/utils.js'
 
-let days, months
+export let days, months
 export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths

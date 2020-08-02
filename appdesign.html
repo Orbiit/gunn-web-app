@@ -140,7 +140,14 @@
     <script src="js/main.js" charset="utf-8" type="module"></script>
     <!-- /SCRIPTS -->
   </head>
-  <body>
+  <body class="dark">
+    <script type="text/javascript">
+      try {
+        localStorage.getItem('global.theme')
+      } catch (err) {
+        console.error(err);
+      }
+    </script>
     <!-- NOAPPDESIGN -->
     <script type="text/javascript">
       const betaBadge = document.createElement('span')
@@ -166,12 +173,6 @@
       `
     </script>
     <!-- /NOAPPDESIGN -->
-    <script type="text/javascript">
-      document.body.className = `${cookie.getItem('global.theme') ||
-        'light'} footer-${cookie.getItem('[gunn-web-app] section') ||
-        'schedule'}`
-      if (window.addHiddenToBody) document.body.classList.add('hidden')
-    </script>
 
     <!-- TEMP? This is surreal. -->
     <div class="coronavirus-cover coronavirus-ended" id="coronavirus-window">

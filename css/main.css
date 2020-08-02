@@ -6,6 +6,11 @@
 :focus {
   outline: none;
 }
+:root {
+  --theme: #ff594c;
+  --focus: rgba(255, 89, 76, 0.2);
+  --active-back: rgba(255, 89, 76, 0.5);
+}
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -13,11 +18,9 @@ body {
   transition: all 0.2s, opacity 0.5s;
   background-color: var(--background);
   color: var(--colour);
-  --theme: #ff594c;
-  --focus: rgba(255, 89, 76, 0.2);
-  --active-back: rgba(255, 89, 76, 0.5);
 }
-.hidden {
+.hidden,
+.hide-app > body {
   opacity: 0;
 }
 .light {
@@ -763,7 +766,7 @@ p.secondary {
   transition: height 0.2s;
   box-sizing: border-box;
 }
-.collapsible li {
+.collapsible span {
   white-space: pre-wrap;
 }
 

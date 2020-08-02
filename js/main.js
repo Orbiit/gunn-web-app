@@ -11,7 +11,8 @@
 
 import { toAlternateSchedules } from './altScheduleGenerator.js'
 import { setDaysMonths } from './app.js'
-import { onOptionsTab } from './footer.js'
+import { initBarcodes } from './barcodes.js'
+import { initFooter, onOptionsTab } from './footer.js'
 import {
   availableLangs,
   currentLang,
@@ -19,6 +20,7 @@ import {
   publicLangs,
   ready as l10nReady
 } from './l10n.js'
+import { initLists } from './lists.js'
 import { ripple } from './material.js'
 import { cacheBackground, initSchedule, letras } from './schedule.js'
 import { zoomImage } from '../touchy/rotate1.js'
@@ -114,8 +116,7 @@ const schedulesReady = cookie.getItem(ALT_KEY)
 
 if (cookie.getItem(LAST_YEARS_ALT_KEY)) cookie.removeItem(LAST_YEARS_ALT_KEY)
 
-// In case something breaks, it won't add hidden
-window.addHiddenToBody = true
+document.documentElement.classList.add('hide-app')
 window.addEventListener(
   'load',
   e => {
@@ -126,7 +127,8 @@ window.addEventListener(
 
 function main () {
   document.title = localize('appname')
-  document.body.classList.remove('hidden')
+  document.body.className = cookie.getItem('global.theme') || 'light'
+  document.documentElement.classList.remove('hide-app')
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga')
     document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize(
@@ -139,7 +141,7 @@ function main () {
   }
   setDaysMonths(localize('days').split('  '), localize('months').split('  '))
   // Do things that make the app visually change to the user first
-  attemptFns([setTheme, localizePage, initErrorLog, showIOSDialog])
+  attemptFns([setTheme, localizePage, initErrorLog, initFooter, showIOSDialog])
   // Allow page to render the localization (seems to require two animation
   // frames for some reason?)
   window.requestAnimationFrame(() => {
@@ -147,6 +149,8 @@ function main () {
       attemptFns([
         initPSA,
         initControlCentre,
+        initBarcodes,
+        initLists,
         makeNavBarRipple,
         initTabfocus,
         initSecondsCounter,
@@ -323,7 +327,6 @@ function initPSA () {
         })
       }
       onOptionsTab.then(() => {
-        onOptionsTab = null
         displayPsa(currentPsa)
       })
       prevPsa.addEventListener('click', e => {
