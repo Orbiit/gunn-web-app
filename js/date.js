@@ -1,7 +1,9 @@
+import { localize } from './l10n.js'
+import { now } from './utils.js'
 // Date format names:
 // weird = the weird {d, m, y} object format that this uses for some reason
 // js = JavaScript Date object
-class DatePicker {
+export class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor (start, end, elem) {
     this._days = localize('ds').split('  ')

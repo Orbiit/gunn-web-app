@@ -13,8 +13,8 @@ const colours = require('colors/safe')
 function readFile (file) {
   return new Promise((resolve, reject) => {
     fs.readFile(path.resolve(__dirname, file), 'utf8', (err, data) => {
-      if (err) rej(err)
-      else res(data)
+      if (err) reject(err)
+      else resolve(data)
     })
   })
 }

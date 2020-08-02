@@ -1,4 +1,4 @@
-langs.fr = {
+export default {
   html: {
     utilities: 'Utilitaires',
     clubs: 'Clubs',

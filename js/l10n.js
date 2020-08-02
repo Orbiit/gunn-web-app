@@ -1,3 +1,5 @@
+import { cookie } from './utils.js'
+
 const langs = {}
 
 langs.en = {
@@ -370,7 +372,7 @@ langs.en = {
   }
 }
 
-const availableLangs = {
+export const availableLangs = {
   en: 'English',
   'en-gt': 'English (Google Translated through Chinese)',
   es: 'español',
@@ -378,7 +380,7 @@ const availableLangs = {
   test: 'le language test',
   'x-mleng': "L'leng"
 }
-const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
+export const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
   ? Object.keys(availableLangs)
   : ['en', 'en-gt', 'fr']
 if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
@@ -391,8 +393,8 @@ if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   }
   cookie.setItem('[gunn-web-app] language', lang)
 }
-let currentLang = cookie.getItem('[gunn-web-app] language')
-function localize (id, src = 'other') {
+export const currentLang = cookie.getItem('[gunn-web-app] language')
+export function localize (id, src = 'other') {
   if (!langs[currentLang]) {
     console.warn(`Language ${currentLang} not loaded.`)
     langs[currentLang] = {}
@@ -412,8 +414,10 @@ function localize (id, src = 'other') {
   }
   return langs.en[src][id]
 }
-if (currentLang !== 'en') {
-  const script = document.createElement('script')
-  script.src = `./js/languages/${currentLang}.js`
-  document.head.appendChild(script)
+function loadLanguage (langCode) {
+  return import(`./languages/${langCode}.js`).then(({ default: langData }) => {
+    langs[langCode] = langData
+  })
 }
+export const ready =
+  currentLang !== 'en' ? loadLanguage(currentLang) : Promise.resolve()

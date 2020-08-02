@@ -1,3 +1,4 @@
+/* global XMLHttpRequest */
 /* exported sel, cre, ajax, ready, load */
 
 class Elem extends Array {
@@ -192,3 +193,5 @@ ready(e => {
   window.DH = new Elem(document.head)
   window.DB = new Elem(document.body)
 })
+
+Object.assign(window, { sel, cre, ajax, ready, load })

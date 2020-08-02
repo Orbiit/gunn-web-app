@@ -1,4 +1,4 @@
-function zoomImage(img) {
+export function zoomImage(img) {
   var dragging=false,
   currentScale=1,
   currentRotate=0,

@@ -1,4 +1,4 @@
-class ColourPicker {
+export class ColourPicker {
   constructor (onchange = () => {}) {
     this.onchange = onchange
     this.window = document.createElement('div')

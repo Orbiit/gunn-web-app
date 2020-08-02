@@ -1,3 +1,10 @@
+import { cookie } from './utils.js'
+
+let optionsTabShown
+export const onOptionsTab = new Promise(resolve => {
+  optionsTabShown = resolve
+})
+
 window.addEventListener(
   'load',
   e => {
@@ -26,7 +33,10 @@ window.addEventListener(
         .classList.add('active')
       document.body.classList.add('footer-' + section)
       cookie.setItem('[gunn-web-app] section', section)
-      if (onOptionsTab && section === 'options') onOptionsTab()
+      if (optionsTabShown && section === 'options') {
+        optionsTabShown()
+        optionsTabShown = null
+      }
     }
     if (window.location.search) {
       const section = /(?:\?|&)section=([^&]+)/.exec(window.location.search)
@@ -49,6 +59,10 @@ window.addEventListener(
       },
       false
     )
+    if (optionsTabShown && document.body.className.includes('footer-options')) {
+      optionsTabShown()
+      optionsTabShown = null
+    }
   },
   false
 )

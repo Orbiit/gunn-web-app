@@ -1,4 +1,6 @@
-function ripple (elem) {
+import { currentTime, NADA, toEach } from './utils.js'
+
+export function ripple (elem) {
   if (typeof elem === 'string') {
     const s = document.querySelectorAll(elem)
     for (let i = 0; i < s.length; i++) ripple(s[i])
@@ -69,7 +71,7 @@ function ripple (elem) {
     elem.removeChild(focusblob);
   },false); */
 }
-function makeDropdown (wrapper, values) {
+export function makeDropdown (wrapper, values) {
   const selectDisplay = document.createElement('span')
   selectDisplay.classList.add('mdrop-selected')
   selectDisplay.tabIndex = 0
@@ -128,7 +130,7 @@ function makeDropdown (wrapper, values) {
     }
   }
 }
-function createRange (minRange = 0, onchange = NADA, oninput = NADA) {
+export function createRange (minRange = 0, onchange = NADA, oninput = NADA) {
   const range = document.createElement('div')
   range.classList.add('material-range')
   range.tabIndex = 0

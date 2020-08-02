@@ -1,3 +1,8 @@
+import { cookie } from './utils.js'
+import { localize } from './l10n.js'
+import { ripple } from './material.js'
+import { code39 } from './code39.js'
+
 window.addEventListener(
   'load',
   e => {

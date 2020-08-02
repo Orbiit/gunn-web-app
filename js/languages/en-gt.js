@@ -1,4 +1,4 @@
-langs['en-gt'] = {
+export default {
   html: {
     utilities: 'public use thing industry',
     clubs: 'all fun unit',

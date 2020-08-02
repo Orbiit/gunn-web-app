@@ -69,7 +69,7 @@ function parseAlternate (summary, description) {
   }
 }
 
-function toAlternateSchedules (eventItems, EARLIEST_AM_HOUR = 6) {
+export function toAlternateSchedules (eventItems, EARLIEST_AM_HOUR = 6) {
   const altSchedules = {}
   for (let i = eventItems.length; i--; ) {
     const schedule = parseAlternate(

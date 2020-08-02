@@ -1,3 +1,10 @@
+/* global fetch */
+
+import { localizeTime, months } from './app.js'
+import { localize } from './l10n.js'
+import { ripple } from './material.js'
+import { cookie, currentTime, escapeHTML, logError, NADA } from './utils.js'
+
 // asgn = assignment
 
 const CONFETTI_RADIUS = 60
@@ -60,7 +67,6 @@ function createConfetti (x, y) {
 }
 
 const IMPORTANCE_ALGORITHMIC_WEIGHT = 1
-const NADA = () => null
 
 const assignmentsById = {}
 let currentId = 0
@@ -438,7 +444,7 @@ class AssignmentsManager {
   }
 }
 
-function initAssignments ({
+export function initAssignments ({
   editor = NADA,
   save = NADA,
   rerender = NADA,

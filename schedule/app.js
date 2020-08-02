@@ -1,5 +1,13 @@
+import { localize } from '../js/l10n.js'
+import { savedClubs } from '../js/saved-clubs.js'
+import { escapeHTML, now } from '../js/utils.js'
+
 let days, months
-function localizeTime (id, params = {}) {
+export function setDaysMonths (newDays, newMonths) {
+  days = newDays
+  months = newMonths
+}
+export function localizeTime (id, params = {}) {
   let entry = localize(id, 'times')
   if (typeof entry === 'function') {
     return entry(params)
@@ -12,7 +20,7 @@ function localizeTime (id, params = {}) {
   }
 }
 const colourtoy = document.createElement('div')
-function getFontColour (colour) {
+export function getFontColour (colour) {
   colourtoy.style.backgroundColor = colour
   colour = colourtoy.style.backgroundColor
   colour = colour
@@ -29,7 +37,7 @@ function getFontColour (colour) {
     ? 'rgba(0,0,0,0.8)'
     : 'white'
 }
-function scheduleApp (options = {}) {
+export function scheduleApp (options = {}) {
   let elem
   const container = document.createElement('div')
   if (options.element) elem = options.element
@@ -196,7 +204,8 @@ function scheduleApp (options = {}) {
         )}</strong>`
       })}</span>`
       if (checkfuture) {
-        for (let i = 0; i < periods.length; i++)
+        let i
+        for (i = 0; i < periods.length; i++)
           if (totalminute < periods[i].end.totalminutes) break
         let str
         let compactTime, period, compactStr
@@ -343,7 +352,7 @@ function scheduleApp (options = {}) {
   }
   window.addEventListener('blur', onBlur, false)
   const checkSpeed = 50 // Every 50 ms
-  let lastMinute, timeoutID
+  let lastMinute, timeoutID, animationID
   const returnval = {
     options,
     element: elem,
@@ -395,7 +404,7 @@ function scheduleApp (options = {}) {
     getWeek () {
       const actualtoday = now()
       const week = []
-      today = new Date(
+      const today = new Date(
         actualtoday.getFullYear(),
         actualtoday.getMonth(),
         actualtoday.getDate() + options.offset
@@ -427,7 +436,6 @@ function scheduleApp (options = {}) {
     getPeriodSpan,
     getSchedule
   }
-  let timeout
   elem.appendChild(container)
   generateDay() // Calculate endOfDay, but don't render the HTML yet
   return returnval

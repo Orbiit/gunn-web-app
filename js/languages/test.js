@@ -1,4 +1,4 @@
-langs.test = {
+export default {
   html: {
     utilities: 'Ze',
     clubs: 'Tensvuente',

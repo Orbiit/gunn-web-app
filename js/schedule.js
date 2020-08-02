@@ -1,5 +1,26 @@
+/* global fetch, caches, alert */
+
+import { toAlternateSchedules } from './altScheduleGenerator.js'
+import { days, getFontColour, localizeTime, scheduleApp } from './app.js'
+import { initAssignments } from './assignments.js'
+import { ColourPicker } from './colour.js'
+import { DatePicker } from './date.js'
+import { localize } from './l10n.js'
+import { createRange, makeDropdown, ripple } from './material.js'
+import { setOnSavedClubsUpdate } from './saved-clubs.js'
+import {
+  ajax,
+  ALT_KEY,
+  cookie,
+  currentTime,
+  escapeHTML,
+  logError,
+  now,
+  toEach
+} from './utils.js'
+
 let options
-const letras = [
+export const letras = [
   0,
   'A',
   'B',
@@ -174,13 +195,13 @@ const datePickerRange = [
   { d: 3, m: 5, y: 2021 }
 ] // change for new school year, months are 0-indexed
 const IMAGE_CACHE = 'ugwa-img-cache-YEET'
-function cacheBackground (url, pd) {
+export function cacheBackground (url, pd) {
   return Promise.all([
     caches.open(IMAGE_CACHE),
     fetch(url, { mode: 'no-cors', cache: 'no-cache' })
   ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
 }
-function initSchedule () {
+export function initSchedule () {
   const letterPdFormat = localize('periodx')
   const periodstyles = {
     NO_SCHOOL: { label: localize('no-school') },
@@ -903,7 +924,6 @@ function initSchedule () {
       minute: minutes % 60
     }
   }
-  const PASSING_LENGTH = 10
   function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
     if (ugwitaData === undefined) return true
     const [month, day] = dayString.split('-').map(Number)
@@ -946,6 +966,7 @@ function initSchedule () {
     }
     return true
   }
+  let alternates
   if (cookie.getItem(ALT_KEY)) alternates = JSON.parse(cookie.getItem(ALT_KEY))
   else alternates = {}
   const selfDays = alternates.self || []
@@ -990,7 +1011,7 @@ function initSchedule () {
       }
     }
   })
-  onSavedClubsUpdate = scheduleapp.render
+  setOnSavedClubsUpdate(scheduleapp.render)
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
   const yesterdayer = document.querySelector('#plihieraux')
   const tomorrower = document.querySelector('#plimorgaux')

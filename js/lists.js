@@ -1,3 +1,8 @@
+import { localize } from './l10n.js'
+import { ripple } from './material.js'
+import { savedClubs, saveSavedClubs } from './saved-clubs.js'
+import { ajax, cookie, logError, now, toEach } from './utils.js'
+
 window.addEventListener(
   'load',
   e => {
@@ -461,7 +466,7 @@ window.addEventListener(
       }
     )
     let currentClub = null
-    window.showClub = clubName => {
+    const showClub = clubName => {
       clubinfo.classList.add('show')
       clubh1.innerHTML = clubName
       currentClub = clubName
@@ -504,6 +509,7 @@ window.addEventListener(
         s[i].setAttribute('rel', 'noopener noreferrer')
       }
     }
+    window.showClub = showClub
     clublist.addEventListener(
       'click',
       e => {

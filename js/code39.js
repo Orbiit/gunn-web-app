@@ -1,10 +1,11 @@
+import { logError } from './utils.js'
 /*
   MADE BY SEAN
   CREDITS TO WIKIPEDIA
   https://en.wikipedia.org/wiki/Code_39
   I USED THEIR JQUERY AS WELL TO TURN THEIR HELPFUL TABLE INTO JSON THAT I COPIED AND PASTED HERE
 */
-function code39 (chars, canvaselem) {
+export function code39 (chars, canvaselem) {
   let canvas
   if (canvaselem && canvaselem.tagName === 'CANVAS') canvas = canvaselem
   else {

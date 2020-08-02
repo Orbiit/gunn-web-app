@@ -1,3 +1,5 @@
+/* global google, fetch, confirm, alert, FileReader, NodeFilter */
+
 /**
  * URL params
  * @param {section.js} section - the section to be viewed
@@ -7,47 +9,31 @@
  * @param {barcodes.js} barcode - the barcode to display
  */
 
-// Using `const` (or `let`) will not set it to `window` so it won't result in
-// an infinite recursive loop.
-// Alternative methods: use a different name (I'm too lazy to do this though)
-const logError = function (error) {
-  window.logError(error)
-}
-function now () {
-  return new Date(currentTime())
-}
-// Be able to simulate other times
-function currentTime () {
-  // return new Date(2020, 2, 10, 13, 23).getTime()
-  // return Date.now() + 1000 * 60 * 60 * 24 * 4.7
-  // const temp = new Date(2020, 2, 10, 13, 23).getTime()
-  // return (Date.now() - temp) * 1000 + temp
-  return Date.now()
-}
-function ajax (url, callback, error) {
-  const xmlHttp = new XMLHttpRequest()
-  xmlHttp.onreadystatechange = () => {
-    if (xmlHttp.readyState === 4)
-      if (xmlHttp.status === 200) {
-        callback(xmlHttp.responseText)
-      } else if (error) {
-        error(xmlHttp.status)
-      }
-  }
-  xmlHttp.open('GET', url, true)
-  xmlHttp.send(null)
-}
-function toEach (query, fn) {
-  const elems = document.querySelectorAll(query)
-  for (let i = 0, len = elems.length; i < len; i++) fn(elems[i], i)
-}
-function escapeHTML (text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
+import { toAlternateSchedules } from './altScheduleGenerator.js'
+import { setDaysMonths } from './app.js'
+import { onOptionsTab } from './footer.js'
+import {
+  availableLangs,
+  currentLang,
+  localize,
+  publicLangs,
+  ready as l10nReady
+} from './l10n.js'
+import { ripple } from './material.js'
+import { cacheBackground, initSchedule, letras } from './schedule.js'
+import { zoomImage } from '../touchy/rotate1.js'
+import {
+  ALT_KEY,
+  cookie,
+  currentTime,
+  firstDay,
+  LAST_YEARS_ALT_KEY,
+  lastDay,
+  logError,
+  now,
+  toEach
+} from './utils.js'
+
 function initMap () {
   const map = new google.maps.Map(document.getElementById('mapgoogle'), {
     zoom: 18,
@@ -60,12 +46,13 @@ function initMap () {
     east: -122.130923,
     west: -122.136685
   }
-  historicalOverlay = new google.maps.GroundOverlay(
+  const historicalOverlay = new google.maps.GroundOverlay(
     'http://i.imgur.com/cnsWqDz.png',
     imageBounds
   )
   historicalOverlay.setMap(map)
 }
+window.initMap = initMap
 
 // BEGIN MASSIVE PASTE FROM UGWITA
 const calendarURL =
@@ -76,13 +63,6 @@ const calendarURL =
     'items(description,end(date,dateTime),start(date,dateTime),summary)'
   ) +
   '&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o'
-const firstDay = '2020-08-17T00:00:00.000-07:00'
-const lastDay = '2021-06-03T23:59:59.999-07:00'
-const ALT_KEY = '[gunn-web-app] alts.2019-20'
-const LAST_YEARS_ALT_KEY = '[gunn-web-app] lite.alts'
-// TODO: Uncomment when alternate schedules are out
-// const ALT_KEY = '[gunn-web-app] alts.2020-21'
-// const LAST_YEARS_ALT_KEY = '[gunn-web-app] alts.2019-20'
 const keywords = [
   'self',
   'schedule',
@@ -133,80 +113,62 @@ const schedulesReady = cookie.getItem(ALT_KEY)
 // END MASSIVE PASTE FROM UGWITA
 
 if (cookie.getItem(LAST_YEARS_ALT_KEY)) cookie.removeItem(LAST_YEARS_ALT_KEY)
-let savedClubs = {}
-let onSavedClubsUpdate = null
-if (cookie.getItem('[gunn-web-app] club-list.spring18-19')) {
-  try {
-    savedClubs = JSON.parse(
-      cookie.getItem('[gunn-web-app] club-list.spring18-19')
-    )
-  } catch (e) {
-    logError(e)
-  }
-}
-function saveSavedClubs () {
-  cookie.setItem(
-    '[gunn-web-app] club-list.spring18-19',
-    JSON.stringify(savedClubs)
-  )
-  if (onSavedClubsUpdate) onSavedClubsUpdate()
-}
-
-let onOptionsTab
 
 // In case something breaks, it won't add hidden
 window.addHiddenToBody = true
 window.addEventListener(
   'load',
   e => {
-    // onload is important because that's when the localization is loaded, probably
-    document.title = localize('appname')
-    document.body.classList.remove('hidden')
-    if (window !== window.parent) {
-      document.body.classList.add('anti-ugwaga')
-      document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize(
-        'anti-ugwaga'
-      )}</span></div>`
-      document.addEventListener('click', e => {
-        window.parent.location.replace('.')
-      })
-      return
-    }
-    days = localize('days').split('  ')
-    months = localize('months').split('  ')
-    // Do things that make the app visually change to the user first
-    attemptFns([setTheme, localizePage, initErrorLog, showIOSDialog])
-    // Allow page to render the localization (seems to require two animation
-    // frames for some reason?)
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        attemptFns([
-          initPSA,
-          initControlCentre,
-          makeNavBarRipple,
-          initTabfocus,
-          initSecondsCounter,
-          initGradeCalc,
-          initSaveCodeManager,
-          initMaps,
-          initChat,
-          initCoronavirusClose
-        ])
-        try {
-          initScheduleWhenReady()
-        } catch (err) {
-          logError(err.stack || err.message || err)
-          // Yank error log back over the screen
-          const errorLog = document.getElementById('error-log')
-          errorLog.classList.remove('textarea')
-          errorLog.classList.add('error-log')
-          document.body.appendChild(errorLog)
-        }
-      })
-    })
+    l10nReady.then(main)
   },
   false
 )
+
+function main () {
+  document.title = localize('appname')
+  document.body.classList.remove('hidden')
+  if (window !== window.parent) {
+    document.body.classList.add('anti-ugwaga')
+    document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize(
+      'anti-ugwaga'
+    )}</span></div>`
+    document.addEventListener('click', e => {
+      window.parent.location.replace('.')
+    })
+    return
+  }
+  setDaysMonths(localize('days').split('  '), localize('months').split('  '))
+  // Do things that make the app visually change to the user first
+  attemptFns([setTheme, localizePage, initErrorLog, showIOSDialog])
+  // Allow page to render the localization (seems to require two animation
+  // frames for some reason?)
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      attemptFns([
+        initPSA,
+        initControlCentre,
+        makeNavBarRipple,
+        initTabfocus,
+        initSecondsCounter,
+        initGradeCalc,
+        initSaveCodeManager,
+        initMaps,
+        initChat,
+        initCoronavirusClose
+      ])
+      try {
+        initScheduleWhenReady()
+      } catch (err) {
+        logError(err.stack || err.message || err)
+        // Yank error log back over the screen
+        const errorLog = document.getElementById('error-log')
+        errorLog.classList.remove('textarea')
+        errorLog.classList.add('error-log')
+        document.body.appendChild(errorLog)
+      }
+    })
+  })
+}
 
 function attemptFns (fns) {
   for (const fn of fns) {
@@ -360,11 +322,7 @@ function initPSA () {
           }
         })
       }
-      Promise.resolve(
-        document.body.className.includes('footer-options')
-          ? null
-          : new Promise(resolve => (onOptionsTab = resolve))
-      ).then(() => {
+      onOptionsTab.then(() => {
         onOptionsTab = null
         displayPsa(currentPsa)
       })

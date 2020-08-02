@@ -1,5 +1,5 @@
 // my conlang for my own entertainment, please ignore
-langs['x-mleng'] = {
+export default {
   html: {
     utilities: 'Utilites',
     clubs: 'Clubs',
