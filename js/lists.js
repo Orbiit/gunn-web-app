@@ -186,9 +186,11 @@ function initList (
 function egg () {
   // This is me being really lazy
   const wrapper = document.createElement('div')
-  const canvas = Object.assign(document.createElement('div'), {
-    style: 'display: flex; align-items: center;'
-  })
+  const canvas = wrapper.appendChild(
+    Object.assign(document.createElement('div'), {
+      style: 'display: flex; align-items: center;'
+    })
+  )
     .appendChild(
       Object.assign(document.createElement('div'), {
         className: 'center',
