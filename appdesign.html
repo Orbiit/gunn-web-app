@@ -357,18 +357,17 @@
       <div id="mapgoogle"></div>
     </div>
 
-    <div class="section clubs">
+    <div class="section clubs" id="section-club">
       <h1>
         <span data-l10n="clubs"></span>
         <div class="search-wrapper">
           <i class="material-icons">&#xE8B6;</i>
           <input
             type="search"
-            id="clubsearch"
             placeholder="Search clubs"
-            class="notmaterial-input"
+            class="notmaterial-input search-input"
           />
-          <button class="material icon" id="clubclear">
+          <button class="material icon clear-btn">
             <i class="material-icons">&#xe14c;</i>
           </button>
         </div>
@@ -382,7 +381,7 @@
         ></a>
       </p>
 
-      <ul class="material-list three-line short clickables" id="clubs"></ul>
+      <ul class="material-list three-line short clickables list"></ul>
       <div class="lists-enabled center">
         <p data-l10n="lists-disabled"></p>
         <button
@@ -420,18 +419,17 @@
       <ul class="material-list two-line" id="events"></ul>
     </div>
 
-    <div class="section staff">
+    <div class="section staff" id="section-staff">
       <h1>
         <span data-l10n="staff-list"></span>
         <div class="search-wrapper">
           <i class="material-icons">&#xE8B6;</i>
           <input
             type="search"
-            id="staffsearch"
             placeholder="Search staff"
-            class="notmaterial-input"
+            class="notmaterial-input search-input"
           />
-          <button class="material icon" id="staffclear">
+          <button class="material icon clear-btn">
             <i class="material-icons">&#xe14c;</i>
           </button>
         </div>
@@ -445,7 +443,7 @@
         ></a>
       </p>
 
-      <ul class="material-list three-line short clickables" id="staff"></ul>
+      <ul class="material-list three-line short clickables list"></ul>
       <div class="lists-enabled center">
         <p data-l10n="lists-disabled"></p>
         <button
@@ -890,7 +888,7 @@
       <span id="insert-error-log-here"></span>
     </div>
 
-    <div id="staffcontact" class="material-dialog">
+    <div id="info-staff" class="material-dialog">
       <h1 data-l10n="staff-name"></h1>
       <div class="content"></div>
       <div class="buttons">
@@ -898,7 +896,7 @@
       </div>
     </div>
 
-    <div id="clubinfo" class="material-dialog">
+    <div id="info-club" class="material-dialog">
       <h1 data-l10n="club-name"></h1>
       <div class="content"></div>
       <div class="buttons">
