@@ -1,4 +1,4 @@
-import { localize } from '../js/l10n.js'
+import { localize, localizeWith } from '../js/l10n.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { escapeHTML, now } from '../js/utils.js'
 
@@ -6,18 +6,6 @@ export let days, months
 export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
-}
-export function localizeTime (id, params = {}) {
-  let entry = localize(id, 'times')
-  if (typeof entry === 'function') {
-    return entry(params)
-  } else {
-    entry = entry + ''
-    Object.keys(params).forEach(id => {
-      entry = entry.replace(`{${id}}`, params[id])
-    })
-    return entry
-  }
 }
 const colourtoy = document.createElement('div')
 export function getFontColour (colour) {
@@ -70,7 +58,7 @@ export function scheduleApp (options = {}) {
   function getUsefulTimePhrase (minutes) {
     if (options.compact)
       return `${Math.floor(minutes / 60)}:${('0' + (minutes % 60)).slice(-2)}`
-    else return localizeTime('duration', { T: minutes })
+    else return localizeWith('duration', 'times', { T: minutes })
   }
   function getPeriodSpan (period) {
     return `<span style="${getCSS(
@@ -179,7 +167,10 @@ export function scheduleApp (options = {}) {
     } = getSchedule(d)
     const day = days[weekday]
     innerHTML = `<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez +
-      1}-${dia}`}">${localizeTime('date', { M: months[mez], D: dia })}</a></h3>`
+      1}-${dia}`}">${localizeWith('date', 'times', {
+      M: months[mez],
+      D: dia
+    })}</a></h3>`
     const assignments = options.getAssignments(d)
     if (assignments.noPeriod) {
       innerHTML += assignments.noPeriod
@@ -197,12 +188,16 @@ export function scheduleApp (options = {}) {
       )}</span>`
     }
     if (periods.length) {
-      innerHTML += `<span class="schedule-end">${localizeTime('end-time', {
-        T: `<strong>${getHumanTime(
-          ('0' + periods[periods.length - 1].end.hour).slice(-2) +
-            ('0' + periods[periods.length - 1].end.minute).slice(-2)
-        )}</strong>`
-      })}</span>`
+      innerHTML += `<span class="schedule-end">${localizeWith(
+        'end-time',
+        'times',
+        {
+          T: `<strong>${getHumanTime(
+            ('0' + periods[periods.length - 1].end.hour).slice(-2) +
+              ('0' + periods[periods.length - 1].end.minute).slice(-2)
+          )}</strong>`
+        }
+      )}</span>`
       if (checkfuture) {
         let i
         for (i = 0; i < periods.length; i++)
@@ -210,7 +205,7 @@ export function scheduleApp (options = {}) {
         let str
         let compactTime, period, compactStr
         if (i >= periods.length) {
-          str = `<p class="schedule-endingin">${localizeTime('ended', {
+          str = `<p class="schedule-endingin">${localizeWith('ended', 'times', {
             P: getPeriodSpan((period = getPeriodName(periods.length - 1))),
             T: `<strong>${(compactTime = getUsefulTimePhrase(
               totalminute - periods[periods.length - 1].end.totalminutes
@@ -225,8 +220,9 @@ export function scheduleApp (options = {}) {
           str = `<div class="schedule-periodprogress"><div style="width: ${((totalminute -
             periods[i].start.totalminutes) /
             (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
-            100}%;"></div></div><p class="schedule-endingin">${localizeTime(
+            100}%;"></div></div><p class="schedule-endingin">${localizeWith(
             'ending',
+            'times',
             {
               P: getPeriodSpan((period = getPeriodName(i))),
               T: `<strong>${(compactTime = getUsefulTimePhrase(
@@ -234,17 +230,21 @@ export function scheduleApp (options = {}) {
               ))}</strong>`
             }
           )}</p>`
-          compactStr = localizeTime('ending-short', { T: compactTime })
+          compactStr = localizeWith('ending-short', 'times', { T: compactTime })
         }
         // during a period
         else {
-          str = `<p class="schedule-endingin">${localizeTime('starting', {
-            P: getPeriodSpan((period = getPeriodName(i))),
-            T: `<strong>${(compactTime = getUsefulTimePhrase(
-              periods[i].start.totalminutes - totalminute
-            ))}</strong>`
-          })}</p>`
-          compactStr = localizeTime('starting-short', {
+          str = `<p class="schedule-endingin">${localizeWith(
+            'starting',
+            'times',
+            {
+              P: getPeriodSpan((period = getPeriodName(i))),
+              T: `<strong>${(compactTime = getUsefulTimePhrase(
+                periods[i].start.totalminutes - totalminute
+              ))}</strong>`
+            }
+          )}</p>`
+          compactStr = localizeWith('starting-short', 'times', {
             T: compactTime,
             P: getPeriod(period).label
           }) // passing period or before school
@@ -280,7 +280,7 @@ export function scheduleApp (options = {}) {
         )} &ndash; ${getHumanTime(
           ('0' + period.end.hour).slice(-2) +
             ('0' + period.end.minute).slice(-2)
-        )} &middot; ${localizeTime('long', {
+        )} &middot; ${localizeWith('long', 'times', {
           T: getUsefulTimePhrase(
             period.end.totalminutes - period.start.totalminutes
           )
@@ -288,19 +288,19 @@ export function scheduleApp (options = {}) {
         if (checkfuture) {
           innerHTML += `<span>`
           if (totalminute >= period.end.totalminutes)
-            innerHTML += localizeTime('self-ended', {
+            innerHTML += localizeWith('self-ended', 'times', {
               T: `<strong>${getUsefulTimePhrase(
                 totalminute - period.end.totalminutes
               )}</strong>`
             })
           else if (totalminute < period.start.totalminutes)
-            innerHTML += localizeTime('self-starting', {
+            innerHTML += localizeWith('self-starting', 'times', {
               T: `<strong>${getUsefulTimePhrase(
                 period.start.totalminutes - totalminute
               )}</strong>`
             })
           else
-            innerHTML += localizeTime('self-ending', {
+            innerHTML += localizeWith('self-ending', 'times', {
               T1: `<strong>${getUsefulTimePhrase(
                 period.end.totalminutes - totalminute
               )}</strong>`,

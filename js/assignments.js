@@ -1,11 +1,51 @@
 /* global fetch */
 
-import { localizeTime, months } from './app.js'
-import { localize } from './l10n.js'
+import { months } from './app.js'
+import { localize, localizeWith } from './l10n.js'
 import { ripple } from './material.js'
 import { cookie, currentTime, escapeHTML, logError, NADA } from './utils.js'
 
 // asgn = assignment
+
+export const categoryList = [
+  'homework',
+  'preparation',
+  'worksheet',
+  'reading',
+  'quiz',
+  'test',
+  'exam',
+  'presentation',
+  'lab',
+  'materials',
+  'other'
+]
+export function localizeCategory (category) {
+  switch (category) {
+    case 'homework':
+      return localize('asgn-cat-homework')
+    case 'preparation':
+      return localize('asgn-cat-preparation')
+    case 'worksheet':
+      return localize('asgn-cat-worksheet')
+    case 'reading':
+      return localize('asgn-cat-reading')
+    case 'quiz':
+      return localize('asgn-cat-quiz')
+    case 'test':
+      return localize('asgn-cat-test')
+    case 'exam':
+      return localize('asgn-cat-exam')
+    case 'presentation':
+      return localize('asgn-cat-presentation')
+    case 'lab':
+      return localize('asgn-cat-lab')
+    case 'materials':
+      return localize('asgn-cat-materials')
+    default:
+      return localize('asgn-cat-other')
+  }
+}
 
 const CONFETTI_RADIUS = 60
 const CONFETTI_COUNT = 50
@@ -144,14 +184,14 @@ class Assignment {
     <div class="asgn-line asgn-importance-${this.importance}${
       this.done ? ' asgn-is-done' : ''
     }" data-asgn-id="${this.id}">
-      <button class="asgn-done-btn material icon" aria-label="${localize(
-        this.done ? 'undoneify' : 'doneify'
-      )}"><i class="material-icons">${
+      <button class="asgn-done-btn material icon" aria-label="${
+        this.done ? localize('undoneify') : localize('doneify')
+      }"><i class="material-icons">${
       this.done ? '&#xe834;' : '&#xe835;'
     }</i></button>
-      <span class="asgn-category asgn-category-${this.category}">${localize(
-      'asgn-cat-' + this.category
-    )}</span>
+      <span class="asgn-category asgn-category-${
+        this.category
+      }">${localizeCategory(this.category)}</span>
       <span class="asgn-text" tabindex="0">${escapeHTML(this.text)}</span>
     </div>
     `
@@ -171,7 +211,7 @@ class Assignment {
     doneBtn.classList.add('icon')
     doneBtn.setAttribute(
       'aria-label',
-      localize(this.done ? 'undoneify' : 'doneify')
+      this.done ? localize('undoneify') : localize('doneify')
     )
     ripple(doneBtn)
     const icon = document.createElement('i')
@@ -183,7 +223,7 @@ class Assignment {
     const categoryBadge = document.createElement('span')
     categoryBadge.classList.add('asgn-category')
     categoryBadge.classList.add('asgn-category-' + this.category)
-    categoryBadge.textContent = localize('asgn-cat-' + this.category)
+    categoryBadge.textContent = localizeCategory(this.category)
     wrapper.appendChild(categoryBadge)
 
     if (today > this.due) {
@@ -201,9 +241,9 @@ class Assignment {
 
     const dueText = document.createElement('span')
     dueText.classList.add('asgn-due-date')
-    dueText.innerHTML = localizeTime('due-date', {
+    dueText.innerHTML = localizeWith('due-date', 'times', {
       P: this.period && getPeriodSpan && getPeriodSpan(this.period),
-      D: localizeTime('date', {
+      D: localizeWith('date', 'times', {
         M: months[this.dueObj.m],
         D: this.dueObj.d
       })
@@ -249,15 +289,22 @@ class AssyncManager {
     this.status.className = 'assync-status'
     switch (status) {
       case 'loading':
-        this.status.textContent = localize(`assync-${type}ing`)
+        this.status.textContent =
+          type === 'load'
+            ? localize('assync-loading')
+            : localize('assync-saving')
         this.status.classList.add('assync-loading')
         break
       case 'loaded':
-        this.status.textContent = localize(`assync-${type}ed`)
+        this.status.textContent =
+          type === 'load' ? localize('assync-loaded') : localize('assync-saved')
         this.status.classList.add('assync-disappearing')
         break
       case 'problem':
-        this.status.textContent = localize(`assync-${type}ing-problem`)
+        this.status.textContent =
+          type === 'load'
+            ? localize('assync-loading-problem')
+            : localize('assync-saving-problem')
         this.status.classList.add('assync-error')
         this.status.classList.add('assync-disappearing')
         break
@@ -545,7 +592,7 @@ export function initAssignments ({
         }
         e.target.setAttribute(
           'aria-label',
-          localize(assignment.done ? 'undoneify' : 'doneify')
+          assignment.done ? localize('undoneify') : localize('doneify')
         )
         e.target.children[0].innerHTML = assignment.done
           ? '&#xe834;'

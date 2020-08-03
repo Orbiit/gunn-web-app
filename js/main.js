@@ -17,6 +17,7 @@ import {
   availableLangs,
   currentLang,
   localize,
+  localizeHtml,
   publicLangs,
   ready as l10nReady
 } from './l10n.js'
@@ -711,9 +712,6 @@ function showIOSDialog () {
 }
 
 function localizePage () {
-  function getHTMLString (id) {
-    return localize(id, 'html')
-  }
   function parseL10nString (l10nStr) {
     const parts = []
     const braceRegex = /{([a-z-/\d]+)\|?|}/g
@@ -795,7 +793,7 @@ function localizePage () {
     }
   }
   function applyL10nToNode (node) {
-    applyL10nToNodeFromStr(node, getHTMLString(node.dataset.l10n))
+    applyL10nToNodeFromStr(node, localizeHtml(node.dataset.l10n))
     delete node.dataset.l10n
   }
   // querySelectorAll returns a static list

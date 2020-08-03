@@ -6,13 +6,55 @@ const colours = require('colors/safe')
 const { rollup } = require('rollup')
 
 async function buildUgwaJs () {
+  const l10nUses = new Set()
+  const localizeUseChecker = /localize(?:With)?\s*\((?:\s*'([a-z\d/-]+)'(?:,\s+'([a-z\d/-]+)'\s*)?(?:\s*\)|,\s+{))?/g
   const bundle = await rollup({
-    input: path.resolve(__dirname, './js/main.js')
+    input: path.resolve(__dirname, './js/main.js'),
+    plugins: [
+      {
+        name: 'js-analyzer',
+        transform (code, moduleId) {
+          if (!moduleId.endsWith('l10n.js')) {
+            for (const {
+              index,
+              [0]: match,
+              [1]: id,
+              [2]: src = 'other'
+            } of code.matchAll(localizeUseChecker)) {
+              if (id) {
+                l10nUses.add(`${src}/${id}`)
+              } else {
+                console.warn(
+                  colours.red('[!]') +
+                    ` Invalid use of localize[With] in character ${colours.bold(
+                      index
+                    )}\n  ` +
+                    colours.cyan(
+                      match +
+                        code.slice(
+                          index + match.length,
+                          index + match.length + 40
+                        ) +
+                        '...'
+                    ) +
+                    colours.grey(`\nin ${moduleId}`)
+                )
+              }
+            }
+          }
+          // Don't do anything to the code
+          return null
+        }
+      }
+    ]
   })
   const { output } = await bundle.generate({
     format: 'iife'
   })
-  return output.find(({ fileName }) => fileName === 'main.js').code
+  return {
+    code: output.find(({ fileName }) => fileName === 'main.js').code,
+    l10nUses
+  }
 }
 
 function readFile (file) {
@@ -44,7 +86,7 @@ async function buildIndexHtml () {
   )) {
     css += await readFile(path.resolve(__dirname, './css/', cssFile))
   }
-  const js = await buildUgwaJs()
+  const { code: js, l10nUses } = await buildUgwaJs()
   writeFile(
     './index.html',
     minify(

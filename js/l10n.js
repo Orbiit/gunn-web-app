@@ -45,10 +45,27 @@ export function localize (id, src = 'other') {
   }
   return langs.en[src][id]
 }
+export function localizeWith (id, src = 'other', params = {}) {
+  let entry = localize(id, src)
+  if (typeof entry === 'function') {
+    return entry(params)
+  } else {
+    entry = entry + ''
+    Object.keys(params).forEach(id => {
+      entry = entry.replace(`{${id}}`, params[id])
+    })
+    return entry
+  }
+}
+export function localizeHtml (id) {
+  return localize(id, 'html')
+}
 function loadLanguage (langCode) {
-  return import(new URL(`./js/languages/${langCode}.js`, window.location)).then(({ default: langData }) => {
-    langs[langCode] = langData
-  })
+  return import(new URL(`./js/languages/${langCode}.js`, window.location)).then(
+    ({ default: langData }) => {
+      langs[langCode] = langData
+    }
+  )
 }
 export const ready =
   currentLang !== 'en' ? loadLanguage(currentLang) : Promise.resolve()

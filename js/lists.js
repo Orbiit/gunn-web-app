@@ -3,9 +3,6 @@ import { ripple } from './material.js'
 import { savedClubs, saveSavedClubs } from './saved-clubs.js'
 import { ajax, cookie, logError, now, toEach } from './utils.js'
 
-function localizePlaceholder (id) {
-  return localize(id, 'placeholders')
-}
 function containsString (pattern) {
   if (!pattern) return () => true
   if (pattern.slice(0, 2) === 'r/') {
@@ -186,11 +183,12 @@ function initList (
 function egg () {
   // This is me being really lazy
   const wrapper = document.createElement('div')
-  const canvas = wrapper.appendChild(
-    Object.assign(document.createElement('div'), {
-      style: 'display: flex; align-items: center;'
-    })
-  )
+  const canvas = wrapper
+    .appendChild(
+      Object.assign(document.createElement('div'), {
+        style: 'display: flex; align-items: center;'
+      })
+    )
     .appendChild(
       Object.assign(document.createElement('div'), {
         className: 'center',
@@ -526,7 +524,7 @@ export function initLists () {
     searchableProps: ['jobTitle', 'department'],
     secondaryProps: ['jobTitle', 'email'],
     errMsg: localize('staff-error'),
-    searchPlaceholder: localizePlaceholder('staff'),
+    searchPlaceholder: localize('staff', 'placeholders'),
     props: [
       ['jobTitle', localize('title')],
       ['department', localize('department')],
@@ -571,7 +569,7 @@ export function initLists () {
     searchableProps: ['room', 'day'],
     secondaryProps: ['room', 'day'],
     errMsg: localize('club-error'),
-    searchPlaceholder: localizePlaceholder('clubs'),
+    searchPlaceholder: localize('clubs', 'placeholders'),
     props: [
       ['day', localize('day')],
       ['time', localize('time')],

@@ -17,7 +17,7 @@ export default {
     'min-grade': 'La note minimum acceptable: {input}',
     map: 'Carte',
     'image-instruct':
-      '{for|Pour l\'image:} Vous pouvez utiliser un doigt pour effectuer un panoramique ou deux pour tourner, zoomer et effectuer un panoramique. Vous pouvez utiliser votre souris pour faire glisser, faire défiler pour zoomer ou cliquer avec le bouton droit pour tourner.',
+      "{for|Pour l'image:} Vous pouvez utiliser un doigt pour effectuer un panoramique ou deux pour tourner, zoomer et effectuer un panoramique. Vous pouvez utiliser votre souris pour faire glisser, faire défiler pour zoomer ou cliquer avec le bouton droit pour tourner.",
     'gmaps-instruct':
       "{for|Pour Google Maps:} Fonctionne uniquement lorsque vous êtes connecté à Internet. Si vous êtes sur l'écran tactile et ne pouvez pas faire défiler vers le haut, essayez de faire défiler les boutons.",
     'club-list': 'Liste des clubs',
@@ -81,17 +81,21 @@ export default {
     'before-source-link': 'UGWA est source ouvert sur ',
     github: 'GitHub',
     'after-source-link': '.',
-    'other-versions': 'Autres versions: {gunn-schedule|Gunn Schedule} (pas d\'horaires alternatifs) · {ugwita|Ugwita} (laid) · {ugwa2|Ugwa 2} (pas fini) · {ugwisha|Ugwisha}.',
+    'other-versions':
+      "Autres versions: {gunn-schedule|Gunn Schedule} (pas d'horaires alternatifs) · {ugwita|Ugwita} (laid) · {ugwa2|Ugwa 2} (pas fini) · {ugwisha|Ugwisha}.",
     lonely:
       "UGWA est seule et a besoin d'amis! Vous devez créer votre propre application de horaire scolaire.",
-    'other-apps': "Applications Gunn faites par d'autres personnes: {tga-ios|TheGunnApp} par le iOS App Development club · {tga-android|TheGunnApp} par David C. · {nugwa|Not UGWA} par Tomer S.",
+    'other-apps':
+      "Applications Gunn faites par d'autres personnes: {tga-ios|TheGunnApp} par le iOS App Development club · {tga-android|TheGunnApp} par David C. · {nugwa|Not UGWA} par Tomer S.",
     credits: 'Crédits',
     'sean-creds': "{name|Sean} fait la plupart de l'application.",
     'henry-creds': '{name|Henry} fait la superposition de Google Maps.',
-    'service-creds': '{search|Recherche Google}, {so|Stack Overflow}, et {mdn|MDN} ont aidé.',
+    'service-creds':
+      '{search|Recherche Google}, {so|Stack Overflow}, et {mdn|MDN} ont aidé.',
     'feature-based':
       'Beaucoup de fonctionnalités basées sur le Gunn App originale.',
-    material: 'Conception basée sur les icônes, les couleurs et les spécifications de {link|Conception Matérielle}.',
+    material:
+      'Conception basée sur les icônes, les couleurs et les spécifications de {link|Conception Matérielle}.',
     languages: 'Langues',
     'this-is-joke': "(C'est une blague.)",
     'no-hour': "Pas d'heures",
@@ -103,7 +107,8 @@ export default {
       'Seuls les consonnes, les nombres, les espaces et quelques signes de ponctuation sont autorisés. Maximum 5 messages par 10 secondes.',
     'want-ugwa-normal': 'Pour installer UGWA comme une application normale:',
     'safari-only': "(cela ne peut être fait que dans l'application Safari)",
-    'add-home': 'Appuyez sur le bouton de partage {share-icon}, sélectionner "{add-home|Add to Home Screen}" dans la rangée du bas,{add-home-img}puis appuyez sur "{add|Ajouter}."',
+    'add-home':
+      'Appuyez sur le bouton de partage {share-icon}, sélectionner "{add-home|Add to Home Screen}" dans la rangée du bas,{add-home-img}puis appuyez sur "{add|Ajouter}."',
     'use-safari':
       "Ouvrir d'abord UGWA dans Safari; cela ne peut être fait nulle part ailleurs.",
     naw: 'Merci, mais non merci',

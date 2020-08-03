@@ -1,11 +1,15 @@
 /* global fetch, caches, alert */
 
 import { toAlternateSchedules } from './altScheduleGenerator.js'
-import { days, getFontColour, localizeTime, scheduleApp } from './app.js'
-import { initAssignments } from './assignments.js'
+import { days, getFontColour, scheduleApp } from './app.js'
+import {
+  categoryList,
+  initAssignments,
+  localizeCategory
+} from './assignments.js'
 import { ColourPicker } from './colour.js'
 import { DatePicker } from './date.js'
-import { localize } from './l10n.js'
+import { localize, localizeWith } from './l10n.js'
 import { createRange, makeDropdown, ripple } from './material.js'
 import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
@@ -483,19 +487,6 @@ export function initSchedule () {
       periodstyles[pd].label
     )}</span>`
   }
-  const categoryList = [
-    'homework',
-    'preparation',
-    'worksheet',
-    'reading',
-    'quiz',
-    'test',
-    'exam',
-    'presentation',
-    'lab',
-    'materials',
-    'other'
-  ]
   const contentInput = document.getElementById('asgn-content')
   contentInput.addEventListener('keydown', e => {
     if (e.keyCode === 13) {
@@ -516,7 +507,7 @@ export function initSchedule () {
       const categoryBadge = document.createElement('span')
       categoryBadge.classList.add('asgn-category')
       categoryBadge.classList.add('asgn-category-' + cat)
-      categoryBadge.textContent = localize('asgn-cat-' + cat)
+      categoryBadge.textContent = localizeCategory(cat)
       return [cat, categoryBadge]
     })
   )
@@ -549,7 +540,7 @@ export function initSchedule () {
     e.stopPropagation()
   })
   dueDate.onchange = date => {
-    dueDateTrigger.textContent = localizeTime('date', {
+    dueDateTrigger.textContent = localizeWith('date', 'times', {
       M: months[date.m],
       D: date.d
     })
@@ -588,7 +579,7 @@ export function initSchedule () {
     if (currentCancelFn) currentCancelFn()
     pdDropdown.set(period)
     catDropdown.set(category)
-    dueDateTrigger.textContent = localizeTime('date', {
+    dueDateTrigger.textContent = localizeWith('date', 'times', {
       M: months[dueObj.m],
       D: dueObj.d
     })
