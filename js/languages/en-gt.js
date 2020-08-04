@@ -101,8 +101,6 @@ export default {
     'want-ugwa-normal':
       'Like general through should use One kind An Install UGWA:',
     'safari-only': '(This only can in Safari should use in Finish to make)',
-    'b4-share-icon': 'point press Minute enjoy press button ',
-    'b4-add-home': ',   selected select   "',
     'add-home':
       'point press Minute enjoy press button {share-icon},   selected select   "{add-home|add plus To the Lord Screen screen}in bottom Row{add-home-img}Of course Rear point hit "{add|plus}”.',
     'use-safari':
@@ -236,9 +234,9 @@ export default {
     phone: 'Electricity words:',
     website: 'network station:',
     basement: 'Ground under room:',
-    'oc-basement': 'OC of Ground under room',
     'sophomore-club': 'No Have high level all fun unit',
-    'soph-desc': 'One A hair exhibition I They of with Reason heart, tough Sex with its he nuclear heart Society meeting situation sense Skill can of all fun unit; help help I They versus with Row with guide division build Stand up letter Ren turn off system; and build Stand up I They sense To An all with Get To support hold of air between. I They phase letter, I They will through Pass mention ask, Advance Row Have meaning Righteousness of discuss s and in Protect hold I They of nuclear heart price value View of with Time Protect hold open put of state degree, pick war turn off in world World with That this of false Assume, From and From in Receive beneficial. This kind, I They will in no need positive formula Comment Minute or Comment estimate of Pressure force under, and Exhausted One cut Nu force hair Wave, Explore So with Xin reward many kind Sex, hair exhibition from already of body Share. I They of Item Mark Yes help help I They from already recognize knowledge To I They each A people of price value All Yes Do not can estimate the amount of, Do not Yes because for I They Already through take Get Up to make on, and Yes because for I They Yes Who To and I They will to make for Who. I They of Out Diligent rate Yes most it is good of Of One. Do not allow Xu before generation!',
+    'soph-desc':
+      'One A hair exhibition I They of with Reason heart, tough Sex with its he nuclear heart Society meeting situation sense Skill can of all fun unit; help help I They versus with Row with guide division build Stand up letter Ren turn off system; and build Stand up I They sense To An all with Get To support hold of air between. I They phase letter, I They will through Pass mention ask, Advance Row Have meaning Righteousness of discuss s and in Protect hold I They of nuclear heart price value View of with Time Protect hold open put of state degree, pick war turn off in world World with That this of false Assume, From and From in Receive beneficial. This kind, I They will in no need positive formula Comment Minute or Comment estimate of Pressure force under, and Exhausted One cut Nu force hair Wave, Explore So with Xin reward many kind Sex, hair exhibition from already of body Share. I They of Item Mark Yes help help I They from already recognize knowledge To I They each A people of price value All Yes Do not can estimate the amount of, Do not Yes because for I They Already through take Get Up to make on, and Yes because for I They Yes Who To and I They will to make for Who. I They of Out Diligent rate Yes most it is good of Of One. Do not allow Xu before generation!',
     'soph-day': 'star period four',
     'soph-time': 'soft Sex',
     'soph-room': 'Ren what room between',

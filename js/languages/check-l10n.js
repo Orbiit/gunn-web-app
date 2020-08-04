@@ -59,12 +59,14 @@ async function main () {
     }
     // Remaining keys in `map` were not in `example`
     const extra = [...map.keys()]
-    console.warn(
-      colours.yellow('[!]') +
-        ' Extra l10n:' +
-        extra.slice(0, MAX).map(id => `\n  ${id}`) +
-        (extra.length > MAX ? `\n  [${extra.length} total]` : '')
-    )
+    if (extra.length) {
+      console.warn(
+        colours.yellow('[!]') +
+          ' Extra l10n:' +
+          extra.slice(0, MAX).map(id => `\n  ${id}`) +
+          (extra.length > MAX ? `\n  [${extra.length} total]` : '')
+      )
+    }
   }
 }
 

@@ -90,8 +90,6 @@ export default {
       'Only consonants, numbers, spaces, and a few punctuation marks are allowed. 5 messages per 10 seconds.',
     'want-ugwa-normal': 'To install UGWA like a normal app:',
     'safari-only': '(this can only be done in the Safari app)',
-    'b4-share-icon': 'Tap the share button ',
-    'b4-add-home': ', select "',
     'add-home':
       'Tap the share button {share-icon}, select "{add-home|Add to Home Screen}" in the bottom row,{add-home-img}then tap "{add|Add}."',
     'use-safari':
@@ -211,7 +209,6 @@ export default {
     phone: 'Phone:',
     website: 'Website:',
     basement: 'Basement:',
-    'oc-basement': "OC's Basement",
     'sophomore-club': 'No Senior Club',
     'soph-desc':
       'A club to develop our empathy, resilience and other core social-emotional skills; to help us build trusting relationships with our peers and mentors; and to establish spaces where we feel safe and supported. We believe that we will benefit from challenging our assumptions about the world and each other by asking questions, having meaningful discussions, and remaining open-minded while maintaining our core values. In so doing, we will develop our own identity, without the pressure of formal grading or assessment, and with every effort to play, explore, and appreciate diversity. Our goal is to help ourselves realize that each of us is immeasurably valuable not because of what we have achieved but because of who we are and who we can become. We have one of the best attendance rates; no seniors allowed!',

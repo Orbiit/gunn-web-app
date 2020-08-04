@@ -530,6 +530,7 @@ export function initLists () {
       ['department', localize('department')],
       ['email', localize('email'), true],
       ['phone', localize('phone')],
+      ['webpage', localize('website'), true],
       ['oc', localize('basement'), true]
     ],
     specialItem: (person, content) => {
@@ -570,6 +571,7 @@ export function initLists () {
     secondaryProps: ['room', 'day'],
     errMsg: localize('club-error'),
     searchPlaceholder: localize('clubs', 'placeholders'),
+    nonexistentItem: localize('dead-club'),
     props: [
       ['day', localize('day')],
       ['time', localize('time')],

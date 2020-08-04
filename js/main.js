@@ -815,6 +815,9 @@ function localizePage () {
         cookie.setItem('[gunn-web-app] language', lang)
         window.location.reload()
       })
+      p.addEventListener('click', e => {
+        input.click()
+      })
     }
     p.appendChild(input)
     const label = document.createElement('label')
