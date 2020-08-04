@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import fs from 'fs/promises'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import colours from 'colors/safe.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -19,7 +20,7 @@ function mapObjValues (obj, mapFn) {
 }
 
 function getPieces (str) {
-  const regex = /{[a-z\d/-]+\|?|}/g
+  const regex = /{[a-zA-Z\d/-]+\|?|}/g
   const parts = []
   let lastIndex = 0
   let match
@@ -51,7 +52,9 @@ function transformObj (original, translations) {
   let transId = 0
   return mapObjValues(original, value => {
     if (typeof value === 'string') {
-      return getPieces(value).map((part, i) => i % 2 === 0 ? translations[transId++] : part).join('')
+      return getPieces(value)
+        .map((part, i) => (i % 2 === 0 ? translations[transId++] : part))
+        .join('')
     } else {
       return value
     }
@@ -59,67 +62,99 @@ function transformObj (original, translations) {
 }
 
 const getWord = /\w+|./g // Groups alphanumeric letters together
-const noSpaceBefore = [...'.,?!:;)]}”/"']
-const noSpaceAfter = [...'([{“/"']
+const noSpaceBefore = [...'.,?!:;)]}”/']
+const noSpaceAfter = [...'([{“/']
 function translateToChineseAndBack (string) {
   // Sorry ST
-  return fetch(`https://translate-service.scratch.mit.edu/translate?language=zh-tw&text=${encodeURIComponent(string)}`)
-    .then(r => r.ok ? r.json() : r.text().then(err => Promise.reject(new Error(err))))
+  return fetch(
+    `https://translate-service.scratch.mit.edu/translate?language=zh-tw&text=${encodeURIComponent(
+      string.trim()
+    )}`
+  )
+    .then(r =>
+      r.ok ? r.json() : r.text().then(err => Promise.reject(new Error(err)))
+    )
     .then(r => r.result)
-    .then(chinese => fetch(`https://translate-service.scratch.mit.edu/translate?language=en&text=${encodeURIComponent((chinese.match(getWord) || []).join('\n'))}`))
-    .then(r => r.ok ? r.json() : r.text().then(err => Promise.reject(new Error(err))))
+    .then(chinese =>
+      fetch(
+        `https://translate-service.scratch.mit.edu/translate?language=en&text=${encodeURIComponent(
+          (chinese.match(getWord) || []).join('\n')
+        )}`
+      )
+    )
+    .then(r =>
+      r.ok ? r.json() : r.text().then(err => Promise.reject(new Error(err)))
+    )
     .then(r => r.result)
-    .then(englishLines => englishLines
-      .replace(/。/g, '.')
-      .replace(/，/g, '.')
-      .replace(/？/g, '?')
-      .replace(/：/g, ':')
-      .replace(/；/g, ';')
-      .replace(/（/g, '(')
-      .replace(/）/g, ')')
-      .split('\n\n\n')
-      .map(englishParts => {
-        let english = ''
-        for (const word of englishParts.split('\n')) {
-          if (english === '') {
-            english = word
-            continue
+    .then(englishLines =>
+      englishLines
+        .replace(/。/g, '.')
+        .replace(/，/g, '.')
+        .replace(/？/g, '?')
+        .replace(/：/g, ':')
+        .replace(/；/g, ';')
+        .replace(/（/g, '(')
+        .replace(/）/g, ')')
+        .split('\n\n\n')
+        .map(englishParts => {
+          let english = ''
+          for (const word of englishParts.split('\n')) {
+            if (english === '') {
+              english = word
+              continue
+            }
+            if (
+              noSpaceBefore.includes(word) ||
+              noSpaceAfter.includes(english[english.length - 1])
+            ) {
+              english += word
+            } else {
+              english += ' ' + word
+            }
           }
-          if (noSpaceBefore.includes(word) || noSpaceAfter.includes(english[english.length - 1])) {
-            english += word
-          } else {
-            english += ' ' + word
-          }
-        }
-        return english
-      })
-      .join('\n'))
+          return english
+        })
+        .join('\n')
+    )
+    .then(
+      newStr =>
+        (string[0] === ' ' ? ' ' : '') +
+        newStr +
+        (string[string.length - 1] === ' ' ? ' ' : '')
+    )
 }
 
 async function main () {
   const translations = getToTranslate(en)
-  const translationGroups = []
-  translations.forEach((translation, transId) => {
+  let transId = 0
+  for (const translation of translations) {
     if (translation) {
-      if (!translationGroups[0] || translationGroups[0].totalLength + translation.length >= 500) {
-        translationGroups.unshift({
-          totalLength: 0,
-          translations: []
-        })
+      translations[transId] = await translateToChineseAndBack(translation)
+      console.log(
+        `${colours.blue(translation)} -> ${colours.red(translations[transId])}`
+      )
+      if (!translations[transId]) {
+        console.warn(colours.yellow('[!]'), 'Translation is empty.')
       }
-      translationGroups[0].translations.push([translation, transId])
-      translationGroups[0].totalLength += translation.length
     }
-  })
-  for (const { translations: group, totalLength } of translationGroups) {
-    console.log(`Translating ${group.length} items (${totalLength} chars)`);
-    const translated = (await translateToChineseAndBack(group.map(trans => trans[0]).join('\n'))).split('\n')
-    console.log(`${group.length} -> ${translated.length}`);
-    group.forEach(([, transId], i) => {
-      translations[transId] = translated[i]
-    })
+    transId++
   }
-  await fs.writeFile(resolve(__dirname, './en-gt.js'), `export default ${JSON.stringify(transformObj(en, translations), null, 2)}\n`)
+  await fs.writeFile(
+    resolve(__dirname, './en-gt.js'),
+    `import { duration, dueDate } from './en-gt-core.js'\n\nexport default ${JSON.stringify(
+      transformObj(en, translations),
+      (key, value) => {
+        if (typeof value === 'function') {
+          if (key === 'duration') return '__DURATION__'
+          if (key === 'due-date') return '__DUE_DATE__'
+        }
+        return value
+      },
+      2
+    )
+      .replace('"__DURATION__"', 'duration')
+      .replace('"__DUE_DATE__"', 'dueDate')}\n`
+  )
 }
 
 main()

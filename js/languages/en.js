@@ -182,7 +182,7 @@ export default {
     'barcode-legacy-default': 'Student #{N}',
     'barcode-default': 'Intellectual student',
     'barcode-student-placeholder': 'Whose ID is this?',
-    ds: 'S  M  T  W  &Theta;  F  S',
+    ds: 'S  M  T  W  Θ  F  S',
     mos: 'Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec',
     'no-school': 'No school today!',
     flex: 'Tutorial',
