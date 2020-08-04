@@ -33,7 +33,7 @@ export function localize (id, src = 'other', lang = currentLang) {
   const path = [src, ...id.split('/')]
   let obj = langs[currentLang]
   for (const key of path) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       obj = obj[key]
     } else if (lang === 'en') {
       console.warn(`Nothing set for ${src}/${id}`)

@@ -104,20 +104,13 @@ async function buildIndexHtml () {
     })
     l10nUses.set(`html/${id}`, args)
   })
-  const l10nExample = {}
-  const alphabetized = [...l10nUses].sort((a, b) => (a[0] > b[0] ? 1 : -1))
-  for (const [id, defaultStr] of alphabetized) {
-    let obj = l10nExample
-    const path = id.split('/')
-    for (const item of path.slice(0, -1)) {
-      if (!l10nExample[item]) l10nExample[item] = {}
-      obj = l10nExample[item]
-    }
-    obj[path[path.length - 1]] = defaultStr
-  }
   writeFile(
     './js/languages/example.json',
-    JSON.stringify(l10nExample, null, 2)
+    JSON.stringify(
+      Object.fromEntries([...l10nUses].sort((a, b) => (a[0] > b[0] ? 1 : -1))),
+      null,
+      2
+    )
   )
 
   writeFile(
