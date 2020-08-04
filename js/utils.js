@@ -36,16 +36,14 @@ export const cookie = (() => {
     }
   }
 })()
+// Current time getters are centralized here so it is easier to simulate a
+// different time
 export function now () {
   return new Date(currentTime())
 }
-// Be able to simulate other times
-export function currentTime () {
-  // return new Date(2020, 2, 10, 13, 23).getTime()
-  // return Date.now() + 1000 * 60 * 60 * 24 * 4.7
-  // const temp = new Date(2020, 2, 10, 13, 23).getTime()
-  // return (Date.now() - temp) * 1000 + temp
-  return Date.now()
+export let currentTime = () => Date.now()
+export function setCurrentTime (newFn) {
+  currentTime = newFn
 }
 export function ajax (url, callback, error) {
   const xmlHttp = new XMLHttpRequest()

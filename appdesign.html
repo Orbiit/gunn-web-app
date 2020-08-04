@@ -144,7 +144,16 @@
       }
     </script>
     <!-- NOAPPDESIGN -->
-    <script type="text/javascript">
+    <script type="module">
+      import { setCurrentTime } from './js/utils.js'
+      // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
+      // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
+      // setCurrentTime(() => {
+      //   const temp = new Date(2020, 2, 10, 13, 23).getTime()
+      //   return (Date.now() - temp) * 1000 + temp
+      // })
+      window.setCurrentTime = setCurrentTime
+
       const betaBadge = document.createElement('span')
       betaBadge.className = 'beta-badge'
       betaBadge.textContent = 'versión beta'
