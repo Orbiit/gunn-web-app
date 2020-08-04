@@ -1,12 +1,17 @@
-const UglifyJS = require('uglify-es')
-const minify = require('html-minifier').minify
-const fs = require('fs')
-const path = require('path')
-const colours = require('colors/safe')
-const { rollup } = require('rollup')
+import UglifyJS from 'uglify-es'
+import htmlMinifier from 'html-minifier'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import colours from 'colors/safe.js'
+import { rollup } from 'rollup'
+import cheerio from 'cheerio'
+
+const { minify } = htmlMinifier
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 async function buildUgwaJs () {
-  const l10nUses = new Set()
+  const l10nUses = new Map()
   const localizeUseChecker = /localize(?:With)?\s*\((?:\s*'([a-z\d/-]+)'(?:,\s+'([a-z\d/-]+)'\s*)?(?:\s*\)|,\s+{))?/g
   const bundle = await rollup({
     input: path.resolve(__dirname, './js/main.js'),
@@ -17,12 +22,12 @@ async function buildUgwaJs () {
           if (!moduleId.endsWith('l10n.js')) {
             for (const {
               index,
-              [0]: match,
-              [1]: id,
-              [2]: src = 'other'
+              0: match,
+              1: id,
+              2: src = 'other'
             } of code.matchAll(localizeUseChecker)) {
               if (id) {
-                l10nUses.add(`${src}/${id}`)
+                l10nUses.set(`${src}/${id}`, [])
               } else {
                 console.warn(
                   colours.red('[!]') +
@@ -87,6 +92,34 @@ async function buildIndexHtml () {
     css += await readFile(path.resolve(__dirname, './css/', cssFile))
   }
   const { code: js, l10nUses } = await buildUgwaJs()
+
+  const $ = cheerio.load(html)
+  $('[data-l10n]').each(function () {
+    const localizable = $(this)
+    const id = localizable.attr('data-l10n')
+    const args = []
+    localizable.children('[data-l10n-arg]').each(function () {
+      const arg = $(this)
+      args.push(arg.attr('data-l10n-arg'))
+    })
+    l10nUses.set(`html/${id}`, args)
+  })
+  const l10nExample = {}
+  const alphabetized = [...l10nUses].sort((a, b) => (a[0] > b[0] ? 1 : -1))
+  for (const [id, defaultStr] of alphabetized) {
+    let obj = l10nExample
+    const path = id.split('/')
+    for (const item of path.slice(0, -1)) {
+      if (!l10nExample[item]) l10nExample[item] = {}
+      obj = l10nExample[item]
+    }
+    obj[path[path.length - 1]] = defaultStr
+  }
+  writeFile(
+    './js/languages/example.json',
+    JSON.stringify(l10nExample, null, 2)
+  )
+
   writeFile(
     './index.html',
     minify(

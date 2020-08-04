@@ -1,0 +1,342 @@
+{
+  "html": {
+    "12h": [],
+    "24h": [],
+    "about": [],
+    "add-barcode": [],
+    "add-home": [
+      "share-icon",
+      "add-home",
+      "add-home-img",
+      "add"
+    ],
+    "add-ugwa": [],
+    "android-instruct": [
+      "name"
+    ],
+    "announcements": [],
+    "asgn-after": [],
+    "asgn-algorithms": [],
+    "asgn-before": [],
+    "asgn-buttons": [
+      "delete",
+      "cancel",
+      "save"
+    ],
+    "asgn-chrono-primero": [],
+    "asgn-display": [],
+    "asgn-important-importance": [],
+    "asgn-none": [],
+    "asgn-period-date": [
+      "period",
+      "date"
+    ],
+    "asgn-sort": [],
+    "assignments": [],
+    "assync": [],
+    "assync-desc": [],
+    "barcode": [],
+    "barcode-desc": [
+      "wikipedia"
+    ],
+    "browsers": [],
+    "bugs": [],
+    "category": [
+      "category"
+    ],
+    "chromebook-instruct": [
+      "name"
+    ],
+    "close": [],
+    "club-name": [],
+    "clubs": [],
+    "clubs-disclaimer": [
+      "link"
+    ],
+    "control-centre": [],
+    "control-centre-desc": [],
+    "coronavirus-heading": [],
+    "coronavirus-pausd": [],
+    "coronavirus-subtitle": [],
+    "credits": [],
+    "current-grade": [
+      "input"
+    ],
+    "dark-theme": [],
+    "desktop-instruct": [
+      "name"
+    ],
+    "disable-lists": [],
+    "edit-asgn": [],
+    "edit-h": [],
+    "errors": [],
+    "export-copy": [],
+    "export-file": [],
+    "feature-based": [],
+    "finals-worth": [
+      "input"
+    ],
+    "gmaps-instruct": [
+      "for"
+    ],
+    "h-editor": [],
+    "heaucques": [],
+    "henry-creds": [
+      "name"
+    ],
+    "hide-preps": [],
+    "image-instruct": [
+      "for"
+    ],
+    "import-file": [
+      "file",
+      "import"
+    ],
+    "importance": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "intent": [],
+    "ios-instruct": [
+      "name"
+    ],
+    "kevin-creds": [
+      "name"
+    ],
+    "languages": [],
+    "light-theme": [],
+    "lists-disabled": [],
+    "loading": [],
+    "loading-assync": [],
+    "lonely": [],
+    "map": [],
+    "martin-ad": [
+      "ad"
+    ],
+    "material": [
+      "link"
+    ],
+    "min-grade": [
+      "input"
+    ],
+    "minscore": [],
+    "msg-note": [],
+    "naw": [],
+    "neither-theme": [],
+    "new": [],
+    "no-hour": [],
+    "not-using-assync": [
+      "create",
+      "id",
+      "join"
+    ],
+    "numbers": [],
+    "ok": [],
+    "open-chat": [],
+    "options": [],
+    "other-apps": [
+      "tga-ios",
+      "tga-android",
+      "nugwa"
+    ],
+    "other-versions": [
+      "gunn-schedule",
+      "ugwita",
+      "ugwa2",
+      "ugwisha"
+    ],
+    "periods": [],
+    "periods-desc": [],
+    "prev-chats": [],
+    "reload": [],
+    "report-bugs": [
+      "gh",
+      "email"
+    ],
+    "s1a": [],
+    "s1b": [],
+    "s1c": [],
+    "s2a": [],
+    "s2b": [],
+    "s2c": [],
+    "s3a": [],
+    "s3b": [],
+    "s3c": [],
+    "s4a": [],
+    "s4b": [],
+    "s4c": [],
+    "s5a": [],
+    "s5b": [],
+    "s5c": [],
+    "s6a": [],
+    "s6b": [],
+    "s6c": [],
+    "safari-only": [],
+    "schedule": [],
+    "sean-creds": [
+      "name"
+    ],
+    "select-date": [],
+    "send": [],
+    "service-creds": [
+      "search",
+      "so",
+      "mdn"
+    ],
+    "show-self-toggle": [],
+    "show0": [],
+    "source": [
+      "github"
+    ],
+    "staff": [],
+    "staff-disclaimer": [
+      "link"
+    ],
+    "staff-list": [],
+    "staff-name": [],
+    "theme": [],
+    "this-is-joke": [],
+    "time-formatting": [],
+    "title-compact": [],
+    "toggle-pd-add-asgn": [],
+    "transfer": [],
+    "trick-cache": [],
+    "turn-back-on": [],
+    "units": [],
+    "use-safari": [],
+    "using-assync": [
+      "id",
+      "leave"
+    ],
+    "utilities": [],
+    "version": [
+      "version"
+    ],
+    "want-ugwa-normal": []
+  },
+  "other": {
+    "add-asgn": [],
+    "add-to-list": [],
+    "advisors": [],
+    "after-alt-msg": [],
+    "anti-ugwaga": [],
+    "appname": [],
+    "asgn": [],
+    "asgn-cat-exam": [],
+    "asgn-cat-homework": [],
+    "asgn-cat-lab": [],
+    "asgn-cat-materials": [],
+    "asgn-cat-other": [],
+    "asgn-cat-preparation": [],
+    "asgn-cat-presentation": [],
+    "asgn-cat-quiz": [],
+    "asgn-cat-reading": [],
+    "asgn-cat-test": [],
+    "asgn-cat-worksheet": [],
+    "assync-loaded": [],
+    "assync-loading": [],
+    "assync-loading-problem": [],
+    "assync-saved": [],
+    "assync-saving": [],
+    "assync-saving-problem": [],
+    "barcode-default": [],
+    "barcode-legacy-default": [],
+    "barcode-student-placeholder": [],
+    "basement": [],
+    "before-alt-msg": [],
+    "blamed-teacher": [],
+    "brunch": [],
+    "cannot": [],
+    "close-future": [],
+    "club-error": [],
+    "day": [],
+    "days": [],
+    "default-alt-msg": [],
+    "department": [],
+    "desc": [],
+    "donation": [],
+    "doneify": [],
+    "ds": [],
+    "email": [],
+    "enable-lists": [],
+    "events": [],
+    "events-error": [],
+    "export-file-name": [],
+    "flex": [],
+    "gmaps": [],
+    "gmaps-error": [],
+    "image": [],
+    "image-url": [],
+    "import-problem": [],
+    "import-warning": [],
+    "loading": [],
+    "location": [],
+    "lunch": [],
+    "lunch-clubs": [],
+    "minscore-after-emph": [],
+    "minscore-before-emph": [],
+    "minscore-too-high-addendum": [],
+    "months": [],
+    "mos": [],
+    "no-events": [],
+    "no-school": [],
+    "no-study-after-emph": [],
+    "no-study-before-emph": [],
+    "no-study-emph": [],
+    "overdue": [],
+    "p0": [],
+    "period-name-label": [],
+    "periodx": [],
+    "phone": [],
+    "presidents": [],
+    "previewing-future": [],
+    "psa-date": [],
+    "psa-error": [],
+    "remove-from-list": [],
+    "return-today": [],
+    "self": [],
+    "soph-day": [],
+    "soph-desc": [],
+    "soph-email": [],
+    "soph-prez": [],
+    "soph-room": [],
+    "soph-teacher": [],
+    "soph-time": [],
+    "sophomore-club": [],
+    "staff-error": [],
+    "summer": [],
+    "supreme-leader": [],
+    "teacher-email": [],
+    "time": [],
+    "title": [],
+    "undoneify": [],
+    "universe": [],
+    "you": [],
+    "zero-error": []
+  },
+  "placeholders": {
+    "assignment": [],
+    "assync": [],
+    "clubs": [],
+    "errors": [],
+    "import": [],
+    "send-msg": [],
+    "staff": []
+  },
+  "times": {
+    "date": [],
+    "due-date": [],
+    "duration": [],
+    "end-time": [],
+    "ended": [],
+    "ending": [],
+    "ending-short": [],
+    "long": [],
+    "self-ended": [],
+    "self-ending": [],
+    "self-starting": [],
+    "starting": [],
+    "starting-short": []
+  }
+}

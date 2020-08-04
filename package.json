@@ -2,9 +2,11 @@
   "name": "gunn-web-app",
   "version": "1.0.0",
   "description": "ugwa",
+  "type": "module",
   "main": "build.js",
   "author": "l'shep",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "colors": "^1.4.0"
   },
   "devDependencies": {
@@ -17,6 +19,7 @@
   },
   "scripts": {
     "build": "node build.js",
+    "check-l10n": "node js/languages/check-l10n.js",
     "format": "prettier-standard --format --lint"
   }
 }

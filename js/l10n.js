@@ -25,25 +25,24 @@ if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   cookie.setItem('[gunn-web-app] language', lang)
 }
 export const currentLang = cookie.getItem('[gunn-web-app] language')
-export function localize (id, src = 'other') {
+export function localize (id, src = 'other', lang = currentLang) {
   if (!langs[currentLang]) {
     console.warn(`Language ${currentLang} not loaded.`)
     langs[currentLang] = {}
   }
-  if (!langs[currentLang][src]) {
-    langs[currentLang][src] = {}
+  const path = [src, ...id.split('/')]
+  let obj = langs[currentLang]
+  for (const key of path) {
+    if (obj.hasOwnProperty(key)) {
+      obj = obj[key]
+    } else if (lang === 'en') {
+      console.warn(`Nothing set for ${src}/${id}`)
+      return id
+    } else {
+      return localize(id, src, 'en')
+    }
   }
-  if (langs[currentLang][src][id] !== undefined)
-    return langs[currentLang][src][id]
-  if (!langs.en[src]) {
-    console.warn(`Source ${src} does not exist.`)
-    return id
-  }
-  if (langs.en[src][id] === undefined) {
-    console.warn(`Nothing set for ${src}/${id}`)
-    return id
-  }
-  return langs.en[src][id]
+  return obj
 }
 export function localizeWith (id, src = 'other', params = {}) {
   let entry = localize(id, src)
