@@ -1,4 +1,6 @@
-const CACHE_NAME = 'ugwa-sw-1595825262134';
+/* eslint-env serviceworker */
+
+const CACHE_NAME = 'ugwa-sw-1596564998066'
 const urlsToCache = [
   './',
   'images/newmap.min.png',
@@ -20,37 +22,59 @@ const urlsToCache = [
   'json/clubs.json',
   'json/staff.json',
   'js/languages/en-gt.js',
+  'js/languages/en-gt-core.js',
   'js/languages/fr.js',
-  // TEMP?
+  // TEMP for school closure
   'images/false-sense-of-security.svg'
-];
+]
 
-function sendError(msg) {
-  self.clients.matchAll().then(clients => clients.forEach(c => c.postMessage({error: msg})));
+function sendError (msg) {
+  self.clients
+    .matchAll()
+    .then(clients => clients.forEach(c => c.postMessage({ error: msg })))
 }
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)).then(() => self.skipWaiting()));
-});
+  e.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
+  )
+})
 self.addEventListener('fetch', e => {
-  e.respondWith(caches.match(e.request, {
-    ignoreSearch: !e.request.url.includes('fonts.googleapis.com')
-  })
-    .then(response => response || fetch(e.request)));
-});
+  e.respondWith(
+    caches
+      .match(e.request, {
+        ignoreSearch: !e.request.url.includes('fonts.googleapis.com')
+      })
+      .then(response => response || fetch(e.request))
+  )
+})
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys()
-    // delete old ugwa-sw-* caches
-    .then(names => Promise.all(names
-      .map(cache => CACHE_NAME !== cache && cache.slice(0, 8) === 'ugwa-sw-'
-        ? caches.delete(cache)
-        : null)))
-    .then(() => self.clients.claim()));
-});
+  e.waitUntil(
+    caches
+      .keys()
+      // delete old ugwa-sw-* caches
+      .then(names =>
+        Promise.all(
+          names.map(cache =>
+            CACHE_NAME !== cache && cache.slice(0, 8) === 'ugwa-sw-'
+              ? caches.delete(cache)
+              : null
+          )
+        )
+      )
+      .then(() => self.clients.claim())
+  )
+})
 self.addEventListener('error', e => {
-  sendError(e.error && e.error.stack ? e.error.stack
-    : `${e.message} at ${e.filename}:${e.lineno}:${e.colno}`);
-});
+  sendError(
+    e.error && e.error.stack
+      ? e.error.stack
+      : `${e.message} at ${e.filename}:${e.lineno}:${e.colno}`
+  )
+})
 self.addEventListener('unhandledrejection', e => {
-  sendError(e.reason && (e.reason.stack || e.reason.message || e.reason));
-});
+  sendError(e.reason && (e.reason.stack || e.reason.message || e.reason))
+})

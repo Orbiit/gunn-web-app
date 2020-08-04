@@ -185,7 +185,7 @@ function attemptFns (fns) {
   }
 }
 
-// TEMP: Remove when lockdown ends
+// TEMP for school closure
 function initCoronavirusClose () {
   const wrapper = document.getElementById('coronavirus-window')
   const closeBtn = document.getElementById('close-coronavirus')

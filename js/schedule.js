@@ -136,64 +136,6 @@ function makeHMTM (hour, minute = 0) {
   return { hour, minute, totalminutes: hour * 60 + minute }
 }
 
-// TEMP: Gunn EOY lol
-const startDropOff = { hour: 8, minute: 0, totalminutes: 8 * 60 }
-const endDropOff = { hour: 12, minute: 0, totalminutes: 12 * 60 }
-const dropOffSchedule = Object.fromEntries(
-  [
-    // Stereotypical Chinese names?
-    [
-      4,
-      'A-Che Chi-Gri Gu-Lee Lel-Mo Mu-She Shi-Wan Wang-Z'.split(' '),
-      'Seniors'
-    ],
-    [9, 'A-Cha Che-Fa Fe-Ja Je-Ma Me-Ram Ran-Tam Tan-Z'.split(' '), 'Juniors'],
-    [
-      8,
-      'A-Ch Ch-D E-Ha He-Ki Ko-L M-Pi Po-Si So-V W-Z'.split(' '),
-      'Freshmen & Sophomores'
-    ]
-  ].map(([date, names, grade]) => {
-    const periods = []
-    let hour = 8
-    for (const name of names) {
-      periods.push({
-        name: grade + ' ' + name.replace(/-/g, '–'),
-        start: { hour, minute: 0, totalminutes: hour * 60 },
-        end: { hour: hour + 1, minute: 0, totalminutes: (hour + 1) * 60 }
-      })
-      hour++
-    }
-    return [date, periods]
-  })
-)
-dropOffSchedule[10] = [
-  {
-    name: 'Sophomores Make-up (All Students)',
-    start: startDropOff,
-    end: endDropOff
-  }
-]
-dropOffSchedule[11] = [
-  {
-    name: 'Freshman Make-up (All Students)',
-    start: startDropOff,
-    end: endDropOff
-  }
-]
-const dropOffSeniorsEPeriod = dropOffSchedule[4].find(
-  pd => pd.start.hour === 11
-)
-dropOffSeniorsEPeriod.customName = dropOffSeniorsEPeriod.name
-dropOffSeniorsEPeriod.customName += '—Period E for others'
-dropOffSeniorsEPeriod.name = 'E'
-const dropOffSeniorsFPeriod = dropOffSchedule[4].find(
-  pd => pd.start.hour === 13
-)
-dropOffSeniorsFPeriod.customName = dropOffSeniorsFPeriod.name
-dropOffSeniorsFPeriod.customName += '—Period F for others'
-dropOffSeniorsFPeriod.name = 'F'
-
 const datePickerRange = [
   { d: 17, m: 7, y: 2020 },
   { d: 3, m: 5, y: 2021 }
@@ -995,12 +937,8 @@ export function initSchedule () {
     getAssignments (date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan)
     },
-    autorender: false,
-    customSchedule (date, y, m, d, wd) {
-      if (y === 2020 && m + 1 === 6 && dropOffSchedule[d]) {
-        return dropOffSchedule[d]
-      }
-    }
+    autorender: false
+    // customSchedule (date, y, m, d, wd)
   })
   setOnSavedClubsUpdate(scheduleapp.render)
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
@@ -1010,12 +948,11 @@ export function initSchedule () {
   const d = now()
   datepicker.onchange = e => {
     if (scheduleapp.options.autorender) {
-      // TEMP?
-      // e.d--;
-      // yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0;
-      // e.d += 2;
-      // tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0;
-      // e.d--;
+      e.d--
+      yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0
+      e.d += 2
+      tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0
+      e.d--
       if (previewingFuture) {
         previewingFuture.remove()
         previewingFuture = null
@@ -1101,13 +1038,12 @@ export function initSchedule () {
   scheduleapp.update()
   makeWeekHappen()
   // Disable buttons accordingly
-  // TEMP?
-  // const selectedDay = datepicker.day
-  // selectedDay.d--;
-  // yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0;
-  // selectedDay.d += 2;
-  // tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0;
-  // selectedDay.d--;
+  const selectedDay = datepicker.day
+  selectedDay.d--
+  yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0
+  selectedDay.d += 2
+  tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0
+  selectedDay.d--
 
   // Date control buttons
   document.querySelector('#datepicker').addEventListener(
@@ -1125,8 +1061,8 @@ export function initSchedule () {
         m: datepicker.day.m,
         y: datepicker.day.y
       }
-      // TEMP?
-      /* if (datepicker.compare(proposal, datepicker.start) >= 0) */ datepicker.day = proposal
+      if (datepicker.compare(proposal, datepicker.start) >= 0)
+        datepicker.day = proposal
     },
     false
   )
@@ -1138,8 +1074,8 @@ export function initSchedule () {
         m: datepicker.day.m,
         y: datepicker.day.y
       }
-      // TEMP?
-      /* if (datepicker.compare(proposal, datepicker.end) <= 0) */ datepicker.day = proposal
+      if (datepicker.compare(proposal, datepicker.end) <= 0)
+        datepicker.day = proposal
     },
     false
   )
