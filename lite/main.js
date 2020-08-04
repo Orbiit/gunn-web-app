@@ -1,4 +1,13 @@
-'use strict';
+import {
+  normalSchedules,
+  firstDay,
+  lastDay,
+  keywords,
+  monthNames,
+  dayNames,
+  legalHashDateRegex
+} from './data.js';
+import { toAlternateSchedules } from '../js/altScheduleGenerator.js';
 
 const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
   + encodeURIComponent("u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com")
