@@ -29,8 +29,12 @@
   background-color: var(--ripple-focus);
 }
 @keyframes pulse {
-  from {transform: scale(1.05);}
-  to {transform: scale(0.95);}
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(0.95);
+  }
 }
 .material {
   text-transform: uppercase;
@@ -65,13 +69,13 @@
 .material.raised {
   background-color: var(--theme);
   color: white;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 .tab-focus .material:focus {
   box-shadow: 0 0 0 5px var(--focus);
 }
 .schedule-container .material {
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 .schedule-container .material:hover {
   background-color: var(--ripple);
@@ -86,13 +90,14 @@
   vertical-align: bottom;
   cursor: pointer;
   position: relative;
-  transition: all .2s;
+  transition: all 0.2s;
   background-color: var(--off-switch-back);
 }
 .material-switch.checked {
   background-color: var(--active-back);
 }
-.material-switch::before, .range-knob::before {
+.material-switch::before,
+.range-knob::before {
   content: '';
   position: absolute;
   opacity: 0;
@@ -101,11 +106,12 @@
   width: 12px;
   margin: 1px;
   border-radius: 50%;
-  transition: all .2s;
+  transition: all 0.2s;
   left: 0;
   background-color: var(--pure-contrast);
 }
-.material-switch:focus::before, .range-knob.range-controlled::before {
+.material-switch:focus::before,
+.range-knob.range-controlled::before {
   opacity: 0.1;
   transform: scale(4);
 }
@@ -123,8 +129,8 @@
   margin-top: -3px;
   position: absolute;
   left: 0;
-  transition: all .2s;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   background-color: var(--off-switch-other-thing);
 }
 .material-switch.checked::after {
@@ -132,7 +138,8 @@
   left: calc(100% - 20px);
   margin-left: 3px;
 }
-.radio-wrapper, .radio-wrapper * {
+.radio-wrapper,
+.radio-wrapper * {
   cursor: pointer;
 }
 .material-radio {
@@ -148,10 +155,11 @@
   box-sizing: border-box;
   border: 2px solid black;
   margin-right: 15px;
-  transition: all .2s;
+  transition: all 0.2s;
   border-color: var(--secondary);
 }
-.material-radio::before, .material-radio::after {
+.material-radio::before,
+.material-radio::after {
   content: '';
   display: block;
   height: 8px;
@@ -161,7 +169,7 @@
   background: var(--theme);
   top: 2px;
   left: 2px;
-  transition: all .2s;
+  transition: all 0.2s;
   pointer-events: none;
   border-radius: 50%;
 }
@@ -186,7 +194,7 @@
   overflow: hidden;
   margin: 0;
   max-height: 0;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 .radios-wrapper:hover .is-joke {
   margin: 1em 0;
@@ -195,7 +203,7 @@
 .joke-explanation {
   margin-left: 5px;
   opacity: 0;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 .is-joke:hover .joke-explanation {
   margin-left: 15px;
@@ -252,10 +260,13 @@ ul.material-list span {
 ul.material-list span.primary {
   font-size: 16px;
 }
-ul.material-list span.secondary, ul.material-list li.error, body.light .get-error {
+ul.material-list span.secondary,
+ul.material-list li.error,
+body.light .get-error {
   color: var(--secondary);
 }
-ul.material-list li.error, .get-error {
+ul.material-list li.error,
+.get-error {
   width: 100%;
   font-size: 14px;
   cursor: default;
@@ -272,7 +283,7 @@ ul.material-list li.error, .get-error {
   bottom: 0;
   max-width: 500px;
   height: 50vh;
-  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.3);
   padding: 24px;
   border-radius: 2px;
   padding-top: 64px;
@@ -280,7 +291,7 @@ ul.material-list li.error, .get-error {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-5px);
-  transition: all .2s;
+  transition: all 0.2s;
   z-index: 2;
 }
 .material-dialog.show {
@@ -288,7 +299,8 @@ ul.material-list li.error, .get-error {
   pointer-events: all;
   transform: translateY(0);
 }
-.material-dialog, .material-card {
+.material-dialog,
+.material-card {
   background-color: var(--card);
 }
 .material-dialog > h1 {
@@ -328,7 +340,7 @@ ul.material-list li.error, .get-error {
   margin: 14px 0;
   padding: 24px;
   border-radius: 2px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   font-size: 14px;
   overflow: auto;
 }
@@ -352,7 +364,7 @@ ul.material-list li.error, .get-error {
   position: relative;
   cursor: pointer;
   border-radius: 4px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   background-color: var(--card);
 }
 .mdrop-values {
@@ -362,10 +374,10 @@ ul.material-list li.error, .get-error {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-5px);
-  transition: all .2s;
+  transition: all 0.2s;
   z-index: 2;
   border-radius: 4px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   background-color: var(--card);
   padding: 8px 0;
   white-space: nowrap;
@@ -394,7 +406,9 @@ ul.material-list li.error, .get-error {
   pointer-events: none;
   overflow: hidden;
 }
-.material-range::before, .material-range::after, .range-selected {
+.material-range::before,
+.material-range::after,
+.range-selected {
   content: '';
   position: absolute;
   height: 2px;
@@ -421,10 +435,12 @@ ul.material-list li.error, .get-error {
   border-radius: 50%;
   background-color: var(--theme);
 }
-.range-min, .range-selected {
+.range-min,
+.range-selected {
   left: var(--min);
 }
-.range-max, .range-selected {
+.range-max,
+.range-selected {
   right: var(--max);
 }
 .range-knob::before {
@@ -434,10 +450,12 @@ ul.material-list li.error, .get-error {
 .range-selected {
   background-color: var(--theme);
 }
-.material-range.disabled::before, .material-range.disabled::after {
+.material-range.disabled::before,
+.material-range.disabled::after {
   background-color: var(--fill);
 }
-.material-range.disabled .range-knob, .material-range.disabled .range-selected {
+.material-range.disabled .range-knob,
+.material-range.disabled .range-selected {
   background-color: var(--disabled);
 }
 .material-range.disabled::before {

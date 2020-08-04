@@ -1,9 +1,9 @@
 .colourpicker-window {
-  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.3);
   padding: 24px;
   border-radius: 2px;
   line-height: 1;
-  transition: all .2s;
+  transition: all 0.2s;
   font-size: 0;
   z-index: 2;
   background-color: var(--card);
@@ -33,7 +33,7 @@
   width: 5px;
   margin-left: -3px;
   margin-top: -3px;
-  box-shadow: 0 0 3px rgba(0,0,0,0.3), inset 0 0 3px rgba(0,0,0,0.3);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3), inset 0 0 3px rgba(0, 0, 0, 0.3);
 }
 .colourpicker-hueslider {
   width: 15px;
@@ -46,5 +46,5 @@
   border-width: 1px 0;
   margin-top: -1px;
   width: 100%;
-  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }

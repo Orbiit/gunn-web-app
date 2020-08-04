@@ -6,50 +6,53 @@
 :focus {
   outline: none;
 }
+:root {
+  --theme: #ff594c;
+  --focus: rgba(255, 89, 76, 0.2);
+  --active-back: rgba(255, 89, 76, 0.5);
+}
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
   font-size: 0;
-  transition: all .2s, opacity .5s;
+  transition: all 0.2s, opacity 0.5s;
   background-color: var(--background);
   color: var(--colour);
-  --theme: #FF594C;
-  --focus: rgba(255, 89, 76, 0.2);
-  --active-back: rgba(255,89,76,0.5);
 }
-.hidden {
+.hidden,
+.hide-app > body {
   opacity: 0;
 }
 .light {
   --navbar: #f5f5f5;
   --background: #fafafa;
-  --off-switch-other-thing: #FAFAFA;
-  --card: #FFFFFF;
-  --colour: rgba(0,0,0,0.87);
-  --secondary: rgba(0,0,0,0.54);
-  --input-line: rgba(0,0,0,0.42);
-  --disabled: rgba(0,0,0,0.38);
-  --off-switch-back: rgba(0,0,0,0.38);
-  --ripple: rgba(0,0,0,0.2);
-  --fill: rgba(0,0,0,0.12);
-  --light-border: rgba(0,0,0,0.05);
-  --ripple-focus: rgba(0,0,0,0.05);
+  --off-switch-other-thing: #fafafa;
+  --card: #ffffff;
+  --colour: rgba(0, 0, 0, 0.87);
+  --secondary: rgba(0, 0, 0, 0.54);
+  --input-line: rgba(0, 0, 0, 0.42);
+  --disabled: rgba(0, 0, 0, 0.38);
+  --off-switch-back: rgba(0, 0, 0, 0.38);
+  --ripple: rgba(0, 0, 0, 0.2);
+  --fill: rgba(0, 0, 0, 0.12);
+  --light-border: rgba(0, 0, 0, 0.05);
+  --ripple-focus: rgba(0, 0, 0, 0.05);
   --pure-contrast: black;
 }
 .dark {
   --navbar: #212121;
   --background: #303030;
-  --off-switch-other-thing: #BDBDBD;
+  --off-switch-other-thing: #bdbdbd;
   --card: #424242;
   --colour: white;
-  --secondary: rgba(255,255,255,0.7);
-  --input-line: rgba(255,255,255,0.7);
-  --disabled: rgba(255,255,255,0.5);
-  --off-switch-back: rgba(255,255,255,0.3);
-  --ripple: rgba(255,255,255,0.3);
-  --fill: rgba(255,255,255,0.12);
-  --light-border: rgba(0,0,0,0.1);
-  --ripple-focus: rgba(255,255,255,0.05);
+  --secondary: rgba(255, 255, 255, 0.7);
+  --input-line: rgba(255, 255, 255, 0.7);
+  --disabled: rgba(255, 255, 255, 0.5);
+  --off-switch-back: rgba(255, 255, 255, 0.3);
+  --ripple: rgba(255, 255, 255, 0.3);
+  --fill: rgba(255, 255, 255, 0.12);
+  --light-border: rgba(0, 0, 0, 0.1);
+  --ripple-focus: rgba(255, 255, 255, 0.05);
   --pure-contrast: white;
 }
 label {
@@ -62,10 +65,11 @@ label {
   text-align: right;
 }
 a {
-  color: #FF594C;
+  color: #ff594c;
   text-decoration: none;
 }
-a:hover, .tab-focus a:focus {
+a:hover,
+.tab-focus a:focus {
   text-decoration: underline;
 }
 hr {
@@ -75,18 +79,21 @@ hr {
   width: 150px;
   margin-left: 0;
 }
-button, select, textarea, input {
+button,
+select,
+textarea,
+input {
   font: inherit;
   -webkit-appearance: none;
 }
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -152,12 +159,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* BOTTOM NAV */
 #footer {
-  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  transition: all .2s;
+  transition: all 0.2s;
   background-color: var(--navbar);
 }
 #footer ul {
@@ -178,7 +185,7 @@ input[type=number]::-webkit-outer-spin-button {
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  transition: all .2s;
+  transition: all 0.2s;
   -webkit-user-select: none;
   user-select: none;
   color: var(--secondary);
@@ -187,7 +194,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: var(--focus);
 }
 body #footer ul li.active {
-  color: #FF594C;
+  color: #ff594c;
   padding-top: 6px;
 }
 #footer ul li i {
@@ -202,7 +209,7 @@ body #footer ul li.active {
   left: 0;
   right: 0;
   white-space: nowrap;
-  transition: font-size .2s;
+  transition: font-size 0.2s;
 }
 #footer ul li.active span {
   font-size: 14px;
@@ -233,7 +240,7 @@ body #footer ul li.active {
   display: block;
   width: 100%;
   height: 10px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   margin: 4px 0;
   background-size: cover;
   background-position: center;
@@ -267,7 +274,7 @@ body #footer ul li.active {
   transform: var(--rotation);
   transform-origin: bottom;
   z-index: -1;
-  transition: transform .2s cubic-bezier(0,1.4,1,1.23);
+  transition: transform 0.2s cubic-bezier(0, 1.4, 1, 1.23);
 }
 #seconds.notransition::after {
   transition: none;
@@ -327,7 +334,7 @@ body #footer ul li.active {
   box-sizing: border-box;
   height: 102px;
   width: 100%;
-  box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   bottom: 0;
   left: 0;
   z-index: -1;
@@ -370,7 +377,7 @@ body #footer ul li.active {
 }
 #barcode .barcode-student-id {
   font-size: 50px;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   height: 102px;
   color: black;
@@ -407,7 +414,7 @@ body.dark #mapimage {
   height: 50px;
   width: 50px;
   pointer-events: none;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
   position: fixed;
   margin-left: -25px;
   margin-top: -25px;
@@ -441,12 +448,12 @@ body.dark #mapimage {
   display: inline-block;
   font-family: monospace;
   font-size: 14px;
-  background-color: rgba(255,255,255,0.12);
+  background-color: rgba(255, 255, 255, 0.12);
   padding: 5px 10px;
   border-radius: 5px;
 }
 body.light .percent-wrapper {
-  background-color: rgba(0,0,0,0.12);
+  background-color: rgba(0, 0, 0, 0.12);
 }
 .percent-wrapper input {
   width: 6ch;
@@ -518,9 +525,10 @@ body.light .percent-wrapper {
   min-height: 0;
   height: 0;
   padding: 0 20px;
-  transition: min-height .2s, padding .2s;
+  transition: min-height 0.2s, padding 0.2s;
 }
-.textarea, .chat-enabled #chat {
+.textarea,
+.chat-enabled #chat {
   min-height: 150px;
   padding: 20px;
 }
@@ -556,18 +564,23 @@ body.light .percent-wrapper {
   white-space: pre-wrap;
 }
 .strikethrough {
-  color: #FF594C;
+  color: #ff594c;
   text-decoration: line-through;
 }
 .chat-input-length {
   opacity: 0.5;
 }
-#msg-content:disabled, #send:disabled {
+#msg-content:disabled,
+#send:disabled {
   opacity: 0.5;
   pointer-events: none;
 }
 
-.ios-cover, .ios-not-safari, .ios-ok, .not-ios-safari .ios-safari, .ok .ios-dialog {
+.ios-cover,
+.ios-not-safari,
+.ios-ok,
+.not-ios-safari .ios-safari,
+.ok .ios-dialog {
   display: none;
 }
 .ios-cover.show {
@@ -652,10 +665,10 @@ body.light .percent-wrapper {
   margin: 5px auto;
 }
 #ios-no-thanks {
-  color: #007AFF;
+  color: #007aff;
 }
 .ios-add {
-  color: #007AFF;
+  color: #007aff;
   font-weight: bold;
 }
 .ios-button-div {
@@ -687,8 +700,12 @@ body.light .percent-wrapper {
   animation: fade-out 2s 1s forwards;
 }
 @keyframes fade-out {
-  0% {opacity: 1;}
-  100% {opacity: 0;}
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 .ok .ios-ok {
   display: block;
@@ -746,17 +763,18 @@ p.secondary {
 }
 .collapsible {
   overflow: hidden;
-  transition: height .2s;
+  transition: height 0.2s;
   box-sizing: border-box;
 }
-.collapsible li {
+.collapsible span {
   white-space: pre-wrap;
 }
 
 .psa-date {
   opacity: 0.5;
 }
-#next-psa, #prev-psa {
+#next-psa,
+#prev-psa {
   vertical-align: middle;
   margin-left: 10px;
 }
@@ -795,7 +813,7 @@ p.secondary {
   padding-left: 24px;
   margin: 20px;
   z-index: 1;
-  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.3);
 }
 .previewing-future-notice > span {
   flex: auto;
@@ -845,7 +863,7 @@ p.secondary {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  box-shadow: 0px 6px 24px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.3);
 }
 .coronavirus-content {
   font-size: 16px;
@@ -897,23 +915,29 @@ p.secondary {
   z-index: -1;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
-.strap-i, .strap-ii {
+.strap-i,
+.strap-ii {
   top: 10px;
 }
-.strap-iii, .strap-iv {
+.strap-iii,
+.strap-iv {
   bottom: 10px;
 }
-.strap-i, .strap-iv {
+.strap-i,
+.strap-iv {
   left: 100%;
   transform-origin: left;
 }
-.strap-ii, .strap-iii {
+.strap-ii,
+.strap-iii {
   right: 100%;
   transform-origin: right;
 }
-.strap-i, .strap-iii {
+.strap-i,
+.strap-iii {
   transform: rotate(-10deg);
 }
-.strap-ii, .strap-iv {
+.strap-ii,
+.strap-iv {
   transform: rotate(10deg);
 }
