@@ -38,7 +38,7 @@ export default {
     'time-formatting': 'Time while Case formula',
     '12h': '12 small Time',
     '24h': 'twenty four small Time',
-    'title-compact': '',
+    'title-compact': 'Mark sign Mark question of tight Make up Sex',
     units: 'package With single Bit',
     numbers: 'only number word',
     'disable-lists': 'ban use all fun unit/work Make people member name single',
@@ -84,7 +84,7 @@ export default {
     'henry-creds':
       '{name|Heng Profit} system Make Up Google Ground Figure Stack plus Floor.',
     'service-creds':
-      '{search|Valley song Search So}. {so|heap Stack overflow Out}with {mdn|MDN} help help Up.',
+      '{search|Valley song Search So}. {so|heap Stack overflow Out} with {mdn|MDN} help help Up.',
     'feature-based':
       'base in original beginning Gunn should use Cheng sequence of Xu many Work can.',
     material:
@@ -119,7 +119,7 @@ export default {
     'asgn-important-importance': 'press excellent first Shun sequence',
     'asgn-algorithms':
       'through Pass Make use A   L   G   O   R   I   T   H   M   S',
-    'edit-asgn': '',
+    'edit-asgn': 'Minute Match Belong to Sex',
     'asgn-buttons':
       '{delete|delete except}{cancel|take Eliminate}{save|Protect Save}',
     'asgn-period-date': 'To period day {period} on {date}.',
@@ -204,9 +204,9 @@ export default {
     'barcode-legacy-default': 'learn Give birth Edit number{N}',
     'barcode-default': 'wisdom force learn Give birth',
     'barcode-student-placeholder': 'This Yes Who of body Share certificate?',
-    ds: 'S   M   T   W Θ F   S',
+    ds: 'small number  in number  Ť  w ^  Θ  F  small number',
     mos:
-      'One month two month three month four month Fives month six month Seven month Eight month nine month ten month ten One month ten two month',
+      'One month  two month  three month  four month  Fives month  six month  Seven month  Eight month  nine month  ten month  ten One month  ten two month',
     'no-school': 'this day Do not on learn!',
     flex: 'speak solution',
     brunch: 'Rest interest/early Noon meal',
@@ -214,13 +214,13 @@ export default {
     self: 'from',
     periodx: 'period {X}',
     months:
-      'One month two month three month four month Fives month six month Seven month Eight month nine month ten month ten One month ten two month',
+      'One month  two month  three month  four month  Fives month  six month  Seven month  Eight month  nine month  ten month  ten One month  ten two month',
     loading: 'Load Enter in',
     'no-events': 'this day No Have live move: (',
     'events-error':
       '; no law Get Get thing Pieces; and also Xu you No Have even Pick up To mutual Union network?',
     days:
-      'star period day star period One star period two star period three star period four star period Fives star period six',
+      'star period day  star period One  star period two  star period three  star period four  star period Fives  star period six',
     'default-alt-msg': 'I They of day Cheng An row wish you it is good Luck',
     'period-name-label': 'Assume Set Mark sign ',
     'enable-lists':
@@ -238,9 +238,9 @@ export default {
     basement: 'Ground under room:',
     'oc-basement': 'OC of Ground under room',
     'sophomore-club': 'No Have high level all fun unit',
-    'soph-desc': '',
+    'soph-desc': 'One A hair exhibition I They of with Reason heart, tough Sex with its he nuclear heart Society meeting situation sense Skill can of all fun unit; help help I They versus with Row with guide division build Stand up letter Ren turn off system; and build Stand up I They sense To An all with Get To support hold of air between. I They phase letter, I They will through Pass mention ask, Advance Row Have meaning Righteousness of discuss s and in Protect hold I They of nuclear heart price value View of with Time Protect hold open put of state degree, pick war turn off in world World with That this of false Assume, From and From in Receive beneficial. This kind, I They will in no need positive formula Comment Minute or Comment estimate of Pressure force under, and Exhausted One cut Nu force hair Wave, Explore So with Xin reward many kind Sex, hair exhibition from already of body Share. I They of Item Mark Yes help help I They from already recognize knowledge To I They each A people of price value All Yes Do not can estimate the amount of, Do not Yes because for I They Already through take Get Up to make on, and Yes because for I They Yes Who To and I They will to make for Who. I They of Out Diligent rate Yes most it is good of Of One. Do not allow Xu before generation!',
     'soph-day': 'star period four',
-    'soph-time': '',
+    'soph-time': 'soft Sex',
     'soph-room': 'Ren what room between',
     'soph-prez': 'tower Pull · Fu Lun Qi (Tara   Firenzi)',
     'soph-teacher':

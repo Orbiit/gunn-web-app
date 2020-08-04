@@ -61,9 +61,9 @@ function transformObj (original, translations) {
   })
 }
 
-const getWord = /\w+|./g // Groups alphanumeric letters together
-const noSpaceBefore = [...'.,?!:;)]}”/']
-const noSpaceAfter = [...'([{“/']
+const getWord = /(\w| )+|./g // Groups alphanumeric letters together
+const noSpaceBefore = [...'.,?!:;)]}”/@']
+const noSpaceAfter = [...'([{“/@']
 function translateToChineseAndBack (string) {
   // Sorry ST
   return fetch(

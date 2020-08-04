@@ -86,11 +86,12 @@ export class DatePicker {
           const entry = this.dates[
             DatePicker.weirdToString(DatePicker.jsToWeird(temp))
           ]
-          if (!entry) continue
-          if (this.isSchoolDay(temp)) {
-            entry.elem.classList.remove('there-is-no-school')
-          } else {
-            entry.elem.classList.add('there-is-no-school')
+          if (entry) {
+            if (this.isSchoolDay(temp)) {
+              entry.elem.classList.remove('there-is-no-school')
+            } else {
+              entry.elem.classList.add('there-is-no-school')
+            }
           }
           temp.setDate(temp.getDate() + 1)
         }
