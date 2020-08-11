@@ -23,7 +23,12 @@ import {
 } from './l10n.js'
 import { initLists } from './lists.js'
 import { ripple } from './material.js'
-import { cacheBackground, initSchedule, letras } from './schedule.js'
+import {
+  cacheBackground,
+  getManualAlternateSchedules,
+  initSchedule,
+  letras
+} from './schedule.js'
 import { zoomImage } from '../touchy/rotate1.js'
 import {
   ALT_KEY,
@@ -198,7 +203,9 @@ function initCoronavirusClose () {
 }
 
 function initScheduleWhenReady () {
-  schedulesReady.then(initSchedule)
+  return Promise.all([getManualAlternateSchedules(), schedulesReady]).then(
+    ([schedules]) => initSchedule(schedules)
+  )
 }
 
 function makeNavBarRipple () {

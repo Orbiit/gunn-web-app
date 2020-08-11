@@ -31,5 +31,10 @@
 /lite-updater.html
 
 # PSAs
-/psa/
+/psa/1*.html
+/psa/2019-*.html
+/psa/2020-0*.html
+!/psa/2020-08-*.html
+!/psa/2020-09-*.html
+/psa/psas.json
 psa.html

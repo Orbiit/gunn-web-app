@@ -53,7 +53,7 @@ export default {
       '{name|Desktop}—bookmark this page or pin this tab (right click on the tab and select "Pin tab")',
     'disable-lists': 'Disable club/staff lists',
     'edit-asgn': 'Assignment properties',
-    'edit-h': 'Set H period times',
+    'edit-h': 'Set period 8 times',
     errors: 'Runtime error log',
     'export-copy': 'copy export code',
     'export-file': 'download export code',
@@ -61,7 +61,7 @@ export default {
     'finals-worth': 'Portion of grade the final determines: {input}',
     'gmaps-instruct':
       "{for|For Google Maps}: Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
-    'h-editor': 'H period settings',
+    'h-editor': 'Period 8 settings',
     heaucques: 'OK.',
     'henry-creds': '{name|Henry} made the Google Maps overlay.',
     'hide-preps': 'Hide periods with "prep" in their names from the schedule?',
@@ -135,6 +135,7 @@ export default {
     send: 'Send',
     'service-creds':
       '{search|Google Search}, {so|Stack Overflow}, and {mdn|MDN} helped.',
+    'show-h': 'Show period 8?',
     'show-self-toggle': 'Show SELF?',
     show0: 'Show zero period?',
     source: 'UGWA is open sourced on {github|Github}.',

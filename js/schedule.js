@@ -1,7 +1,7 @@
 /* global fetch, caches, alert */
 
 import { toAlternateSchedules } from './altScheduleGenerator.js'
-import { days, getFontColour, scheduleApp } from './app.js'
+import { getFontColour, scheduleApp } from './app.js'
 import {
   categoryList,
   initAssignments,
@@ -10,7 +10,7 @@ import {
 import { ColourPicker } from './colour.js'
 import { DatePicker } from './date.js'
 import { localize, localizeWith } from './l10n.js'
-import { createRange, makeDropdown, ripple } from './material.js'
+import { makeDropdown, ripple } from './material.js'
 import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
   ajax,
@@ -44,7 +44,7 @@ export const letras = [
 // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 const VERSION = 4
 // radios save format version
-const FORMATTING_VERSION = '6'
+const FORMATTING_VERSION = '7'
 const normalschedule = [
   null,
   // Keeping old schedule in case the school ever returns to it if the pandemic goes away
@@ -109,7 +109,18 @@ const normalschedule = [
   ],
   [
     { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-    { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
+    {
+      name (d) {
+        const week = Math.floor(
+          (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
+        )
+        // First week's Gunn together is 5th period for some reason
+        if (week === 0) return 'E'
+        return 'ABCDEFG'[(week - 1) % 7]
+      },
+      start: makeHMTM(11, 5),
+      end: makeHMTM(11, 40)
+    },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
     { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
     { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
@@ -136,6 +147,68 @@ function makeHMTM (hour, minute = 0) {
   return { hour, minute, totalminutes: hour * 60 + minute }
 }
 
+const dateRegex = /^\d+-\d{2}-\d{2}$/
+const manualAltPeriodRegex = /^(1?\d):(\d{2}) (1?\d):(\d{2}) ([a-z]+)$/
+export function getManualAlternateSchedules () {
+  return fetch('./json/alt-schedules-2020.txt')
+    .then(r => r.text())
+    .then(text => {
+      const schedules = {}
+      const lines = text.split(/\r?\n/)
+      let currentDate = null
+      for (const line of lines) {
+        if (line[0] === '#') continue
+        if (currentDate) {
+          if (line) {
+            const match = line.match(manualAltPeriodRegex)
+            if (match) {
+              const [, startH, startM, endH, endM, periodLowercase] = match
+              const period =
+                periodLowercase === 'self'
+                  ? 'SELF'
+                  : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
+              if (letras.includes(period)) {
+                schedules[currentDate].push({
+                  name: period,
+                  start: makeHMTM(+startH, +startM),
+                  end: makeHMTM(+endH, +endM)
+                })
+              } else {
+                console.warn(period, 'is not a valid period on', currentDate)
+              }
+            } else {
+              console.warn(
+                line,
+                'does not match the period regex on',
+                currentDate
+              )
+            }
+          } else {
+            currentDate = null
+          }
+        } else if (line) {
+          if (dateRegex.test(line)) {
+            currentDate = line
+              .split('-')
+              .map(Number)
+              .join('-')
+            if (schedules[currentDate]) {
+              console.warn(
+                'A schedule already exists on',
+                currentDate,
+                schedules[currentDate]
+              )
+            }
+            schedules[currentDate] = []
+          } else {
+            console.warn(line, 'is not a valid date.')
+          }
+        }
+      }
+      return schedules
+    })
+}
+
 const datePickerRange = [
   { d: 17, m: 7, y: 2020 },
   { d: 3, m: 5, y: 2021 }
@@ -147,14 +220,14 @@ export function cacheBackground (url, pd) {
     fetch(url, { mode: 'no-cors', cache: 'no-cache' })
   ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
 }
-export function initSchedule () {
+export function initSchedule (manualAltSchedules = {}) {
   const letterPdFormat = localize('periodx')
   const periodstyles = {
     NO_SCHOOL: { label: localize('no-school') },
     // Default period names and styles
-    Brunch: { label: localize('brunch'), colour: '#90a4ae' },
-    Lunch: { label: localize('lunch'), colour: '#90a4ae' },
-    Flex: { label: localize('flex'), colour: '#455a64' },
+    Brunch: { label: localize('brunch'), colour: '#9E9E9E' },
+    Lunch: { label: localize('lunch'), colour: '#9E9E9E' },
+    Flex: { label: localize('flex'), colour: '#607D8B' },
     SELF: { label: localize('self'), colour: '#455a64' },
     A: { label: letterPdFormat.replace('{X}', '1'), colour: '#f44336' },
     B: { label: letterPdFormat.replace('{X}', '2'), colour: '#2196F3' },
@@ -163,7 +236,7 @@ export function initSchedule () {
     E: { label: letterPdFormat.replace('{X}', '5'), colour: '#FF9800' },
     F: { label: letterPdFormat.replace('{X}', '6'), colour: '#9C27B0' },
     G: { label: letterPdFormat.replace('{X}', '7'), colour: '#4CAF50' },
-    H: { label: letterPdFormat.replace('{X}', 'H'), colour: '#673AB7' },
+    H: { label: letterPdFormat.replace('{X}', '8'), colour: '#673AB7' },
     '0': { label: localize('p0'), colour: '#009688' }
   }
   if (cookie.getItem('[gunn-web-app] scheduleapp.options')) {
@@ -197,16 +270,17 @@ export function initSchedule () {
   }
   /* SCHEDULE APP */
   const defaultThings = [
-    FORMATTING_VERSION,
-    '12',
-    'full',
-    '0',
-    'after',
-    'chrono-primero',
-    'yes',
-    'show',
-    'no',
-    'preps'
+    FORMATTING_VERSION, // 0
+    '12', // 1
+    'full', // 2
+    '0', // 3
+    'after', // 4
+    'chrono-primero', // 5
+    'yes', // 6
+    'show', // 7
+    'no', // 8
+    'preps', // 9
+    'yes-h-period' // 10
   ]
   const formatOptions = cookie.getItem(
     '[gunn-web-app] scheduleapp.formatOptions'
@@ -215,7 +289,7 @@ export function initSchedule () {
     : defaultThings
   if (formatOptions[0] === '1') {
     formatOptions[0] = '2'
-    formatOptions[3] = '0'
+    formatOptions[3] = '0' // Show SELF? (Unused)
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       formatOptions.join('.')
@@ -250,6 +324,14 @@ export function initSchedule () {
   if (formatOptions[0] === '5') {
     formatOptions[0] = '6'
     formatOptions[9] = 'preps' // hide preps?
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+  }
+  if (formatOptions[0] === '6') {
+    formatOptions[0] = '7'
+    formatOptions[10] = 'yes-h-period' // show H period?
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       formatOptions.join('.')
@@ -298,17 +380,17 @@ export function initSchedule () {
       false
     )
   )
-  const selfSwitch = document.getElementById('self')
-  if (formatOptions[3] === '1') selfSwitch.classList.add('checked')
-  selfSwitch.parentNode.addEventListener('click', e => {
-    selfSwitch.classList.toggle('checked')
-    formatOptions[3] = selfSwitch.classList.contains('checked') ? '1' : '0'
-    cookie.setItem(
-      '[gunn-web-app] scheduleapp.formatOptions',
-      formatOptions.join('.')
-    )
-    window.location.reload()
-  })
+  // const selfSwitch = document.getElementById('self')
+  // if (formatOptions[3] === '1') selfSwitch.classList.add('checked')
+  // selfSwitch.parentNode.addEventListener('click', e => {
+  //   selfSwitch.classList.toggle('checked')
+  //   formatOptions[3] = selfSwitch.classList.contains('checked') ? '1' : '0'
+  //   cookie.setItem(
+  //     '[gunn-web-app] scheduleapp.formatOptions',
+  //     formatOptions.join('.')
+  //   )
+  //   window.location.reload()
+  // })
   document.querySelector(
     `input[name=asgn-display][value=${formatOptions[4]}]`
   ).checked = true
@@ -379,6 +461,20 @@ export function initSchedule () {
     )
     window.location.reload()
   })
+  const pd8Switch = document.getElementById('show-h')
+  if (formatOptions[10] === 'yes-h-period') pd8Switch.classList.add('checked')
+  pd8Switch.parentNode.addEventListener('click', e => {
+    pd8Switch.classList.toggle('checked')
+    formatOptions[10] = pd8Switch.classList.contains('checked')
+      ? 'yes-h-period'
+      : 'no-h-period'
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+    scheduleapp.render()
+    makeWeekHappen()
+  })
   const hideSupportIcon = document.getElementById('hide-support')
   const supportList = document.getElementById('support-list')
   if (formatOptions[7] === 'hide') {
@@ -405,13 +501,13 @@ export function initSchedule () {
     )
   })
 
-  function getHumanTime (minutes) {
-    if (formatOptions[1] === '0') return minutes % 60
-    const h = Math.floor(minutes / 60)
-    const m = ('0' + (minutes % 60)).slice(-2)
-    if (formatOptions[1] === '24') return `${h}:${m}`
-    else return `${((h - 1) % 12) + 1}:${m}${h < 12 ? 'a' : 'p'}m`
-  }
+  // function getHumanTime (minutes) {
+  //   if (formatOptions[1] === '0') return minutes % 60
+  //   const h = Math.floor(minutes / 60)
+  //   const m = ('0' + (minutes % 60)).slice(-2)
+  //   if (formatOptions[1] === '24') return `${h}:${m}`
+  //   else return `${((h - 1) % 12) + 1}:${m}${h < 12 ? 'a' : 'p'}m`
+  // }
 
   function getPeriodSpan (pd) {
     // yay hoisting (see three lines above)
@@ -455,25 +551,28 @@ export function initSchedule () {
   )
   const pdDropdown = makeDropdown(document.getElementById('period-drop'), [
     [null, 'the day'],
-    ...letras.slice(1).map(pd => {
-      const span = document.createElement('span')
-      span.classList.add('schedule-endinginperiod')
-      ;(periodstyles[pd].update = () => {
-        span.textContent = periodstyles[pd].label
-        if (periodstyles[pd].colour[0] === '#') {
-          span.style.backgroundColor = periodstyles[pd].colour
-          span.style.color = getFontColour(periodstyles[pd].colour)
-          span.style.textShadow = null
-        } else {
-          span.style.backgroundImage = `url('./.period-images/${pd}?${encodeURIComponent(
-            periodstyles[pd].colour
-          )}')`
-          span.style.color = 'white'
-          span.style.textShadow = '0 0 10px black'
-        }
-      })()
-      return [pd, span]
-    })
+    ...letras
+      .slice(1)
+      .sort((a, b) => a.length - b.length || (a < b ? -1 : 1))
+      .map(pd => {
+        const span = document.createElement('span')
+        span.classList.add('schedule-endinginperiod')
+        ;(periodstyles[pd].update = () => {
+          span.textContent = periodstyles[pd].label
+          if (periodstyles[pd].colour[0] === '#') {
+            span.style.backgroundColor = periodstyles[pd].colour
+            span.style.color = getFontColour(periodstyles[pd].colour)
+            span.style.textShadow = null
+          } else {
+            span.style.backgroundImage = `url('./.period-images/${pd}?${encodeURIComponent(
+              periodstyles[pd].colour
+            )}')`
+            span.style.color = 'white'
+            span.style.textShadow = '0 0 10px black'
+          }
+        })()
+        return [pd, span]
+      })
   ])
   const dueDate = new DatePicker(...datePickerRange)
   dueDate.isSchoolDay = isSchoolDay
@@ -912,21 +1011,34 @@ export function initSchedule () {
     periodstyles[letras[i]].label = options[i][0]
     periodstyles[letras[i]].colour = options[i][1]
   }
-  const hPeriods =
-    JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
+  // const hPeriods =
+  //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
   const scheduleapp = scheduleApp({
     element: document.querySelector('#schedulewrapper'),
     periods: periodstyles,
     normal: normalschedule,
     alternates: alternates,
     selfDays: selfDays,
-    hPeriods,
+    get hPeriods () {
+      return formatOptions[10] === 'yes-h-period'
+        ? [
+            null,
+            [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
+            [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+            null,
+            [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+            null
+          ]
+        : []
+    },
     offset: 0,
     update: true,
     h24: formatOptions[1] === '24',
     h0Joke: formatOptions[1] === '0',
     compact: formatOptions[2] === 'compact',
-    self: +formatOptions[3],
+    // No longer relevant, for SELF has taken over the school :(
+    // self: +formatOptions[3],
+    self: true,
     displayAddAsgn: formatOptions[6] === 'yes',
     show0: formatOptions[8] === 'yes' && {
       name: '0',
@@ -937,8 +1049,16 @@ export function initSchedule () {
     getAssignments (date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan)
     },
+    customSchedule (date, y, m, d, wd) {
+      const sched = manualAltSchedules[`${y}-${m + 1}-${d}`]
+      if (!sched) return
+      if (formatOptions[10] === 'yes-h-period') {
+        return sched
+      } else {
+        return sched.filter(pd => pd.name !== 'H')
+      }
+    },
     autorender: false
-    // customSchedule (date, y, m, d, wd)
   })
   setOnSavedClubsUpdate(scheduleapp.render)
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
@@ -1361,25 +1481,22 @@ export function initSchedule () {
     'G',
     options[7][1],
     options[7][0]
-  )(letterPdFormat.replace('{X}', 'H'), 'H', options[12][1], options[12][0])(
+  )(letterPdFormat.replace('{X}', '8'), 'H', options[12][1], options[12][0])(
     localize('flex'),
     'Flex',
     options[8][1],
     options[8][0]
   )
-  if (+formatOptions[3])
-    customiserAdder = customiserAdder(
-      localize('self'),
-      'SELF',
-      options[11][1],
-      options[11][0]
-    )
-  customiserAdder(localize('brunch'), 'Brunch', options[9][1], options[9][0])(
-    localize('lunch'),
-    'Lunch',
-    options[10][1],
-    options[10][0]
+  // if (+formatOptions[3])
+  customiserAdder = customiserAdder(
+    localize('self'),
+    'SELF',
+    options[11][1],
+    options[11][0]
   )
+  // TEMP: Brunch is not on the schedule
+  // customiserAdder(localize('brunch'), 'Brunch', options[9][1], options[9][0])(
+  customiserAdder(localize('lunch'), 'Lunch', options[10][1], options[10][0])
   document
     .querySelector('.section.options')
     .insertBefore(
@@ -1387,89 +1504,90 @@ export function initSchedule () {
       document.querySelector('#periodcustomisermarker')
     )
 
-  const MIN_TIME = 15 * 60
-  const MAX_TIME = 21 * 60
-  const MIN_LENGTH = 10
-  const STEP = 5
-  const hEditor = document.getElementById('h-editor')
-  document.getElementById('edit-h').addEventListener('click', e => {
-    hEditor.classList.add('show')
-  })
-  const hDays = document.createDocumentFragment()
-  for (let day = 1; day <= 5; day++) {
-    const wrapper = document.createElement('div')
-    wrapper.classList.add('h-day')
-    hDays.appendChild(wrapper)
-
-    const checkbox = document.createElement('div')
-    checkbox.classList.add('material-switch')
-    checkbox.tabIndex = 0
-    if (hPeriods[day]) checkbox.classList.add('checked')
-    checkbox.addEventListener('click', e => {
-      // checkbox class checked not yet toggled because the listener that does that is added later
-      checkbox.classList.toggle('checked')
-      if (checkbox.classList.contains('checked')) {
-        range.elem.classList.remove('disabled')
-        hPeriods[day] = range.range.map(n =>
-          Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
-        )
-        label.textContent =
-          days[day] +
-          ' ' +
-          getHumanTime(hPeriods[day][0]) +
-          '–' +
-          getHumanTime(hPeriods[day][1])
-      } else {
-        range.elem.classList.add('disabled')
-        hPeriods[day] = null
-        label.textContent = days[day]
-      }
-      scheduleapp.render()
-      cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
-    })
-    wrapper.appendChild(checkbox)
-
-    const sliderWrapper = document.createElement('div')
-    sliderWrapper.classList.add('slider-wrapper')
-    wrapper.appendChild(sliderWrapper)
-
-    const label = document.createElement('span')
-    label.classList.add('label')
-    label.textContent =
-      days[day] +
-      ' ' +
-      (hPeriods[day]
-        ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1])
-        : '')
-    sliderWrapper.appendChild(label)
-
-    const range = createRange(
-      MIN_LENGTH / (MAX_TIME - MIN_TIME),
-      r => {
-        range.range = r.map(
-          n =>
-            (Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP) /
-            (MAX_TIME - MIN_TIME)
-        )
-        hPeriods[day] = range.range.map(n =>
-          Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
-        )
-        scheduleapp.render()
-        cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
-      },
-      r => {
-        r = r.map(
-          n => Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP + MIN_TIME
-        )
-        label.textContent =
-          days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
-      }
-    )
-    range.range = (hPeriods[day] || [17 * 60, 18 * 60]).map(
-      m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME)
-    )
-    if (!hPeriods[day]) range.elem.classList.add('disabled')
-    sliderWrapper.appendChild(range.elem)
-  }
-  document.getElementById('h-days').appendChild(hDays)
+  // TEMP: H period editor not needed this year?
+  // const MIN_TIME = 15 * 60
+  // const MAX_TIME = 21 * 60
+  // const MIN_LENGTH = 10
+  // const STEP = 5
+  // const hEditor = document.getElementById('h-editor')
+  // document.getElementById('edit-h').addEventListener('click', e => {
+  //   hEditor.classList.add('show')
+  // })
+  // const hDays = document.createDocumentFragment()
+  // for (let day = 1; day <= 5; day++) {
+  //   const wrapper = document.createElement('div')
+  //   wrapper.classList.add('h-day')
+  //   hDays.appendChild(wrapper)
+  //
+  //   const checkbox = document.createElement('div')
+  //   checkbox.classList.add('material-switch')
+  //   checkbox.tabIndex = 0
+  //   if (hPeriods[day]) checkbox.classList.add('checked')
+  //   checkbox.addEventListener('click', e => {
+  //     // checkbox class checked not yet toggled because the listener that does that is added later
+  //     checkbox.classList.toggle('checked')
+  //     if (checkbox.classList.contains('checked')) {
+  //       range.elem.classList.remove('disabled')
+  //       hPeriods[day] = range.range.map(n =>
+  //         Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
+  //       )
+  //       label.textContent =
+  //         days[day] +
+  //         ' ' +
+  //         getHumanTime(hPeriods[day][0]) +
+  //         '–' +
+  //         getHumanTime(hPeriods[day][1])
+  //     } else {
+  //       range.elem.classList.add('disabled')
+  //       hPeriods[day] = null
+  //       label.textContent = days[day]
+  //     }
+  //     scheduleapp.render()
+  //     cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
+  //   })
+  //   wrapper.appendChild(checkbox)
+  //
+  //   const sliderWrapper = document.createElement('div')
+  //   sliderWrapper.classList.add('slider-wrapper')
+  //   wrapper.appendChild(sliderWrapper)
+  //
+  //   const label = document.createElement('span')
+  //   label.classList.add('label')
+  //   label.textContent =
+  //     days[day] +
+  //     ' ' +
+  //     (hPeriods[day]
+  //       ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1])
+  //       : '')
+  //   sliderWrapper.appendChild(label)
+  //
+  //   const range = createRange(
+  //     MIN_LENGTH / (MAX_TIME - MIN_TIME),
+  //     r => {
+  //       range.range = r.map(
+  //         n =>
+  //           (Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP) /
+  //           (MAX_TIME - MIN_TIME)
+  //       )
+  //       hPeriods[day] = range.range.map(n =>
+  //         Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
+  //       )
+  //       scheduleapp.render()
+  //       cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
+  //     },
+  //     r => {
+  //       r = r.map(
+  //         n => Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP + MIN_TIME
+  //       )
+  //       label.textContent =
+  //         days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
+  //     }
+  //   )
+  //   range.range = (hPeriods[day] || [17 * 60, 18 * 60]).map(
+  //     m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME)
+  //   )
+  //   if (!hPeriods[day]) range.elem.classList.add('disabled')
+  //   sliderWrapper.appendChild(range.elem)
+  // }
+  // document.getElementById('h-days').appendChild(hDays)
 }

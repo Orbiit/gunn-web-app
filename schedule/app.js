@@ -104,10 +104,16 @@ export function scheduleApp (options = {}) {
       alternate = sched
       periods = sched.periods.slice()
     } else if (options.normal[weekday] && options.normal[weekday].length) {
-      periods = options.normal[weekday].slice()
+      periods = options.normal[weekday].map(period => {
+        if (typeof period.name === 'function') {
+          return { ...period, name: period.name(d) }
+        } else {
+          return period
+        }
+      })
     } else periods = []
     if (periods.length) {
-      if (options.hPeriods[weekday]) {
+      if (options.hPeriods[weekday] && !periods.find(pd => pd.name === 'H')) {
         const [start, end] = options.hPeriods[weekday]
         periods.push({
           name: 'H',
@@ -123,7 +129,7 @@ export function scheduleApp (options = {}) {
           }
         })
       }
-      if (includeZero) {
+      if (includeZero && !periods.find(pd => pd.name === '0')) {
         if (getSchedule(new Date(ano, mez, dia - 1), false).periods.length) {
           periods.unshift(options.show0)
         }
