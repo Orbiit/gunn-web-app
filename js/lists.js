@@ -1,7 +1,7 @@
 import { localize } from './l10n.js'
 import { ripple } from './material.js'
 import { savedClubs, saveSavedClubs } from './saved-clubs.js'
-import { ajax, cookie, logError, now, toEach } from './utils.js'
+import { ajax, cookie, isAppDesign, logError, now, toEach } from './utils.js'
 
 function containsString (pattern) {
   if (!pattern) return () => true
@@ -506,7 +506,7 @@ export function initLists () {
   }
   const eggWrapper = egg()
   initList('staff', {
-    jsonPath: 'json/staff.json',
+    jsonPath: 'json/staff.json' + isAppDesign,
     insertExtra: staff => {
       staff['Aaryan Agrawal Person'] = {
         game: true,
@@ -543,7 +543,7 @@ export function initLists () {
   // Hi Gavin
   const clubAddList = document.getElementById('club-add-list')
   const { showItem: showClub, getCurrent: getCurrentClub } = initList('club', {
-    jsonPath: 'json/clubs.json',
+    jsonPath: 'json/clubs.json' + isAppDesign,
     insertExtra: clubs => {
       clubs[localize('sophomore-club')] = {
         desc: localize('soph-desc'),

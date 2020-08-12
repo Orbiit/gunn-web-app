@@ -18,6 +18,7 @@ import {
   cookie,
   currentTime,
   escapeHTML,
+  isAppDesign,
   logError,
   now,
   toEach
@@ -153,7 +154,7 @@ function makeHMTM (hour, minute = 0) {
 const dateRegex = /^\d+-\d{2}-\d{2}$/
 const manualAltPeriodRegex = /^(1?\d):(\d{2}) (1?\d):(\d{2}) ([a-z]+)$/
 export function getManualAlternateSchedules () {
-  return fetch('./json/alt-schedules-2020.txt')
+  return fetch('./json/alt-schedules-2020.txt' + isAppDesign)
     .then(r => r.text())
     .then(text => {
       const schedules = {}
@@ -162,7 +163,13 @@ export function getManualAlternateSchedules () {
       for (const line of lines) {
         if (line[0] === '#') continue
         if (currentDate) {
-          if (line) {
+          if (line[0] === '*') {
+            if (schedules[currentDate].description) {
+              schedules[currentDate].description += ' ' + line.slice(1).trim()
+            } else {
+              schedules[currentDate].description = line.slice(1).trim()
+            }
+          } else if (line) {
             const match = line.match(manualAltPeriodRegex)
             if (match) {
               const [, startH, startM, endH, endM, periodLowercase] = match
@@ -171,7 +178,7 @@ export function getManualAlternateSchedules () {
                   ? 'SELF'
                   : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
               if (letras.includes(period)) {
-                schedules[currentDate].push({
+                schedules[currentDate].periods.push({
                   name: period,
                   start: makeHMTM(+startH, +startM),
                   end: makeHMTM(+endH, +endM)
@@ -202,7 +209,7 @@ export function getManualAlternateSchedules () {
                 schedules[currentDate]
               )
             }
-            schedules[currentDate] = []
+            schedules[currentDate] = { periods: [] }
           } else {
             console.warn(line, 'is not a valid date.')
           }
@@ -1053,12 +1060,15 @@ export function initSchedule (manualAltSchedules = {}) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan)
     },
     customSchedule (date, y, m, d, wd) {
-      const sched = manualAltSchedules[`${y}-${m + 1}-${d}`]
-      if (!sched) return
-      if (formatOptions[10] === 'yes-h-period') {
-        return sched
-      } else {
-        return sched.filter(pd => pd.name !== 'H')
+      const schedule = manualAltSchedules[`${y}-${m + 1}-${d}`]
+      if (!schedule) return
+      const { periods, description = localize('default-alt-msg') } = schedule
+      return {
+        periods:
+          formatOptions[10] === 'yes-h-period'
+            ? periods
+            : periods.filter(pd => pd.name !== 'H'),
+        alternate: { description }
       }
     },
     autorender: false

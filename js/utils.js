@@ -69,3 +69,6 @@ export function escapeHTML (text = '') {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
 }
+export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
+  ? '?for=appdesign'
+  : ''

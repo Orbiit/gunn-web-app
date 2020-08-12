@@ -5,7 +5,7 @@ const urlsToCache = [
   './',
   'images/newmap.min.png',
   'https://fonts.googleapis.com/css?family=Roboto:300,400%7CMaterial+Icons',
-  'https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2',
+  'https://fonts.gstatic.com/s/materialicons/v54/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4WxKOzY.woff2',
@@ -47,7 +47,7 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches
       .match(e.request, {
-        ignoreSearch: !e.request.url.includes('fonts.googleapis.com')
+        // ignoreSearch: !e.request.url.includes('fonts.googleapis.com')
       })
       .then(response => response || fetch(e.request))
   )

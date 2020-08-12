@@ -93,8 +93,13 @@ export function scheduleApp (options = {}) {
         ? 'SELF'
         : periods[index].name
     }
-    if (options.customSchedule)
+    if (options.customSchedule) {
       periods = options.customSchedule(d, ano, mez, dia, weekday)
+      if (periods && periods.alternate) {
+        alternate = periods.alternate
+        periods = periods.periods
+      }
+    }
     if (periods) periods = periods.slice()
     else if (options.isSummer && options.isSummer(ano, mez, dia)) {
       summer = true
