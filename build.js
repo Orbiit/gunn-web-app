@@ -2,7 +2,7 @@ import UglifyJS from 'uglify-es'
 import htmlMinifier from 'html-minifier'
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 import colours from 'colors/safe.js'
 import { rollup } from 'rollup'
 import cheerio from 'cheerio'
@@ -16,6 +16,20 @@ async function buildUgwaJs () {
   const bundle = await rollup({
     input: path.resolve(__dirname, './js/main.js'),
     plugins: [
+      {
+        name: 'query-remover',
+        resolveId (source, importer) {
+          const index = source.lastIndexOf('?')
+          if (index !== -1) {
+            return fileURLToPath(
+              new URL(source.slice(0, index), pathToFileURL(importer))
+            )
+            // return path.resolve(importer, source.slice(0, index))
+          } else {
+            return null
+          }
+        }
+      },
       {
         name: 'js-analyzer',
         transform (code, moduleId) {

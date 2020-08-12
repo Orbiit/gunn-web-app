@@ -62,7 +62,7 @@ export function toEach (query, fn) {
   const elems = document.querySelectorAll(query)
   for (let i = 0, len = elems.length; i < len; i++) fn(elems[i], i)
 }
-export function escapeHTML (text) {
+export function escapeHTML (text = '') {
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

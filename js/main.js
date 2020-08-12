@@ -9,7 +9,8 @@
  * @param {barcodes.js} barcode - the barcode to display
  */
 
-import { toAlternateSchedules } from './altScheduleGenerator.js'
+// ?for=appdesign so that Ugwita cache doesn't conflict
+import { toAlternateSchedules } from './altScheduleGenerator.js?for=appdesign'
 import { setDaysMonths } from './app.js'
 import { initBarcodes } from './barcodes.js'
 import { initFooter, onOptionsTab } from './footer.js'

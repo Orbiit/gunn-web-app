@@ -3,7 +3,7 @@ const CACHE_NAME = "ugwita-cache-v" + VERSION, // change cache name to force upd
 urlsToCache = [
   "./",
   "index.html",
-  "../js/altScheduleGenerator.js",
+  "../js/altScheduleGenerator.js?for=ugwita",
   "data.js",
   "main.js",
   "pretty.css"

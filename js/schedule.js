@@ -1,6 +1,6 @@
 /* global fetch, caches, alert */
 
-import { toAlternateSchedules } from './altScheduleGenerator.js'
+import { toAlternateSchedules } from './altScheduleGenerator.js?for=appdesign'
 import { getFontColour, scheduleApp } from './app.js'
 import {
   categoryList,
@@ -114,6 +114,9 @@ const normalschedule = [
         const week = Math.floor(
           (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
         )
+        // scheduleApp can get days outside of the school year because it
+        // calculates the schedule immediately before isSummer is set
+        if (week < 0) return 'SELF'
         // First week's Gunn together is 5th period for some reason
         if (week === 0) return 'E'
         return 'ABCDEFG'[(week - 1) % 7]
