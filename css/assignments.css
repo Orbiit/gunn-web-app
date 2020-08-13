@@ -15,7 +15,7 @@ button.material.icon.asgn-done-btn {
   text-shadow: inherit;
 }
 .schedule-container .asgn-done-btn {
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 }
 .schedule-container .asgn-done-btn:hover {
   background-color: var(--ripple);
@@ -46,10 +46,12 @@ button.material.icon.asgn-done-btn {
 .asgn-upcoming .asgn-is-done button.material.icon.asgn-done-btn {
   color: var(--theme);
 }
-.asgn-text:hover, .tab-focus .asgn-text:focus {
+.asgn-text:hover,
+.tab-focus .asgn-text:focus {
   text-decoration: underline;
 }
-.asgn-due, .asgn-overdue {
+.asgn-due,
+.asgn-overdue {
   font-weight: bold;
   color: white;
   text-shadow: none;
@@ -61,7 +63,7 @@ button.material.icon.asgn-done-btn {
   font-size: 12px;
 }
 .asgn-overdue {
-  background-color: #FF9800;
+  background-color: #ff9800;
   color: black;
 }
 .asgn-line::after {
@@ -76,7 +78,7 @@ button.material.icon.asgn-done-btn {
 }
 .asgn-importance-2:not(.asgn-is-done)::after {
   content: '!!!';
-  color: #2196F3;
+  color: #2196f3;
 }
 
 /* BADGES */
@@ -92,17 +94,41 @@ button.material.icon.asgn-done-btn {
   text-shadow: none;
   color: black;
 }
-.asgn-category-homework { background-color: #8abeb7; }
-.asgn-category-preparation { background-color: #b294bb; }
-.asgn-category-worksheet { background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
-.asgn-category-reading { background-color: #cc6666; }
-.asgn-category-quiz { background-color: #b5bd68; }
-.asgn-category-test { background-color: #81a2be; }
-.asgn-category-exam { background-color: #de935f; }
-.asgn-category-presentation { background-color: #f0c674; }
-.asgn-category-materials { background-color: #a3685a; }
-.asgn-category-lab { background-color: #373b41; color: white; }
-.asgn-category-other { background-color: #969896; }
+.asgn-category-homework {
+  background-color: #8abeb7;
+}
+.asgn-category-preparation {
+  background-color: #b294bb;
+}
+.asgn-category-worksheet {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.asgn-category-reading {
+  background-color: #cc6666;
+}
+.asgn-category-quiz {
+  background-color: #b5bd68;
+}
+.asgn-category-test {
+  background-color: #81a2be;
+}
+.asgn-category-exam {
+  background-color: #de935f;
+}
+.asgn-category-presentation {
+  background-color: #f0c674;
+}
+.asgn-category-materials {
+  background-color: #a3685a;
+}
+.asgn-category-lab {
+  background-color: #373b41;
+  color: white;
+}
+.asgn-category-other {
+  background-color: #969896;
+}
 
 /* ADD ASSIGNMENT BUTTONS */
 button.add-asgn {
@@ -116,7 +142,7 @@ button.add-asgn {
 .schedule-container button.add-asgn {
   opacity: 0;
   pointer-events: none;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 .schedule-container .schedule-period:hover .add-asgn {
   opacity: 1;
@@ -145,11 +171,17 @@ button.add-asgn {
 .importance button {
   margin-left: 10px;
   color: var(--theme);
-  transition: all .2s;
+  transition: all 0.2s;
 }
-#low-imp { --theme: #9E9E9E; }
-#medium-imp { --theme: #607D8B; }
-#high-imp { --theme: #2196F3; }
+#low-imp {
+  --theme: #9e9e9e;
+}
+#medium-imp {
+  --theme: #607d8b;
+}
+#high-imp {
+  --theme: #2196f3;
+}
 
 /* ASSYNC STATUS */
 .assync-status {
@@ -164,30 +196,36 @@ button.add-asgn {
   color: white;
   padding: 5px 10px;
   font-size: 14px;
-  transition: opacity .2s, background-color .2s;
+  transition: opacity 0.2s, background-color 0.2s;
   z-index: 7;
 }
 .assync-disappearing {
-  animation: fade-out .5s 2s forwards;
+  animation: fade-out 0.5s 2s forwards;
 }
 .assync-hidden {
   opacity: 0;
 }
 .assync-error {
   background-color: #e74c3c;
+  animation-delay: 100s;
 }
 
 /* ASSYNC SETTINGS */
-#assync-auth-wrapper button, #assync-auth-wrapper .notmaterial-input {
+#assync-auth-wrapper button,
+#assync-auth-wrapper .notmaterial-input {
   vertical-align: middle;
 }
-.is-using-assync .not-using-assync, .isnt-using-assync .using-assync, .is-loading :not(.loading-assync), .loading-assync {
+.is-using-assync .not-using-assync,
+.isnt-using-assync .using-assync,
+.is-loading :not(.loading-assync),
+.loading-assync {
   display: none;
 }
 .is-loading .loading-assync {
   display: block;
 }
-#assync-id, #join-assync-id {
+#assync-id,
+#join-assync-id {
   font-family: monospace;
 }
 button.assync-refresh {

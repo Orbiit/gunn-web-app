@@ -1,0 +1,15 @@
+# *Sigh* that's right, UGWA is back to fetching from a manually updated file -_-
+
+# Monday, first week of school: Day starts with an assembly
+2020-08-17
+* Gunn Opening Week Schedule [first period is an assembly]
+10:00 11:00 flex
+11:10 11:30 a
+11:40 12:00 b
+12:10 12:30 c
+12:30 13:00 lunch
+13:10 13:35 d
+13:45 14:05 e
+14:15 14:35 f
+14:45 15:05 g
+15:15 15:35 h

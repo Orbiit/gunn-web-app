@@ -2,18 +2,25 @@
   "name": "gunn-web-app",
   "version": "1.0.0",
   "description": "ugwa",
+  "type": "module",
   "main": "build.js",
   "author": "l'shep",
   "dependencies": {
-    "colors": "^1.4.0"
+    "cheerio": "^1.0.0-rc.3",
+    "colors": "^1.4.0",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "clean-css": "^4.1.11",
     "html-minifier": "^3.5.16",
+    "prettier-standard": "^16.4.1",
+    "rollup": "^2.23.0",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.4.1"
   },
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "check-l10n": "node js/languages/check-l10n.js",
+    "format": "prettier-standard --format --lint"
   }
 }

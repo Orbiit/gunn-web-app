@@ -91,3 +91,7 @@ h1, h2 {
   from {background-color: rgba(194,80,80,0.5);}
   to   {background-color: transparent;}
 }
+.warning {
+  background-color: #ececb7;
+  color: black;
+}

@@ -1,4 +1,13 @@
-'use strict';
+import {
+  normalSchedules,
+  firstDay,
+  lastDay,
+  keywords,
+  monthNames,
+  dayNames,
+  legalHashDateRegex
+} from './data.js';
+import { toAlternateSchedules } from '../js/altScheduleGenerator.js?for=ugwita';
 
 const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
   + encodeURIComponent("u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com")
@@ -122,8 +131,8 @@ try {
 
 if (window.location.search === '?genalts') refreshAlts();
 
-const startDate = {year: 2019, month: 7, date: 13},
-endDate = {year: 2020, month: 5, date: 4};
+const startDate = {year: 2020, month: 7, date: 17},
+endDate = {year: 2021, month: 5, date: 3};
 
 let alternateSchedules;
 try {

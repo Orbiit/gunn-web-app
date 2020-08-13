@@ -1,4 +1,4 @@
-const normalSchedules = [
+export const normalSchedules = [
   null,
   [
     {name: "Period A", start: 505, end: 585},
@@ -42,11 +42,11 @@ const normalSchedules = [
   null
 ];
 
-const firstDay = "2019-08-13T00:00:00.000-07:00";
-const lastDay = "2020-06-04T23:59:59.999-07:00";
-const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
+export const firstDay = "2020-08-17T00:00:00.000-07:00";
+export const lastDay = "2021-06-03T23:59:59.999-07:00";
+export const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+export const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+export const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-const legalHashDateRegex = /^#20[0-9]{2}-[01][0-9]-[0-3][0-9]$/;
+export const legalHashDateRegex = /^#20[0-9]{2}-[01][0-9]-[0-3][0-9]$/;
