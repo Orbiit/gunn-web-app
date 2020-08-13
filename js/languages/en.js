@@ -53,7 +53,7 @@ export default {
       '{name|Desktop}—bookmark this page or pin this tab (right click on the tab and select "Pin tab")',
     'disable-lists': 'Disable club/staff lists',
     'edit-asgn': 'Assignment properties',
-    'edit-h': 'Set period 8 times',
+    // 'edit-h': 'Set period 8 times',
     errors: 'Runtime error log',
     'export-copy': 'copy export code',
     'export-file': 'download export code',
@@ -136,7 +136,7 @@ export default {
     'service-creds':
       '{search|Google Search}, {so|Stack Overflow}, and {mdn|MDN} helped.',
     'show-h': 'Show period 8?',
-    'show-self-toggle': 'Show SELF?',
+    // 'show-self-toggle': 'Show SELF?',
     show0: 'Show zero period?',
     source: 'UGWA is open sourced on {github|Github}.',
     sponsor: 'Sponsored by the ROCK team.',
