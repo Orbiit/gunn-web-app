@@ -76,6 +76,7 @@ export default {
       "L'application a été conçue à l'origine pour rendre les fonctionnalités de TheGunnApp accessibles aux utilisateurs de Chromebook.",
     'ios-instruct':
       '{name|iOS}—appuyez sur l\'icône de partage et sélectionnez "add to home screen"',
+    'kevin-creds': '{name|Kevin} pour la traduction française.',
     languages: 'Langues',
     'light-theme': 'Thème clair',
     'lists-disabled':
@@ -139,6 +140,7 @@ export default {
     send: 'Envoyer',
     'service-creds':
       '{search|Recherche Google}, {so|Stack Overflow}, et {mdn|MDN} ont aidé.',
+    'show-h': 'Afficher 8ème période?',
     // 'show-self-toggle': 'Afficher la période SELF?',
     show0: 'Afficher la période zéro?',
     source: 'UGWA est source ouvert sur {github|GitHub}.',
@@ -203,6 +205,7 @@ export default {
     'blamed-teacher': 'Professeur qui est Blâmé',
     brunch: 'Brunch',
     cannot: "Un problème est survenu lors de la récupération de l'image.",
+    'close-future': 'OK',
     'club-error':
       "; impossible d'obtenir les données du club; peut-être que vous n'êtes pas connecté à Internet?",
     day: 'Jour de réunion:',
@@ -253,9 +256,11 @@ export default {
     periodx: 'Période {X}',
     phone: 'Téléphone:',
     presidents: 'Président(s):',
+    'previewing-future': 'Voici l\'horaire du prochain jour d\'école.',
     'psa-date': 'Créé sur {D}.',
     'psa-error': 'Impossible de charger le PSA:',
     'remove-from-list': 'Supprimer de mes clubs',
+    'return-today': "Afficher l'horaire du jour",
     self: 'SELF',
     'soph-day': 'Jeudi',
     'soph-desc': "C'est un club sans seniors!",
