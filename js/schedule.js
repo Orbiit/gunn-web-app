@@ -45,7 +45,7 @@ export const letras = [
 // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 const VERSION = 4
 // radios save format version
-const FORMATTING_VERSION = '7'
+const FORMATTING_VERSION = '8'
 const normalschedule = [
   null,
   // Keeping old schedule in case the school ever returns to it if the pandemic goes away
@@ -290,7 +290,9 @@ export function initSchedule (manualAltSchedules = {}) {
     'show', // 7
     'no', // 8
     'preps', // 9
-    'yes-h-period' // 10
+    'yes-h-period', // 10
+    'off', // 11
+    'both' // 12
   ]
   const formatOptions = cookie.getItem(
     '[gunn-web-app] scheduleapp.formatOptions'
@@ -342,6 +344,15 @@ export function initSchedule (manualAltSchedules = {}) {
   if (formatOptions[0] === '6') {
     formatOptions[0] = '7'
     formatOptions[10] = 'yes-h-period' // show H period?
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+  }
+  if (formatOptions[0] === '7') {
+    formatOptions[0] = '8'
+    formatOptions[11] = 'off' // time before notification
+    formatOptions[12] = 'both' // when notification is triggered (unused atm)
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       formatOptions.join('.')
@@ -768,6 +779,56 @@ export function initSchedule (manualAltSchedules = {}) {
     refresh.click()
   }
 
+  const notifSettings = {
+    enabled: false,
+    timeBefore: 5 * 60
+  }
+  const notifDropdownWrapper = document.getElementById('notif-time-before')
+  const notifDropdown = makeDropdown(
+    notifDropdownWrapper,
+    [
+      [15 * 60, localize('notif-time/before-1500')],
+      [10 * 60, localize('notif-time/before-1000')],
+      [5 * 60, localize('notif-time/before-0500')],
+      [2 * 60, localize('notif-time/before-0200')],
+      [1 * 60, localize('notif-time/before-0100')],
+      [30, localize('notif-time/before-0030')],
+      [10, localize('notif-time/before-0010')],
+      [0, localize('notif-time/immediately')],
+      [null, localize('notif-time/never')]
+    ]
+  ).set(null)
+  if ('Notification' in window) {
+    if (formatOptions[11] !== 'off' && Notification.permission === 'granted') {
+      notifDropdown.set(+formatOptions[11])
+      notifSettings.enabled = true
+      notifSettings.timeBefore = +formatOptions[11]
+    }
+    notifDropdown.onChange(async time => {
+      if (time !== null) {
+        if (Notification.permission === 'granted' || await Notification.requestPermission() === 'granted') {
+          notifSettings.enabled = true
+          notifSettings.timeBefore = time
+          formatOptions[11] = time
+        } else {
+          time = null
+          notifDropdown.set(null)
+        }
+      }
+      if (time === null) {
+        formatOptions[11] = 'off'
+        notifSettings.enabled = false
+      }
+      scheduleapp.updateNextNotif()
+      cookie.setItem(
+        '[gunn-web-app] scheduleapp.formatOptions',
+        formatOptions.join('.')
+      )
+    })
+  } else {
+    // Remove option if notifications aren't supported
+    notifDropdownWrapper.parentNode.parentNode.removeChild(notifDropdownWrapper.parentNode)
+  }
   const weekwrapper = document.querySelector('#weekwrapper')
   function makeWeekHappen () {
     let innerHTML = ''
@@ -1023,10 +1084,6 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   // const hPeriods =
   //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
-  const notifSettings = {
-    enabled: true,
-    timeBefore: 5 * 60
-  }
   const scheduleapp = scheduleApp({
     element: document.querySelector('#schedulewrapper'),
     periods: periodstyles,
@@ -1105,6 +1162,7 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   scheduleapp.options.isSummer = (y, m, d) =>
     !datepicker.inrange({ y: y, m: m, d: d })
+  scheduleapp.updateNextNotif()
   function isSchoolDay (d) {
     return scheduleapp.getSchedule(d).periods.length
   }

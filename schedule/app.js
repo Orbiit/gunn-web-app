@@ -1,6 +1,6 @@
 import { localize, localizeWith } from '../js/l10n.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { currentTime, escapeHTML, now } from '../js/utils.js'
+import { currentTime, escapeHTML, loadImage, now } from '../js/utils.js'
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
@@ -45,6 +45,58 @@ export function scheduleApp (options = {}) {
       return `${((hr - 1) % 12) + 1}:${messytime.slice(2)}${
         hr < 12 ? 'a' : 'p'
       }m`
+  }
+  const periodSymbols = {
+    Brunch: localize('symbols/brunch'),
+    Lunch: localize('symbols/lunch'),
+    Flex: localize('symbols/flex'),
+    SELF: localize('symbols/self'),
+    A: localize('symbols/period-a'),
+    B: localize('symbols/period-b'),
+    C: localize('symbols/period-c'),
+    D: localize('symbols/period-d'),
+    E: localize('symbols/period-e'),
+    F: localize('symbols/period-f'),
+    G: localize('symbols/period-g'),
+    H: localize('symbols/period-h'),
+    '0': localize('symbols/period-zero')
+  }
+  const imageCache = {}
+  const ICON_SIZE = 256
+  const ICON_FONT = '"Roboto", sans-serif'
+  const ICON_PADDING = 0.1
+  const maxSize = ICON_SIZE * (1 - 2 * ICON_PADDING)
+  const iconCanvas = document.createElement('canvas')
+  const iconCtx = iconCanvas.getContext('2d')
+  iconCanvas.width = ICON_SIZE
+  iconCanvas.height = ICON_SIZE
+  iconCtx.textAlign = 'center'
+  iconCtx.textBaseline = 'middle'
+  async function getIcon (period) {
+    const { colour, label } = getPeriod(period)
+    if (colour[0] === '#') {
+      iconCtx.fillStyle = colour
+      iconCtx.fillRect(0, 0, ICON_SIZE, ICON_SIZE)
+      iconCtx.fillStyle = getFontColour(colour)
+    } else {
+      const imageUrl = `./.period-images/${period}?${colour}`
+      if (!imageCache[imageUrl]) {
+        imageCache[imageUrl] = await loadImage(imageUrl)
+      }
+      iconCtx.drawImage(imageCache[imageUrl], 0, 0, ICON_SIZE, ICON_SIZE)
+      iconCtx.fillStyle = 'white'
+      iconCtx.shadowColor = 'black'
+      iconCtx.shadowBLur = 15
+    }
+    const text = periodSymbols[period] || label
+    iconCtx.font = `${maxSize}px ${ICON_FONT}`
+    const { width } = iconCtx.measureText(text)
+    const fontSize = Math.min(maxSize * maxSize / width, maxSize)
+    iconCtx.font = `${fontSize}px ${ICON_FONT}`
+    // It is annoying having to do fontSize * 0.1 so it looks vertically centred
+    iconCtx.fillText(text, ICON_SIZE / 2, ICON_SIZE / 2 + fontSize * 0.1)
+    iconCtx.shadowColor = 'transparent'
+    return iconCanvas.toDataURL()
   }
   function getCSS (colour, id) {
     if (colour[0] === '#') {
@@ -375,21 +427,18 @@ export function scheduleApp (options = {}) {
     for (const period of schedule.periods) {
       if (period.start.totalminutes * 60 - timeBefore > time) {
         return {
-          showTime: (period.start.totalminutes * 60 - timeBefore) * 1000 + today.getTime(),
-          name: period.name
+          showTime: (period.start.totalminutes * 60 - timeBefore) * 1000 + today.getTime()
         }
       }
       if (period.end.totalminutes * 60 - timeBefore > time) {
         return {
-          showTime: (period.end.totalminutes * 60 - timeBefore) * 1000 + today.getTime(),
-          name: period.name
+          showTime: (period.end.totalminutes * 60 - timeBefore) * 1000 + today.getTime()
         }
       }
     }
     return null
   }
-  let nextNotif = options.notifSettings.enabled ? getNextNotif() : null
-  console.log(nextNotif)
+  let nextNotif = null
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
   const returnval = {
@@ -425,8 +474,28 @@ export function scheduleApp (options = {}) {
         }
         if (nextNotif) {
           if (currentTime() >= nextNotif.showTime) {
-            console.log('show notif', nextNotif)
             nextNotif = getNextNotif()
+            const today = getDate(now())
+            const currentMinute = (currentTime() - today.getTime()) / 1000 / 60
+            // Apparently getPeriodName gets the period type even though it's
+            // already in `periods[index].name` in order to deal with SELF
+            // becoming flex even though this could've been dealt with in
+            // getSchedule before returning the schedule??
+            const { periods, getPeriodName } = getSchedule(today)
+            const currentPeriod = periods.findIndex(period => currentMinute < period.end.totalminutes)
+            const text = currentPeriod === -1
+              ? localize('over', 'times')
+              : currentMinute < periods[currentPeriod].start.totalminutes
+              ? localizeWith('starting', 'times', {
+                P: getPeriod(getPeriodName(currentPeriod)).label,
+                T: getUsefulTimePhrase(Math.ceil(periods[currentPeriod].start.totalminutes - currentMinute))
+              })
+              : localizeWith('ending', 'times', {
+                P: getPeriod(getPeriodName(currentPeriod)).label,
+                T: getUsefulTimePhrase(Math.ceil(periods[currentPeriod].end.totalminutes - currentMinute))
+              })
+            getIcon(getPeriodName(currentPeriod))
+              .then(icon => new Notification(text, { icon }))
           }
         }
       }
@@ -481,6 +550,9 @@ export function scheduleApp (options = {}) {
         week.push(day)
       }
       return week
+    },
+    updateNextNotif () {
+      nextNotif = options.notifSettings.enabled ? getNextNotif() : null
     },
     getPeriodSpan,
     getSchedule

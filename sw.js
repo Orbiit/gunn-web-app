@@ -47,7 +47,7 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches
       .match(e.request, {
-        // ignoreSearch: !e.request.url.includes('fonts.googleapis.com')
+        ignoreSearch: new URL(e.request.url).pathname.startsWith('/gunn-web-app/.period-images/')
       })
       .then(response => response || fetch(e.request))
   )

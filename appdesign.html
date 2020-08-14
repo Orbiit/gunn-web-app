@@ -149,12 +149,12 @@
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
-      // const start = Date.now()
-      // const baseTime = new Date(2020, 8, 21, 9, 0).getTime()
-      // const speed = 1000
-      // setCurrentTime(() => {
-      //   return (Date.now() - start) * speed + baseTime
-      // })
+      const start = Date.now()
+      const baseTime = new Date(2020, 8, 21, 11, 40).getTime()
+      const speed = 100
+      setCurrentTime(() => {
+        return (Date.now() - start) * speed + baseTime
+      })
       window.setCurrentTime = setCurrentTime
 
       const betaBadge = document.createElement('span')
