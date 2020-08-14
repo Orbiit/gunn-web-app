@@ -26,19 +26,20 @@ if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
 }
 export const currentLang = cookie.getItem('[gunn-web-app] language')
 export function localize (id, src = 'other', lang = currentLang) {
-  if (!langs[currentLang]) {
-    console.warn(`Language ${currentLang} not loaded.`)
-    langs[currentLang] = {}
+  if (!langs[lang]) {
+    console.warn(`Language ${lang} not loaded.`)
+    langs[lang] = {}
   }
   const path = [src, ...id.split('/')]
-  let obj = langs[currentLang]
+  let obj = langs[lang]
   for (const key of path) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       obj = obj[key]
     } else if (lang === 'en') {
-      console.warn(`Nothing set for ${src}/${id}`)
+      console.warn(`Nothing set for en/${src}/${id}`)
       return id
     } else {
+      console.warn(`Nothing set for ${lang}/${src}/${id}`)
       return localize(id, src, 'en')
     }
   }

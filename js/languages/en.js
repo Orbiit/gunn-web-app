@@ -95,6 +95,7 @@ export default {
     'no-hour': 'No hours',
     'not-using-assync':
       '{create|Create Assync account} or {id} {join|Sync to account}',
+    'notif-time-before': 'Send notification {time} a period starts or ends.',
     numbers: 'Numbers only',
     ok: 'OK',
     'open-chat': 'Join chat',

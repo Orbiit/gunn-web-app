@@ -232,9 +232,11 @@ body #footer ul li.active {
 }
 #weekwrapper h1 {
   display: inline;
+  opacity: 0.5;
 }
 #weekwrapper div.today h1 {
   font-weight: bold;
+  opacity: 1;
 }
 #weekwrapper span {
   display: block;

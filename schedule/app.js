@@ -1,6 +1,6 @@
 import { localize, localizeWith } from '../js/l10n.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { escapeHTML, now } from '../js/utils.js'
+import { currentTime, escapeHTML, now } from '../js/utils.js'
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
@@ -342,10 +342,11 @@ export function scheduleApp (options = {}) {
         }
         innerHTML += `</div>`
       }
-    } else
+    } else {
       innerHTML += `<span class="schedule-noschool">${
         getPeriod('NO_SCHOOL').label
       }</span>`
+    }
     return innerHTML
   }
   if (!options.offset) options.offset = 0
@@ -362,6 +363,33 @@ export function scheduleApp (options = {}) {
     window.removeEventListener('blur', onBlur, false)
   }
   window.addEventListener('blur', onBlur, false)
+  function getDate (date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  }
+  function getNextNotif () {
+    const { timeBefore } = options.notifSettings
+    const today = getDate(now())
+    const schedule = getSchedule(today)
+    // Use seconds as common unit for notifications
+    const time = (currentTime() - today.getTime()) / 1000
+    for (const period of schedule.periods) {
+      if (period.start.totalminutes * 60 - timeBefore > time) {
+        return {
+          showTime: (period.start.totalminutes * 60 - timeBefore) * 1000 + today.getTime(),
+          name: period.name
+        }
+      }
+      if (period.end.totalminutes * 60 - timeBefore > time) {
+        return {
+          showTime: (period.end.totalminutes * 60 - timeBefore) * 1000 + today.getTime(),
+          name: period.name
+        }
+      }
+    }
+    return null
+  }
+  let nextNotif = options.notifSettings.enabled ? getNextNotif() : null
+  console.log(nextNotif)
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
   const returnval = {
@@ -385,11 +413,21 @@ export function scheduleApp (options = {}) {
         if (currentMinute !== lastMinute) {
           returnval.render()
           lastMinute = currentMinute
+          if (options.notifSettings.enabled && !nextNotif) {
+            // Try getting next notification
+            nextNotif = getNextNotif()
+          }
         }
         if (options.update) {
           timeoutID = setTimeout(checkMinute, checkSpeed)
         } else {
           animationID = null
+        }
+        if (nextNotif) {
+          if (currentTime() >= nextNotif.showTime) {
+            console.log('show notif', nextNotif)
+            nextNotif = getNextNotif()
+          }
         }
       }
       timeoutID = setTimeout(checkMinute, checkSpeed)

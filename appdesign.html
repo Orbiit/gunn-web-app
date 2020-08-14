@@ -148,9 +148,12 @@
       import { setCurrentTime } from './js/utils.js'
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
+
+      // const start = Date.now()
+      // const baseTime = new Date(2020, 8, 21, 9, 0).getTime()
+      // const speed = 1000
       // setCurrentTime(() => {
-      //   const temp = new Date(2020, 2, 10, 13, 23).getTime()
-      //   return (Date.now() - temp) * 1000 + temp
+      //   return (Date.now() - start) * speed + baseTime
       // })
       window.setCurrentTime = setCurrentTime
 
@@ -553,6 +556,13 @@
           <label data-l10n="numbers"></label>
         </p>
       </div>
+      <p data-l10n="notif-time-before">
+        <span
+          class="material-dropdown"
+          id="notif-time-before"
+          data-l10n-arg="time"
+        ></span>
+      </p>
       <div class="center">
         <button
           class="material ripple-light raised"

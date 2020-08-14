@@ -1023,6 +1023,10 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   // const hPeriods =
   //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
+  const notifSettings = {
+    enabled: true,
+    timeBefore: 5 * 60
+  }
   const scheduleapp = scheduleApp({
     element: document.querySelector('#schedulewrapper'),
     periods: periodstyles,
@@ -1071,6 +1075,7 @@ export function initSchedule (manualAltSchedules = {}) {
         alternate: { description }
       }
     },
+    notifSettings,
     autorender: false
   })
   setOnSavedClubsUpdate(scheduleapp.render)

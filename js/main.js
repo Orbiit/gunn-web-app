@@ -798,6 +798,10 @@ function localizePage () {
     const extraArgs = Object.keys(l10nArgs)
     if (extraArgs.length) {
       console.warn('Extra l10n arguments found for', l10nStr, ':', extraArgs)
+      // Prevent errors by adding back the extra arguments to DOM
+      for (const elem of Object.values(l10nArgs)) {
+        node.appendChild(elem)
+      }
     }
   }
   function applyL10nToNode (node) {
