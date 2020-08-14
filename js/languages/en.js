@@ -95,7 +95,8 @@ export default {
     'no-hour': 'No hours',
     'not-using-assync':
       '{create|Create Assync account} or {id} {join|Sync to account}',
-    'notif-time-before': 'Send a notification {time} when a period starts or ends.',
+    'notif-time-before':
+      'Send a notification {time} when a period starts or ends. (Notifications will only be sent while UGWA is running.)',
     numbers: 'Numbers only',
     ok: 'OK',
     'open-chat': 'Join chat',
@@ -279,9 +280,9 @@ export default {
     summer: 'Enjoy your summer!',
     'supreme-leader': 'Supreme Leader',
     symbols: {
-      'brunch': '🧃',
-      'flex': 'Tut.',
-      'lunch': '🍱',
+      brunch: '🧃',
+      flex: 'Tut.',
+      lunch: '🍱',
       'period-a': '1',
       'period-b': '2',
       'period-c': '3',
@@ -291,7 +292,7 @@ export default {
       'period-g': '7',
       'period-h': '8',
       'period-zero': '0',
-      'self': 'SELF',
+      self: 'SELF'
     },
     'teacher-email': 'Teacher Email:',
     time: 'Meeting time:',
@@ -335,7 +336,7 @@ export default {
     ending: '{P} ending in {T}.',
     'ending-short': '{T} left',
     long: '{T} long',
-    over: 'School\'s over!',
+    over: "School's over!",
     'self-ended': 'Ended {T} ago.',
     'self-ending': 'Ending in {T1}; started {T2} ago.',
     'self-starting': 'Starting in {T}.',

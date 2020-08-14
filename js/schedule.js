@@ -784,20 +784,17 @@ export function initSchedule (manualAltSchedules = {}) {
     timeBefore: 5 * 60
   }
   const notifDropdownWrapper = document.getElementById('notif-time-before')
-  const notifDropdown = makeDropdown(
-    notifDropdownWrapper,
-    [
-      [15 * 60, localize('notif-time/before-1500')],
-      [10 * 60, localize('notif-time/before-1000')],
-      [5 * 60, localize('notif-time/before-0500')],
-      [2 * 60, localize('notif-time/before-0200')],
-      [1 * 60, localize('notif-time/before-0100')],
-      [30, localize('notif-time/before-0030')],
-      [10, localize('notif-time/before-0010')],
-      [0, localize('notif-time/immediately')],
-      [null, localize('notif-time/never')]
-    ]
-  ).set(null)
+  const notifDropdown = makeDropdown(notifDropdownWrapper, [
+    [15 * 60, localize('notif-time/before-1500')],
+    [10 * 60, localize('notif-time/before-1000')],
+    [5 * 60, localize('notif-time/before-0500')],
+    [2 * 60, localize('notif-time/before-0200')],
+    [1 * 60, localize('notif-time/before-0100')],
+    [30, localize('notif-time/before-0030')],
+    [10, localize('notif-time/before-0010')],
+    [0, localize('notif-time/immediately')],
+    [null, localize('notif-time/never')]
+  ]).set(null)
   if ('Notification' in window) {
     if (formatOptions[11] !== 'off' && Notification.permission === 'granted') {
       notifDropdown.set(+formatOptions[11])
@@ -806,7 +803,10 @@ export function initSchedule (manualAltSchedules = {}) {
     }
     notifDropdown.onChange(async time => {
       if (time !== null) {
-        if (Notification.permission === 'granted' || await Notification.requestPermission() === 'granted') {
+        if (
+          Notification.permission === 'granted' ||
+          (await Notification.requestPermission()) === 'granted'
+        ) {
           notifSettings.enabled = true
           notifSettings.timeBefore = time
           formatOptions[11] = time
@@ -827,7 +827,9 @@ export function initSchedule (manualAltSchedules = {}) {
     })
   } else {
     // Remove option if notifications aren't supported
-    notifDropdownWrapper.parentNode.parentNode.removeChild(notifDropdownWrapper.parentNode)
+    notifDropdownWrapper.parentNode.parentNode.removeChild(
+      notifDropdownWrapper.parentNode
+    )
   }
   const weekwrapper = document.querySelector('#weekwrapper')
   function makeWeekHappen () {

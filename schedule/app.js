@@ -1,6 +1,6 @@
 import { localize, localizeWith } from '../js/l10n.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { currentTime, escapeHTML, loadImage, now } from '../js/utils.js'
+import { currentTime, escapeHTML, now } from '../js/utils.js'
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
@@ -61,10 +61,9 @@ export function scheduleApp (options = {}) {
     H: localize('symbols/period-h'),
     '0': localize('symbols/period-zero')
   }
-  const imageCache = {}
   const ICON_SIZE = 256
   const ICON_FONT = '"Roboto", sans-serif'
-  const ICON_PADDING = 0.1
+  const ICON_PADDING = 0.2
   const maxSize = ICON_SIZE * (1 - 2 * ICON_PADDING)
   const iconCanvas = document.createElement('canvas')
   const iconCtx = iconCanvas.getContext('2d')
@@ -72,30 +71,22 @@ export function scheduleApp (options = {}) {
   iconCanvas.height = ICON_SIZE
   iconCtx.textAlign = 'center'
   iconCtx.textBaseline = 'middle'
-  async function getIcon (period) {
+  function getIcon (period) {
     const { colour, label } = getPeriod(period)
     if (colour[0] === '#') {
       iconCtx.fillStyle = colour
       iconCtx.fillRect(0, 0, ICON_SIZE, ICON_SIZE)
       iconCtx.fillStyle = getFontColour(colour)
     } else {
-      const imageUrl = `./.period-images/${period}?${colour}`
-      if (!imageCache[imageUrl]) {
-        imageCache[imageUrl] = await loadImage(imageUrl)
-      }
-      iconCtx.drawImage(imageCache[imageUrl], 0, 0, ICON_SIZE, ICON_SIZE)
-      iconCtx.fillStyle = 'white'
-      iconCtx.shadowColor = 'black'
-      iconCtx.shadowBLur = 15
+      return `./.period-images/${period}?${colour}`
     }
     const text = periodSymbols[period] || label
     iconCtx.font = `${maxSize}px ${ICON_FONT}`
     const { width } = iconCtx.measureText(text)
-    const fontSize = Math.min(maxSize * maxSize / width, maxSize)
+    const fontSize = Math.min((maxSize * maxSize) / width, maxSize)
     iconCtx.font = `${fontSize}px ${ICON_FONT}`
     // It is annoying having to do fontSize * 0.1 so it looks vertically centred
     iconCtx.fillText(text, ICON_SIZE / 2, ICON_SIZE / 2 + fontSize * 0.1)
-    iconCtx.shadowColor = 'transparent'
     return iconCanvas.toDataURL()
   }
   function getCSS (colour, id) {
@@ -427,12 +418,15 @@ export function scheduleApp (options = {}) {
     for (const period of schedule.periods) {
       if (period.start.totalminutes * 60 - timeBefore > time) {
         return {
-          showTime: (period.start.totalminutes * 60 - timeBefore) * 1000 + today.getTime()
+          showTime:
+            (period.start.totalminutes * 60 - timeBefore) * 1000 +
+            today.getTime()
         }
       }
       if (period.end.totalminutes * 60 - timeBefore > time) {
         return {
-          showTime: (period.end.totalminutes * 60 - timeBefore) * 1000 + today.getTime()
+          showTime:
+            (period.end.totalminutes * 60 - timeBefore) * 1000 + today.getTime()
         }
       }
     }
@@ -482,20 +476,36 @@ export function scheduleApp (options = {}) {
             // becoming flex even though this could've been dealt with in
             // getSchedule before returning the schedule??
             const { periods, getPeriodName } = getSchedule(today)
-            const currentPeriod = periods.findIndex(period => currentMinute < period.end.totalminutes)
-            const text = currentPeriod === -1
-              ? localize('over', 'times')
-              : currentMinute < periods[currentPeriod].start.totalminutes
-              ? localizeWith('starting', 'times', {
-                P: getPeriod(getPeriodName(currentPeriod)).label,
-                T: getUsefulTimePhrase(Math.ceil(periods[currentPeriod].start.totalminutes - currentMinute))
-              })
-              : localizeWith('ending', 'times', {
-                P: getPeriod(getPeriodName(currentPeriod)).label,
-                T: getUsefulTimePhrase(Math.ceil(periods[currentPeriod].end.totalminutes - currentMinute))
-              })
-            getIcon(getPeriodName(currentPeriod))
-              .then(icon => new Notification(text, { icon }))
+            const currentPeriod = periods.findIndex(
+              period => currentMinute < period.end.totalminutes
+            )
+            const text =
+              currentPeriod === -1
+                ? localize('over', 'times')
+                : currentMinute < periods[currentPeriod].start.totalminutes
+                ? localizeWith('starting', 'times', {
+                    P: getPeriod(getPeriodName(currentPeriod)).label,
+                    T: getUsefulTimePhrase(
+                      Math.ceil(
+                        periods[currentPeriod].start.totalminutes -
+                          currentMinute
+                      )
+                    )
+                  })
+                : localizeWith('ending', 'times', {
+                    P: getPeriod(getPeriodName(currentPeriod)).label,
+                    T: getUsefulTimePhrase(
+                      Math.ceil(
+                        periods[currentPeriod].end.totalminutes - currentMinute
+                      )
+                    )
+                  })
+            new Notification(text, {
+              icon:
+                currentPeriod === -1
+                  ? null
+                  : getIcon(getPeriodName(currentPeriod))
+            })
           }
         }
       }

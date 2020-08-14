@@ -47,7 +47,9 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     caches
       .match(e.request, {
-        ignoreSearch: new URL(e.request.url).pathname.startsWith('/gunn-web-app/.period-images/')
+        ignoreSearch: new URL(e.request.url).pathname.startsWith(
+          '/gunn-web-app/.period-images/'
+        )
       })
       .then(response => response || fetch(e.request))
   )

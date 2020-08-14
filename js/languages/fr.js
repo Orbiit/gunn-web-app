@@ -256,7 +256,7 @@ export default {
     periodx: 'Période {X}',
     phone: 'Téléphone:',
     presidents: 'Président(s):',
-    'previewing-future': 'Voici l\'horaire du prochain jour d\'école.',
+    'previewing-future': "Voici l'horaire du prochain jour d'école.",
     'psa-date': 'Créé sur {D}.',
     'psa-error': 'Impossible de charger le PSA:',
     'remove-from-list': 'Supprimer de mes clubs',

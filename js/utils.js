@@ -72,13 +72,3 @@ export function escapeHTML (text = '') {
 export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
   ? '?for=appdesign'
   : ''
-export function loadImage (url) {
-  return new Promise((resolve, reject) => {
-    const image = new Image()
-    image.addEventListener('load', e => {
-      resolve(image)
-    })
-    image.addEventListener('error', reject)
-    image.src = url
-  })
-}
