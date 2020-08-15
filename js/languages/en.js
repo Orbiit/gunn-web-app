@@ -218,6 +218,7 @@ export default {
     'export-file-name':
       'the-settings-of-a-great-intellectual-gunn-student.json',
     flex: 'Tutorial',
+    'gunn-together': 'Gunn Together',
     gmaps: 'use google maps',
     'gmaps-error':
       "Google Maps not loading! Maybe you aren't connected to the internet?",

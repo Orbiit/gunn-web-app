@@ -123,7 +123,8 @@ const normalschedule = [
         return 'ABCDEFG'[(week - 1) % 7]
       },
       start: makeHMTM(11, 5),
-      end: makeHMTM(11, 40)
+      end: makeHMTM(11, 40),
+      gunnTogether: true
     },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
     { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },

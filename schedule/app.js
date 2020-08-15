@@ -330,7 +330,13 @@ export function scheduleApp (options = {}) {
                 period.name
               }">${localize('add-asgn')}</button>`
             : ''
-        }</span><span>${getHumanTime(
+        }</span>`
+        if (period.gunnTogether) {
+          innerHTML += `<div class="gunn-together-badge">${localize(
+            'gunn-together'
+          )}</div>`
+        }
+        innerHTML += `<span>${getHumanTime(
           ('0' + period.start.hour).slice(-2) +
             ('0' + period.start.minute).slice(-2)
         )} &ndash; ${getHumanTime(
