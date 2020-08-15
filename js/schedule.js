@@ -1493,6 +1493,17 @@ export function initSchedule (manualAltSchedules = {}) {
         false
       )
       div.appendChild(input.wrapper)
+      const linkBtn = Object.assign(document.createElement('button'), {
+        className: 'material icon'
+      })
+      linkBtn.appendChild(
+        Object.assign(document.createElement('i'), {
+          className: 'material-icons',
+          textContent: '\ue157'
+        })
+      )
+      ripple(linkBtn)
+      div.appendChild(linkBtn)
       elem.appendChild(div)
       const t = document.createElement('div')
       t.classList.add('customiser-colourwrapper')

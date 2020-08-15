@@ -9,15 +9,8 @@
   background-color: var(--card);
 }
 .colourpicker-input {
-  display: block;
-  border: none;
-  padding: 0;
-  width: 127px;
-  font-size: 16px;
-  height: 16px;
-  margin-bottom: 12px;
-  background: none;
-  color: inherit;
+  height: 48px;
+  margin: 0;
 }
 .colourpicker-svslider {
   width: 100px;

@@ -223,6 +223,7 @@ export default {
     gmaps: 'use google maps',
     'gmaps-error':
       "Google Maps not loading! Maybe you aren't connected to the internet?",
+    hex: 'Hex',
     image: 'use the image',
     'image-url': 'Image URL',
     'import-problem': 'There was a problem.',

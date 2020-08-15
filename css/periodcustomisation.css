@@ -10,7 +10,8 @@ button.customiser-colour {
 .customiser-inputwrapper {
   position: relative;
   flex: auto;
-  margin: 0 20px;
+  margin-left: 20px;
+  margin-right: 10px;
   line-height: 1;
 }
 .customiser-inputwrapper.input-disabled {

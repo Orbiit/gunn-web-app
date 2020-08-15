@@ -1,8 +1,11 @@
+import { localize } from './l10n.js'
+import { materialInput } from './material.js'
+
 export class ColourPicker {
   constructor (onchange = () => {}) {
     this.onchange = onchange
     this.window = document.createElement('div')
-    this.input = document.createElement('input')
+    this.input = materialInput(localize('hex'))
     this.sv = document.createElement('div')
     this.svindicator = document.createElement('div')
     this.hue = document.createElement('div')
@@ -11,12 +14,11 @@ export class ColourPicker {
       this.window
     )`position:fixed``opacity:0``pointer-events:none`
     this.window.classList.add('colourpicker-window')
-    this.input.type = 'text'
-    this.input.classList.add('colourpicker-input')
-    this.input.addEventListener(
+    this.input.wrapper.classList.add('colourpicker-input')
+    this.input.input.addEventListener(
       'change',
       e => {
-        this.colour = this.input.value
+        this.colour = this.input.input.value
       },
       false
     )
@@ -37,8 +39,9 @@ export class ColourPicker {
       this.hsv[1] = (x / rect.width) * 100
       this.hsv[2] = 100 - (y / rect.height) * 100
       this.hue.style.backgroundImage = this.getHueGradient()
-      this.input.value = this.getHex()
-      this.onchange(this.input.value)
+      this.input.input.value = this.getHex()
+      this._setFilled()
+      this.onchange(this.input.input.value)
     })
     ColourPicker.css(
       this.svindicator
@@ -54,8 +57,9 @@ export class ColourPicker {
       this.hueindicator.style.top = y + 'px'
       this.hsv[0] = (y / rect.height) * 360
       this.sv.style.backgroundColor = `hsl(${this.hsv[0]},100%,50%)`
-      this.input.value = this.getHex()
-      this.onchange(this.input.value)
+      this.input.input.value = this.getHex()
+      this._setFilled()
+      this.onchange(this.input.input.value)
     })
     this.hue.addEventListener(
       'wheel',
@@ -67,8 +71,9 @@ export class ColourPicker {
           360
         this.sv.style.backgroundColor = `hsl(${this.hsv[0]},100%,50%)`
         this.hueindicator.style.top = this.hsv[0] / 3.6 + '%'
-        this.input.value = this.getHex()
-        this.onchange(this.input.value)
+        this.input.input.value = this.getHex()
+        this._setFilled()
+        this.onchange(this.input.input.value)
       },
       false
     )
@@ -78,10 +83,18 @@ export class ColourPicker {
     this.hueindicator.classList.add('colourpicker-hueindicator')
     this.hue.appendChild(this.hueindicator)
     this.sv.appendChild(this.svindicator)
-    this.window.appendChild(this.input)
+    this.window.appendChild(this.input.wrapper)
     this.window.appendChild(this.sv)
     this.window.appendChild(this.hue)
     document.body.appendChild(this.window)
+  }
+
+  _setFilled () {
+    if (this.input.input.value) {
+      this.input.wrapper.classList.add('filled')
+    } else {
+      this.input.wrapper.classList.remove('filled')
+    }
   }
 
   trigger (src) {
@@ -138,7 +151,7 @@ export class ColourPicker {
         .map(a => a + a)
         .join('')
     if (c.length === 6) {
-      this.input.value = '#' + c
+      this.input.input.value = '#' + c
       this.hsv = ColourPicker.RGBtoHSV(
         parseInt(c.slice(0, 2), 16),
         parseInt(c.slice(2, 4), 16),
@@ -149,12 +162,13 @@ export class ColourPicker {
       this.svindicator.style.left = this.hsv[1] + '%'
       this.svindicator.style.top = 100 - this.hsv[2] + '%'
       this.hue.style.backgroundImage = this.getHueGradient()
-      this.onchange(this.input.value)
-    } else this.input.value = this.getHex()
+      this.onchange(this.input.input.value)
+    } else this.input.input.value = this.getHex()
+    this._setFilled()
   }
 
   get colour () {
-    return this.input.value
+    return this.input.input.value
   }
 
   darkness () {
