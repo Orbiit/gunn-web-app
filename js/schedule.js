@@ -1339,7 +1339,7 @@ export function initSchedule (manualAltSchedules = {}) {
     }
   })
 
-  if (formatOptions[12]) {
+  if (formatOptions[12] === 'swipe') {
     scheduleAppWrapper.classList.add('allowing-swipe')
   }
   const MIN_SWIPE_DIST = 40
@@ -1347,14 +1347,14 @@ export function initSchedule (manualAltSchedules = {}) {
   const swipePreview = document.getElementById('swipe-preview')
   let swiping = null
   scheduleAppWrapper.addEventListener('pointerdown', e => {
-    if (formatOptions[12] && swiping === null) {
+    if (formatOptions[12] === 'swipe' && swiping === null) {
       swiping = {
         pointerId: e.pointerId,
         swiping: false,
         startX: e.clientX,
         swipingOffset: 0
       }
-      scheduleAppWrapper.setPointerCapture(e.pointerId)
+      e.target.setPointerCapture(e.pointerId)
     }
   })
   scheduleAppWrapper.addEventListener('pointermove', e => {
