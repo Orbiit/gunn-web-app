@@ -784,6 +784,9 @@ p.secondary {
   vertical-align: middle;
   margin-left: 10px;
 }
+#psa img {
+  max-width: 100%;
+}
 #footer .material-icons {
   position: relative;
 }
