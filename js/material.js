@@ -1,3 +1,4 @@
+import { localize } from './l10n.js'
 import { currentTime, NADA, toEach } from './utils.js'
 
 export function ripple (elem) {
@@ -70,6 +71,75 @@ export function ripple (elem) {
   elem.addEventListener("blur",e=>{
     elem.removeChild(focusblob);
   },false); */
+}
+export function materialInput (labeltext, type = 'text') {
+  const inputwrapper = document.createElement('div')
+  const label = document.createElement('label')
+  const input = document.createElement('input')
+  const line = document.createElement('div')
+  inputwrapper.classList.add('customiser-inputwrapper')
+  label.classList.add('customiser-label')
+  label.innerHTML = labeltext
+  input.classList.add('customiser-input')
+  input.type = type
+  input.setAttribute('aria-label', localize('period-name-label') + labeltext)
+  input.addEventListener(
+    'change',
+    e => {
+      if (input.value) inputwrapper.classList.add('filled')
+      else inputwrapper.classList.remove('filled')
+    },
+    false
+  )
+  input.addEventListener(
+    'mouseenter',
+    e => {
+      inputwrapper.classList.add('hover')
+    },
+    false
+  )
+  input.addEventListener(
+    'mouseleave',
+    e => {
+      inputwrapper.classList.remove('hover')
+    },
+    false
+  )
+  input.addEventListener(
+    'focus',
+    e => {
+      inputwrapper.classList.add('focus')
+    },
+    false
+  )
+  input.addEventListener(
+    'blur',
+    e => {
+      inputwrapper.classList.remove('focus')
+    },
+    false
+  )
+  line.classList.add('customiser-line')
+  inputwrapper.appendChild(label)
+  inputwrapper.appendChild(input)
+  inputwrapper.appendChild(line)
+  return {
+    wrapper: inputwrapper,
+    label: label,
+    input: input,
+    line: line,
+    get disabled () {
+      return input.disabled
+    },
+    set disabled (disabled) {
+      input.disabled = disabled
+      if (disabled) {
+        inputwrapper.classList.add('input-disabled')
+      } else {
+        inputwrapper.classList.remove('input-disabled')
+      }
+    }
+  }
 }
 export function makeDropdown (wrapper, values) {
   const selectDisplay = document.createElement('span')

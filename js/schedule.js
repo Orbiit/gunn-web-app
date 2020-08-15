@@ -10,7 +10,7 @@ import {
 import { ColourPicker } from './colour.js'
 import { DatePicker } from './date.js'
 import { localize, localizeWith } from './l10n.js'
-import { makeDropdown, ripple } from './material.js'
+import { makeDropdown, materialInput, ripple } from './material.js'
 import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
   ajax,
@@ -1426,63 +1426,6 @@ export function initSchedule (manualAltSchedules = {}) {
   const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
     ' '
   )
-  function materialInput (labeltext) {
-    const inputwrapper = document.createElement('div')
-    const label = document.createElement('label')
-    const input = document.createElement('input')
-    const line = document.createElement('div')
-    inputwrapper.classList.add('customiser-inputwrapper')
-    label.classList.add('customiser-label')
-    label.innerHTML = labeltext
-    input.classList.add('customiser-input')
-    input.setAttribute('aria-label', localize('period-name-label') + labeltext)
-    input.addEventListener(
-      'change',
-      e => {
-        if (input.value) inputwrapper.classList.add('filled')
-        else inputwrapper.classList.remove('filled')
-      },
-      false
-    )
-    input.addEventListener(
-      'mouseenter',
-      e => {
-        inputwrapper.classList.add('hover')
-      },
-      false
-    )
-    input.addEventListener(
-      'mouseleave',
-      e => {
-        inputwrapper.classList.remove('hover')
-      },
-      false
-    )
-    input.addEventListener(
-      'focus',
-      e => {
-        inputwrapper.classList.add('focus')
-      },
-      false
-    )
-    input.addEventListener(
-      'blur',
-      e => {
-        inputwrapper.classList.remove('focus')
-      },
-      false
-    )
-    line.classList.add('customiser-line')
-    inputwrapper.appendChild(label)
-    inputwrapper.appendChild(input)
-    inputwrapper.appendChild(line)
-    return {
-      wrapper: inputwrapper,
-      label: label,
-      input: input,
-      line: line
-    }
-  }
   function addPeriodCustomisers (elem) {
     function period (name, id, colour = '#FF594C', val = '') {
       let isImage = colour[0] !== '#'
@@ -1585,25 +1528,24 @@ export function initSchedule (manualAltSchedules = {}) {
       )
       t.appendChild(s)
       picker.window.appendChild(t)
-      const imageInput = document.createElement('input')
-      imageInput.classList.add('customiser-image')
-      imageInput.classList.add('notmaterial-input')
-      imageInput.placeholder = localize('image-url')
+      const imageInput = materialInput(localize('image-url'), 'url')
+      imageInput.wrapper.classList.add('customiser-image')
       if (isImage) {
-        imageInput.value = colour
+        imageInput.input.value = colour
+        imageInput.wrapper.classList.add('filled')
       }
-      imageInput.addEventListener('change', e => {
+      imageInput.input.addEventListener('change', e => {
         imageInput.disabled = true
-        if (imageInput.value) {
-          cacheBackground(imageInput.value, id)
+        if (imageInput.input.value) {
+          cacheBackground(imageInput.input.value, id)
             .then(() => {
               imageInput.disabled = false
               isImage = true
               // intentionally not resetting backgroundColor because transparency meh
               pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
               if (scheduleapp)
-                scheduleapp.setPeriod(id, '', imageInput.value, true)
-              options[letras.indexOf(id)][1] = imageInput.value
+                scheduleapp.setPeriod(id, '', imageInput.input.value, true)
+              options[letras.indexOf(id)][1] = imageInput.input.value
               if (periodstyles[id].update) periodstyles[id].update()
               cookie.setItem(
                 '[gunn-web-app] scheduleapp.options',
@@ -1648,55 +1590,73 @@ export function initSchedule (manualAltSchedules = {}) {
             })
         }
       })
-      picker.window.appendChild(imageInput)
+      picker.window.appendChild(imageInput.wrapper)
       return period
     }
     return period
   }
   const periodCustomisers = document.createDocumentFragment()
-  let customiserAdder = addPeriodCustomisers(periodCustomisers)
-  if (formatOptions[8] === 'yes')
-    customiserAdder = customiserAdder(
-      localize('p0'),
-      '0',
-      options[13][1],
-      options[13][0]
-    )
+  const customiserAdder = addPeriodCustomisers(periodCustomisers)
+  if (formatOptions[8] === 'yes') {
+    customiserAdder(localize('p0'), '0', options[13][1], options[13][0])
+  }
   customiserAdder(
     letterPdFormat.replace('{X}', '1'),
     'A',
     options[1][1],
     options[1][0]
-  )(letterPdFormat.replace('{X}', '2'), 'B', options[2][1], options[2][0])(
+  )
+  customiserAdder(
+    letterPdFormat.replace('{X}', '2'),
+    'B',
+    options[2][1],
+    options[2][0]
+  )
+  customiserAdder(
     letterPdFormat.replace('{X}', '3'),
     'C',
     options[3][1],
     options[3][0]
-  )(letterPdFormat.replace('{X}', '4'), 'D', options[4][1], options[4][0])(
+  )
+  customiserAdder(
+    letterPdFormat.replace('{X}', '4'),
+    'D',
+    options[4][1],
+    options[4][0]
+  )
+  customiserAdder(
     letterPdFormat.replace('{X}', '5'),
     'E',
     options[5][1],
     options[5][0]
-  )(letterPdFormat.replace('{X}', '6'), 'F', options[6][1], options[6][0])(
+  )
+  customiserAdder(
+    letterPdFormat.replace('{X}', '6'),
+    'F',
+    options[6][1],
+    options[6][0]
+  )
+  customiserAdder(
     letterPdFormat.replace('{X}', '7'),
     'G',
     options[7][1],
     options[7][0]
-  )(letterPdFormat.replace('{X}', '8'), 'H', options[12][1], options[12][0])(
-    localize('flex'),
-    'Flex',
-    options[8][1],
-    options[8][0]
   )
+  // Always show the H period customisation because period customisers can't be
+  // (easily) added in dynamically, and the show H period option doesn't reload.
+  // if (formatOptions[10] === 'yes-h-period') {
+  customiserAdder(
+    letterPdFormat.replace('{X}', '8'),
+    'H',
+    options[12][1],
+    options[12][0]
+  )
+  // }
+  customiserAdder(localize('flex'), 'Flex', options[8][1], options[8][0])
   // if (+formatOptions[3])
-  customiserAdder = customiserAdder(
-    localize('self'),
-    'SELF',
-    options[11][1],
-    options[11][0]
-  )
+  customiserAdder(localize('self'), 'SELF', options[11][1], options[11][0])
   // TEMP: Brunch is not on the schedule
-  // customiserAdder(localize('brunch'), 'Brunch', options[9][1], options[9][0])(
+  // customiserAdder(localize('brunch'), 'Brunch', options[9][1], options[9][0])
   customiserAdder(localize('lunch'), 'Lunch', options[10][1], options[10][0])
   document
     .querySelector('.section.options')

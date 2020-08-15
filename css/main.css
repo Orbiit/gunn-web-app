@@ -285,27 +285,34 @@ body #footer ul li.active {
 #seconds.notransition::after {
   transition: none;
 }
+.header-with-search {
+  display: flex;
+}
 .search-wrapper {
-  display: inline-block;
-  margin: 0 15px;
   position: relative;
+  display: inline-flex;
+  margin: 0 15px;
+  align-items: center;
+  flex: auto;
+  max-width: 300px;
+  margin-top: -12px;
 }
 .search-wrapper > .material-icons {
-  font-size: 16px;
-  position: absolute;
-  left: 0;
-  pointer-events: none;
   opacity: 0.5;
-  margin: 5.5px 6px;
+}
+.search-wrapper > .customiser-inputwrapper {
+  margin: 0;
+  margin-left: 16px;
+  height: 48px;
 }
 .search-wrapper > .material.icon {
   position: absolute;
   right: 0;
-  transform: translateY(-50%);
-  top: 50%;
+  width: 24px;
+  min-height: 24px;
 }
 .search-wrapper > .material.icon > .material-icons {
-  font-size: 18px;
+  font-size: 16px;
 }
 .notmaterial-input {
   border: none;
@@ -316,9 +323,6 @@ body #footer ul li.active {
   padding: 5px;
   border-radius: 5px;
   background-color: var(--fill);
-}
-.search-wrapper .notmaterial-input {
-  padding-left: 25px;
 }
 #barcode {
   margin: 0;

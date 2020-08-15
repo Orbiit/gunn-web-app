@@ -1,5 +1,5 @@
 import { localize } from './l10n.js'
-import { ripple } from './material.js'
+import { materialInput, ripple } from './material.js'
 import { savedClubs, saveSavedClubs } from './saved-clubs.js'
 import { ajax, cookie, isAppDesign, logError, now, toEach } from './utils.js'
 
@@ -36,11 +36,13 @@ function initList (
 ) {
   const section = document.getElementById(`section-${type}`)
   const list = section.querySelector('.list')
-  const search = section.querySelector('.search-input')
+  const searchMarker = section.querySelector('.search-input')
+  const search = materialInput(searchPlaceholder, 'search')
   const clear = section.querySelector('.clear-btn')
   const info = document.getElementById(`info-${type}`)
   const h1 = info.querySelector('h1')
   const content = info.querySelector('.content')
+  searchMarker.parentNode.replaceChild(search.wrapper, searchMarker)
   let data
   ajax(
     (window.location.protocol === 'file:'
@@ -86,7 +88,7 @@ function initList (
         }
       }
       list.appendChild(elements)
-      if (search.value) doSearch()
+      if (search.input.value) doSearch()
     },
     err => {
       list.innerHTML = `<li class="error">${err}${errMsg}</li>`
@@ -149,7 +151,7 @@ function initList (
     false
   )
   function doSearch () {
-    const contains = containsString(search.value)
+    const contains = containsString(search.input.value)
     for (let i = 0; i < list.children.length; i++) {
       const li = list.children[i]
       li.style.display = contains(li.dataset.search) ? null : 'none'
@@ -159,14 +161,17 @@ function initList (
     window.location.search
   )
   if (searchValue) {
-    search.value = searchValue[1]
+    search.input.value = searchValue[1]
   } else {
-    search.value = defaultSearch
+    search.input.value = defaultSearch
   }
-  search.addEventListener('input', doSearch, false)
-  search.placeholder = searchPlaceholder
+  if (search.input.value) {
+    search.wrapper.classList.add('filled')
+  }
+  search.input.addEventListener('input', doSearch, false)
   clear.addEventListener('click', e => {
-    search.value = ''
+    search.input.value = ''
+    search.wrapper.classList.remove('filled')
     doSearch()
   })
   return {
