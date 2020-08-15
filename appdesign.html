@@ -422,7 +422,9 @@
         </button>
       </p>
       <p class="center get-error" id="alternateerror"></p>
-      <div id="schedulewrapper"></div>
+      <div id="schedulewrapper">
+        <div id="swipe-preview" class="schedule-container"></div>
+      </div>
 
       <div id="weekwrapper"></div>
 
@@ -574,6 +576,18 @@
       <h1 data-l10n="periods"></h1>
       <p data-l10n="periods-desc"></p>
       <a id="periodcustomisermarker"></a>
+      <p>
+        <label>
+          <span class="material-switch" id="hide-preps" tabindex="0"></span>
+          <span data-l10n="hide-preps"></span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <span class="material-switch" id="allow-swipe" tabindex="0"></span>
+          <span data-l10n="allow-swipe"></span>
+        </label>
+      </p>
       <!-- <p>
         <label>
           <span class="material-switch" id="self" tabindex="0"></span>
@@ -584,12 +598,6 @@
         <label>
           <span class="material-switch" id="show0" tabindex="0"></span>
           <span data-l10n="show0"></span>
-        </label>
-      </p>
-      <p>
-        <label>
-          <span class="material-switch" id="hide-preps" tabindex="0"></span>
-          <span data-l10n="hide-preps"></span>
         </label>
       </p>
       <p>

@@ -38,6 +38,7 @@ button.material.icon.asgn-done-btn {
 .asgn-text {
   cursor: pointer;
   font-size: 16px;
+  word-break: break-word;
 }
 .asgn-is-done {
   text-decoration: line-through;

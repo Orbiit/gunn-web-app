@@ -446,6 +446,7 @@ export function scheduleApp (options = {}) {
   const returnval = {
     options,
     element: elem,
+    container,
     render () {
       container.innerHTML = generateDay(options.offset)
     },
@@ -575,7 +576,8 @@ export function scheduleApp (options = {}) {
       nextNotif = options.notifSettings.enabled ? getNextNotif() : null
     },
     getPeriodSpan,
-    getSchedule
+    getSchedule,
+    generateHtmlForOffset: generateDay
   }
   elem.appendChild(container)
   generateDay() // Calculate endOfDay, but don't render the HTML yet

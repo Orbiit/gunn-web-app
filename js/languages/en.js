@@ -7,6 +7,7 @@ export default {
     'add-home':
       'Tap the share button {share-icon}, select "{add-home|Add to Home Screen}" in the bottom row,{add-home-img}then tap "{add|Add}."',
     'add-ugwa': 'To add UGWA to your home screen',
+    'allow-swipe': 'Enable swiping between days?',
     'android-instruct':
       '{name|Android}—tap on the menu and select "add to home screen"',
     announcements: 'Announcements',

@@ -824,6 +824,30 @@ p.secondary {
 .previewing-future-notice > span {
   flex: auto;
 }
+.allowing-swipe {
+  touch-action: pan-y pinch-zoom;
+}
+#schedulewrapper {
+  position: relative;
+  overflow: hidden;
+}
+#swipe-preview {
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.schedule-container {
+  transition: all 0.5s;
+}
+.swiping .schedule-container {
+  transition: none;
+}
+.swiping #swipe-preview {
+  display: block;
+}
 
 .ad {
   display: block;

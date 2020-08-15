@@ -18,6 +18,7 @@ import {
   cookie,
   currentTime,
   escapeHTML,
+  frame,
   isAppDesign,
   logError,
   now,
@@ -293,7 +294,7 @@ export function initSchedule (manualAltSchedules = {}) {
     'preps', // 9
     'yes-h-period', // 10
     'off', // 11
-    'both' // 12
+    'swipe' // 12
   ]
   const formatOptions = cookie.getItem(
     '[gunn-web-app] scheduleapp.formatOptions'
@@ -353,7 +354,9 @@ export function initSchedule (manualAltSchedules = {}) {
   if (formatOptions[0] === '7') {
     formatOptions[0] = '8'
     formatOptions[11] = 'off' // time before notification
-    formatOptions[12] = 'both' // when notification is triggered (unused atm)
+    // allow swiping? (both - off; swipe - on) (was going to be for when
+    // notification is triggered)
+    formatOptions[12] = 'swipe'
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       formatOptions.join('.')
@@ -517,6 +520,19 @@ export function initSchedule (manualAltSchedules = {}) {
     }
     hideSupportIcon.textContent = nowHidden ? 'expand_more' : 'expand_less'
     formatOptions[7] = nowHidden ? 'hide' : 'show'
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+  })
+  const allowSwiping = document.getElementById('allow-swipe')
+  if (formatOptions[12] === 'swipe') allowSwiping.classList.add('checked')
+  allowSwiping.parentNode.addEventListener('click', e => {
+    allowSwiping.classList.toggle('checked')
+    scheduleAppWrapper.classList.toggle('allowing-swipe')
+    formatOptions[12] = allowSwiping.classList.contains('checked')
+      ? 'swipe'
+      : 'both'
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       formatOptions.join('.')
@@ -1109,8 +1125,9 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   // const hPeriods =
   //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
+  const scheduleAppWrapper = document.querySelector('#schedulewrapper')
   const scheduleapp = scheduleApp({
-    element: document.querySelector('#schedulewrapper'),
+    element: scheduleAppWrapper,
     periods: periodstyles,
     normal: normalschedule,
     alternates: alternates,
@@ -1321,6 +1338,89 @@ export function initSchedule (manualAltSchedules = {}) {
       }
     }
   })
+
+  if (formatOptions[12]) {
+    scheduleAppWrapper.classList.add('allowing-swipe')
+  }
+  const MIN_SWIPE_DIST = 40
+  const SWIPE_THRESHOLD = 0.3
+  const swipePreview = document.getElementById('swipe-preview')
+  let swiping = null
+  scheduleAppWrapper.addEventListener('pointerdown', e => {
+    if (formatOptions[12] && swiping === null) {
+      swiping = {
+        pointerId: e.pointerId,
+        swiping: false,
+        startX: e.clientX,
+        swipingOffset: 0
+      }
+      scheduleAppWrapper.setPointerCapture(e.pointerId)
+    }
+  })
+  scheduleAppWrapper.addEventListener('pointermove', e => {
+    if (swiping && swiping.pointerId === e.pointerId) {
+      const { width } = scheduleapp.container.getBoundingClientRect()
+      if (!swiping.swiping) {
+        if (Math.abs(e.clientX - swiping.startX) > MIN_SWIPE_DIST) {
+          swiping.swiping = true
+          scheduleAppWrapper.classList.add('swiping')
+          scheduleAppWrapper.style.userSelect = 'none'
+        }
+      }
+      if (swiping.swiping) {
+        const offset = e.clientX > swiping.startX ? -1 : 1
+        if (offset !== swiping.swipingOffset) {
+          swiping.swipingOffset = offset
+          swipePreview.innerHTML = scheduleapp.generateHtmlForOffset(
+            scheduleapp.offset + offset
+          )
+          swipePreview.style.transform =
+            offset === -1 ? 'translate(-100%)' : 'translate(100%)'
+        }
+        const swipeX = e.clientX - swiping.startX
+        scheduleapp.container.style.transform = `translateX(${swipeX}px)`
+        scheduleapp.container.style.opacity = 1 - Math.abs(swipeX) / width
+        swipePreview.style.left = swipeX + 'px'
+        swipePreview.style.opacity = Math.abs(swipeX) / width
+      }
+    }
+  })
+  async function swipeEnd (e) {
+    if (swiping && swiping.pointerId === e.pointerId) {
+      if (swiping.swiping) {
+        const { width } = scheduleapp.container.getBoundingClientRect()
+        const swipeX = e.clientX - swiping.startX
+        let change = false
+        if (swiping.swipingOffset === -1) {
+          if (swipeX > width * SWIPE_THRESHOLD) {
+            change = true
+            yesterdayer.click()
+            scheduleapp.container.style.transform = `translateX(${swipeX -
+              width}px)`
+          }
+        } else {
+          if (swipeX < -width * SWIPE_THRESHOLD) {
+            change = true
+            tomorrower.click()
+            scheduleapp.container.style.transform = `translateX(${swipeX +
+              width}px)`
+          }
+        }
+        if (change) {
+          scheduleapp.container.style.opacity = swipePreview.style.opacity
+          await frame()
+          await frame()
+        }
+        scheduleAppWrapper.classList.remove('swiping')
+        scheduleAppWrapper.style.userSelect = null
+        scheduleapp.container.style.transform = null
+        scheduleapp.container.style.opacity = null
+      }
+      swiping = null
+    }
+  }
+  scheduleAppWrapper.addEventListener('pointerup', swipeEnd)
+  scheduleAppWrapper.addEventListener('pointercancel', swipeEnd)
 
   /* CUSTOMISE PERIODS */
   const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(

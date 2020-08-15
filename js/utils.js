@@ -72,3 +72,6 @@ export function escapeHTML (text = '') {
 export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
   ? '?for=appdesign'
   : ''
+export function frame () {
+  return new Promise(resolve => window.requestAnimationFrame(resolve))
+}
