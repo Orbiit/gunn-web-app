@@ -1,3 +1,5 @@
+/* global Notification */
+
 import { localize, localizeWith } from '../js/l10n.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { currentTime, escapeHTML, now } from '../js/utils.js'
@@ -500,12 +502,13 @@ export function scheduleApp (options = {}) {
                       )
                     )
                   })
-            new Notification(text, {
+            const notification = new Notification(text, {
               icon:
                 currentPeriod === -1
                   ? null
                   : getIcon(getPeriodName(currentPeriod))
             })
+            console.log(notification)
           }
         }
       }
@@ -557,6 +560,7 @@ export function scheduleApp (options = {}) {
             day.push(q)
           }
         if (today.getDay() === i) day.today = true
+        day.date = d
         week.push(day)
       }
       return week

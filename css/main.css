@@ -217,21 +217,25 @@ body #footer ul li.active {
 
 /* WEEK PREVIEW */
 #weekwrapper {
-  display: table;
-  margin: 0 auto;
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
-#weekwrapper div {
-  display: inline-block;
+#weekwrapper > div {
   width: 30px;
   box-sizing: border-box;
   padding: 0 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: width 0.2s;
 }
 #weekwrapper div.today {
   width: 40px;
 }
 #weekwrapper h1 {
-  display: inline;
+  text-align: center;
+  margin: 0;
   opacity: 0.5;
 }
 #weekwrapper div.today h1 {

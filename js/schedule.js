@@ -1,4 +1,4 @@
-/* global fetch, caches, alert */
+/* global fetch, caches, alert, Notification */
 
 import { toAlternateSchedules } from './altScheduleGenerator.js?for=appdesign'
 import { getFontColour, scheduleApp } from './app.js'
@@ -832,29 +832,51 @@ export function initSchedule (manualAltSchedules = {}) {
     )
   }
   const weekwrapper = document.querySelector('#weekwrapper')
+  let lastWeek = null
   function makeWeekHappen () {
-    let innerHTML = ''
-    const days = localize('ds').split('  ')
     const week = scheduleapp.getWeek()
-    for (let i = 0; i < 7; i++) {
-      innerHTML += `<div${week[i].today ? ' class="today"' : ''}><h1>${
-        days[i]
-      }</h1>`
-      for (
-        let j = 0, arr = week[i], len = arr.length, period = arr[j];
-        j < len;
-        j++, period = arr[j]
-      )
-        innerHTML += `<span style="${
-          period.colour[0] === '#'
-            ? `background-color:${period.colour};`
-            : `background-image: url(./.period-images/${
-                period.id
-              }?${encodeURIComponent(period.colour)});`
-        }" title="${escapeHTML(period.label)}"></span>`
-      innerHTML += `</div>`
+    const serialized = JSON.stringify(week)
+    if (lastWeek === serialized) {
+      // Don't regenerate the weekwrapper if the week didn't change
+      for (let i = 0; i < weekwrapper.children.length; i++) {
+        weekwrapper.children[i].className = week[i].today ? 'today' : ''
+      }
+      return
+    } else {
+      lastWeek = serialized
     }
-    weekwrapper.innerHTML = innerHTML
+    weekwrapper.innerHTML = ''
+    const days = localize('ds').split('  ')
+    for (let i = 0; i < week.length; i++) {
+      const day = week[i]
+      const div = Object.assign(document.createElement('div'), {
+        className: day.today ? 'today' : ''
+      })
+      ripple(div)
+      div.addEventListener('click', e => {
+        const d = day.date
+        datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
+      })
+      div.appendChild(
+        Object.assign(document.createElement('h1'), {
+          textContent: days[i]
+        })
+      )
+      for (const period of day) {
+        const span = Object.assign(document.createElement('span'), {
+          title: period.label
+        })
+        if (period.colour[0] === '#') {
+          span.style.backgroundColor = period.colour
+        } else {
+          span.style.backgroundImage = `url(./.period-images/${
+            period.id
+          }?${encodeURIComponent(period.colour)})`
+        }
+        div.appendChild(span)
+      }
+      weekwrapper.appendChild(div)
+    }
     renderEvents()
   }
   const altSchedRegex = /schedule|extended|holiday|no students|break|development/i
