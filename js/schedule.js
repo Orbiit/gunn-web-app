@@ -46,7 +46,7 @@ export const letras = [
 // WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
 const VERSION = 4
 // radios save format version
-const FORMATTING_VERSION = '8'
+const FORMATTING_VERSION = '9'
 const normalschedule = [
   null,
   // Keeping old schedule in case the school ever returns to it if the pandemic goes away
@@ -317,7 +317,11 @@ export function initSchedule (manualAltSchedules = {}) {
     'preps', // 9
     'yes-h-period', // 10
     'off', // 11
-    'swipe' // 12
+    'swipe', // 12
+    'off', // 13
+    '', // 14
+    '', // 15
+    '' // 16
   ]
   const formatOptions = cookie.getItem(
     '[gunn-web-app] scheduleapp.formatOptions'
@@ -376,7 +380,7 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   if (formatOptions[0] === '7') {
     formatOptions[0] = '8'
-    formatOptions[11] = 'off' // time before notification
+    formatOptions[11] = 'off' // time before period for notification
     // allow swiping? (both - off; swipe - on) (was going to be for when
     // notification is triggered)
     formatOptions[12] = 'swipe'
@@ -385,8 +389,27 @@ export function initSchedule (manualAltSchedules = {}) {
       formatOptions.join('.')
     )
   }
+  if (formatOptions[0] === '8') {
+    formatOptions[0] = '9'
+    formatOptions[13] = 'off' // time before period for opening link
+    formatOptions[14] = '' // [reserved]
+    formatOptions[15] = '' // [reserved]
+    formatOptions[16] = '' // [reserved]
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+  }
   if (formatOptions[0] !== FORMATTING_VERSION) {
     // you should be worried
+    console.warn(
+      'Was expecting version',
+      FORMATTING_VERSION,
+      'but got version',
+      formatOptions[0],
+      "Here's the old formatOptions before they're reset:",
+      formatOptions
+    )
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       defaultThings.join('.')
@@ -825,15 +848,15 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   const notifDropdownWrapper = document.getElementById('notif-time-before')
   const notifDropdown = makeDropdown(notifDropdownWrapper, [
-    [15 * 60, localize('notif-time/before-1500')],
-    [10 * 60, localize('notif-time/before-1000')],
-    [5 * 60, localize('notif-time/before-0500')],
-    [2 * 60, localize('notif-time/before-0200')],
-    [1 * 60, localize('notif-time/before-0100')],
-    [30, localize('notif-time/before-0030')],
-    [10, localize('notif-time/before-0010')],
-    [0, localize('notif-time/immediately')],
-    [null, localize('notif-time/never')]
+    [15 * 60, localize('time-before/before-0-15-00')],
+    [10 * 60, localize('time-before/before-0-10-00')],
+    [5 * 60, localize('time-before/before-0-05-00')],
+    [2 * 60, localize('time-before/before-0-02-00')],
+    [1 * 60, localize('time-before/before-0-01-00')],
+    [30, localize('time-before/before-0-00-30')],
+    [10, localize('time-before/before-0-00-10')],
+    [0, localize('time-before/immediately')],
+    [null, localize('time-before/never')]
   ]).set(null)
   if ('Notification' in window) {
     if (formatOptions[11] !== 'off' && Notification.permission === 'granted') {
@@ -1199,6 +1222,7 @@ export function initSchedule (manualAltSchedules = {}) {
       }
     },
     notifSettings,
+    openLinkBefore: formatOptions[13] === 'off' ? null : +formatOptions[13],
     autorender: false
   })
   setOnSavedClubsUpdate(scheduleapp.render)
@@ -1686,6 +1710,28 @@ export function initSchedule (manualAltSchedules = {}) {
       periodCustomisers,
       document.querySelector('#periodcustomisermarker')
     )
+
+  const openLinkDropdownWrapper = document.getElementById('link-time-before')
+  const openLinkDropdown = makeDropdown(openLinkDropdownWrapper, [
+    [60 * 60, localize('time-before/before-1-00-00')],
+    [30 * 60, localize('time-before/before-0-30-00')],
+    [15 * 60, localize('time-before/before-0-15-00')],
+    [10 * 60, localize('time-before/before-0-10-00')],
+    [5 * 60, localize('time-before/before-0-05-00')],
+    [2 * 60, localize('time-before/before-0-02-00')],
+    [1 * 60, localize('time-before/before-0-01-00')],
+    [0, localize('time-before/immediately')],
+    [null, localize('time-before/never')]
+  ]).set(scheduleapp.options.openLinkBefore)
+  openLinkDropdown.onChange(async time => {
+    scheduleapp.options.openLinkBefore = time
+    formatOptions[13] = time === null ? 'off' : time
+    scheduleapp.updateNextLinkOpen()
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+  })
 
   // TEMP: H period editor not needed this year?
   // const MIN_TIME = 15 * 60

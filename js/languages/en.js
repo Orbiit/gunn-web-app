@@ -101,6 +101,8 @@ export default {
     numbers: 'Numbers only',
     ok: 'OK',
     'open-chat': 'Join chat',
+    'open-link-before':
+      'Automatically open a period\'s link {time} when it starts. {emphasis|NOTE: Pages cannot be opened automatically unless you allow the "Pop-ups and redirects" permission in the site settings.}',
     options: 'Options',
     'other-apps':
       'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {nugwa|Not UGWA} by Tomer S.',
@@ -243,17 +245,6 @@ export default {
     'no-study':
       "You {E}; even if you score 0%, you'll be above your threshold.",
     'no-study-emph': "don't need to study",
-    'notif-time': {
-      'before-0010': '10 seconds before',
-      'before-0030': '30 seconds before',
-      'before-0100': 'a minute before',
-      'before-0200': '2 minutes before',
-      'before-0500': '5 minutes before',
-      'before-1000': '10 minutes before',
-      'before-1500': '15 minutes before',
-      immediately: 'immediately',
-      never: 'never'
-    },
     overdue: 'overdue',
     p0: 'Zero period',
     'period-link': '{P} link',
@@ -298,6 +289,19 @@ export default {
     },
     'teacher-email': 'Teacher Email:',
     time: 'Meeting time:',
+    'time-before': {
+      'before-0-00-10': '10 seconds before',
+      'before-0-00-30': '30 seconds before',
+      'before-0-01-00': 'a minute before',
+      'before-0-02-00': '2 minutes before',
+      'before-0-05-00': '5 minutes before',
+      'before-0-10-00': '10 minutes before',
+      'before-0-15-00': '15 minutes before',
+      'before-0-30-00': '30 minutes before',
+      'before-1-00-00': 'an hour before',
+      immediately: 'immediately',
+      never: 'never'
+    },
     title: 'Title:',
     undoneify: 'Unmark as done',
     universe: 'Universe',

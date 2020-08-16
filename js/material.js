@@ -152,11 +152,10 @@ export function makeDropdown (wrapper, values) {
   wrapper.appendChild(selectDisplay)
   const dropdown = document.createElement('div')
   dropdown.classList.add('mdrop-values')
-  const valuesByVal = {}
-  values.forEach(([valText, elem]) => {
+  const valuesByIndex = values.map(([valText, elem], i) => {
     const value = document.createElement('div')
     value.classList.add('mdrop-value')
-    value.dataset.value = valText
+    value.dataset.value = i
     value.tabIndex = 0
     ripple(value)
     if (typeof elem === 'string') {
@@ -165,11 +164,10 @@ export function makeDropdown (wrapper, values) {
       elem = temp
     }
     value.appendChild(elem)
-    valuesByVal[valText] = elem
     dropdown.appendChild(value)
+    return elem
   })
   wrapper.appendChild(dropdown)
-  selectDisplay.innerHTML = valuesByVal[values[0][0]].outerHTML
   function close () {
     dropdown.classList.remove('show')
     document.removeEventListener('click', close)
@@ -183,15 +181,18 @@ export function makeDropdown (wrapper, values) {
   dropdown.addEventListener('click', e => {
     const value = e.target.closest('.mdrop-value')
     if (value) {
-      selected = value.dataset.value
-      selectDisplay.innerHTML = valuesByVal[selected].outerHTML
+      selected = values[value.dataset.value][0]
+      selectDisplay.innerHTML = valuesByIndex[value.dataset.value].outerHTML
       if (onchange) onchange(selected)
     }
   })
   return {
     set (to) {
-      selected = to
-      selectDisplay.innerHTML = valuesByVal[selected].outerHTML
+      const index = values.findIndex(pair => pair[0] === to)
+      if (index !== -1) {
+        selected = to
+        selectDisplay.innerHTML = valuesByIndex[index].outerHTML
+      }
       return this
     },
     get () {

@@ -149,12 +149,12 @@
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
-      // const start = Date.now()
-      // const baseTime = new Date(2020, 8, 21, 5, 40).getTime()
-      // const speed = 1000
-      // setCurrentTime(() => {
-      //   return (Date.now() - start) * speed + baseTime
-      // })
+      const start = Date.now()
+      const baseTime = new Date(2020, 8, 21, 11, 30).getTime()
+      const speed = 1000
+      setCurrentTime(() => {
+        return (Date.now() - start) * speed + baseTime
+      })
       window.setCurrentTime = setCurrentTime
 
       const betaBadge = document.createElement('span')
@@ -568,6 +568,14 @@
       <div class="periods-customisation-heading">
         <h1 data-l10n="periods"></h1>
         <p data-l10n="periods-desc"></p>
+        <p data-l10n="open-link-before">
+          <span
+            class="material-dropdown"
+            id="link-time-before"
+            data-l10n-arg="time"
+          ></span>
+          <strong data-l10n-arg="emphasis"></strong>
+        </p>
       </div>
       <a id="periodcustomisermarker"></a>
       <p>

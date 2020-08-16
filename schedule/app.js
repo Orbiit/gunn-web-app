@@ -425,30 +425,47 @@ export function scheduleApp (options = {}) {
   function getDate (date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
   }
-  function getNextNotif () {
-    const { timeBefore } = options.notifSettings
+  function getNext (timeOk, { start = true, end = true } = {}) {
     const today = getDate(now())
     const schedule = getSchedule(today)
-    // Use seconds as common unit for notifications
+    // Use seconds as common unit for these things
     const time = (currentTime() - today.getTime()) / 1000
     for (const period of schedule.periods) {
-      if (period.start.totalminutes * 60 - timeBefore > time) {
+      if (start && timeOk(period.start.totalminutes * 60, time, period.name)) {
         return {
-          showTime:
-            (period.start.totalminutes * 60 - timeBefore) * 1000 +
-            today.getTime()
+          period: period.name,
+          time: period.start.totalminutes * 60 * 1000 + today.getTime()
         }
       }
-      if (period.end.totalminutes * 60 - timeBefore > time) {
+      if (end && timeOk(period.end.totalminutes * 60, time, period.name)) {
         return {
-          showTime:
-            (period.end.totalminutes * 60 - timeBefore) * 1000 + today.getTime()
+          period: period.name,
+          time: period.end.totalminutes * 60 * 1000 + today.getTime()
         }
       }
     }
     return null
   }
+  function getNextNotif () {
+    const { timeBefore } = options.notifSettings
+    const next = getNext((pdTime, nowTime) => pdTime - timeBefore > nowTime)
+    return (
+      next && {
+        showTime: next.time - timeBefore * 1000
+      }
+    )
+  }
+  function getNextLinkOpen () {
+    return options.openLinkBefore !== null
+      ? getNext(
+          (pdTime, nowTime, pdName) =>
+            getPeriod(pdName).link && pdTime - options.openLinkBefore > nowTime,
+          { end: false }
+        )
+      : null
+  }
   let nextNotif = null
+  let nextLinkOpen = null
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
   const returnval = {
@@ -476,6 +493,10 @@ export function scheduleApp (options = {}) {
           if (options.notifSettings.enabled && !nextNotif) {
             // Try getting next notification
             nextNotif = getNextNotif()
+          }
+          if (options.openLinkBefore !== null && !nextLinkOpen) {
+            // Try getting next notification
+            nextLinkOpen = getNextLinkOpen()
           }
         }
         if (options.update) {
@@ -524,6 +545,13 @@ export function scheduleApp (options = {}) {
                   : getIcon(getPeriodName(currentPeriod))
             })
             console.log(notification)
+          }
+        }
+        if (nextLinkOpen) {
+          if (currentTime() >= nextLinkOpen.time) {
+            // https://stackoverflow.com/a/11384018
+            window.open(getPeriod(nextLinkOpen.period).link, '_blank')
+            nextLinkOpen = getNextLinkOpen()
           }
         }
       }
@@ -583,6 +611,9 @@ export function scheduleApp (options = {}) {
     },
     updateNextNotif () {
       nextNotif = options.notifSettings.enabled ? getNextNotif() : null
+    },
+    updateNextLinkOpen () {
+      nextNotif = getNextLinkOpen()
     },
     getPeriodSpan,
     getSchedule,
