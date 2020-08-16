@@ -237,10 +237,10 @@ export function scheduleApp (options = {}) {
         `<span class="schedule-noschool">${localize('summer')}</span>`
       )
     if (alternate) {
-      innerHTML += `<span class="schedule-alternatemsg">${localize(
-        'before-alt-msg'
-      )}<strong>${alternate.description}</strong>${localize(
-        'after-alt-msg'
+      innerHTML += `<span class="schedule-alternatemsg">${localizeWith(
+        'alt-msg',
+        'other',
+        { D: `<strong>${alternate.description}</strong>` }
       )}</span>`
     }
     if (periods.length) {
@@ -324,13 +324,21 @@ export function scheduleApp (options = {}) {
         innerHTML += `<div class="schedule-period" style="${getCSS(
           periodName.colour,
           period.name
-        )}"><span class="schedule-periodname">${escapeHTML(periodName.label)}${
+        )}"><span class="schedule-periodname">${escapeHTML(
+          periodName.label
+        )}<span class="pd-btns">${
           options.displayAddAsgn
-            ? `<button class="material add-asgn" data-pd="${
+            ? `<button class="material icon pd-btn add-asgn" data-pd="${
                 period.name
-              }">${localize('add-asgn')}</button>`
+              }" title="${localize(
+                'add-asgn'
+              )}"><i class="material-icons">add_task</i></button>`
             : ''
-        }</span>`
+        }${
+          periodName.link
+            ? `<a class="material icon pd-btn" target="_blank" href="${periodName.link}" rel="noopener noreferrer"><i class="material-icons">\ue89e</i></a>`
+            : ''
+        }</span></span>`
         if (period.gunnTogether) {
           innerHTML += `<div class="gunn-together-badge">${localize(
             'gunn-together'
@@ -532,9 +540,10 @@ export function scheduleApp (options = {}) {
       options.offset = o
       if (options.autorender) returnval.render()
     },
-    setPeriod (id, name, colour, update) {
-      if (name) options.periods[id].label = name
-      if (colour) options.periods[id].colour = colour
+    setPeriod (id, { name, colour, link }, update) {
+      if (name !== undefined) options.periods[id].label = name
+      if (colour !== undefined) options.periods[id].colour = colour
+      if (link !== undefined) options.periods[id].link = link
       if (update) {
         returnval.render()
       }

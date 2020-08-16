@@ -89,6 +89,22 @@ body.dark .schedule-container .schedule-periodprogress > div {
   font-weight: 300;
   margin-bottom: 8px;
 }
+.schedule-container .pd-btns {
+  float: right;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s;
+}
+.schedule-container .pd-btns .material-icons {
+  overflow: visible;
+}
+.schedule-container .pd-btn {
+  margin-left: 10px;
+}
+.schedule-container .schedule-period:hover .pd-btns {
+  opacity: 1;
+  pointer-events: all;
+}
 .gunn-together-badge {
   display: inline-flex;
   align-items: center;

@@ -107,7 +107,7 @@ export default {
     'other-versions':
       'Other versions: {gunn-schedule|Gunn Schedule} (no alternate schedules) · {ugwita|Ugwita} (ugly) · {ugwa2|Ugwa 2} (not done) · {ugwisha|Ugwisha}.',
     periods: 'Periods',
-    'periods-desc': 'Click on the coloured square to change period colour.',
+    'periods-desc': 'Click on the coloured box to change period colour.',
     'prev-chats': 'Previous chats',
     reload: 'Restart UGWA',
     'report-bugs':
@@ -169,7 +169,7 @@ export default {
     'add-asgn': 'Add assignment',
     'add-to-list': 'Add to my clubs',
     advisors: 'Teacher Advisor(s):',
-    'after-alt-msg': '"',
+    'alt-msg': 'This is an alternate schedule. The school says, "{D}"',
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
     appname: 'Unofficial Gunn Web App (UGWA)',
     asgn: 'Upcoming assignments',
@@ -195,7 +195,6 @@ export default {
     'barcode-legacy-default': 'Student #{N}',
     'barcode-student-placeholder': 'Whose ID is this?',
     basement: 'Basement:',
-    'before-alt-msg': 'This is an alternate schedule. The school says, "',
     'blamed-teacher': 'Blamed Teacher',
     brunch: 'Break/Brunch',
     cannot: 'There was a problem fetching the image.',
@@ -233,8 +232,7 @@ export default {
     location: 'Location:',
     lunch: 'Lunch',
     'lunch-clubs': 'Clubs',
-    'minscore-after-emph': ' to keep your parents happy.',
-    'minscore-before-emph': "You'll need to score at least ",
+    minscore: "You'll need to score at least {S} to keep your parents happy.",
     'minscore-too-high-addendum':
       " If there's no extra credit, you're screwed.",
     months:
@@ -242,9 +240,8 @@ export default {
     mos: 'Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec',
     'no-events': 'No events today :(',
     'no-school': 'No school today!',
-    'no-study-after-emph':
-      "; even if you score 0%, you'll be above your threshold.",
-    'no-study-before-emph': 'You ',
+    'no-study':
+      "You {E}; even if you score 0%, you'll be above your threshold.",
     'no-study-emph': "don't need to study",
     'notif-time': {
       'before-0010': '10 seconds before',
@@ -259,7 +256,9 @@ export default {
     },
     overdue: 'overdue',
     p0: 'Zero period',
-    'period-name-label': 'Set label for ',
+    'period-link': '{P} link',
+    'period-name-label': 'Set label for {P}',
+    'period-set-link': 'Set link for {P}',
     periodx: 'Period {X}',
     phone: 'Phone:',
     presidents: 'President(s):',

@@ -1,4 +1,3 @@
-import { localize } from './l10n.js'
 import { currentTime, NADA, toEach } from './utils.js'
 
 export function ripple (elem) {
@@ -72,7 +71,11 @@ export function ripple (elem) {
     elem.removeChild(focusblob);
   },false); */
 }
-export function materialInput (labeltext, type = 'text') {
+export function materialInput (
+  labeltext,
+  type = 'text',
+  ariaLabel = labeltext
+) {
   const inputwrapper = document.createElement('div')
   const label = document.createElement('label')
   const input = document.createElement('input')
@@ -82,7 +85,7 @@ export function materialInput (labeltext, type = 'text') {
   label.innerHTML = labeltext
   input.classList.add('customiser-input')
   input.type = type
-  input.setAttribute('aria-label', localize('period-name-label') + labeltext)
+  input.setAttribute('aria-label', ariaLabel)
   input.addEventListener(
     'change',
     e => {

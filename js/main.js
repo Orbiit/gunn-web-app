@@ -19,6 +19,7 @@ import {
   currentLang,
   localize,
   localizeHtml,
+  localizeWith,
   publicLangs,
   ready as l10nReady
 } from './l10n.js'
@@ -316,10 +317,9 @@ function initPSA () {
         ).then(html => {
           if (currentPsa === id) {
             const [year, month, date] = psaData[id].split('-').map(Number)
-            const dateStr = localize('psa-date').replace(
-              '{D}',
-              new Date(year, month - 1, date).toLocaleDateString()
-            )
+            const dateStr = localizeWith('psa-date', 'other', {
+              D: new Date(year, month - 1, date).toLocaleDateString()
+            })
             psaContent.innerHTML = html + `<p class="psa-date">${dateStr}</p>`
             newBadge.style.display = currentPsa > lastRead ? 'inline' : null
             if (currentPsa > lastRead) {
@@ -365,19 +365,18 @@ function initGradeCalc () {
     const result =
       Math.round(((minimum - current * (1 - worth)) / worth) * 10000) / 100
     if (result <= 0) {
-      gradeCalc.output.innerHTML = `${localize(
-        'no-study-before-emph'
-      )}<strong>${localize('no-study-emph')}</strong>${localize(
-        'no-study-after-emph'
-      )}`
+      gradeCalc.output.innerHTML = localizeWith('no-study', 'other', {
+        E: `<strong>${localize('no-study-emph')}</strong>`
+      })
     } else if (worth === 0 || isNaN(result)) {
       gradeCalc.output.innerHTML = localize('zero-error')
     } else {
-      gradeCalc.output.innerHTML = `${localize(
-        'minscore-before-emph'
-      )}<strong>${result}%</strong>${localize('minscore-after-emph')}`
-      if (result > 100)
+      gradeCalc.output.innerHTML = localizeWith('minscore', 'other', {
+        S: `<strong>${result}%</strong>`
+      })
+      if (result > 100) {
         gradeCalc.output.innerHTML += localize('minscore-too-high-addendum')
+      }
     }
   }
   setOutput()

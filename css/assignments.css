@@ -132,22 +132,11 @@ button.material.icon.asgn-done-btn {
 }
 
 /* ADD ASSIGNMENT BUTTONS */
-button.add-asgn {
+.asgn-upcoming .add-asgn {
   float: right;
-  color: inherit;
-  text-shadow: inherit;
 }
 .add-asgn i {
   pointer-events: none;
-}
-.schedule-container button.add-asgn {
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.2s;
-}
-.schedule-container .schedule-period:hover .add-asgn {
-  opacity: 1;
-  pointer-events: all;
 }
 
 /* EDITOR */

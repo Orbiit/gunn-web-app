@@ -7,15 +7,34 @@ button.customiser-colour {
   background-size: cover;
   background-position: center;
 }
+.inputs-wrapper {
+  display: flex;
+  flex: auto;
+}
 .customiser-inputwrapper {
   position: relative;
   flex: auto;
   margin-left: 20px;
-  margin-right: 10px;
   line-height: 1;
 }
 .customiser-inputwrapper.input-disabled {
   color: var(--disabled);
+}
+@media (max-width: 500px) {
+  .inputs-wrapper {
+    flex-direction: column;
+  }
+  .inputs-wrapper > .customiser-inputwrapper {
+    height: 36px;
+    margin-top: -12px;
+    margin-bottom: 6px;
+    transition: margin 0.2s;
+  }
+  .inputs-wrapper > .customiser-inputwrapper.filled,
+  .inputs-wrapper > .customiser-inputwrapper.focus {
+    margin-top: 5px;
+    margin-bottom: 12px;
+  }
 }
 .customiser-label {
   font-size: 16px;
