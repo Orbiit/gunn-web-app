@@ -49,6 +49,8 @@ body.dark .schedule-container .schedule-noschool {
   border-radius: 2px;
   background-size: cover;
   background-position: center;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 .schedule-container .schedule-periodprogress {
   height: 4px;

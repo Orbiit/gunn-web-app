@@ -244,16 +244,26 @@ export function scheduleApp (options = {}) {
       )}</span>`
     }
     if (periods.length) {
-      innerHTML += `<span class="schedule-end">${localizeWith(
-        'end-time',
-        'times',
-        {
-          T: `<strong>${getHumanTime(
-            ('0' + periods[periods.length - 1].end.hour).slice(-2) +
-              ('0' + periods[periods.length - 1].end.minute).slice(-2)
-          )}</strong>`
-        }
-      )}</span>`
+      // If a day ends in an optional period, don't count it.
+      // 'Flex' is temporarily in the list because it's kind of optional this
+      // year.
+      const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
+      const [lastRequiredPeriod] = periods
+        .filter(({ name }) => !optionalPeriods.includes(name))
+        .slice(-1)
+      if (lastRequiredPeriod) {
+        innerHTML += `<span class="schedule-end">${localizeWith(
+          'end-time',
+          'times',
+          {
+            T: `<strong>${getHumanTime(
+              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
+                ('0' + lastRequiredPeriod.end.minute).slice(-2)
+            )}</strong>`
+          }
+        )}</span>`
+      }
+      // QUESTION: Should there be feedback for days with only optional periods?
       if (checkfuture) {
         let i
         for (i = 0; i < periods.length; i++)
@@ -434,13 +444,15 @@ export function scheduleApp (options = {}) {
       if (start && timeOk(period.start.totalminutes * 60, time, period.name)) {
         return {
           period: period.name,
-          time: period.start.totalminutes * 60 * 1000 + today.getTime()
+          time: period.start.totalminutes * 60 * 1000 + today.getTime(),
+          type: 'start'
         }
       }
       if (end && timeOk(period.end.totalminutes * 60, time, period.name)) {
         return {
           period: period.name,
-          time: period.end.totalminutes * 60 * 1000 + today.getTime()
+          time: period.end.totalminutes * 60 * 1000 + today.getTime(),
+          type: 'end'
         }
       }
     }
@@ -451,7 +463,8 @@ export function scheduleApp (options = {}) {
     const next = getNext((pdTime, nowTime) => pdTime - timeBefore > nowTime)
     return (
       next && {
-        showTime: next.time - timeBefore * 1000
+        showTime: next.time - timeBefore * 1000,
+        link: next.type === 'start'
       }
     )
   }
@@ -506,7 +519,6 @@ export function scheduleApp (options = {}) {
         }
         if (nextNotif) {
           if (currentTime() >= nextNotif.showTime) {
-            nextNotif = getNextNotif()
             const today = getDate(now())
             const currentMinute = (currentTime() - today.getTime()) / 1000 / 60
             // Apparently getPeriodName gets the period type even though it's
@@ -517,12 +529,13 @@ export function scheduleApp (options = {}) {
             const currentPeriod = periods.findIndex(
               period => currentMinute < period.end.totalminutes
             )
+            const { label, link } = currentPeriod !== -1 ? getPeriod(getPeriodName(currentPeriod)) : {}
             const text =
               currentPeriod === -1
                 ? localize('over', 'times')
                 : currentMinute < periods[currentPeriod].start.totalminutes
                 ? localizeWith('starting', 'times', {
-                    P: getPeriod(getPeriodName(currentPeriod)).label,
+                    P: label,
                     T: getUsefulTimePhrase(
                       Math.ceil(
                         periods[currentPeriod].start.totalminutes -
@@ -531,20 +544,30 @@ export function scheduleApp (options = {}) {
                     )
                   })
                 : localizeWith('ending', 'times', {
-                    P: getPeriod(getPeriodName(currentPeriod)).label,
+                    P: label,
                     T: getUsefulTimePhrase(
                       Math.ceil(
                         periods[currentPeriod].end.totalminutes - currentMinute
                       )
                     )
                   })
+            const openLink = nextNotif.link && link
             const notification = new Notification(text, {
               icon:
                 currentPeriod === -1
                   ? null
-                  : getIcon(getPeriodName(currentPeriod))
+                  : getIcon(getPeriodName(currentPeriod)),
+              body: openLink ? localize('notif-click-desc') : ''
             })
-            console.log(notification)
+            notification.addEventListener('click', e => {
+              e.preventDefault()
+              if (openLink) {
+                const win = window.open(link, '_blank')
+                win.focus()
+              }
+            })
+
+            nextNotif = getNextNotif()
           }
         }
         if (nextLinkOpen) {

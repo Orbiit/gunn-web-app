@@ -247,6 +247,7 @@ export default {
     'no-study':
       "You {E}; even if you score 0%, you'll be above your threshold.",
     'no-study-emph': "don't need to study",
+    'notif-click-desc': 'Click to open link',
     overdue: 'overdue',
     p0: 'Zero period',
     'period-link': '{P} link',
