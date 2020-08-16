@@ -100,6 +100,8 @@ body.dark .schedule-container .schedule-periodprogress > div {
 }
 .schedule-container .pd-btn {
   margin-left: 10px;
+  color: inherit;
+  text-shadow: inherit;
 }
 .schedule-container .schedule-period:hover .pd-btns {
   opacity: 1;
