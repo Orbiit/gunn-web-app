@@ -763,6 +763,20 @@ body.light .percent-wrapper {
   width: 100%;
 }
 
+#iframe-window {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 44px;
+}
+#iframe {
+  border: none;
+  width: 100%;
+}
+#iframe-title .material-icons {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
 p.secondary {
   color: var(--secondary);
   font-size: 14px;

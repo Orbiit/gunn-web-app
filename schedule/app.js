@@ -549,8 +549,13 @@ export function scheduleApp (options = {}) {
         }
         if (nextLinkOpen) {
           if (currentTime() >= nextLinkOpen.time) {
-            // https://stackoverflow.com/a/11384018
-            window.open(getPeriod(nextLinkOpen.period).link, '_blank')
+            if (options.openLinkInIframe) {
+              const { link, label } = getPeriod(nextLinkOpen.period)
+              options.openLinkInIframe(link, label)
+            } else {
+              // https://stackoverflow.com/a/11384018
+              window.open(getPeriod(nextLinkOpen.period).link, '_blank')
+            }
             nextLinkOpen = getNextLinkOpen()
           }
         }

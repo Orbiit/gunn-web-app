@@ -150,7 +150,7 @@
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
       const start = Date.now()
-      const baseTime = new Date(2020, 8, 21, 11, 30).getTime()
+      const baseTime = new Date(2020, 8, 21, 10, 40).getTime()
       const speed = 1000
       setCurrentTime(() => {
         return (Date.now() - start) * speed + baseTime
@@ -568,14 +568,6 @@
       <div class="periods-customisation-heading">
         <h1 data-l10n="periods"></h1>
         <p data-l10n="periods-desc"></p>
-        <p data-l10n="open-link-before">
-          <span
-            class="material-dropdown"
-            id="link-time-before"
-            data-l10n-arg="time"
-          ></span>
-          <strong data-l10n-arg="emphasis"></strong>
-        </p>
       </div>
       <a id="periodcustomisermarker"></a>
       <p>
@@ -609,6 +601,20 @@
         </label>
       </p>
       <!-- <button class="material raised" id="edit-h" data-l10n="edit-h"></button> -->
+      <p data-l10n="open-link-before">
+        <span
+          class="material-dropdown"
+          id="link-time-before"
+          data-l10n-arg="time"
+        ></span>
+        <strong data-l10n-arg="emphasis"></strong>
+      </p>
+      <p>
+        <label>
+          <span class="material-switch" id="use-iframe" tabindex="0"></span>
+          <span data-l10n="use-iframe"></span>
+        </label>
+      </p>
 
       <h1 data-l10n="assignments"></h1>
       <p>
@@ -991,6 +997,18 @@
     <div id="h-editor" class="material-dialog">
       <h1 data-l10n="h-editor"></h1>
       <div class="content" id="h-days"></div>
+      <div class="buttons">
+        <button class="material red close" data-l10n="ok"></button>
+      </div>
+    </div>
+
+    <div id="iframe-window" class="material-dialog">
+      <h1>
+        <a id="iframe-title" target="_blank" rel="noopener noreferrer"
+          ><i class="material-icons">&#xe89e;</i></a
+        >
+      </h1>
+      <iframe class="content" id="iframe"></iframe>
       <div class="buttons">
         <button class="material red close" data-l10n="ok"></button>
       </div>

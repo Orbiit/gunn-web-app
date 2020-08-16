@@ -392,7 +392,7 @@ export function initSchedule (manualAltSchedules = {}) {
   if (formatOptions[0] === '8') {
     formatOptions[0] = '9'
     formatOptions[13] = 'off' // time before period for opening link
-    formatOptions[14] = '' // [reserved]
+    formatOptions[14] = '' // open link in new tab?
     formatOptions[15] = '' // [reserved]
     formatOptions[16] = '' // [reserved]
     cookie.setItem(
@@ -1732,6 +1732,31 @@ export function initSchedule (manualAltSchedules = {}) {
       formatOptions.join('.')
     )
   })
+  const openInFrame = document.getElementById('use-iframe')
+  scheduleapp.options.openLinkInIframe =
+    formatOptions[14] !== 'yes' && setIframe
+  if (formatOptions[14] !== 'yes') openInFrame.classList.add('checked')
+  openInFrame.parentNode.addEventListener('click', e => {
+    openInFrame.classList.toggle('checked')
+    formatOptions[14] = openInFrame.classList.contains('checked') ? '' : 'yes'
+    scheduleapp.options.openLinkInIframe =
+      formatOptions[14] !== 'yes' && setIframe
+    cookie.setItem(
+      '[gunn-web-app] scheduleapp.formatOptions',
+      formatOptions.join('.')
+    )
+  })
+  const iframeDialog = document.getElementById('iframe-window')
+  const iframe = document.getElementById('iframe')
+  const iframeTitleLink = document.getElementById('iframe-title')
+  const iframeTitle = document.createTextNode('')
+  iframeTitleLink.insertBefore(iframeTitle, iframeTitleLink.firstChild)
+  function setIframe (url, name) {
+    iframe.src = url
+    iframeTitleLink.href = url
+    iframeTitle.nodeValue = name
+    iframeDialog.classList.add('show')
+  }
 
   // TEMP: H period editor not needed this year?
   // const MIN_TIME = 15 * 60

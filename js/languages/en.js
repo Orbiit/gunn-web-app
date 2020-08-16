@@ -160,6 +160,8 @@ export default {
     'trick-cache': 'trick the cache',
     'turn-back-on': 'Turn back on',
     units: 'Units included',
+    'use-iframe':
+      "Open link in an embed as opposed to in a new tab? (Many sites don't allow themselves to be embedded, but Zoom works.)",
     'use-safari':
       "Open UGWA in Safari first; this can't be done anywhere else.",
     'using-assync': 'Your Assync account ID: {id} {leave|Stop synching}',
