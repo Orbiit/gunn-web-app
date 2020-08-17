@@ -232,6 +232,7 @@ body #footer ul li.active {
   text-align: center;
   margin: 0;
   opacity: 0.5;
+  line-height: 1;
 }
 #weekwrapper div.today h1 {
   font-weight: bold;

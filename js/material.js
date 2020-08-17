@@ -152,6 +152,8 @@ export function makeDropdown (wrapper, values) {
   wrapper.appendChild(selectDisplay)
   const dropdown = document.createElement('div')
   dropdown.classList.add('mdrop-values')
+  dropdown.classList.add('show')
+  let dropdownAdded = false
   const valuesByIndex = values.map(([valText, elem], i) => {
     const value = document.createElement('div')
     value.classList.add('mdrop-value')
@@ -167,13 +169,18 @@ export function makeDropdown (wrapper, values) {
     dropdown.appendChild(value)
     return elem
   })
-  wrapper.appendChild(dropdown)
   function close () {
     dropdown.classList.remove('show')
     document.removeEventListener('click', close)
   }
   selectDisplay.addEventListener('click', e => {
     dropdown.classList.add('show')
+    if (dropdownAdded) {
+      dropdown.classList.add('show')
+    } else {
+      wrapper.appendChild(dropdown)
+      dropdownAdded = true
+    }
     document.addEventListener('click', close)
     e.stopPropagation()
   })
