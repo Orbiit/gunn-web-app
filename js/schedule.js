@@ -232,7 +232,7 @@ export function cacheBackground (url, pd) {
     fetch(url, { mode: 'no-cors', cache: 'no-cache' })
   ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
 }
-export function initSchedule (manualAltSchedules = {}) {
+export function initSchedule (manualAltSchedulesProm) {
   const periodstyles = {
     NO_SCHOOL: { label: localize('no-school') },
     // Default period names and styles
@@ -899,46 +899,46 @@ export function initSchedule (manualAltSchedules = {}) {
   function makeWeekHappen () {
     const week = scheduleapp.getWeek()
     const serialized = JSON.stringify(week)
-    if (lastWeek === serialized) {
-      // Don't regenerate the weekwrapper if the week didn't change
-      for (let i = 0; i < weekwrapper.children.length; i++) {
-        weekwrapper.children[i].className = week[i].today ? 'today' : ''
-      }
-      return
-    } else {
+    if (lastWeek !== serialized) {
+      // Only regenerate the weekwrapper if the week changed
       lastWeek = serialized
-    }
-    weekwrapper.innerHTML = ''
-    const days = localize('ds').split('  ')
-    for (let i = 0; i < week.length; i++) {
-      const day = week[i]
-      const div = Object.assign(document.createElement('div'), {
-        className: day.today ? 'today' : ''
-      })
-      ripple(div)
-      div.addEventListener('click', e => {
-        const d = day.date
-        datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
-      })
-      div.appendChild(
-        Object.assign(document.createElement('h1'), {
-          textContent: days[i]
+      weekwrapper.innerHTML = ''
+      const days = localize('ds').split('  ')
+      for (let i = 0; i < week.length; i++) {
+        const day = week[i]
+        const div = Object.assign(document.createElement('div'), {
+          className: day.today ? 'today' : ''
         })
-      )
-      for (const period of day) {
-        const span = Object.assign(document.createElement('span'), {
-          title: period.label
+        ripple(div)
+        div.addEventListener('click', e => {
+          const d = day.date
+          datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
         })
-        if (period.colour[0] === '#') {
-          span.style.backgroundColor = period.colour
-        } else {
-          span.style.backgroundImage = `url(./.period-images/${
-            period.id
-          }?${encodeURIComponent(period.colour)})`
+        div.appendChild(
+          Object.assign(document.createElement('h1'), {
+            textContent: days[i]
+          })
+        )
+        for (const period of day) {
+          const span = Object.assign(document.createElement('span'), {
+            title: period.label
+          })
+          if (period.colour[0] === '#') {
+            span.style.backgroundColor = period.colour
+          } else {
+            span.style.backgroundImage = `url(./.period-images/${
+              period.id
+            }?${encodeURIComponent(period.colour)})`
+          }
+          div.appendChild(span)
         }
-        div.appendChild(span)
+        weekwrapper.appendChild(div)
       }
-      weekwrapper.appendChild(div)
+    }
+    for (let i = 0; i < weekwrapper.children.length; i++) {
+      const day = week[i]
+      const div = weekwrapper.children[i]
+      div.className = day.today ? 'today' : ''
     }
     renderEvents()
   }
@@ -1173,6 +1173,12 @@ export function initSchedule (manualAltSchedules = {}) {
   // const hPeriods =
   //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
   const scheduleAppWrapper = document.querySelector('#schedulewrapper')
+  let manualAltSchedules = {}
+  manualAltSchedulesProm.then(schedules => {
+    manualAltSchedules = schedules
+    scheduleapp.render()
+    makeWeekHappen()
+  })
   const scheduleapp = scheduleApp({
     element: scheduleAppWrapper,
     periods: periodstyles,
@@ -1486,6 +1492,7 @@ export function initSchedule (manualAltSchedules = {}) {
         if (isImage) return
         pickertrigger.style.backgroundColor = e
         if (scheduleapp) scheduleapp.setPeriod(id, { colour: e }, !init)
+        makeWeekHappen()
         if (init) {
           init = false
         } else {
@@ -1537,6 +1544,7 @@ export function initSchedule (manualAltSchedules = {}) {
           if (scheduleapp) {
             scheduleapp.setPeriod(id, { name: input.input.value }, true)
           }
+          makeWeekHappen()
           options[letras.indexOf(id)][0] = input.input.value
           if (periodstyles[id].update) periodstyles[id].update()
           cookie.setItem(
@@ -1562,6 +1570,7 @@ export function initSchedule (manualAltSchedules = {}) {
           if (scheduleapp) {
             scheduleapp.setPeriod(id, { link: linkInput.input.value }, true)
           }
+          makeWeekHappen()
           options[letras.indexOf(id)][2] = linkInput.input.value
           // No need to call .update() on periodstyles because the link is not
           // relevant to rendering the period dropdowns
@@ -1631,6 +1640,7 @@ export function initSchedule (manualAltSchedules = {}) {
                   true
                 )
               }
+              makeWeekHappen()
               options[letras.indexOf(id)][1] = imageInput.input.value
               if (periodstyles[id].update) periodstyles[id].update()
               cookie.setItem(
@@ -1657,6 +1667,7 @@ export function initSchedule (manualAltSchedules = {}) {
               if (scheduleapp) {
                 scheduleapp.setPeriod(id, { colour: picker.colour }, true)
               }
+              makeWeekHappen()
               options[letras.indexOf(id)][1] = picker.colour
               if (periodstyles[id].update) periodstyles[id].update()
               cookie.setItem(

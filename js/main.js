@@ -205,9 +205,10 @@ function initCoronavirusClose () {
 }
 
 function initScheduleWhenReady () {
-  return Promise.all([getManualAlternateSchedules(), schedulesReady]).then(
-    ([schedules]) => initSchedule(schedules)
-  )
+  const manualAltSchedulesProm = getManualAlternateSchedules()
+  return schedulesReady.then(() => {
+    initSchedule(manualAltSchedulesProm)
+  })
 }
 
 function makeNavBarRipple () {
