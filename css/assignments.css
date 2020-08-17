@@ -41,15 +41,20 @@ button.material.icon.asgn-done-btn {
   word-break: break-word;
 }
 .asgn-is-done {
-  text-decoration: line-through;
   opacity: 0.5;
+}
+.asgn-is-done > span {
+  text-decoration: line-through;
 }
 .asgn-upcoming .asgn-is-done button.material.icon.asgn-done-btn {
   color: var(--theme);
 }
-.asgn-text:hover,
-.tab-focus .asgn-text:focus {
+.asgn-edit:hover .asgn-text,
+.tab-focus .asgn-edit:focus .asgn-text {
   text-decoration: underline;
+}
+.tab-focus .asgn-edit:focus {
+  box-shadow: 0 0 0 5px var(--focus);
 }
 .asgn-due,
 .asgn-overdue {

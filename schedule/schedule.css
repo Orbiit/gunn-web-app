@@ -105,7 +105,8 @@ body.dark .schedule-container .schedule-periodprogress > div {
   color: inherit;
   text-shadow: inherit;
 }
-.schedule-container .schedule-period:hover .pd-btns {
+.schedule-container .schedule-period:hover .pd-btns,
+.tab-focus .schedule-container .schedule-period:focus-within .pd-btns {
   opacity: 1;
   pointer-events: all;
 }

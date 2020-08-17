@@ -180,21 +180,23 @@ class Assignment {
 
   // used with the periods
   toHTML ({ today } = {}) {
-    return `
-    <div class="asgn-line asgn-importance-${this.importance}${
+    return `<div class="asgn-line asgn-importance-${this.importance}${
       this.done ? ' asgn-is-done' : ''
-    }" data-asgn-id="${this.id}">
-      <button class="asgn-done-btn material icon" aria-label="${
-        this.done ? localize('undoneify') : localize('doneify')
-      }"><i class="material-icons">${
+    }" data-asgn-id="${
+      this.id
+    }"><button class="asgn-done-btn material icon" aria-label="${
+      this.done ? localize('undoneify') : localize('doneify')
+    }"><i class="material-icons">${
       this.done ? '&#xe834;' : '&#xe835;'
-    }</i></button>
-      <span class="asgn-category asgn-category-${
-        this.category
-      }">${localizeCategory(this.category)}</span>
-      <span class="asgn-text" tabindex="0">${escapeHTML(this.text)}</span>
-    </div>
-    `
+    }</i></button><span class="asgn-edit" tabindex="0" aria-label="${
+      localize('asgn-edit-label')
+    }"><span class="asgn-category asgn-category-${
+      this.category
+    }">${
+      localizeCategory(this.category)
+    }</span><span class="asgn-text">${
+      escapeHTML(this.text)
+    }</span></span></div>`
   }
 
   // used in the upcoming assignments section
@@ -220,24 +222,28 @@ class Assignment {
     doneBtn.appendChild(icon)
     wrapper.appendChild(doneBtn)
 
+    const editBtn = document.createElement('span')
+    editBtn.className = 'asgn-edit'
+    editBtn.tabIndex = 0
+    wrapper.appendChild(editBtn)
+
     const categoryBadge = document.createElement('span')
     categoryBadge.classList.add('asgn-category')
     categoryBadge.classList.add('asgn-category-' + this.category)
     categoryBadge.textContent = localizeCategory(this.category)
-    wrapper.appendChild(categoryBadge)
+    editBtn.appendChild(categoryBadge)
 
     if (today > this.due) {
       const overdueBadge = document.createElement('span')
       overdueBadge.classList.add('asgn-overdue')
       overdueBadge.textContent = localize('overdue')
-      wrapper.appendChild(overdueBadge)
+      editBtn.appendChild(overdueBadge)
     }
 
     const content = document.createElement('span')
     content.classList.add('asgn-text')
     content.textContent = this.text
-    content.tabIndex = 0
-    wrapper.appendChild(content)
+    editBtn.appendChild(content)
 
     const dueText = document.createElement('span')
     dueText.classList.add('asgn-due-date')
@@ -248,7 +254,7 @@ class Assignment {
         D: this.dueObj.d
       })
     })
-    wrapper.appendChild(dueText)
+    editBtn.appendChild(dueText)
 
     return wrapper
   }
@@ -605,7 +611,7 @@ export function initAssignments ({
         if (manager.assyncAccount) {
           manager.updateAssignment(assignment)
         }
-      } else if (e.target.classList.contains('asgn-text')) {
+      } else if (e.target.closest('.asgn-edit')) {
         openEditor(assignment)
       }
     }

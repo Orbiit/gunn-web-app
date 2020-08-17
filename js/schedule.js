@@ -303,6 +303,12 @@ export function initSchedule (manualAltSchedulesProm) {
         options.push([periodstyles[l].label, periodstyles[l].colour])
       }
   }
+  for (let i = 0; i < letras.length; i++) {
+    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
+    periodstyles[letras[i]].label = options[i][0]
+    periodstyles[letras[i]].colour = options[i][1]
+    periodstyles[letras[i]].link = options[i][2]
+  }
   /* SCHEDULE APP */
   const defaultThings = [
     FORMATTING_VERSION, // 0
@@ -1163,12 +1169,6 @@ export function initSchedule (manualAltSchedulesProm) {
   for (const dayString in alternates) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
-  }
-  for (let i = 0; i < letras.length; i++) {
-    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
-    periodstyles[letras[i]].label = options[i][0]
-    periodstyles[letras[i]].colour = options[i][1]
-    periodstyles[letras[i]].link = options[i][2]
   }
   // const hPeriods =
   //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []

@@ -58,7 +58,8 @@
   color: var(--colour);
   margin: 0;
 }
-a.material:hover {
+a.material:hover,
+.tab-focus a.material:focus {
   text-decoration: none;
 }
 .material.icon {
