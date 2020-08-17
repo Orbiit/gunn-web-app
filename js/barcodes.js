@@ -91,7 +91,7 @@ export function initBarcodes () {
       e => {
         barcodeelems.splice(barcodeelems.indexOf(input), 1)
         barcodeul.removeChild(li)
-        li = divcanvas = input = canvas = divbtn = removebtn = viewbtn = null
+        li = divcanvas = input = canvas = divbtn = removebtn = viewbtn = closeInstructions = null
         updateSave()
       },
       false

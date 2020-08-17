@@ -529,7 +529,10 @@ export function scheduleApp (options = {}) {
             const currentPeriod = periods.findIndex(
               period => currentMinute < period.end.totalminutes
             )
-            const { label, link } = currentPeriod !== -1 ? getPeriod(getPeriodName(currentPeriod)) : {}
+            const { label, link } =
+              currentPeriod !== -1
+                ? getPeriod(getPeriodName(currentPeriod))
+                : {}
             const text =
               currentPeriod === -1
                 ? localize('over', 'times')

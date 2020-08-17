@@ -149,7 +149,14 @@ function main () {
   }
   setDaysMonths(localize('days').split('  '), localize('months').split('  '))
   // Do things that make the app visually change to the user first
-  attemptFns([setTheme, localizePage, initPWA, initErrorLog, initFooter, showIOSDialog])
+  attemptFns([
+    setTheme,
+    localizePage,
+    initPWA,
+    initErrorLog,
+    initFooter,
+    showIOSDialog
+  ])
   // Allow page to render the localization (seems to require two animation
   // frames for some reason?)
   window.requestAnimationFrame(() => {

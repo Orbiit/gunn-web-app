@@ -918,7 +918,11 @@ export function initSchedule (manualAltSchedulesProm) {
         ripple(div)
         div.addEventListener('click', e => {
           const d = day.date
-          datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
+          datepicker.day = {
+            d: d.getDate(),
+            m: d.getMonth(),
+            y: d.getFullYear()
+          }
         })
         div.appendChild(
           Object.assign(document.createElement('h1'), {

@@ -188,15 +188,15 @@ class Assignment {
       this.done ? localize('undoneify') : localize('doneify')
     }"><i class="material-icons">${
       this.done ? '&#xe834;' : '&#xe835;'
-    }</i></button><span class="asgn-edit" tabindex="0" aria-label="${
-      localize('asgn-edit-label')
-    }"><span class="asgn-category asgn-category-${
+    }</i></button><span class="asgn-edit" tabindex="0" aria-label="${localize(
+      'asgn-edit-label'
+    )}"><span class="asgn-category asgn-category-${
       this.category
-    }">${
-      localizeCategory(this.category)
-    }</span><span class="asgn-text">${
-      escapeHTML(this.text)
-    }</span></span></div>`
+    }">${localizeCategory(
+      this.category
+    )}</span><span class="asgn-text">${escapeHTML(
+      this.text
+    )}</span></span></div>`
   }
 
   // used in the upcoming assignments section
