@@ -5,7 +5,7 @@
   line-height: 1;
   transition: all 0.2s;
   font-size: 0;
-  z-index: 2;
+  z-index: 20;
   background-color: var(--card);
 }
 .colourpicker-input {

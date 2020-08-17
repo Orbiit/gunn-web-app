@@ -187,7 +187,7 @@ button.material.icon.asgn-done-btn {
   padding: 5px 10px;
   font-size: 14px;
   transition: opacity 0.2s, background-color 0.2s;
-  z-index: 7;
+  z-index: 30;
 }
 .assync-disappearing {
   animation: fade-out 0.5s 2s forwards;

@@ -149,7 +149,7 @@ function main () {
   }
   setDaysMonths(localize('days').split('  '), localize('months').split('  '))
   // Do things that make the app visually change to the user first
-  attemptFns([setTheme, localizePage, initErrorLog, initFooter, showIOSDialog])
+  attemptFns([setTheme, localizePage, initPWA, initErrorLog, initFooter, showIOSDialog])
   // Allow page to render the localization (seems to require two animation
   // frames for some reason?)
   window.requestAnimationFrame(() => {
@@ -837,6 +837,10 @@ function localizePage () {
     fragment.appendChild(p)
   })
   document.getElementById('langs').appendChild(fragment)
+}
+
+function initPWA () {
+  const lastPsa = cookie.getItem('[gunn-web-app] scheduleapp.psa')
   try {
     navigator.serviceWorker.register('./sw.js').then(
       regis => {
@@ -847,6 +851,10 @@ function localizePage () {
               installingWorker.state === 'installed' &&
               navigator.serviceWorker.controller
             ) {
+              // Un-mark the last PSA as read if it has just been read because
+              // the user may have just loaded UGWA
+              cookie.setItem('[gunn-web-app] scheduleapp.psa', lastPsa)
+
               console.log('New update! Redirecting you away and back')
               window.location.replace(
                 '/ugwa-updater.html' + window.location.search

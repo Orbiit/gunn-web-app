@@ -18,6 +18,7 @@ body {
   transition: all 0.2s, opacity 0.5s;
   background-color: var(--background);
   color: var(--colour);
+  margin-bottom: 56px;
 }
 .hidden,
 .hide-app > body {
@@ -118,17 +119,10 @@ input[type='number']::-webkit-outer-spin-button {
 /* SECTIONS */
 .section {
   display: none;
-  position: fixed;
-  overflow: auto;
-  top: 0;
-  bottom: 56px;
-  left: 0;
-  right: 0;
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
-  z-index: 1;
 }
 .section h1 {
   font-size: 20px;
@@ -161,6 +155,7 @@ input[type='number']::-webkit-outer-spin-button {
 #footer {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
   position: fixed;
+  z-index: 10;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -350,7 +345,7 @@ body #footer ul li.active {
   z-index: -1;
   border-radius: 5px;
 }
-#barcode canvas.viewbarcode {
+#barcode .viewbarcode canvas {
   position: fixed;
   top: 0;
   left: 0;
@@ -365,14 +360,33 @@ body #footer ul li.active {
   box-sizing: content-box;
   border-radius: 0;
   box-shadow: none;
-  z-index: 1;
+  z-index: 40;
+}
+.barcode-instructions {
+  display: none;
+}
+#barcode .viewbarcode .barcode-instructions {
+  display: block;
+  position: fixed;
+  z-index: 41;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 10px;
 }
 @media (max-width: 340px) {
-  #barcode canvas.viewbarcode {
+  #barcode .viewbarcode canvas {
     border-width: calc(50vw - 95px) 0;
     padding: 20px calc(50vh - 160px);
     transform: translateX(100vw) rotate(90deg);
     transform-origin: 0 0;
+  }
+  #barcode .viewbarcode .barcode-instructions {
+    right: 0;
+    left: auto;
+    transform: rotate(-90deg);
+    transform-origin: right bottom;
   }
 }
 #barcode input {
@@ -429,7 +443,7 @@ body.dark #mapimage {
   margin-left: -25px;
   margin-top: -25px;
   background-color: var(--card);
-  z-index: 1;
+  z-index: 30;
 }
 .zoom-dial {
   background-color: #f44336;
@@ -600,7 +614,7 @@ body.light .percent-wrapper {
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 10;
+  z-index: 20;
   background-color: rgba(0, 0, 0, 0.5);
 }
 .ios-dialog {
@@ -839,7 +853,7 @@ p.secondary {
   padding: 12px;
   padding-left: 24px;
   margin: 20px;
-  z-index: 1;
+  z-index: 5;
   box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.3);
 }
 .previewing-future-notice > span {

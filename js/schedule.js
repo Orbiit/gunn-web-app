@@ -315,7 +315,7 @@ export function initSchedule (manualAltSchedules = {}) {
     'show', // 7
     'no', // 8
     'preps', // 9
-    'yes-h-period', // 10
+    'unset', // 10
     'off', // 11
     'swipe', // 12
     'off', // 13
@@ -372,7 +372,7 @@ export function initSchedule (manualAltSchedules = {}) {
   }
   if (formatOptions[0] === '6') {
     formatOptions[0] = '7'
-    formatOptions[10] = 'yes-h-period' // show H period?
+    formatOptions[10] = 'unset' // show H period?
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
       formatOptions.join('.')
@@ -533,11 +533,11 @@ export function initSchedule (manualAltSchedules = {}) {
     window.location.reload()
   })
   const pd8Switch = document.getElementById('show-h')
-  if (formatOptions[10] === 'yes-h-period') pd8Switch.classList.add('checked')
+  if (formatOptions[10] === 'yes-h-period2') pd8Switch.classList.add('checked')
   pd8Switch.parentNode.addEventListener('click', e => {
     pd8Switch.classList.toggle('checked')
     formatOptions[10] = pd8Switch.classList.contains('checked')
-      ? 'yes-h-period'
+      ? 'yes-h-period2'
       : 'no-h-period'
     cookie.setItem(
       '[gunn-web-app] scheduleapp.formatOptions',
@@ -1180,7 +1180,7 @@ export function initSchedule (manualAltSchedules = {}) {
     alternates: alternates,
     selfDays: selfDays,
     get hPeriods () {
-      return formatOptions[10] === 'yes-h-period'
+      return formatOptions[10] === 'yes-h-period2'
         ? [
             null,
             [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
@@ -1215,7 +1215,7 @@ export function initSchedule (manualAltSchedules = {}) {
       const { periods, description = localize('default-alt-msg') } = schedule
       return {
         periods:
-          formatOptions[10] === 'yes-h-period'
+          formatOptions[10] === 'yes-h-period2'
             ? periods
             : periods.filter(pd => pd.name !== 'H'),
         alternate: { description }
@@ -1457,7 +1457,8 @@ export function initSchedule (manualAltSchedules = {}) {
         if (change) {
           scheduleapp.container.style.opacity = swipePreview.style.opacity
           await frame()
-          await frame()
+          // Force repaint
+          scheduleapp.container.getBoundingClientRect()
         }
         scheduleAppWrapper.classList.remove('swiping')
         scheduleAppWrapper.style.userSelect = null
@@ -1695,7 +1696,7 @@ export function initSchedule (manualAltSchedules = {}) {
   addCustomiser(localizeWith('periodx', 'other', { X: '7' }), 'G', options[7])
   // Always show the H period customisation because period customisers can't be
   // (easily) added in dynamically, and the show H period option doesn't reload.
-  // if (formatOptions[10] === 'yes-h-period') {
+  // if (formatOptions[10] === 'yes-h-period2') {
   addCustomiser(localizeWith('periodx', 'other', { X: '8' }), 'H', options[12])
   // }
   addCustomiser(localize('flex'), 'Flex', options[8])

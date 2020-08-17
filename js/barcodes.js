@@ -1,7 +1,7 @@
-import { cookie } from './utils.js'
+import { code39 } from './code39.js'
 import { localize } from './l10n.js'
 import { ripple } from './material.js'
-import { code39 } from './code39.js'
+import { cookie } from './utils.js'
 
 export function initBarcodes () {
   const DEFAULT_BARCODE = '95000000' // more obvious that this is the default since it looks funny
@@ -40,6 +40,7 @@ export function initBarcodes () {
     let divcanvas = document.createElement('div')
     let input = document.createElement('input')
     let canvas = document.createElement('canvas')
+    let closeInstructions = document.createElement('div')
     let divbtn = document.createElement('div')
     let removebtn = document.createElement('button')
     let viewbtn = document.createElement('button')
@@ -72,12 +73,15 @@ export function initBarcodes () {
     canvas.addEventListener(
       'click',
       e => {
-        canvas.classList.remove('viewbarcode')
-        window.history.replaceState({}, '', './')
+        li.classList.remove('viewbarcode')
+        window.history.replaceState({}, '', window.location.pathname)
       },
       false
     )
     divcanvas.appendChild(canvas)
+    closeInstructions.className = 'barcode-instructions'
+    closeInstructions.textContent = localize('barcode-close-instructions')
+    divcanvas.appendChild(closeInstructions)
     li.appendChild(divcanvas)
     removebtn.classList.add('material')
     removebtn.classList.add('icon')
@@ -100,7 +104,7 @@ export function initBarcodes () {
     viewbtn.addEventListener(
       'click',
       e => {
-        canvas.classList.add('viewbarcode')
+        li.classList.add('viewbarcode')
         window.history.replaceState(
           {},
           '',
@@ -109,7 +113,7 @@ export function initBarcodes () {
       },
       false
     )
-    if (code === showingBarcode) canvas.classList.add('viewbarcode')
+    if (code === showingBarcode) li.classList.add('viewbarcode')
     viewbtn.innerHTML = `<i class="material-icons">&#xE8F4;</i>`
     divbtn.appendChild(viewbtn)
     li.appendChild(divbtn)
