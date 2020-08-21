@@ -287,7 +287,7 @@ body #footer ul li.active {
 .search-wrapper {
   position: relative;
   display: inline-flex;
-  margin: 0 15px;
+  margin: 0 20px;
   align-items: center;
   flex: auto;
   max-width: 300px;
@@ -844,12 +844,18 @@ p.secondary {
   vertical-align: middle;
 }
 
-.material-card.previewing-future-notice {
-  display: flex;
+.previewing-future-notice-wrapper {
+  max-width: 1000px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  margin: 0 auto;
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
+}
+.material-card.previewing-future-notice {
+  display: flex;
   align-items: center;
   padding: 12px;
   padding-left: 24px;

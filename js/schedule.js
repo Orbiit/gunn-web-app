@@ -49,48 +49,6 @@ const VERSION = 4
 const FORMATTING_VERSION = '9'
 const normalschedule = [
   null,
-  // Keeping old schedule in case the school ever returns to it if the pandemic goes away
-  /*
-  [
-    {name:'A',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
-    {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
-    {name:'B',start:{hour:10,minute:0,totalminutes:600},end:{hour:11,minute:15,totalminutes:675}},
-    {name:'C',start:{hour:11,minute:25,totalminutes:685},end:{hour:12,minute:40,totalminutes:760}},
-    {name:'Lunch',start:{hour:12,minute:40,totalminutes:760},end:{hour:13,minute:10,totalminutes:790}},
-    {name:'F',start:{hour:13,minute:20,totalminutes:800},end:{hour:14,minute:35,totalminutes:875}}
-  ], [
-    {name:'D',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:45,totalminutes:585}},
-    {name:'Brunch',start:{hour:9,minute:45,totalminutes:585},end:{hour:9,minute:50,totalminutes:590}},
-    {name:'Flex',start:{hour:10,minute:0,totalminutes:600},end:{hour:10,minute:50,totalminutes:650}},
-    {name:'E',start:{hour:11,minute:0,totalminutes:660},end:{hour:12,minute:15,totalminutes:735}},
-    {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
-    {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:15,totalminutes:855}},
-    {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:40,totalminutes:940}}
-  ], [
-    {name:'B',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
-    {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
-    {name:'C',start:{hour:10,minute:5,totalminutes:605},end:{hour:11,minute:25,totalminutes:685}},
-    {name:'D',start:{hour:11,minute:35,totalminutes:695},end:{hour:12,minute:55,totalminutes:775}},
-    {name:'Lunch',start:{hour:12,minute:55,totalminutes:775},end:{hour:13,minute:25,totalminutes:805}},
-    {name:'F',start:{hour:13,minute:35,totalminutes:815},end:{hour:14,minute:55,totalminutes:895}},
-  ], [
-    {name:'E',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:50,totalminutes:590}},
-    {name:'Brunch',start:{hour:9,minute:50,totalminutes:590},end:{hour:9,minute:55,totalminutes:595}},
-    {name:'Flex',start:{hour:10,minute:5,totalminutes:605},end:{hour:10,minute:55,totalminutes:655}},
-    {name:'B',start:{hour:11,minute:5,totalminutes:665},end:{hour:12,minute:15,totalminutes:735}},
-    {name:'Lunch',start:{hour:12,minute:15,totalminutes:735},end:{hour:12,minute:45,totalminutes:765}},
-    {name:'A',start:{hour:12,minute:55,totalminutes:775},end:{hour:14,minute:5,totalminutes:845}},
-    {name:'G',start:{hour:14,minute:15,totalminutes:855},end:{hour:15,minute:35,totalminutes:935}},
-  ], [
-    {name:'C',start:{hour:8,minute:25,totalminutes:505},end:{hour:9,minute:40,totalminutes:580}},
-    {name:'Brunch',start:{hour:9,minute:40,totalminutes:580},end:{hour:9,minute:45,totalminutes:585}},
-    {name:'D',start:{hour:9,minute:55,totalminutes:595},end:{hour:11,minute:5,totalminutes:665}},
-    {name:'E',start:{hour:11,minute:15,totalminutes:675},end:{hour:12,minute:25,totalminutes:745}},
-    {name:'Lunch',start:{hour:12,minute:25,totalminutes:745},end:{hour:12,minute:55,totalminutes:775}},
-    {name:'F',start:{hour:13,minute:5,totalminutes:785},end:{hour:14,minute:15,totalminutes:855}},
-    {name:'G',start:{hour:14,minute:25,totalminutes:865},end:{hour:15,minute:35,totalminutes:935}}
-  ],
-  */
   [
     { name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30) },
     { name: 'B', start: makeHMTM(10, 40), end: makeHMTM(11, 10) },
@@ -119,9 +77,9 @@ const normalschedule = [
         // scheduleApp can get days outside of the school year because it
         // calculates the schedule immediately before isSummer is set
         if (week < 0) return 'SELF'
-        // First week's Gunn together is 5th period for some reason
-        if (week === 0) return 'E'
-        return 'ABCDEFG'[(week - 1) % 7]
+        // First week's Gunn together is 5th period for some reason, then 6th
+        // according to Redfield
+        return 'ABCDEFG'[(week + 4) % 7]
       },
       start: makeHMTM(11, 5),
       end: makeHMTM(11, 40),
@@ -1296,10 +1254,13 @@ export function initSchedule (manualAltSchedulesProm) {
   }
   if (previewingFuture) {
     previewingFuture = document.createElement('div')
-    previewingFuture.className = 'material-card previewing-future-notice'
+    previewingFuture.className = 'previewing-future-notice-wrapper'
+    const card = document.createElement('div')
+    card.className = 'material-card previewing-future-notice'
+    previewingFuture.appendChild(card)
     const span = document.createElement('span')
     span.textContent = localize('previewing-future')
-    previewingFuture.appendChild(span)
+    card.appendChild(span)
     const todayBtn = document.createElement('button')
     todayBtn.className = 'material'
     todayBtn.textContent = localize('return-today')
@@ -1313,7 +1274,7 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     })
     ripple(todayBtn)
-    previewingFuture.appendChild(todayBtn)
+    card.appendChild(todayBtn)
     const closeBtn = document.createElement('button')
     closeBtn.className = 'material'
     closeBtn.textContent = localize('close-future')
@@ -1322,7 +1283,7 @@ export function initSchedule (manualAltSchedulesProm) {
       previewingFuture = null
     })
     ripple(closeBtn)
-    previewingFuture.appendChild(closeBtn)
+    card.appendChild(closeBtn)
     const parent = document.querySelector('.section.schedule')
     parent.insertBefore(previewingFuture, parent.firstChild)
   }
