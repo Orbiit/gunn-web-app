@@ -18,16 +18,15 @@ function pageUrl (page) {
   return `https://gunn.pausd.org/fs/elements/11437?const_page=${page}`
 }
 
-const icSectionData = 'https://sheeptester.github.io/hello-world/sections-simplified.json'
+const icSectionData =
+  'https://sheeptester.github.io/hello-world/sections-simplified.json'
 
 // https://github.com/SheepTester/hello-world/blob/master/teacher-periods.js
 function getTeacherSchedules (sections, teacherData) {
-  const periods = [...'12345678', 'SELF', 'Meetings']
-
   const teachers = {}
 
   function noteTeacher (teacher, period, course, semester) {
-  // Not all teachers (Ames, Matchett) have an email on IC
+    // Not all teachers (Ames, Matchett) have an email on IC
     const teacherId = `${teacher.lastName}/${teacher.firstName}`
     if (!teachers[teacherId]) {
       teachers[teacherId] = {
@@ -52,7 +51,9 @@ function getTeacherSchedules (sections, teacherData) {
   } of sections) {
     const [period] = periodStr.split(' / ')
     const { teacher, coteacher } = teacherData[teacherDisplay] || {}
-    const sem = (semester.includes('S1') ? 0b01 : 0) | (semester.includes('S2') ? 0b10 : 0)
+    const sem =
+      (semester.includes('S1') ? 0b01 : 0) |
+      (semester.includes('S2') ? 0b10 : 0)
     if (teacher) noteTeacher(teacher, period, course, sem)
     if (coteacher) noteTeacher(coteacher, period, course, sem)
   }
@@ -63,10 +64,12 @@ function getTeacherSchedules (sections, teacherData) {
 async function main () {
   const staff = {}
 
-  const [{ teachers }, ...sections] = await fetch(icSectionData)
-    .then(r => r.json())
-  const schedules = Object.entries(getTeacherSchedules(sections, teachers))
-    .map(([name, value]) => [name.split('/'), value])
+  const [{ teachers }, ...sections] = await fetch(icSectionData).then(r =>
+    r.json()
+  )
+  const schedules = Object.entries(getTeacherSchedules(sections, teachers)).map(
+    ([name, value]) => [name.split('/'), value]
+  )
 
   let page = 1
   while (true) {
@@ -79,8 +82,7 @@ async function main () {
         .find('.fsConstituentProfileLink')
         .text()
         .trim()
-      let matches = schedules
-        .filter(([[last]]) => name.includes(last))
+      let matches = schedules.filter(([[last]]) => name.includes(last))
       let periods
       if (matches.length === 0) {
         console.warn(`[!] No schedule for ${name}`)

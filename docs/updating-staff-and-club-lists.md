@@ -1,10 +1,66 @@
 # Updating the staff/club lists
 
-This is done manually since they generally don't update that often, and there's no easy API for accessing the info. However, scraping things like this, especially the constantly-redesigning Gunn website, is unreliable so these probably won't work in the future.
+This is done manually since they generally don't update that often, and there's
+no easy API for accessing the info. However, scraping things like this,
+especially the constantly-redesigning Gunn website, is unreliable so these
+probably won't work in the future.
 
 ## Updating the staff directory
 
-Go to the [staff directory on the Gunn website](https://gunn.pausd.org/connecting/staff-directory), run the following JavaScript in the console, and copypaste the output into **json/clubs.json**.
+```sh
+npm run update-staff
+```
+
+## Updating the club list
+
+Go to the [chartered club
+list](https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/),
+select all, copy, and paste into `data:text/html;charset=UTF-8,<body contenteditable>`
+(open that URL in your browser). Run the following JavaScript in the console,
+and copypaste the output into **json/clubs.json**.
+
+```js
+r = {}
+for (var s of document.querySelectorAll('table tr')) {
+  var boop = s.querySelectorAll('td')
+  var i = boop.length === 9
+  r[boop[1].textContent] = {
+    desc: boop[2].textContent,
+    donation:
+      (boop[3].textContent.slice(0, 1).toLowerCase() === 'n' ||
+      boop[3].textContent === '0' ||
+      boop[3].textContent.slice(0, 2) === '$0'
+        ? undefined
+        : boop[3].textContent) || undefined,
+    day: boop[4 - i].textContent,
+    time: boop[5 - i].textContent,
+    room: boop[6 - i].textContent,
+    president: boop[7 - i].textContent,
+    teacher: boop[8 - i].textContent,
+    email: boop[9 - i].textContent
+  }
+}
+delete r['Club Name']
+JSON.stringify(r, null, '\t')
+```
+
+You might want to update the last updated date in **js/l10n.js** in
+`clubs-disclaimer-link`.
+
+## Old scripts
+
+**You can ignore this section.** Some of these require top level `await`; if
+\*\*your console doesn't support it, wrap the code in
+
+```js
+;(async () => {
+  // ...
+})()
+```
+
+Go to the [staff directory on the Gunn
+website](https://gunn.pausd.org/connecting/staff-directory), run the following
+JavaScript in the console, and copypaste the output into **json/clubs.json**.
 
 ```js
 pages = +$('.fsLastPageLink').attr('data-page')
@@ -43,44 +99,10 @@ for (let i = 1; i <= pages; i++) {
 JSON.stringify(r, null, '\t')
 ```
 
-You might want to update the last updated date in **js/l10n.js** in `staff-disclaimer-link`.
+You might want to update the last updated date in **js/l10n.js** in
+`staff-disclaimer-link`.
 
-## Updating the club list
-
-Go to the [chartered club list](https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/), select all, copy, and paste into `data:text/html;charset=UTF-8,<body contenteditable>` (open that URL in your browser). Run the following JavaScript in the console, and copypaste the output into **json/clubs.json**.
-
-```js
-r = {}
-for (var s of document.querySelectorAll('table tr')) {
-  var boop = s.querySelectorAll('td')
-  var i = boop.length === 9
-  r[boop[1].textContent] = {
-    desc: boop[2].textContent,
-    donation:
-      (boop[3].textContent.slice(0, 1).toLowerCase() === 'n' ||
-      boop[3].textContent === '0' ||
-      boop[3].textContent.slice(0, 2) === '$0'
-        ? undefined
-        : boop[3].textContent) || undefined,
-    day: boop[4 - i].textContent,
-    time: boop[5 - i].textContent,
-    room: boop[6 - i].textContent,
-    president: boop[7 - i].textContent,
-    teacher: boop[8 - i].textContent,
-    email: boop[9 - i].textContent
-  }
-}
-delete r['Club Name']
-JSON.stringify(r, null, '\t')
-```
-
-You might want to update the last updated date in **js/l10n.js** in `clubs-disclaimer-link`.
-
-## Old scripts
-
-You can ignore this section.
-
-[Old site](https://gunn.pausd.org/connect/staff-directory):
+[Older site](https://gunn.pausd.org/connect/staff-directory):
 
 ```js
 r = {}
@@ -98,7 +120,8 @@ document.querySelectorAll('tbody tr').forEach(tr => {
 JSON.stringify(r)
 ```
 
-Club list v1 (where [`sela` is an alias of `document.querySelectorAll`](https://github.com/Orbiit/gunn-web-app/issues/24#issuecomment-333270456))
+Club list v1 (where [`sela` is an alias of
+`document.querySelectorAll`](https://github.com/Orbiit/gunn-web-app/issues/24#issuecomment-333270456))
 
 ```js
 for (var s of sela('table tr')) {

@@ -891,6 +891,28 @@ p.secondary {
   display: block;
 }
 
+.staff-schedule-table {
+  border-top: 1px solid var(--light-border);
+  margin: 16px 0;
+}
+.staff-schedule-row {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  height: 48px;
+  border-bottom: 1px solid var(--light-border);
+}
+.staff-schedule-period {
+  flex-basis: 30px;
+  font-weight: bold;
+}
+.staff-schedule-no-classes .staff-schedule-period {
+  opacity: 0.2;
+}
+.staff-schedule-class {
+  flex: 1 0 0;
+}
+
 .ad {
   display: block;
   border-radius: 5px;

@@ -1,4 +1,4 @@
-import { localize } from './l10n.js'
+import { localize, localizeWith } from './l10n.js'
 import { materialInput, ripple } from './material.js'
 import { savedClubs, saveSavedClubs } from './saved-clubs.js'
 import { ajax, cookie, isAppDesign, logError, now, toEach } from './utils.js'
@@ -15,6 +15,34 @@ function containsString (pattern) {
   }
   pattern = pattern.toLowerCase()
   return str => str.toLowerCase().includes(pattern)
+}
+
+function addSemToRow (row, sem) {
+  row.appendChild(
+    Object.assign(document.createElement('div'), {
+      className: 'staff-schedule-class',
+      textContent: sem
+    })
+  )
+}
+function addRowToTable (table, period, classes) {
+  const row = document.createElement('div')
+  row.className = 'staff-schedule-row'
+  row.appendChild(
+    Object.assign(document.createElement('div'), {
+      className: 'staff-schedule-period',
+      // Should be localized? idk; the lists typically aren't
+      textContent: period
+    })
+  )
+  if (classes) {
+    const [sem1, sem2] = classes.split('|')
+    addSemToRow(row, sem1)
+    if (sem1 !== sem2) addSemToRow(row, sem2)
+  } else {
+    row.classList.add('staff-schedule-no-classes')
+  }
+  table.appendChild(row)
 }
 
 function initList (
@@ -81,7 +109,7 @@ function initList (
               className: 'secondary',
               textContent:
                 prop === 'email'
-                  ? (item.email || '').replace('pausd.org', '...')
+                  ? (item.email || '').replace('pausd.org', '')
                   : item[prop]
             })
           )
@@ -110,7 +138,7 @@ function initList (
       content.innerHTML = ''
     }
     const elements = document.createDocumentFragment()
-    for (const [prop, label, isLink] of props) {
+    for (const [prop, label, type = 'text'] of props) {
       if (prop in item) {
         const p = document.createElement('p')
         p.appendChild(
@@ -119,17 +147,56 @@ function initList (
           })
         )
         p.appendChild(document.createTextNode(' '))
-        if (isLink) {
-          p.appendChild(
-            Object.assign(document.createElement('a'), {
-              href: prop === 'email' ? `mailto:${item[prop]}` : item[prop],
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              textContent: item[prop] + ''
-            })
-          )
-        } else {
-          p.appendChild(document.createTextNode(item[prop] + ''))
+        switch (type) {
+          case 'link': {
+            p.appendChild(
+              Object.assign(document.createElement('a'), {
+                href: prop === 'email' ? `mailto:${item[prop]}` : item[prop],
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                textContent: item[prop] + ''
+              })
+            )
+            break
+          }
+          case 'schedule': {
+            const periods = item[prop]
+
+            const hasSelf = periods.SELF
+            const hasMeetings = periods.Meetings
+            if (hasSelf || hasMeetings) {
+              p.appendChild(
+                document.createTextNode(
+                  localizeWith('staff-self-meetings', 'other', {
+                    S: hasSelf,
+                    M: hasMeetings
+                  })
+                )
+              )
+            }
+
+            // https://github.com/SheepTester/hello-world/blob/master/teacher-periods.js#L49
+            const table = document.createElement('div')
+            table.className = 'staff-schedule-table'
+            let hasClasses = false
+            for (const period of '1234567') {
+              if (!hasClasses && periods[period]) {
+                hasClasses = true
+              }
+
+              addRowToTable(table, period, periods[period])
+            }
+            if (periods['8']) {
+              hasClasses = true
+              addRowToTable(table, '8', periods['8'])
+            }
+            if (hasClasses) {
+              p.appendChild(table)
+            }
+            break
+          }
+          default:
+            p.appendChild(document.createTextNode(item[prop] + ''))
         }
         elements.appendChild(p)
       }
@@ -533,10 +600,11 @@ export function initLists () {
     props: [
       ['jobTitle', localize('title')],
       ['department', localize('department')],
-      ['email', localize('email'), true],
+      ['email', localize('email'), 'link'],
       ['phone', localize('phone')],
-      ['webpage', localize('website'), true],
-      ['oc', localize('basement'), true]
+      ['webpage', localize('website'), 'link'],
+      ['oc', localize('basement'), 'link'],
+      ['periods', localize('schedule'), 'schedule']
     ],
     specialItem: (person, content) => {
       if (person.game) {
@@ -584,7 +652,7 @@ export function initLists () {
       ['desc', localize('desc')],
       ['president', localize('presidents')],
       ['teacher', localize('advisors')],
-      ['email', localize('teacher-email'), true],
+      ['email', localize('teacher-email'), 'link'],
       ['donation', localize('donation')]
     ],
     onShowItem: (clubName, club) => {

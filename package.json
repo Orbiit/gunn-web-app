@@ -21,6 +21,7 @@
   "scripts": {
     "build": "node build.js",
     "check-l10n": "node js/languages/check-l10n.js",
-    "format": "prettier-standard --format --lint"
+    "format": "prettier-standard --format --lint",
+    "update-staff": "node js/get-staff.js"
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-env serviceworker */
 
-const CACHE_NAME = 'ugwa-sw-1597640990843'
+const CACHE_NAME = 'ugwa-sw-1598072877677'
 const urlsToCache = [
   './',
   'images/newmap.min.png',

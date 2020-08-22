@@ -262,6 +262,7 @@ export default {
     'psa-error': 'Could not load PSA: ',
     'remove-from-list': 'Remove from my clubs',
     'return-today': "Show today's schedule",
+    schedule: 'Schedule:',
     self: 'SELF',
     'soph-day': 'Thursday',
     'soph-desc':
@@ -274,6 +275,15 @@ export default {
     'sophomore-club': 'No Senior Club',
     'staff-error':
       "; couldn't get staff data; maybe you aren't connected to the internet?",
+    'staff-self-meetings' ({ S: hasSelf, M: hasMeetings }) {
+      if (hasSelf) {
+        return hasMeetings
+          ? 'Teaches SELF and has counseling.'
+          : 'Teaches SELF.'
+      } else {
+        return hasMeetings ? 'Has counseling.' : ''
+      }
+    },
     summer: 'Enjoy your summer!',
     'supreme-leader': 'Supreme Leader',
     symbols: {
