@@ -366,12 +366,15 @@ ul.material-list li.error,
   overflow: hidden;
   height: 48px;
   align-items: center;
-  padding: 0 16px;
+  padding-left: 16px;
   position: relative;
   cursor: pointer;
   border-radius: 4px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
   background-color: var(--card);
+}
+.mdrop-arrow {
+  margin: 0 12px;
 }
 .mdrop-values {
   position: absolute;

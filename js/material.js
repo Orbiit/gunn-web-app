@@ -149,6 +149,12 @@ export function makeDropdown (wrapper, values) {
   selectDisplay.classList.add('mdrop-selected')
   selectDisplay.tabIndex = 0
   ripple(selectDisplay)
+  const actualSelectDisplay = document.createElement('span')
+  selectDisplay.appendChild(actualSelectDisplay)
+  selectDisplay.appendChild(Object.assign(document.createElement('i'), {
+    className: 'material-icons mdrop-arrow',
+    textContent: '\ue5c5'
+  }))
   wrapper.appendChild(selectDisplay)
   const dropdown = document.createElement('div')
   dropdown.classList.add('mdrop-values')
@@ -189,7 +195,7 @@ export function makeDropdown (wrapper, values) {
     const value = e.target.closest('.mdrop-value')
     if (value) {
       selected = values[value.dataset.value][0]
-      selectDisplay.innerHTML = valuesByIndex[value.dataset.value].outerHTML
+      actualSelectDisplay.innerHTML = valuesByIndex[value.dataset.value].outerHTML
       if (onchange) onchange(selected)
     }
   })
@@ -198,7 +204,7 @@ export function makeDropdown (wrapper, values) {
       const index = values.findIndex(pair => pair[0] === to)
       if (index !== -1) {
         selected = to
-        selectDisplay.innerHTML = valuesByIndex[index].outerHTML
+        actualSelectDisplay.innerHTML = valuesByIndex[index].outerHTML
       }
       return this
     },
