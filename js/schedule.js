@@ -63,8 +63,8 @@ const normalschedule = [
     { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
     { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-    { name: 'D', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
+    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
     { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
   ],
   [
@@ -86,24 +86,24 @@ const normalschedule = [
       gunnTogether: true
     },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-    { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
+    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
     { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
   ],
   [
     { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
     { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-    { name: 'D', start: makeHMTM(13, 45), end: makeHMTM(15, 0) },
+    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
     { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
   ],
   [
     { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
     { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 35) },
-    { name: 'G', start: makeHMTM(13, 45), end: makeHMTM(15, 0) }
+    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) }
   ],
   null
 ]

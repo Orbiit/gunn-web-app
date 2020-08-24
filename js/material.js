@@ -151,10 +151,12 @@ export function makeDropdown (wrapper, values) {
   ripple(selectDisplay)
   const actualSelectDisplay = document.createElement('span')
   selectDisplay.appendChild(actualSelectDisplay)
-  selectDisplay.appendChild(Object.assign(document.createElement('i'), {
-    className: 'material-icons mdrop-arrow',
-    textContent: '\ue5c5'
-  }))
+  selectDisplay.appendChild(
+    Object.assign(document.createElement('i'), {
+      className: 'material-icons mdrop-arrow',
+      textContent: '\ue5c5'
+    })
+  )
   wrapper.appendChild(selectDisplay)
   const dropdown = document.createElement('div')
   dropdown.classList.add('mdrop-values')
@@ -195,7 +197,8 @@ export function makeDropdown (wrapper, values) {
     const value = e.target.closest('.mdrop-value')
     if (value) {
       selected = values[value.dataset.value][0]
-      actualSelectDisplay.innerHTML = valuesByIndex[value.dataset.value].outerHTML
+      actualSelectDisplay.innerHTML =
+        valuesByIndex[value.dataset.value].outerHTML
       if (onchange) onchange(selected)
     }
   })
