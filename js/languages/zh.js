@@ -313,7 +313,7 @@ export default {
       'before-0-15-00': '15 minutes before',
       'before-0-30-00': '30 minutes before',
       'before-1-00-00': 'an hour before',
-      immediately: 'immediately',
+      immediately: '现在',
       never: 'never'
     },
     title: 'Title:',
@@ -356,7 +356,7 @@ export default {
     ending: '{P} ending in {T}.',
     'ending-short': '{T} left',
     long: '{T} long',
-    over: "School's over!",
+    over: "学校已经下课了！",
     'self-ended': 'Ended {T} ago.',
     'self-ending': 'Ending in {T1}; started {T2} ago.',
     'self-starting': 'Starting in {T}.',
