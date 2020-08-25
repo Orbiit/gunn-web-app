@@ -1,7 +1,7 @@
 export default {
   html: {
-    '12h': '12-hour',
-    '24h': '24-hour',
+    '12h': '十二小时',
+    '24h': '二十四小时',
     about: 'About',
     'add-barcode': 'Add barcode',
     'add-home':
@@ -21,7 +21,7 @@ export default {
     'asgn-none': 'New Zealand',
     'asgn-period-date': 'Due by {period} on {date}.',
     'asgn-sort': 'Sorting method',
-    assignments: 'Assignments',
+    assignments: '作业',
     assync: 'Assignment Synchronization System (Assync)',
     'assync-desc':
       'Assync allows you to sync your assignments across devices. This is an experimental feature.',
@@ -34,7 +34,7 @@ export default {
     category: 'Category: {category}',
     'chromebook-instruct':
       '{name|Chromebook}—pin this page to the shelf (menu > more tools > add to shelf)',
-    close: 'Close',
+    close: '关',
     'club-list': 'Club list',
     'club-name': 'Club name',
     clubs: 'Clubs',
