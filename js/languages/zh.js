@@ -152,7 +152,7 @@ export default {
     'staff-name': 'Staff name',
     support: 'Student resources',
     theme: 'Theme',
-    'this-is-joke': '(This is a joke.)',
+    'this-is-joke': '(这是开玩笑.)',
     'time-formatting': 'Time formatting',
     'title-compact': 'Tab title compactness',
     'toggle-pd-add-asgn': 'Show "Add assignment" button on period cards?',
@@ -288,7 +288,7 @@ export default {
     'supreme-leader': 'Supreme Leader',
     symbols: {
       brunch: '🧃',
-      flex: 'Tut.',
+      flex: '仔细',
       lunch: '🍱',
       'period-a': '1',
       'period-b': '2',
@@ -320,8 +320,8 @@ export default {
     undoneify: 'Unmark as done',
     universe: 'Universe',
     website: 'Website:',
-    you: 'You',
-    'zero-error': "Please don't enter so many zeroes."
+    you: '你',
+    'zero-error': "别打这么多〇！"
   },
   placeholders: {
     assignment: 'Assignment',
@@ -338,20 +338,20 @@ export default {
       return 'due by ' + (periodSpan ? periodSpan + ' on ' : '') + dateStr
     },
     duration ({ T: minutes }) {
-      if (minutes < 1) return 'less than a minute'
+      if (minutes < 1) return '一分钟少'
       return (
         (minutes >= 120
-          ? Math.floor(minutes / 60) + ' hours'
+          ? Math.floor(minutes / 60) + ' 小时'
           : minutes >= 60
-          ? 'an hour'
+          ? '小时'
           : '') +
         (minutes % 60 === 0
           ? ''
           : (minutes >= 60 ? ' and ' : '') +
-            (minutes % 60 === 1 ? 'a minute' : (minutes % 60) + ' minutes'))
+            (minutes % 60 === 1 ? '一分钟' : (minutes % 60) + ' 分钟'))
       )
     },
-    'end-time': 'School ends at {T} today.',
+    'end-time': '今天学校下课{T}。',
     ended: '{P} ended {T} ago.',
     ending: '{P} ending in {T}.',
     'ending-short': '{T} left',
