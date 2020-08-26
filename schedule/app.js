@@ -331,7 +331,9 @@ export function scheduleApp (options = {}) {
         const periodName = getPeriod(
           period.name === 'Flex' && isSELF ? 'SELF' : period.name
         )
-        innerHTML += `<div class="schedule-period" style="${getCSS(
+        innerHTML += `<div class="schedule-period ${
+          period.gunnTogether ? 'gunn-together' : ''
+        }" style="${getCSS(
           periodName.colour,
           period.name
         )}"><span class="schedule-periodname">${escapeHTML(

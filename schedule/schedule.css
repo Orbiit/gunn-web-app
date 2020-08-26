@@ -110,6 +110,10 @@ body.dark .schedule-container .schedule-periodprogress > div {
   opacity: 1;
   pointer-events: all;
 }
+.schedule-container .schedule-period.gunn-together {
+  background-image: url('../images/gunn-together.svg') !important;
+  background-size: 100px;
+}
 .gunn-together-badge {
   display: inline-flex;
   align-items: center;
