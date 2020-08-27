@@ -77,9 +77,10 @@ const normalschedule = [
         // scheduleApp can get days outside of the school year because it
         // calculates the schedule immediately before isSummer is set
         if (week < 0) return 'SELF'
-        // First week's Gunn together is 5th period for some reason, then 6th
-        // according to Redfield
-        return 'ABCDEFG'[(week + 4) % 7]
+        // First week's Gunn together is 5th period for some reason, then 5th
+        // again according to Redfield.
+        if (week === 0) return 'E'
+        return 'ABCDEFG'[(week + 3) % 7]
       },
       start: makeHMTM(11, 5),
       end: makeHMTM(11, 40),
