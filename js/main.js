@@ -128,7 +128,10 @@ document.documentElement.classList.add('hide-app')
 window.addEventListener(
   'load',
   e => {
-    l10nReady.then(main)
+    l10nReady.then(main);
+    
+    if (document.getElementById("version-info").innerHTML == ("{" + "VERSION" + "}"))
+      document.getElementById("version-info").innerHTML = "BETA";
   },
   false
 )
