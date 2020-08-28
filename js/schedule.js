@@ -1007,8 +1007,10 @@ export function initSchedule (manualAltSchedulesProm) {
             actuallyRenderEvents(events[offset])
 
           const date = dateDate.slice(5, 10)
-          const alternateJSON = json.filter(ev =>
-            altScheduleRegex.test(ev.summary) || noSchoolRegex.test(ev.summary)
+          const alternateJSON = json.filter(
+            ev =>
+              altScheduleRegex.test(ev.summary) ||
+              noSchoolRegex.test(ev.summary)
           )
           const altSched = toAlternateSchedules(alternateJSON)
           let ugwitaAltObj = {}
@@ -1072,10 +1074,10 @@ export function initSchedule (manualAltSchedulesProm) {
       const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
       if (letter) {
         return isNaN(+letter[1])
-          // Letter period
-          ? letter[1].toUpperCase()
-          // Number period
-          : ' ABCDEFG'[letter[1]]
+          ? // Letter period
+            letter[1].toUpperCase()
+          : // Number period
+            ' ABCDEFG'[letter[1]]
       }
     }
     if (~name.indexOf('self')) return 'SELF'

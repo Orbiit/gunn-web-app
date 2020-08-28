@@ -141,9 +141,10 @@ async function main () {
   }
   await fs.writeFile(
     resolve(__dirname, './en-gt.js'),
-    `${
-      await fs.readFile(resolve(__dirname, './en-gt-core.js'), 'utf8')
-    }\nwindow.langs['en-gt'] = ${JSON.stringify(
+    `${await fs.readFile(
+      resolve(__dirname, './en-gt-core.js'),
+      'utf8'
+    )}\nwindow.langs['en-gt'] = ${JSON.stringify(
       transformObj(en, translations),
       (key, value) => {
         if (typeof value === 'function') {
