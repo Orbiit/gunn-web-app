@@ -1,4 +1,4 @@
-export default {
+window.langs.fr = {
   html: {
     '12h': '12-heure',
     '24h': '24-heure',

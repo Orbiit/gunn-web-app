@@ -1,4 +1,4 @@
-export function duration ({ T: minutes }) {
+function duration ({ T: minutes }) {
   if (minutes < 1) return 'Do not To One Minute bell'
   return (
     (minutes >= 120
@@ -15,7 +15,7 @@ export function duration ({ T: minutes }) {
   )
 }
 
-export function dueDate ({ P: periodSpan, D: dateStr }) {
+function dueDate ({ P: periodSpan, D: dateStr }) {
   return (
     'To period day period: ' + (periodSpan ? periodSpan + ' in ' : '') + dateStr
   )
