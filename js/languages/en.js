@@ -188,6 +188,7 @@ export default {
     'asgn-cat-reading': 'reading',
     'asgn-cat-test': 'test',
     'asgn-cat-worksheet': 'worksheet',
+    'asgn-edit-label': 'Edit assignment',
     'assync-loaded': 'Assignments loaded.',
     'assync-loading': 'Loading assignments...',
     'assync-loading-problem':

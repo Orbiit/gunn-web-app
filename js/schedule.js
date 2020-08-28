@@ -1,6 +1,10 @@
 /* global fetch, caches, alert, Notification */
 
-import { toAlternateSchedules } from './altScheduleGenerator.js?for=appdesign'
+import {
+  altScheduleRegex,
+  noSchoolRegex,
+  toAlternateSchedules
+} from './altScheduleGenerator.js?for=appdesign'
 import { getFontColour, scheduleApp } from './app.js'
 import {
   categoryList,
@@ -19,6 +23,7 @@ import {
   currentTime,
   escapeHTML,
   frame,
+  googleCalendarId,
   isAppDesign,
   logError,
   now,
@@ -911,7 +916,6 @@ export function initSchedule (manualAltSchedulesProm) {
     }
     renderEvents()
   }
-  const altSchedRegex = /schedule|extended|holiday|no students|break|development/i
   const eventsul = document.querySelector('#events')
   const events = {}
   const months = localize('months').split('  ')
@@ -975,12 +979,17 @@ export function initSchedule (manualAltSchedulesProm) {
         d.getMonth(),
         d.getDate() + offset
       ).toISOString()
+      const end = new Date(
+        d.getFullYear(),
+        d.getMonth(),
+        d.getDate() + offset + 1
+      )
+      end.setMilliseconds(-1) // Do not include the first millisecond of the next day
+      events[offset] = []
       ajax(
-        `https://www.googleapis.com/calendar/v3/calendars/u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${dateDate}&timeMax=${new Date(
-          d.getFullYear(),
-          d.getMonth(),
-          d.getDate() + offset + 1
-        ).toISOString()}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
+        // timeZone=America/Los_Angeles because the calendar is in UTC so
+        // full-day events from the next day would otherwise be included
+        `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=America/Los_Angeles&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
         json => {
           json = JSON.parse(json).items
           const e = []
@@ -999,7 +1008,7 @@ export function initSchedule (manualAltSchedulesProm) {
 
           const date = dateDate.slice(5, 10)
           const alternateJSON = json.filter(ev =>
-            altSchedRegex.test(ev.summary)
+            altScheduleRegex.test(ev.summary) || noSchoolRegex.test(ev.summary)
           )
           const altSched = toAlternateSchedules(alternateJSON)
           let ugwitaAltObj = {}
@@ -1060,8 +1069,14 @@ export function initSchedule (manualAltSchedulesProm) {
     name = name.toLowerCase()
     if (~name.indexOf('period')) {
       // Detect PeriodE/PeriodG (2020-03-31)
-      const letter = /(?:\b|period)([a-g])\b/i.exec(name)
-      if (letter) return letter[1].toUpperCase()
+      const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
+      if (letter) {
+        return isNaN(+letter[1])
+          // Letter period
+          ? letter[1].toUpperCase()
+          // Number period
+          : ' ABCDEFG'[letter[1]]
+      }
     }
     if (~name.indexOf('self')) return 'SELF'
     else if (
