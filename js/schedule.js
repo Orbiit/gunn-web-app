@@ -972,8 +972,11 @@ export function initSchedule (manualAltSchedulesProm) {
       }
       eventsul.innerHTML = innerHTML
     }
-    if (events[offset]) actuallyRenderEvents(events[offset])
-    else {
+    if (events[offset]) {
+      if (events[offset] !== 'loading') {
+        actuallyRenderEvents(events[offset])
+      }
+    } else {
       const dateDate = new Date(
         d.getFullYear(),
         d.getMonth(),
@@ -985,7 +988,7 @@ export function initSchedule (manualAltSchedulesProm) {
         d.getDate() + offset + 1
       )
       end.setMilliseconds(-1) // Do not include the first millisecond of the next day
-      events[offset] = []
+      events[offset] = 'loading'
       ajax(
         // timeZone=America/Los_Angeles because the calendar is in UTC so
         // full-day events from the next day would otherwise be included

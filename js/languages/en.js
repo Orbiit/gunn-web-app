@@ -234,7 +234,7 @@ export default {
     'import-problem': 'There was a problem.',
     'import-warning':
       'This will permanently override your existing settings. Do you want that?',
-    loading: 'Loading',
+    loading: 'Loading...',
     location: 'Location:',
     lunch: 'Lunch',
     'lunch-clubs': 'Clubs',
