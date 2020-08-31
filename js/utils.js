@@ -2,15 +2,12 @@
 
 export const firstDay = '2020-08-17T00:00:00.000-07:00'
 export const lastDay = '2021-06-03T23:59:59.999-07:00'
-export const ALT_KEY = '[gunn-web-app] alts.2020-21'
-export const LAST_YEARS_ALT_KEY = '[gunn-web-app] alts.2019-20'
+export const ALT_KEY = '[gunn-web-app] alts.2020-21.v2'
+export const LAST_YEARS_ALT_KEY = '[gunn-web-app] alts.2020-21'
 export const googleCalendarId = encodeURIComponent(
   'fg978mo762lqm6get2ubiab0mk0f6m2c@import.calendar.google.com'
 )
 export const NADA = () => null
-// Using `const` (or `let`) will not set it to `window` so it won't result in
-// an infinite recursive loop.
-// Alternative methods: use a different name (I'm too lazy to do this though)
 export const logError = function (error) {
   window.logError(error)
 }
