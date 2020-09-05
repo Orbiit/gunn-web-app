@@ -75,6 +75,7 @@ export default {
     'ios-instruct':
       '{name|iOS}—tap on the share icon and select "add to home screen"',
     'kevin-creds': '{name|Kevin} for the French translation.',
+    'kill-sw': 'Unregister service worker',
     languages: 'Languages',
     'light-theme': 'Light theme',
     'lists-disabled': "You've disabled the club and staff lists",

@@ -459,6 +459,12 @@ function initControlCentre () {
   document.getElementById('trick-cache').addEventListener('click', e => {
     window.location = '?' + currentTime()
   })
+  document.getElementById('kill-sw').addEventListener('click', e => {
+    navigator.serviceWorker.getRegistrations()
+      .then(regis => regis.map(regis => {
+        if (regis.scope.includes('gunn-web-app')) return regis.unregister()
+      }))
+  })
 }
 
 function initSaveCodeManager () {
