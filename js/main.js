@@ -2,11 +2,12 @@
 
 /**
  * URL params
- * @param {section.js} section - the section to be viewed
- * @param {lists.js} club-search - default search content in club search bar
- * @param {lists.js} staff-search - deault search content in staff search bar
- * @param {schedule.js} date - the date whose schedule is to be viewed
- * @param {barcodes.js} barcode - the barcode to display
+ * @param {section} section.js - the section to be viewed
+ * @param {club-search} lists.js - default search content in club search bar
+ * @param {staff-search} lists.js - deault search content in staff search bar
+ * @param {date} schedule.js - the date whose schedule is to be viewed
+ * @param {barcode} barcodes.js - the barcode to display
+ * @param {all-langs} l10n.js - show all test and WIP languages
  */
 
 // ?for=appdesign so that Ugwita cache doesn't conflict
