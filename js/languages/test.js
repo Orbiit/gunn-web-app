@@ -1,4 +1,4 @@
-export default {
+window.langs.test = {
   html: {
     utilities: 'Ze',
     clubs: 'Tensvuente',

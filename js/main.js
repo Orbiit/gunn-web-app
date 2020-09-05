@@ -37,6 +37,7 @@ import {
   cookie,
   currentTime,
   firstDay,
+  googleCalendarId,
   LAST_YEARS_ALT_KEY,
   lastDay,
   logError,
@@ -67,7 +68,7 @@ window.initMap = initMap
 // BEGIN MASSIVE PASTE FROM UGWITA
 const calendarURL =
   'https://www.googleapis.com/calendar/v3/calendars/' +
-  encodeURIComponent('u5mgb2vlddfj70d7frf3r015h0@group.calendar.google.com') +
+  googleCalendarId +
   '/events?singleEvents=true&fields=' +
   encodeURIComponent(
     'items(description,end(date,dateTime),start(date,dateTime),summary)'
@@ -79,6 +80,7 @@ const keywords = [
   'extended',
   'holiday',
   'no students',
+  'no school',
   'break',
   'development'
 ]

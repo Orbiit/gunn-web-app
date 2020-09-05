@@ -9,6 +9,7 @@
 /games/
 /touchy/*
 !/touchy/rotate1.js
+/js/languages/en-gt-core.js
 /js/*.html
 /js/datepicker2.js
 /js/inputFitContent.js

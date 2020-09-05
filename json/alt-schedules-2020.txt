@@ -1,5 +1,8 @@
 # *Sigh* that's right, UGWA is back to fetching from a manually updated file -_-
 
+# If an alternate schedule is missing, get it from
+# https://docs.google.com/document/d/1V7QMYkwJwxtGiFhW_BO7zhM329mUwC2HizzujhVubik/
+
 # Monday, first week of school: Day starts with an assembly
 2020-08-17
 * Gunn Opening Week Schedule [first period is an assembly]

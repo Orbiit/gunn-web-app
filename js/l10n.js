@@ -1,7 +1,8 @@
-import { cookie } from './utils.js'
+import { cookie, isAppDesign } from './utils.js'
 import en from './languages/en.js'
 
 const langs = { en }
+window.langs = langs
 
 export const availableLangs = {
   en: 'English',
@@ -61,11 +62,13 @@ export function localizeHtml (id) {
   return localize(id, 'html')
 }
 function loadLanguage (langCode) {
-  return import(new URL(`./js/languages/${langCode}.js`, window.location)).then(
-    ({ default: langData }) => {
-      langs[langCode] = langData
-    }
-  )
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.addEventListener('load', resolve)
+    script.addEventListener('error', reject)
+    script.src = `./js/languages/${langCode}.js` + isAppDesign
+    document.head.appendChild(script)
+  })
 }
 export const ready =
   currentLang !== 'en' ? loadLanguage(currentLang) : Promise.resolve()

@@ -1,5 +1,5 @@
 // my conlang for my own entertainment, please ignore
-export default {
+window.langs['x-mleng'] = {
   html: {
     utilities: 'Utilites',
     clubs: 'Clubs',

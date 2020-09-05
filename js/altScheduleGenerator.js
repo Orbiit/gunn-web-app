@@ -7,8 +7,11 @@ const timeGetterRegex = /\(?(1?[0-9])(?::([0-9]{2}))? *(?:am)? *(?:-|–) *(1?[0
 const newLineRegex = /\r?\n/g
 const noNewLineBeforeTimeRegex = /\n\(/g // hack for 2019-09-06 schedule
 
-const altScheduleRegex = /schedule|extended|lunch/i
-const noSchoolRegex = /holiday|no\sstudents|break|development/i
+// Don't forget to adjust `keywords` in main.js accordingly if adding to these
+// regices!
+export const altScheduleRegex = /schedule|extended|lunch/i
+// "Labor Day - No School" 2020-09-07
+export const noSchoolRegex = /holiday|no\s(students|school)|break|development/i
 
 function parseAlternate (summary, description) {
   if (altScheduleRegex.test(summary)) {

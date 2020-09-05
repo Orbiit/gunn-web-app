@@ -1,4 +1,4 @@
-export default {
+window.langs.es = {
   html: {
     utilities: 'Utilidades',
     clubs: 'Clubos',
