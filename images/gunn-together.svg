@@ -9,20 +9,6 @@
     d="M 0 0 H 200 V 200 H 0 z"
     fill="#000"
   />
-  <g
-    id="lock"
-    visibility="hidden"
-  >
-    <path
-      d="M 60 100 v -20 a 40 40 0 0 1 80 0 v 20"
-      stroke="rgba(255, 255, 255, 0.6)"
-      stroke-width="20"
-    />
-    <path
-      d="M 40 105 H 160 v 65 H 40 z"
-      fill="rgba(255, 255, 255, 0.6)"
-    />
-  </g>
   <path
     id="question-mark"
     d="M 106.031 119.024 L 86.781 119.024 L 86.781 119.024 Q 86.781 108.497
@@ -47,9 +33,7 @@
     102.271 153.539 96.782 153.539 L 96.782 153.539 L 96.782 153.539 Q 91.292
     153.539 87.946 150.306 L 87.946 150.306 L 87.946 150.306 Q 84.6 147.072 84.6
     142.109 z"
-    fill="#e64a4a"
-    stroke="#000"
-    stroke-width="5"
+    fill="rgba(0, 0, 0, 0.3)"
   />
   <style type="text/css">
     /* <![CDATA[ */
@@ -83,28 +67,18 @@
       }
     }
     #question-mark {
-      animation: flipflop 7s infinite;
+      animation: spin 5s infinite cubic-bezier(0.9, 0, 0.1, 1);
+      transform-origin: center;
     }
-    #lock {
-      animation: flipflop 7s infinite 3.5s;
-      visibility: visible;
-      opacity: 0;
-    }
-    @keyframes flipflop {
+    @keyframes spin {
       0% {
-        opacity: 0;
+        transform: rotate(0deg);
       }
-      10% {
-        opacity: 1;
-      }
-      40% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0;
+      20% {
+        transform: rotate(0deg);
       }
       100% {
-        opacity: 0;
+        transform: rotate(-360deg);
       }
     }
     /* ]]> */

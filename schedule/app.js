@@ -61,7 +61,8 @@ export function scheduleApp (options = {}) {
     F: localize('symbols/period-f'),
     G: localize('symbols/period-g'),
     H: localize('symbols/period-h'),
-    '0': localize('symbols/period-zero')
+    '0': localize('symbols/period-zero'),
+    GT: '?'
   }
   const ICON_SIZE = 256
   const ICON_FONT = '"Roboto", sans-serif'
@@ -106,6 +107,11 @@ export function scheduleApp (options = {}) {
     else return localizeWith('duration', 'times', { T: minutes })
   }
   function getPeriodSpan (period) {
+    if (period === 'GT') {
+      return `<span class="schedule-endinginperiod gt-confuse">${
+        localize('gunn-together/name')
+      }</span>`
+    }
     return `<span style="${getCSS(
       getPeriod(period).colour,
       period
@@ -133,10 +139,17 @@ export function scheduleApp (options = {}) {
     let summer = false
     const isSELF = isSELFDay(mez, dia)
     let periods
+    // For Gunn Together period resolution (see below)
+    const gtWeek = Math.floor(
+      (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
+    )
+    // Don't touch this function because it's reimplemented under getWeek and
+    // maybe elsewhere for some reason >_<
     function getPeriodName (index) {
-      return periods[index].name === 'Flex' && isSELF
-        ? 'SELF'
-        : periods[index].name
+      if (periods[index].name === 'Flex' && isSELF) {
+        return 'SELF'
+      }
+      return periods[index].name
     }
     if (options.customSchedule) {
       periods = options.customSchedule(d, ano, mez, dia, weekday)
@@ -196,7 +209,14 @@ export function scheduleApp (options = {}) {
       )
     }
     return {
-      periods,
+      periods: periods.map(period => {
+        if (period.name === 'GT') {
+          if (gtWeek >= 0 && gtWeek < 2) {
+            return { ...period, name: 'E', gunnTogether: true }
+          }
+        }
+        return period
+      }),
       alternate,
       summer,
       getPeriodName,
@@ -264,6 +284,7 @@ export function scheduleApp (options = {}) {
         )}</span>`
       }
       // QUESTION: Should there be feedback for days with only optional periods?
+      // Later QUESTION: What did I mean by "feedback"??
       if (checkfuture) {
         let i
         for (i = 0; i < periods.length; i++)
@@ -332,29 +353,37 @@ export function scheduleApp (options = {}) {
           period.name === 'Flex' && isSELF ? 'SELF' : period.name
         )
         innerHTML += `<div class="schedule-period ${
-          period.gunnTogether ? 'gunn-together' : ''
+          period.name === 'GT' ? 'gunn-together' : ''
         }" style="${getCSS(
           periodName.colour,
           period.name
-        )}"><span class="schedule-periodname">${escapeHTML(
-          periodName.label
-        )}<span class="pd-btns">${
-          options.displayAddAsgn
-            ? `<button class="material icon pd-btn add-asgn" data-pd="${
-                period.name
-              }" title="${localize(
-                'add-asgn'
-              )}"><i class="material-icons">add_task</i></button>`
-            : ''
-        }${
-          periodName.link
-            ? `<a class="material icon pd-btn" target="_blank" href="${periodName.link}" rel="noopener noreferrer"><i class="material-icons">\ue89e</i></a>`
-            : ''
-        }</span></span>`
-        if (period.gunnTogether) {
+        )}">`
+        if (period.name !== 'GT') {
+          innerHTML += `<span class="schedule-periodname">${escapeHTML(
+            periodName.label
+          )}<span class="pd-btns">${
+            options.displayAddAsgn
+              ? `<button class="material icon pd-btn add-asgn" data-pd="${
+                  period.name
+                }" title="${localize(
+                  'add-asgn'
+                )}"><i class="material-icons">add_task</i></button>`
+              : ''
+          }${
+            periodName.link
+              ? `<a class="material icon pd-btn" target="_blank" href="${periodName.link}" rel="noopener noreferrer"><i class="material-icons">\ue89e</i></a>`
+              : ''
+          }</span></span>`
+        }
+        if (period.gunnTogether || period.name === 'GT') {
           innerHTML += `<div class="gunn-together-badge">${localize(
-            'gunn-together'
+            'gunn-together/name'
           )}</div>`
+        }
+        if (period.name === 'GT') {
+          innerHTML += `<span>${
+            localize('gunn-together/subtitle')
+          }</span>`
         }
         innerHTML += `<span>${getHumanTime(
           ('0' + period.start.hour).slice(-2) +
