@@ -500,13 +500,17 @@ export function scheduleApp (options = {}) {
     )
   }
   function getNextLinkOpen () {
-    return options.openLinkBefore !== null
-      ? getNext(
-          (pdTime, nowTime, pdName) =>
-            getPeriod(pdName).link && pdTime - options.openLinkBefore > nowTime,
-          { end: false }
-        )
-      : null
+    if (options.openLinkBefore !== null) {
+      const next = getNext(
+        (pdTime, nowTime, pdName) =>
+          getPeriod(pdName).link && pdTime - options.openLinkBefore > nowTime,
+        { end: false }
+      )
+      if (next) {
+        return { ...next, time: next.time - options.openLinkBefore * 1000 }
+      }
+    }
+    return null
   }
   let nextNotif = null
   let nextLinkOpen = null
