@@ -174,8 +174,7 @@ function main () {
         initGradeCalc,
         initSaveCodeManager,
         initMaps,
-        initChat,
-        initCoronavirusClose
+        initChat
       ])
       try {
         initScheduleWhenReady()
@@ -199,18 +198,6 @@ function attemptFns (fns) {
       logError(err.stack || err.message || err)
     }
   }
-}
-
-// TEMP for school closure
-function initCoronavirusClose () {
-  const wrapper = document.getElementById('coronavirus-window')
-  const closeBtn = document.getElementById('close-coronavirus')
-  wrapper.addEventListener('click', e => {
-    if (e.target === wrapper || e.target === closeBtn) {
-      document.body.removeChild(wrapper)
-    }
-  })
-  // wrapper.classList.remove('coronavirus-ended')
 }
 
 function initScheduleWhenReady () {

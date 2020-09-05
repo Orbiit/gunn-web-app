@@ -74,23 +74,7 @@ const normalschedule = [
   ],
   [
     { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-    {
-      name (d) {
-        const week = Math.floor(
-          (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
-        )
-        // scheduleApp can get days outside of the school year because it
-        // calculates the schedule immediately before isSummer is set
-        if (week < 0) return 'SELF'
-        // First week's Gunn together is 5th period for some reason, then 5th
-        // again according to Redfield.
-        if (week === 0) return 'E'
-        return 'ABCDEFG'[(week + 3) % 7]
-      },
-      start: makeHMTM(11, 5),
-      end: makeHMTM(11, 40),
-      gunnTogether: true
-    },
+    { name: 'GT', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
     { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
     { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
     { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
@@ -904,6 +888,10 @@ export function initSchedule (manualAltSchedulesProm) {
               period.id
             }?${encodeURIComponent(period.colour)})`
           }
+          if (period.id === 'GT') {
+            span.title = localize('gunn-together/name')
+            span.classList.add('gt-confuse')
+          }
           div.appendChild(span)
         }
         weekwrapper.appendChild(div)
@@ -1093,6 +1081,7 @@ export function initSchedule (manualAltSchedulesProm) {
       return 'Flex'
     else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
     else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
+    else if (~name.indexOf('together')) return 'GT'
     else return name
   }
   const daynames = localize('days').split('  ')

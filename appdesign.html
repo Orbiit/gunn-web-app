@@ -149,13 +149,15 @@
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
-      // const start = Date.now()
-      // // const baseTime = new Date(2020, 8, 21, 10, 40).getTime()
+      /*
+      const start = Date.now()
+      const baseTime = new Date(2020, 8, 9, 11, -1).getTime()
       // const baseTime = new Date().getTime()
-      // const speed = 100
-      // setCurrentTime(() => {
-      //   return (Date.now() - start) * speed + baseTime
-      // })
+      const speed = 100
+      setCurrentTime(() => {
+        return (Date.now() - start) * speed + baseTime
+      })
+      //*/
       window.setCurrentTime = setCurrentTime
 
       const betaBadge = document.createElement('span')
@@ -181,34 +183,6 @@
       `
     </script>
     <!-- /NOAPPDESIGN -->
-
-    <!-- TEMP for school closure -->
-    <div class="coronavirus-cover coronavirus-ended" id="coronavirus-window">
-      <div class="coronavirus-mask">
-        <div class="coronavirus-content">
-          <h1 class="coronavirus-heading" data-l10n="coronavirus-heading"></h1>
-          <p data-l10n="coronavirus-subtitle"></p>
-          <div class="coronavirus-links">
-            <a
-              class="material ripple-light"
-              href="https://www.pausd.org/explore-pausd/news/categories/coronavirus"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-l10n="coronavirus-pausd"
-            ></a>
-          </div>
-          <button
-            class="material"
-            id="close-coronavirus"
-            data-l10n="close"
-          ></button>
-        </div>
-        <div class="mask-strap strap-i"></div>
-        <div class="mask-strap strap-ii"></div>
-        <div class="mask-strap strap-iii"></div>
-        <div class="mask-strap strap-iv"></div>
-      </div>
-    </div>
 
     <div id="footer">
       <ul>
