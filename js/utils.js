@@ -78,13 +78,17 @@ export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
 
 const scrim = document.createElement('div')
 scrim.className = 'scrim'
-document.body.appendChild(scrim)
 let openDialog = null
 export function showDialog (dialog) {
   if (openDialog) {
     if (openDialog === dialog) return
     openDialog.classList.remove('show')
   } else {
+    if (!scrim.parentNode) {
+      document.body.appendChild(scrim)
+      // Force repaint
+      scrim.getBoundingClientRect()
+    }
     scrim.classList.add('show-scrim')
   }
   openDialog = dialog

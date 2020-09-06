@@ -1439,7 +1439,9 @@ export function initSchedule (manualAltSchedulesProm) {
         if (change) {
           scheduleapp.container.style.opacity = swipePreview.style.opacity
           // Force repaint
-          window.getComputedStyle(scheduleapp.container).transform
+          window
+            .getComputedStyle(scheduleapp.container)
+            .getPropertyValue('transform')
         }
         scheduleAppWrapper.classList.remove('swiping')
         scheduleAppWrapper.style.userSelect = null
