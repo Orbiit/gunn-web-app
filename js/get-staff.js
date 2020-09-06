@@ -31,15 +31,36 @@ function getTeacherSchedules (sections, teacherData) {
     if (!teachers[teacherId]) {
       teachers[teacherId] = {
         ...teacher,
-        semester1: {},
-        semester2: {}
+        periods: {}
       }
     }
-    if (semester & 0b01) {
-      teachers[teacherId].semester1[period] = course
+    const { periods } = teachers[teacherId]
+    if (periods[period]) {
+      if (semester === periods[period].semester) {
+        course = periods[period].semester1 + ', ' + course
+      }
     }
-    if (semester & 0b10) {
-      teachers[teacherId].semester2[period] = course
+    if (periods[period]) {
+      if (periods[period].yearlong && semester !== 'S1S2') {
+        periods[period].yearlong = false
+      }
+    } else {
+      periods[period] = { semester1: [], semester2: [], yearlong: null }
+    }
+    if (semester === 'S1S2') {
+      periods[period].semester1.push(course)
+      periods[period].semester2.push(course)
+      if (periods[period].yearlong === null) {
+        periods[period].yearlong = true
+      }
+    } else if (semester === 'S1') {
+      periods[period].semester1.push(course)
+      periods[period].yearlong = false
+    } else if (semester === 'S2') {
+      periods[period].semester2.push(course)
+      periods[period].yearlong = false
+    } else {
+      throw new Error(`\`semester\` ${semester} is not one of: S1S2, S1, S2.`)
     }
   }
 
@@ -51,11 +72,8 @@ function getTeacherSchedules (sections, teacherData) {
   } of sections) {
     const [period] = periodStr.split(' / ')
     const { teacher, coteacher } = teacherData[teacherDisplay] || {}
-    const sem =
-      (semester.includes('S1') ? 0b01 : 0) |
-      (semester.includes('S2') ? 0b10 : 0)
-    if (teacher) noteTeacher(teacher, period, course, sem)
-    if (coteacher) noteTeacher(coteacher, period, course, sem)
+    if (teacher) noteTeacher(teacher, period, course, semester)
+    if (coteacher) noteTeacher(coteacher, period, course, semester)
   }
 
   return teachers
@@ -79,7 +97,7 @@ async function main () {
     $('.fsConstituentItem').each(function () {
       const teacher = $(this)
       const name = teacher
-        .find('.fsConstituentProfileLink')
+        .find('.fsFullName')
         .text()
         .trim()
       let matches = schedules.filter(([[last]]) => name.includes(last))
@@ -93,15 +111,18 @@ async function main () {
         }
       }
       if (matches.length === 1) {
-        const [[, { semester1, semester2 }]] = matches
-        const periodNames = [
-          ...new Set([...Object.keys(semester1), ...Object.keys(semester2)])
-        ]
+        const [[, teacher]] = matches
         periods = Object.fromEntries(
-          periodNames.map(period => [
-            period,
-            `${semester1[period] || ''}|${semester2[period] || ''}`
-          ])
+          Object.entries(teacher.periods).map(
+            ([period, { semester1, semester2, yearlong }]) => {
+              const sem1Courses = semester1.sort().join(', ')
+              const sem2Courses = semester2.sort().join(', ')
+              return [
+                period,
+                yearlong ? sem1Courses : `${sem1Courses}|${sem2Courses}`
+              ]
+            }
+          )
         )
       }
       staff[name] = {
@@ -109,6 +130,16 @@ async function main () {
           .find('.fsTitles')
           .text()
           .trim(),
+        department:
+          teacher
+            .find('.fsDepartments')
+            .text()
+            .trim() || undefined,
+        phone:
+          teacher
+            .find('.fsPhones > a')
+            .text()
+            .trim() || undefined,
         email: getEmail(teacher.find('.fsEmail > div > script').html()),
         periods
       }

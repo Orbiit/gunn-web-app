@@ -44,9 +44,13 @@ function addRowToTable (table, period, classes) {
     })
   )
   if (classes) {
-    const [sem1, sem2] = classes.split('|')
-    addSemToRow(row, sem1)
-    if (sem1 !== sem2) addSemToRow(row, sem2)
+    if (classes.includes('|')) {
+      const [sem1, sem2] = classes.split('|')
+      addSemToRow(row, sem1)
+      addSemToRow(row, sem2)
+    } else {
+      addSemToRow(row, classes)
+    }
   } else {
     row.classList.add('staff-schedule-no-classes')
   }

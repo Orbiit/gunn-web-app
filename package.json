@@ -22,6 +22,7 @@
     "build": "node build.js",
     "check-l10n": "node js/languages/check-l10n.js",
     "format": "prettier-standard --format --lint",
+    "newpsa": "node psa/new-psa.js",
     "update-staff": "node js/get-staff.js"
   }
 }

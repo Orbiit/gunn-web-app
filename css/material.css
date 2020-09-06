@@ -289,7 +289,7 @@ ul.material-list li.error,
   background-color: rgba(0, 0, 0, 0.32);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
 }
 .show-scrim {
   opacity: 1;
