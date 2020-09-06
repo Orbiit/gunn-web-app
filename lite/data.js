@@ -44,7 +44,7 @@ export const normalSchedules = [
 
 export const firstDay = "2020-08-17T00:00:00.000-07:00";
 export const lastDay = "2021-06-03T23:59:59.999-07:00";
-export const keywords = ["self", "schedule", "extended", "holiday", "no students", "break", "development"];
+export const keywords = ["self", "schedule", "extended", "holiday", "no students", "no school", "break", "development"];
 
 export const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 export const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
