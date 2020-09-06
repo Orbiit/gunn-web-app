@@ -29,7 +29,7 @@ function refreshAlts() {
   getAlternateSchedules(alts => {
     const today = new Date();
     alts.lastGenerated = [today.getFullYear(), today.getMonth(), today.getDate()];
-    storage.setItem("[gunn-web-app] lite.alts19-20", JSON.stringify(alts));
+    storage.setItem("[gunn-web-app] lite.alts20-21", JSON.stringify(alts));
     if (window.location.search === '?genalts') window.location.replace('../');
     else window.location.reload();
   });
@@ -136,12 +136,12 @@ endDate = {year: 2021, month: 5, date: 3};
 
 let alternateSchedules;
 try {
-  alternateSchedules = JSON.parse(storage.getItem("[gunn-web-app] lite.alts19-20") || false);
+  alternateSchedules = JSON.parse(storage.getItem("[gunn-web-app] lite.alts20-21") || false);
 } catch (e) {
-  storage.setItem("[gunn-web-app] lite.alts19-20", "");
+  storage.setItem("[gunn-web-app] lite.alts20-21", "");
   alternateSchedules = {};
 }
-if (!storage.getItem("[gunn-web-app] lite.alts19-20") || !alternateSchedules.lastGenerated
+if (!storage.getItem("[gunn-web-app] lite.alts20-21") || !alternateSchedules.lastGenerated
     || Date.now() - new Date(...alternateSchedules.lastGenerated).getTime() > 2592000000) { // 30 days
   refreshAlts();
 }
