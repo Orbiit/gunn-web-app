@@ -19,14 +19,15 @@ import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
   ajax,
   ALT_KEY,
+  closeDialog,
   cookie,
   currentTime,
   escapeHTML,
-  frame,
   googleCalendarId,
   isAppDesign,
   logError,
   now,
+  showDialog,
   toEach
 } from './utils.js'
 
@@ -664,13 +665,13 @@ export function initSchedule (manualAltSchedulesProm) {
     })
     dueDate.day = dueObj
     contentInput.value = text
-    editorDialog.classList.add('show')
+    showDialog(editorDialog)
     contentInput.focus()
     setImportance(importance)
     let onSave, onDelete, onFinish
     currentCancelFn = () => {
       onDeleteClick = onSaveClick = currentCancelFn = null
-      editorDialog.classList.remove('show')
+      closeDialog()
     }
     onDeleteClick = () => {
       currentCancelFn()
@@ -1741,7 +1742,7 @@ export function initSchedule (manualAltSchedulesProm) {
     iframe.src = url
     iframeTitleLink.href = url
     iframeTitle.nodeValue = name
-    iframeDialog.classList.add('show')
+    showDialog(iframeDialog)
   }
 
   // TEMP: H period editor not needed this year?
@@ -1751,7 +1752,7 @@ export function initSchedule (manualAltSchedulesProm) {
   // const STEP = 5
   // const hEditor = document.getElementById('h-editor')
   // document.getElementById('edit-h').addEventListener('click', e => {
-  //   hEditor.classList.add('show')
+  //   showDialog(hEditor)
   // })
   // const hDays = document.createDocumentFragment()
   // for (let day = 1; day <= 5; day++) {

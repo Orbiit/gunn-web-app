@@ -108,9 +108,9 @@ export function scheduleApp (options = {}) {
   }
   function getPeriodSpan (period) {
     if (period === 'GT') {
-      return `<span class="schedule-endinginperiod gt-confuse">${
-        localize('gunn-together/name')
-      }</span>`
+      return `<span class="schedule-endinginperiod gt-confuse">${localize(
+        'gunn-together/name'
+      )}</span>`
     }
     return `<span style="${getCSS(
       getPeriod(period).colour,
@@ -354,10 +354,7 @@ export function scheduleApp (options = {}) {
         )
         innerHTML += `<div class="schedule-period ${
           period.name === 'GT' ? 'gunn-together' : ''
-        }" style="${getCSS(
-          periodName.colour,
-          period.name
-        )}">`
+        }" style="${getCSS(periodName.colour, period.name)}">`
         if (period.name !== 'GT') {
           innerHTML += `<span class="schedule-periodname">${escapeHTML(
             periodName.label
@@ -381,9 +378,7 @@ export function scheduleApp (options = {}) {
           )}</div>`
         }
         if (period.name === 'GT') {
-          innerHTML += `<span>${
-            localize('gunn-together/subtitle')
-          }</span>`
+          innerHTML += `<span>${localize('gunn-together/subtitle')}</span>`
         }
         innerHTML += `<span>${getHumanTime(
           ('0' + period.start.hour).slice(-2) +

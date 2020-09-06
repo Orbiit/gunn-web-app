@@ -1,4 +1,4 @@
-import { currentTime, NADA, toEach } from './utils.js'
+import { closeDialog, currentTime, NADA, toEach } from './utils.js'
 
 export function ripple (elem) {
   if (typeof elem === 'string') {
@@ -367,13 +367,7 @@ window.addEventListener(
       )
     })
     toEach('.material-dialog > .buttons > .close', t => {
-      t.addEventListener(
-        'click',
-        e => {
-          t.parentNode.parentNode.classList.remove('show')
-        },
-        false
-      )
+      t.addEventListener('click', closeDialog)
     })
   },
   false

@@ -8,9 +8,11 @@ export const googleCalendarId = encodeURIComponent(
   'fg978mo762lqm6get2ubiab0mk0f6m2c@import.calendar.google.com'
 )
 export const NADA = () => null
+
 export const logError = function (error) {
   window.logError(error)
 }
+
 export const cookie = (() => {
   try {
     return localStorage
@@ -33,6 +35,7 @@ export const cookie = (() => {
     }
   }
 })()
+
 // Current time getters are centralized here so it is easier to simulate a
 // different time
 export function now () {
@@ -42,6 +45,7 @@ export let currentTime = () => Date.now()
 export function setCurrentTime (newFn) {
   currentTime = newFn
 }
+
 export function ajax (url, callback, error) {
   const xmlHttp = new XMLHttpRequest()
   xmlHttp.onreadystatechange = () => {
@@ -55,6 +59,7 @@ export function ajax (url, callback, error) {
   xmlHttp.open('GET', url, true)
   xmlHttp.send(null)
 }
+
 export function toEach (query, fn) {
   const elems = document.querySelectorAll(query)
   for (let i = 0, len = elems.length; i < len; i++) fn(elems[i], i)
@@ -66,9 +71,30 @@ export function escapeHTML (text = '') {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
 }
+
 export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
   ? '?for=appdesign'
   : ''
-export function frame () {
-  return new Promise(resolve => window.requestAnimationFrame(resolve))
+
+const scrim = document.createElement('div')
+scrim.className = 'scrim'
+document.body.appendChild(scrim)
+let openDialog = null
+export function showDialog (dialog) {
+  if (openDialog) {
+    if (openDialog === dialog) return
+    openDialog.classList.remove('show')
+  } else {
+    scrim.classList.add('show-scrim')
+  }
+  openDialog = dialog
+  dialog.classList.add('show')
 }
+export function closeDialog () {
+  if (openDialog) {
+    openDialog.classList.remove('show')
+    scrim.classList.remove('show-scrim')
+    openDialog = null
+  }
+}
+scrim.addEventListener('click', closeDialog)

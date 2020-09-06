@@ -119,12 +119,12 @@ body.dark .schedule-container .schedule-periodprogress > div {
   background-image: linear-gradient(
     120deg,
     #f44336,
-    #9C27B0,
-    #2196F3,
+    #9c27b0,
+    #2196f3,
     #009688,
-    #4CAF50,
-    #FFEB3B,
-    #FF9800,
+    #4caf50,
+    #ffeb3b,
+    #ff9800,
     #f44336
   );
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);

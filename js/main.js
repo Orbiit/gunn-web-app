@@ -35,6 +35,7 @@ import {
 import { zoomImage } from '../touchy/rotate1.js'
 import {
   ALT_KEY,
+  closeDialog,
   cookie,
   currentTime,
   firstDay,
@@ -43,6 +44,7 @@ import {
   lastDay,
   logError,
   now,
+  showDialog,
   toEach
 } from './utils.js'
 
@@ -218,6 +220,8 @@ function initTabfocus () {
     if (e.keyCode === 9 || e.keyCode === 13) {
       document.body.classList.add('tab-focus')
       tabFocus = true
+    } else if (e.keyCode === 27) {
+      closeDialog()
     }
   })
   document.addEventListener('keyup', e => {
@@ -461,10 +465,11 @@ function initControlCentre () {
     window.location = '?' + currentTime()
   })
   document.getElementById('kill-sw').addEventListener('click', e => {
-    navigator.serviceWorker.getRegistrations()
-      .then(regis => regis.map(regis => {
+    navigator.serviceWorker.getRegistrations().then(regis =>
+      regis.map(regis => {
         if (regis.scope.includes('gunn-web-app')) return regis.unregister()
-      }))
+      })
+    )
   })
 }
 
@@ -712,7 +717,7 @@ function showIOSDialog () {
     !cookie.getItem('[gunn-web-app] no-thx-ios')
   ) {
     const theThing = document.getElementById('ios-add-to-home-screen')
-    theThing.classList.add('show')
+    showDialog(theThing)
     if (!ua.includes('Version/')) theThing.classList.add('not-ios-safari')
     if (ua.includes('iPad')) theThing.classList.add('ipad')
     document.getElementById('ios-no-thanks').addEventListener('click', e => {

@@ -82,7 +82,7 @@ export default {
     loading: 'Loading...',
     'loading-assync': 'Loading...',
     lonely:
-      'UGWA will graduate this school year. You should try making your own Gunn schedule app, so it can be advertised by UGWA for next year\'s students!',
+      "UGWA will graduate this school year. You should try making your own Gunn schedule app, so it can be advertised by UGWA for next year's students!",
     map: 'Map',
     'martin-ad': "{ad|Compelling utility} Martin's GPA Calculation Website",
     material:
@@ -227,7 +227,8 @@ export default {
     flex: 'Tutorial',
     'gunn-together': {
       name: 'Gunn Together',
-      subtitle: 'Ask your Period 5 teacher whom you should meet with during this period.'
+      subtitle:
+        'Ask your Period 5 teacher whom you should meet with during this period.'
     },
     gmaps: 'use google maps',
     'gmaps-error':

@@ -1,7 +1,15 @@
 import { localize, localizeWith } from './l10n.js'
 import { materialInput, ripple } from './material.js'
 import { savedClubs, saveSavedClubs } from './saved-clubs.js'
-import { ajax, cookie, isAppDesign, logError, now, toEach } from './utils.js'
+import {
+  ajax,
+  cookie,
+  isAppDesign,
+  logError,
+  now,
+  showDialog,
+  toEach
+} from './utils.js'
 
 function containsString (pattern) {
   if (!pattern) return () => true
@@ -124,7 +132,7 @@ function initList (
   )
   let current = null
   function showItem (name) {
-    info.classList.add('show')
+    showDialog(info)
     h1.innerHTML = name
     current = name
     const item = data[name]

@@ -50,8 +50,7 @@ to see all the relevant source files used by UGWA:
   - `/css/periodcustomisation.css` — Material input and other required
     components for the period customisation options
 
-  - `/schedule/schedule.css` — schedule, specifically anything in the `<div
-    class="schedule-container">` element (**NOTE**: this is in a different
+  - `/schedule/schedule.css` — schedule, specifically anything in the `<div class="schedule-container">` element (**NOTE**: this is in a different
     folder)
 
   - `/css/main.css` — everything else
@@ -172,8 +171,7 @@ npm run check-l10n
 ```
 
 To add a new language, just make a copy of `/js/languages/en.js` and name in
-`<language code>.js`. Replace `export default` with `window.langs.<language
-code> =`. In the `availableLangs` object in `js/l10n.js`, specify the language's
+`<language code>.js`. Replace `export default` with `window.langs.<language code> =`. In the `availableLangs` object in `js/l10n.js`, specify the language's
 name, and when you want to publish it, add it to the array in the else condition
 of the ternary statement that determines `publicLangs`'s value.
 
