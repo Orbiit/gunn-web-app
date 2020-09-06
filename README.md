@@ -157,8 +157,13 @@ new school year.
 
 ### Creating a PSA
 
-Create an HTML file in the `/psa/` folder named `<date>.html` using the format
-YYYY-MM-DD. Add the date to `psas.json`.
+```sh
+# IMPORTANT: If a PSA has already been created for today, it'll overwrite that
+# file
+npm run newpsa
+```
+
+Then edit the newly created file in the `/psa/` folder.
 
 ### Localization
 
