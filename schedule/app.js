@@ -198,6 +198,21 @@ export function scheduleApp (options = {}) {
         }
       }
     }
+    // Putting this before hiding preps so that if you have a prep for Gunn
+    // Together it is hidden
+    periods = periods.map(period => {
+      if (period.name === 'GT') {
+        let name
+        if (gtWeek >= 0 && gtWeek < 2) name = 'E'
+        else if (gtWeek < 4) {
+          name = 'ABCDEFG'[(gtWeek + 2) % 7]
+        }
+        if (name) {
+          return { ...period, name, gunnTogether: true }
+        }
+      }
+      return period
+    })
     // putting this after it checks if the day is a school day because
     // you can have all day prep and still have H period on that day, maybe
     if (options.hidePreps) {
@@ -209,14 +224,7 @@ export function scheduleApp (options = {}) {
       )
     }
     return {
-      periods: periods.map(period => {
-        if (period.name === 'GT') {
-          if (gtWeek >= 0 && gtWeek < 2) {
-            return { ...period, name: 'E', gunnTogether: true }
-          }
-        }
-        return period
-      }),
+      periods,
       alternate,
       summer,
       getPeriodName,

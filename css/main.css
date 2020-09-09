@@ -469,6 +469,11 @@ body.dark #mapimage {
 .block-of-text p {
   margin: 0.5em 0;
 }
+.block-of-text blockquote {
+  border-left: 5px solid var(--off-switch-back);
+  padding-left: 25px;
+  margin-left: 0;
+}
 .percent-wrapper {
   display: inline-block;
   font-family: monospace;
