@@ -4,6 +4,7 @@ export const firstDay = '2020-08-17T00:00:00.000-07:00'
 export const lastDay = '2021-06-03T23:59:59.999-07:00'
 export const ALT_KEY = '[gunn-web-app] alts.2020-21.v2'
 export const LAST_YEARS_ALT_KEY = '[gunn-web-app] alts.2020-21'
+export const schoolTimeZone = 'America/Los_Angeles'
 export const googleCalendarId = encodeURIComponent(
   'fg978mo762lqm6get2ubiab0mk0f6m2c@import.calendar.google.com'
 )
@@ -44,6 +45,49 @@ export function now () {
 export let currentTime = () => Date.now()
 export function setCurrentTime (newFn) {
   currentTime = newFn
+}
+try {
+  const { timeZone } = new Intl.DateTimeFormat().resolvedOptions()
+  if (timeZone && timeZone !== schoolTimeZone) {
+    console.log(
+      timeZone,
+      "is not Gunn's time zone (",
+      schoolTimeZone,
+      '), so UGWA will try to simulate it.'
+    )
+    // Based on https://github.com/tc39/proposal-temporal/blob/f3df34f9d9f7fb69b67caf2a448488ec8518fda6/polyfill/lib/ecmascript.mjs#L979
+    const schoolTzFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: schoolTimeZone,
+      hour12: false,
+      era: 'short',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    })
+    currentTime = () => {
+      const now = new Date()
+      const datetime = schoolTzFormatter.format(now)
+      const [date, fullYear, time] = datetime.split(/,\s+/)
+      const [month, day] = date.split(' ')
+      const [year, era] = fullYear.split(' ')
+      const [hour, minute, second] = time.split(':')
+      // Local time for formatter time zone
+      return new Date(
+        era === 'BC' ? -year + 1 : +year,
+        +month - 1,
+        +day,
+        hour === '24' ? 0 : +hour, // bugs.chromium.org/p/chromium/issues/detail?id=1045791
+        +minute,
+        +second,
+        now.getMilliseconds()
+      ).getTime()
+    }
+  }
+} catch (err) {
+  window.logError(err)
 }
 
 export function ajax (url, callback, error) {
