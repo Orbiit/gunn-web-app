@@ -186,28 +186,30 @@
 
     <div id="footer">
       <ul>
-        <li data-section="utilities" tabindex="0">
+        <li data-section="utilities" tabindex="0" class="footer-item">
           <i class="material-icons">&#xE869;</i>
           <span data-l10n="utilities"></span>
         </li>
-        <li data-section="clubs" tabindex="0">
+        <li data-section="clubs" tabindex="0" class="footer-item">
           <i class="material-icons">&#xE886;</i>
           <span data-l10n="clubs"></span>
         </li>
-        <li data-section="schedule" tabindex="0">
+        <li data-section="schedule" tabindex="0" class="footer-item">
           <i class="material-icons">&#xE8B5;</i>
           <span data-l10n="schedule"></span>
         </li>
-        <li data-section="staff" tabindex="0">
+        <li data-section="staff" tabindex="0" class="footer-item">
           <i class="material-icons">&#xE7FB;</i>
           <span data-l10n="staff"></span>
         </li>
-        <li data-section="options" tabindex="0">
-          <i class="material-icons">
-            <div id="notif"></div>
-            &#xE8B8;
-          </i>
+        <li data-section="options" tabindex="0" class="footer-item">
+          <i class="material-icons">&#xE8B8;</i>
           <span data-l10n="options"></span>
+        </li>
+        <li id="notif">
+          <span data-l10n="new-psa"
+            ><span id="new-psa-count" data-l10n-arg="count"></span
+          ></span>
         </li>
       </ul>
     </div>
@@ -1047,8 +1049,8 @@
     ></textarea>
     <noscript>
       <textarea id="error-log" class="error-log" readonly required>
-        Please turn on JavaScript for the Unofficial Gunn Web App to work.
-      </textarea>
+Please turn on JavaScript for the Unofficial Gunn Web App to work.</textarea
+      >
     </noscript>
     <script type="text/javascript">
       window.errorLogger = document.getElementById('error-log')

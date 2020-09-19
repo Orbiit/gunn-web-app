@@ -169,8 +169,9 @@ input[type='number']::-webkit-outer-spin-button {
   list-style: none;
   display: flex;
   height: 56px;
+  position: relative;
 }
-#footer ul li {
+#footer .footer-item {
   display: inline-block;
   height: 100%;
   cursor: pointer;
@@ -185,17 +186,17 @@ input[type='number']::-webkit-outer-spin-button {
   user-select: none;
   color: var(--secondary);
 }
-.tab-focus #footer ul li:focus {
+.tab-focus #footer .footer-item:focus {
   background-color: var(--focus);
 }
-body #footer ul li.active {
+body #footer .footer-item.active {
   color: #ff594c;
   padding-top: 6px;
 }
-#footer ul li i {
+#footer .footer-item i {
   font-size: 24px;
 }
-#footer ul li span {
+#footer .footer-item span {
   display: block;
   text-align: center;
   font-size: 12px;
@@ -206,7 +207,7 @@ body #footer ul li.active {
   white-space: nowrap;
   transition: font-size 0.2s;
 }
-#footer ul li.active span {
+#footer .footer-item.active span {
   font-size: 14px;
 }
 
@@ -830,13 +831,38 @@ p.secondary {
 }
 #notif {
   display: none;
-  background-color: var(--theme);
   position: absolute;
-  top: 0;
+  bottom: 100%;
   right: 0;
-  width: 5px;
-  height: 5px;
-  border-radius: 5px;
+  width: 20%;
+  justify-content: flex-end;
+}
+#notif::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 50%;
+  margin: 0 -5px;
+  top: 100%;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--theme);
+}
+#notif > span {
+  display: block;
+  padding: 10px 15px;
+  background-color: var(--theme);
+  font-size: 12px;
+  color: white;
+  white-space: pre;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+#new-psa-count {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0 7.5px;
+  border-radius: 10px;
+  margin-left: 5px;
 }
 #new-psa {
   display: none;

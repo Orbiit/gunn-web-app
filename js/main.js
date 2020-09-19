@@ -211,7 +211,7 @@ function initScheduleWhenReady () {
 }
 
 function makeNavBarRipple () {
-  ripple('#footer > ul > li, .material')
+  ripple('#footer .footer-item, .material')
 }
 
 function initTabfocus () {
@@ -286,6 +286,7 @@ function initPSA () {
       const prevPsa = document.getElementById('prev-psa')
       const nextPsa = document.getElementById('next-psa')
       const notifBadge = document.getElementById('notif')
+      const newPsaCount = document.getElementById('new-psa-count')
       const newBadge = document.getElementById('new-psa')
       const psas = []
       const lastPsa = cookie.getItem('[gunn-web-app] scheduleapp.psa')
@@ -296,10 +297,12 @@ function initPSA () {
         if (!~lastRead) {
           lastRead = -1
           currentPsa = 0
-          notifBadge.style.display = 'block'
+          notifBadge.style.display = 'flex'
+          newPsaCount.textContent = psaData.length
         } else if (lastRead !== psaData.length - 1) {
           currentPsa = lastRead + 1
-          notifBadge.style.display = 'block'
+          notifBadge.style.display = 'flex'
+          newPsaCount.textContent = psaData.length - lastRead - 1
         } else {
           currentPsa = lastRead
         }
@@ -332,6 +335,8 @@ function initPSA () {
               )
               if (lastRead === psaData.length - 1) {
                 notifBadge.style.display = null
+              } else {
+                newPsaCount.textContent = psaData.length - lastRead - 1
               }
             }
           }

@@ -94,6 +94,7 @@ export default {
     naw: 'Thanks but no thanks',
     'neither-theme': 'Neither theme',
     new: 'NEW',
+    'new-psa': 'New PSA! {count}',
     'no-hour': 'No hours',
     'not-using-assync':
       '{create|Create Assync account} or {id} {join|Sync to account}',

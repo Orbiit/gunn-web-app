@@ -73,6 +73,7 @@
   "html/naw": [],
   "html/neither-theme": [],
   "html/new": [],
+  "html/new-psa": ["count"],
   "html/no-hour": [],
   "html/not-using-assync": ["create", "id", "join"],
   "html/notif-time-before": ["time"],
