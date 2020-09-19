@@ -45,7 +45,7 @@ async function main () {
     if (!tierMatch) {
       console.warn('Could not determine tier from', tierText, name)
     }
-    const tier = tierMatch ? +[1] : undefined
+    const tier = tierMatch ? +tierMatch[1] : undefined
 
     if (name) {
       clubs[name] = {
