@@ -333,7 +333,8 @@ export default {
     universe: 'Universe',
     website: 'Website:',
     you: 'You',
-    'zero-error': "Please don't enter so many zeroes."
+    'zero-error': "Please don't enter so many zeroes.",
+    zoom: 'Zoom link'
   },
   placeholders: {
     assignment: 'Assignment',
