@@ -202,11 +202,11 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
+        // So far: 55 64
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
-        else if (gtWeek < 4) {
-          name = 'ABCDEFG'[(gtWeek + 2) % 7]
-        }
+        else if (gtWeek === 3) name = 'F'
+        else if (gtWeek === 4) name = 'D'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
