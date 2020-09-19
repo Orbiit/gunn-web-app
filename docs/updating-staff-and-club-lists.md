@@ -11,7 +11,31 @@ probably won't work in the future.
 npm run update-staff
 ```
 
+You might want to update the last updated date in **js/languages/en.js** in
+`staff-disclaimer`.
+
 ## Updating the club list
+
+```sh
+# Probably will require updating after 2020-2021
+npm run update-clubs
+```
+
+You might want to update the last updated date in **js/languages/en.js** in
+`clubs-disclaimer`.
+
+## Old scripts
+
+**You can ignore this section.** Some of these require top level `await`; if
+your console doesn't support it, wrap the code in
+
+```js
+;(async () => {
+  // ...
+})()
+```
+
+---
 
 Go to the [chartered club
 list](https://docs.google.com/spreadsheets/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/),
@@ -44,23 +68,11 @@ delete r['Club Name']
 JSON.stringify(r, null, '\t')
 ```
 
-You might want to update the last updated date in **js/l10n.js** in
-`clubs-disclaimer-link`.
-
-## Old scripts
-
-**You can ignore this section.** Some of these require top level `await`; if
-\*\*your console doesn't support it, wrap the code in
-
-```js
-;(async () => {
-  // ...
-})()
-```
+---
 
 Go to the [staff directory on the Gunn
 website](https://gunn.pausd.org/connecting/staff-directory), run the following
-JavaScript in the console, and copypaste the output into **json/clubs.json**.
+JavaScript in the console, and copypaste the output into **json/staff.json**.
 
 ```js
 pages = +$('.fsLastPageLink').attr('data-page')
@@ -99,8 +111,7 @@ for (let i = 1; i <= pages; i++) {
 JSON.stringify(r, null, '\t')
 ```
 
-You might want to update the last updated date in **js/l10n.js** in
-`staff-disclaimer-link`.
+---
 
 [Older site](https://gunn.pausd.org/connect/staff-directory):
 
@@ -120,6 +131,8 @@ document.querySelectorAll('tbody tr').forEach(tr => {
 JSON.stringify(r)
 ```
 
+---
+
 Club list v1 (where [`sela` is an alias of
 `document.querySelectorAll`](https://github.com/Orbiit/gunn-web-app/issues/24#issuecomment-333270456))
 
@@ -138,6 +151,8 @@ for (var s of sela('table tr')) {
   }
 }
 ```
+
+---
 
 [Older site](http://gunn.pausd.org/people):
 

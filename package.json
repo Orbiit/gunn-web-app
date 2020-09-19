@@ -23,6 +23,7 @@
     "check-l10n": "node js/languages/check-l10n.js",
     "format": "prettier-standard --format --lint",
     "newpsa": "node psa/new-psa.js",
+    "update-clubs": "node js/get-clubs.js",
     "update-staff": "node js/get-staff.js"
   }
 }

@@ -634,26 +634,15 @@ export function initLists () {
         desc: localize('soph-desc'),
         day: localize('soph-day'),
         time: localize('soph-time'),
-        room: localize('soph-room'),
+        // room: localize('soph-room'),
         president: localize('soph-prez'),
         teacher: localize('soph-teacher'),
         email: localize('soph-email')
       }
-      // ask Ronnie if this club is renewed for next semester/year
-      clubs['Sensors & Electronics Club'] = {
-        desc:
-          'We specialized in sensors and electronics, such as Arduino, Raspberry Pi, circuit boards, lidar, and a variety of other sensors, many of which will be on display during meetings. We will have fun projects and competitions including snacks each week.',
-        day: 'Friday',
-        time: 'Lunch',
-        room: 'N-207',
-        president: 'Jamisen Ma, Kevin Bao',
-        teacher: 'Florina Limburg',
-        email: 'flimburg@pausd.org'
-      }
     },
-    sortName: (a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1),
-    searchableProps: ['room', 'day'],
-    secondaryProps: ['room', 'day'],
+    sortName: (a, b) => a.localeCompare(b),
+    searchableProps: ['room', 'day', 'time', 'desc'],
+    secondaryProps: ['day', 'time'],
     errMsg: localize('club-error'),
     searchPlaceholder: localize('clubs', 'placeholders'),
     nonexistentItem: localize('dead-club'),
@@ -661,10 +650,14 @@ export function initLists () {
       ['day', localize('day')],
       ['time', localize('time')],
       ['room', localize('location')],
+      ['link', localize('zoom')],
+      ['tier', localize('tier')],
       ['desc', localize('desc')],
       ['president', localize('presidents')],
       ['teacher', localize('advisors')],
       ['email', localize('teacher-email'), 'link'],
+      ['coteacher', localize('coadvisor/name')],
+      ['coemail', localize('coadvisor/email'), 'link'],
       ['donation', localize('donation')]
     ],
     onShowItem: (clubName, club) => {

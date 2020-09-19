@@ -39,7 +39,7 @@ export default {
     'club-name': 'Club name',
     clubs: 'Clubs',
     'clubs-disclaimer':
-      "Please note that club information was taken from the administration's {link|chartered club list as of July 4th, 2020}, so attribute inaccuracies to them.",
+      "Please note that club information was taken from the administration's {link|chartered club list as of September 4th, 2020}, so attribute inaccuracies to them.",
     comm: 'Interstudent communication',
     'control-centre': 'Control Centre',
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",
@@ -174,7 +174,7 @@ export default {
   other: {
     'add-asgn': 'Add assignment',
     'add-to-list': 'Add to my clubs',
-    advisors: 'Teacher Advisor(s):',
+    advisors: 'Teacher advisor:',
     'alt-msg': 'This is an alternate schedule. The school says, "{D}"',
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
     appname: 'Unofficial Gunn Web App (UGWA)',
@@ -209,6 +209,10 @@ export default {
     'close-future': 'OK',
     'club-error':
       "; couldn't get club data; maybe you aren't connected to the internet?",
+    coadvisor: {
+      email: 'Coteacher advisor email',
+      name: 'Coteacher advisor name'
+    },
     day: 'Meeting day:',
     days: 'Sunday  Monday  Tuesday  Wednesday  Thursday  Friday  Saturday',
     'dead-club': 'This club no longer exists at Gunn.',
@@ -271,15 +275,15 @@ export default {
     'return-today': "Show today's schedule",
     schedule: 'Schedule:',
     self: 'SELF',
-    'soph-day': 'Thursday',
+    'soph-day': 'Friday',
     'soph-desc':
-      'A club to develop our empathy, resilience and other core social-emotional skills; to help us build trusting relationships with our peers and mentors; and to establish spaces where we feel safe and supported. We believe that we will benefit from challenging our assumptions about the world and each other by asking questions, having meaningful discussions, and remaining open-minded while maintaining our core values. In so doing, we will develop our own identity, without the pressure of formal grading or assessment, and with every effort to play, explore, and appreciate diversity. Our goal is to help ourselves realize that each of us is immeasurably valuable not because of what we have achieved but because of who we are and who we can become. We have one of the best attendance rates; no seniors allowed!',
+      'A club to develop our empathy, resilience and other core social-emotional skills; to help us build trusting relationships with our peers and mentors; and to establish spaces where we feel safe and supported. We believe that we will benefit from challenging our assumptions about the world and each other by asking questions, having meaningful discussions, and remaining open-minded while maintaining our core values. In so doing, we will develop our own identity, without the pressure of formal grading or assessment, and with every effort to play, explore, and appreciate diversity. Our goal is to help ourselves realize that each of us is immeasurably valuable not because of what we have achieved but because of who we are and who we can become. We have one of the best attendance rates; all students are now allowed!',
     'soph-email': 'ccarlomagno@pausd.org',
     'soph-prez': 'Tara Firenzi',
     'soph-room': 'Any room',
     'soph-teacher': 'Courtney Carlomagno',
-    'soph-time': 'Flex',
-    'sophomore-club': 'No Senior Club',
+    'soph-time': '11:05:00 AM',
+    'sophomore-club': 'Fun Together Club',
     'staff-error':
       "; couldn't get staff data; maybe you aren't connected to the internet?",
     'staff-self-meetings' ({ S: hasSelf, M: hasMeetings }) {
@@ -308,7 +312,8 @@ export default {
       'period-zero': '0',
       self: 'SELF'
     },
-    'teacher-email': 'Teacher Email:',
+    'teacher-email': 'Teacher email:',
+    tier: 'Tier',
     time: 'Meeting time:',
     'time-before': {
       'before-0-00-10': '10 seconds before',
