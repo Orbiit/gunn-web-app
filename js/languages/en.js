@@ -39,7 +39,7 @@ export default {
     'club-name': 'Club name',
     clubs: 'Clubs',
     'clubs-disclaimer':
-      "Please note that club information was taken from the administration's {link|chartered club list as of September 18th, 2020}, so attribute inaccuracies to them.",
+      "Please note that club information was taken from the administration's {link|chartered club list as of September 20th, 2020}, so attribute inaccuracies to them.",
     comm: 'Interstudent communication',
     'control-centre': 'Control Centre',
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",

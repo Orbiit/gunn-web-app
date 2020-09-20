@@ -18,7 +18,7 @@ async function main () {
     // The first <td> is invisible for some reason
     const [
       ,
-      ,
+      newness,
       name,
       tierText,
       desc,
@@ -47,8 +47,13 @@ async function main () {
     }
     const tier = tierMatch ? +tierMatch[1] : undefined
 
+    if (newness !== 'NEW THIS YEAR!' && newness !== 'Returning') {
+      console.log(newness, 'is not NEW... or Returning', name)
+    }
+
     if (name) {
       clubs[name] = {
+        new: newness.includes('NEW'),
         desc,
         day,
         time,
