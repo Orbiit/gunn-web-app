@@ -45,7 +45,7 @@ export function initFooter () {
   function ulclick (e) {
     if (e.target !== ul && ul.contains(e.target)) {
       let n = e.target
-      while (n.tagName !== 'LI') n = e.target.parentNode
+      while (n.tagName !== 'LI') n = n.parentNode
       if (n.classList.contains('footer-item')) setSection(n.dataset.section)
     }
   }
