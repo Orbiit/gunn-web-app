@@ -202,11 +202,12 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
-        // So far: 55 64
+        // So far: 55 643
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek === 4) name = 'D'
+        else if (gtWeek === 5) name = 'C'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
@@ -293,6 +294,7 @@ export function scheduleApp (options = {}) {
       }
       // QUESTION: Should there be feedback for days with only optional periods?
       // Later QUESTION: What did I mean by "feedback"??
+      // "Feedback" as in a note that the entire day is optional.
       if (checkfuture) {
         let i
         for (i = 0; i < periods.length; i++)
