@@ -92,7 +92,7 @@
 	"Amnesty Club": {
 		"new": false,
 		"desc": "Amnesty Club is Gunn's student group for Amnesty International, a human rights organization founded in 1961. The club participates in nation and world wide human rights campaigns and events as part of the Amnesty organization. Members also discuss and learn about issues and current events pertaining to human rights both modeling after Amnesty and on our own. Join to be a part of the  country's largest human rights group and get involved in some of the world's biggest human rights events!",
-		"day": "Friday",
+		"day": "Monday",
 		"time": "11:40:00 AM",
 		"tier": 1,
 		"president": "Kel-Li (Kelli) Chen",
@@ -553,6 +553,16 @@
 		"teacher": "Marcus Jamison",
 		"email": "mjamison@pausd.org"
 	},
+	"March For Our Lives": {
+		"new": true,
+		"desc": "March For Our Lives promotes gun control as a way to prevent gun violence. The organization specifies its goals in a peace plan using the CHANGE acronym. Change the standards of gun ownershipHalve the rate of gun deaths in 10 yearsAccountability for the gun lobby and industryName a Director of Gun Violence PreventionGenerate community-based solutionsEmpower the next generation.",
+		"day": "Tuesday",
+		"time": "11:45:00 PM",
+		"tier": 1,
+		"president": "Chris Ford",
+		"teacher": "Kim Sabbag",
+		"email": "ksabbag@pausd.org"
+	},
 	"Math Circle": {
 		"new": false,
 		"desc": "We seek to promote an appreciation and understanding of math beyond the typical high school curriculum by hosting weekly talks, in-house contests, games, and guest speakers. We also help students prepare for and participate in many contests throughout the year, with a focus on math competitions such as AMC, HMMT, and BMT.",
@@ -704,6 +714,16 @@
 		"president": "Brian Eidson",
 		"teacher": "Ann Lorey",
 		"email": "alorey@pausd.org"
+	},
+	"Political and Civil Discourse Club": {
+		"new": true,
+		"desc": "To close the partisan gap and highlight youth voices on the nations issues and create long term pathways to bridge the gap between politicians and teens across the political spectrum.",
+		"day": "Friday",
+		"time": "3:00:00 PM",
+		"tier": 1,
+		"president": "Jordan Zinger",
+		"teacher": "Haley Perkins",
+		"email": "hperkins@pausd.org"
 	},
 	"Polymer Clay Club": {
 		"new": false,
@@ -880,8 +900,8 @@
 	"Speech and Debate": {
 		"new": false,
 		"desc": "Gunn Speech and Debate is a nationally ranked Club that teaches students how to effective express opinions based off of current events.  Each year we train students to become strong public speakers with the skills and knowledge to effectively win arguments, and compete in prestigious tournaments.",
-		"day": "Wednesday",
-		"time": "4:00:00 PM",
+		"day": "Monday",
+		"time": "5:00:00 PM",
 		"tier": 3,
 		"president": "Sachait Arun",
 		"teacher": "Diane Gleason",
