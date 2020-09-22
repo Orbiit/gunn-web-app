@@ -174,7 +174,6 @@ export default {
   other: {
     'add-asgn': 'Add assignment',
     'add-to-list': 'Add to my clubs',
-    advisors: 'Teacher advisor:',
     'alt-msg': 'This is an alternate schedule. The school says, "{D}"',
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
     appname: 'Unofficial Gunn Web App (UGWA)',
@@ -202,27 +201,46 @@ export default {
     'barcode-default': 'Intellectual student',
     'barcode-legacy-default': 'Student #{N}',
     'barcode-student-placeholder': 'Whose ID is this?',
-    basement: 'Basement:',
     'blamed-teacher': 'Blamed Teacher',
     brunch: 'Break/Brunch',
     cannot: 'There was a problem fetching the image.',
     'close-future': 'OK',
-    'club-error':
-      "; couldn't get club data; maybe you aren't connected to the internet?",
-    coadvisor: {
-      email: 'Coteacher advisor email',
-      name: 'Coteacher advisor name'
+    club: {
+      advisors: 'Teacher advisor:',
+      coadvisor: {
+        email: 'Coteacher advisor email',
+        name: 'Coteacher advisor name'
+      },
+      day: 'Meeting day:',
+      desc: 'Description:',
+      donation: 'Suggested donation:',
+      error:
+        "; couldn't get club data; maybe you aren't connected to the internet?",
+      location: 'Location:',
+      presidents: 'President(s):',
+      signup: 'Sign-up form:',
+      self: {
+        club: 'Fun Together Club',
+        day: 'Friday',
+        desc:
+          'A club to develop our empathy, resilience and other core social-emotional skills; to help us build trusting relationships with our peers and mentors; and to establish spaces where we feel safe and supported. We believe that we will benefit from challenging our assumptions about the world and each other by asking questions, having meaningful discussions, and remaining open-minded while maintaining our core values. In so doing, we will develop our own identity, without the pressure of formal grading or assessment, and with every effort to play, explore, and appreciate diversity. Our goal is to help ourselves realize that each of us is immeasurably valuable not because of what we have achieved but because of who we are and who we can become. We have one of the best attendance rates; all students are now allowed!',
+        email: 'ccarlomagno@pausd.org',
+        prez: 'Tara Firenzi',
+        room: 'Any room',
+        teacher: 'Courtney Carlomagno',
+        time: '11:05 AM'
+      },
+      'teacher-email': 'Teacher email:',
+      tier: 'Tier:',
+      time: 'Meeting time:',
+      video: 'Club presentation video:',
+      zoom: 'Zoom link:'
     },
-    day: 'Meeting day:',
     days: 'Sunday  Monday  Tuesday  Wednesday  Thursday  Friday  Saturday',
     'dead-club': 'This club no longer exists at Gunn.',
     'default-alt-msg': 'good luck with our schedule lol',
-    department: 'Department:',
-    desc: 'Description:',
-    donation: 'Suggested donation:',
     doneify: 'Mark as done',
     ds: 'S  M  T  W  Θ  F  S',
-    email: 'Email:',
     'enable-lists': 'Enable club/staff lists',
     events: 'Events',
     'events-error':
@@ -245,7 +263,6 @@ export default {
     'import-warning':
       'This will permanently override your existing settings. Do you want that?',
     loading: 'Loading...',
-    location: 'Location:',
     lunch: 'Lunch',
     'lunch-clubs': 'Clubs',
     minscore: "You'll need to score at least {S} to keep your parents happy.",
@@ -266,26 +283,23 @@ export default {
     'period-name-label': 'Set label for {P}',
     'period-set-link': 'Set link for {P}',
     periodx: 'Period {X}',
-    phone: 'Phone:',
-    presidents: 'President(s):',
     'previewing-future': 'This is the schedule for the next school day.',
     'psa-date': 'Created on {D}.',
     'psa-error': 'Could not load PSA: ',
     'remove-from-list': 'Remove from my clubs',
     'return-today': "Show today's schedule",
-    schedule: 'Schedule:',
     self: 'SELF',
-    'soph-day': 'Friday',
-    'soph-desc':
-      'A club to develop our empathy, resilience and other core social-emotional skills; to help us build trusting relationships with our peers and mentors; and to establish spaces where we feel safe and supported. We believe that we will benefit from challenging our assumptions about the world and each other by asking questions, having meaningful discussions, and remaining open-minded while maintaining our core values. In so doing, we will develop our own identity, without the pressure of formal grading or assessment, and with every effort to play, explore, and appreciate diversity. Our goal is to help ourselves realize that each of us is immeasurably valuable not because of what we have achieved but because of who we are and who we can become. We have one of the best attendance rates; all students are now allowed!',
-    'soph-email': 'ccarlomagno@pausd.org',
-    'soph-prez': 'Tara Firenzi',
-    'soph-room': 'Any room',
-    'soph-teacher': 'Courtney Carlomagno',
-    'soph-time': '11:05:00 AM',
-    'sophomore-club': 'Fun Together Club',
-    'staff-error':
-      "; couldn't get staff data; maybe you aren't connected to the internet?",
+    staff: {
+      basement: 'Basement:',
+      department: 'Department:',
+      email: 'Email:',
+      error:
+        "; couldn't get staff data; maybe you aren't connected to the internet?",
+      phone: 'Phone:',
+      schedule: 'Schedule:',
+      title: 'Title:',
+      website: 'Website:'
+    },
     'staff-self-meetings' ({ S: hasSelf, M: hasMeetings }) {
       if (hasSelf) {
         return hasMeetings
@@ -312,9 +326,6 @@ export default {
       'period-zero': '0',
       self: 'SELF'
     },
-    'teacher-email': 'Teacher email:',
-    tier: 'Tier',
-    time: 'Meeting time:',
     'time-before': {
       'before-0-00-10': '10 seconds before',
       'before-0-00-30': '30 seconds before',
@@ -328,13 +339,10 @@ export default {
       immediately: 'immediately',
       never: 'never'
     },
-    title: 'Title:',
     undoneify: 'Unmark as done',
     universe: 'Universe',
-    website: 'Website:',
     you: 'You',
-    'zero-error': "Please don't enter so many zeroes.",
-    zoom: 'Zoom link'
+    'zero-error': "Please don't enter so many zeroes."
   },
   placeholders: {
     assignment: 'Assignment',

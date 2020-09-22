@@ -607,16 +607,16 @@ export function initLists () {
       b[b.lastIndexOf(' ') + 1].charCodeAt(),
     searchableProps: ['jobTitle', 'department'],
     secondaryProps: ['jobTitle', 'email'],
-    errMsg: localize('staff-error'),
+    errMsg: localize('staff/error'),
     searchPlaceholder: localize('staff', 'placeholders'),
     props: [
-      ['jobTitle', localize('title')],
-      ['department', localize('department')],
-      ['email', localize('email'), 'link'],
-      ['phone', localize('phone')],
-      ['webpage', localize('website'), 'link'],
-      ['oc', localize('basement'), 'link'],
-      ['periods', localize('schedule'), 'schedule']
+      ['jobTitle', localize('staff/title')],
+      ['department', localize('staff/department')],
+      ['email', localize('staff/email'), 'link'],
+      ['phone', localize('staff/phone')],
+      ['webpage', localize('staff/website'), 'link'],
+      ['oc', localize('staff/basement'), 'link'],
+      ['periods', localize('staff/schedule'), 'schedule']
     ],
     specialItem: (person, content) => {
       if (person.game) {
@@ -630,35 +630,46 @@ export function initLists () {
   const { showItem: showClub, getCurrent: getCurrentClub } = initList('club', {
     jsonPath: 'json/clubs.json' + isAppDesign,
     insertExtra: clubs => {
-      clubs[localize('sophomore-club')] = {
-        desc: localize('soph-desc'),
-        day: localize('soph-day'),
-        time: localize('soph-time'),
-        // room: localize('soph-room'),
-        president: localize('soph-prez'),
-        teacher: localize('soph-teacher'),
-        email: localize('soph-email')
+      clubs[localize('club/self/club')] = {
+        desc: localize('club/self/desc'),
+        day: localize('club/self/day'),
+        time: localize('club/self/time'),
+        // room: localize('club/self/room'),
+        president: localize('club/self/prez'),
+        teacher: localize('club/self/teacher'),
+        email: localize('club/self/email')
       }
+      // const getYouTube = /(?:youtu\.be\/|www\.youtube\.com\/watch\?v=)([\w-]+)/
+      // const hasYouTube = Object.entries(clubs).map(([clubName, { video }]) => {
+      //   const match = getYouTube.exec(video)
+      //   if (match) {
+      //     return [clubName, match[1]]
+      //   } else {
+      //     return null
+      //   }
+      // }).filter(pair => pair)
     },
     sortName: (a, b) => a.localeCompare(b),
     searchableProps: ['room', 'day', 'time', 'desc'],
     secondaryProps: ['day', 'time'],
-    errMsg: localize('club-error'),
+    errMsg: localize('club/error'),
     searchPlaceholder: localize('clubs', 'placeholders'),
     nonexistentItem: localize('dead-club'),
     props: [
-      ['day', localize('day')],
-      ['time', localize('time')],
-      ['room', localize('location')],
-      ['link', localize('zoom')],
-      ['tier', localize('tier')],
-      ['desc', localize('desc')],
-      ['president', localize('presidents')],
-      ['teacher', localize('advisors')],
-      ['email', localize('teacher-email'), 'link'],
-      ['coteacher', localize('coadvisor/name')],
-      ['coemail', localize('coadvisor/email'), 'link'],
-      ['donation', localize('donation')]
+      ['day', localize('club/day')],
+      ['time', localize('club/time')],
+      ['room', localize('club/location')],
+      ['link', localize('club/zoom'), 'link'],
+      ['video', localize('club/video'), 'link'],
+      ['desc', localize('club/desc')],
+      ['president', localize('club/presidents')],
+      ['tier', localize('club/tier')],
+      ['signup', localize('club/signup'), 'link'],
+      ['teacher', localize('club/advisors')],
+      ['email', localize('club/teacher-email'), 'link'],
+      ['coteacher', localize('club/coadvisor/name')],
+      ['coemail', localize('club/coadvisor/email'), 'link'],
+      ['donation', localize('club/donation')]
     ],
     onShowItem: (clubName, club) => {
       clubAddList.textContent = savedClubs[clubName]

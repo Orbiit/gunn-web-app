@@ -315,6 +315,7 @@ ul.material-list li.error,
   transform: translateY(-5px);
   transition: all 0.2s;
   z-index: 20;
+  word-break: break-word;
 }
 .material-dialog.show {
   opacity: 1;
