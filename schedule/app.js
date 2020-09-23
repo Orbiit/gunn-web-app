@@ -453,16 +453,22 @@ export function scheduleApp (options = {}) {
               clubs
                 .map(club => {
                   const clubData = getClubByName && getClubByName(club)
+                  const extraData =
+                    clubData &&
+                    [
+                      clubData.link
+                        ? `<a href="${escapeHTML(
+                            clubData.link
+                          )}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize(
+                            'join'
+                          )}</a>`
+                        : null,
+                      clubData.time ? escapeHTML(clubData.time) : null
+                    ].filter(d => d)
                   return `<span class="club-links"><a href="#" data-club="${escapeHTML(
                     club
                   )}">${club}</a>${
-                    clubData && clubData.link
-                      ? ` (<a href="${escapeHTML(
-                          clubData.link
-                        )}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize(
-                          'join'
-                        )}</a>)`
-                      : ''
+                    extraData ? ` (${extraData.join(' &middot; ')})` : ''
                   }</span>`
                 })
                 .join('')
