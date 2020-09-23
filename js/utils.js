@@ -8,7 +8,16 @@ export const schoolTimeZone = 'America/Los_Angeles'
 export const googleCalendarId = encodeURIComponent(
   'fg978mo762lqm6get2ubiab0mk0f6m2c@import.calendar.google.com'
 )
+
 export const NADA = () => null
+
+export function shuffleInPlace (arr) {
+  for (let i = arr.length; i--;) {
+    const index = Math.random() * (i + 1) | 0
+    ;[arr[i], arr[index]] = [arr[index], arr[i]]
+  }
+  return arr
+}
 
 export const logError = function (error) {
   window.logError(error)
@@ -102,6 +111,12 @@ export function ajax (url, callback, error) {
   }
   xmlHttp.open('GET', url, true)
   xmlHttp.send(null)
+}
+
+const psaPromise = fetch('./psa/psas.json')
+export const isOnline = psaPromise.then(() => true).catch(() => false)
+export function getPsas () {
+  return psaPromise.then(r => (r.ok ? r.json() : Promise.reject(r.status)))
 }
 
 export function toEach (query, fn) {

@@ -529,9 +529,15 @@ body.light .percent-wrapper {
   display: block;
   margin-top: 10px;
 }
-.club-link {
-  display: table;
-  color: inherit;
+.club-links {
+  color: var(--secondary);
+}
+.club-links a {
+  color: var(--colour);
+}
+.join-club-link {
+  text-transform: uppercase;
+  font-size: 0.9em;
 }
 
 .chat-history {
@@ -796,6 +802,73 @@ body.light .percent-wrapper {
 #iframe-title .material-icons {
   font-size: 16px;
   margin-left: 10px;
+}
+
+#club-ads-wrapper,
+#club-ad-wrapper {
+  display: none;
+}
+#club-ads-wrapper.club-ad-available,
+#club-ad-wrapper.club-ad-available {
+  display: block;
+}
+#club-ads {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  display: flex;
+}
+.club-ad {
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  padding: 10px;
+  white-space: normal;
+  width: 120px;
+  flex: none;
+  color: inherit;
+}
+.club-ad:hover {
+  text-decoration: none;
+}
+.club-ad-thumbnail {
+  border-radius: 2px;
+  width: 120px;
+  height: 90px;
+  object-fit: contain;
+  background-color: var(--ripple-focus);
+}
+.club-ad-name {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+#club-ad-viewer {
+  border: none;
+  width: 100%;
+  height: 360px;
+  resize: vertical;
+  padding-bottom: 10px;
+  margin-bottom: -10px;
+}
+#club-ad-wrapper h1 {
+  display: flex;
+  align-items: center;
+}
+#club-name {
+  flex: auto;
+}
+.club-ad-show-more.material {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--theme);
+}
+.club-ad-show-more-label {
+  margin-top: 10px;
 }
 
 p.secondary {

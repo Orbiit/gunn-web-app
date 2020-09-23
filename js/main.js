@@ -14,7 +14,7 @@
 import { toAlternateSchedules } from './altScheduleGenerator.js?for=appdesign'
 import { setDaysMonths } from './app.js'
 import { initBarcodes } from './barcodes.js'
-import { initFooter, onOptionsTab } from './footer.js'
+import { initFooter, onSection } from './footer.js'
 import {
   availableLangs,
   currentLang,
@@ -39,6 +39,7 @@ import {
   cookie,
   currentTime,
   firstDay,
+  getPsas,
   googleCalendarId,
   LAST_YEARS_ALT_KEY,
   lastDay,
@@ -279,9 +280,7 @@ function initSecondsCounter () {
 }
 
 function initPSA () {
-  fetch('./psa/psas.json')
-    .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then(psaData => {
+  getPsas().then(psaData => {
       const psaContent = document.getElementById('psa')
       const prevPsa = document.getElementById('prev-psa')
       const nextPsa = document.getElementById('next-psa')
@@ -342,7 +341,7 @@ function initPSA () {
           }
         })
       }
-      onOptionsTab.then(() => {
+      onSection.options.then(() => {
         displayPsa(currentPsa)
       })
       prevPsa.addEventListener('click', e => {

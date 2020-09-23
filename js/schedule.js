@@ -14,6 +14,7 @@ import {
 import { ColourPicker } from './colour.js'
 import { DatePicker } from './date.js'
 import { localize, localizeWith } from './l10n.js'
+import { onClubsLoaded } from '../js/lists.js'
 import { makeDropdown, materialInput, ripple } from './material.js'
 import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
@@ -1313,6 +1314,10 @@ export function initSchedule (manualAltSchedulesProm) {
   selectedDay.d += 2
   tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0
   selectedDay.d--
+
+  onClubsLoaded.then(() => {
+    scheduleapp.render()
+  })
 
   // Date control buttons
   document.querySelector('#datepicker').addEventListener(

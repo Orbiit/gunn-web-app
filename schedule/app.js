@@ -1,6 +1,7 @@
 /* global Notification */
 
 import { localize, localizeWith } from '../js/l10n.js'
+import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { currentTime, escapeHTML, now } from '../js/utils.js'
 
@@ -10,7 +11,7 @@ export function setDaysMonths (newDays, newMonths) {
   months = newMonths
 }
 const colourtoy = document.createElement('div')
-export function getFontColour (colour) {
+function isLight (colour) {
   colourtoy.style.backgroundColor = colour
   colour = colourtoy.style.backgroundColor
   colour = colour
@@ -24,6 +25,9 @@ export function getFontColour (colour) {
       parseInt(colour[2]) * 114) /
       1000
   ) > 150
+}
+export function getFontColour (colour) {
+  return isLight(colour)
     ? 'rgba(0,0,0,0.8)'
     : 'white'
 }
@@ -33,6 +37,12 @@ export function scheduleApp (options = {}) {
   if (options.element) elem = options.element
   else elem = document.createElement('div')
   container.classList.add('schedule-container')
+  container.addEventListener('click', e => {
+    if (e.target.dataset.club) {
+      showClub(e.target.dataset.club)
+      e.preventDefault()
+    }
+  })
   if (!options.alternates) options.alternates = {}
   if (!options.periods) options.periods = {}
   if (!options.normal) options.normal = {}
@@ -364,7 +374,7 @@ export function scheduleApp (options = {}) {
         )
         innerHTML += `<div class="schedule-period ${
           period.name === 'GT' ? 'gunn-together' : ''
-        }" style="${getCSS(periodName.colour, period.name)}">`
+        } ${isLight(periodName.colour) ? 'light' : 'dark'}" style="${getCSS(periodName.colour, period.name)}">`
         if (period.name !== 'GT') {
           innerHTML += `<span class="schedule-periodname">${escapeHTML(
             periodName.label
@@ -439,8 +449,14 @@ export function scheduleApp (options = {}) {
               `<span class="small-heading">${localize('lunch-clubs')}</span>` +
               clubs
                 .map(
-                  club =>
-                    `<a class="club-link" href="#" onclick="showClub(\`${club}\`);event.preventDefault()">${club}</a>`
+                  club => {
+                    const clubData = getClubByName && getClubByName(club)
+                    return `<span class="club-links"><a href="#" data-club="${escapeHTML(club)}">${club}</a>${
+                      clubData && clubData.link
+                        ? ` (<a href="${escapeHTML(clubData.link)}" target="_blank" rel="noopener noreferrer" class="join-club-link">join</a>)`
+                        : ''
+                    }</span>`
+                  }
                 )
                 .join('')
           }

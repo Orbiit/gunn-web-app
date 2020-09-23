@@ -1,3 +1,4 @@
+import { onSection } from './footer.js'
 import { localize, localizeWith } from './l10n.js'
 import { materialInput, ripple } from './material.js'
 import { savedClubs, saveSavedClubs } from './saved-clubs.js'
@@ -5,11 +6,18 @@ import {
   ajax,
   cookie,
   isAppDesign,
+  isOnline,
   logError,
   now,
   showDialog,
+  shuffleInPlace,
   toEach
 } from './utils.js'
+
+export let showClub
+export let getClubByName
+let clubsLoaded
+export const onClubsLoaded = new Promise(resolve => (clubsLoaded = resolve))
 
 function containsString (pattern) {
   if (!pattern) return () => true
@@ -260,7 +268,8 @@ function initList (
         name: current,
         item: data[current]
       }
-    }
+    },
+    getByName: name => data && data[name]
   }
 }
 
@@ -627,7 +636,14 @@ export function initLists () {
   })
   // Hi Gavin
   const clubAddList = document.getElementById('club-add-list')
-  const { showItem: showClub, getCurrent: getCurrentClub } = initList('club', {
+  const clubAdsWrapper = document.getElementById('club-ads-wrapper')
+  const clubAdsList = document.getElementById('club-ads')
+  const clubAdWrapper = document.getElementById('club-ad-wrapper')
+  const clubName = document.getElementById('club-name')
+  const ytIframe = document.getElementById('club-ad-viewer')
+  const showClubFromAd = document.getElementById('show-club-from-ad')
+  const closeClubAd = document.getElementById('close-club-ad')
+  const { showItem: forceShowClub, getCurrent: getCurrentClub, getByName } = initList('club', {
     jsonPath: 'json/clubs.json' + isAppDesign,
     insertExtra: clubs => {
       clubs[localize('club/self/club')] = {
@@ -639,15 +655,88 @@ export function initLists () {
         teacher: localize('club/self/teacher'),
         email: localize('club/self/email')
       }
-      // const getYouTube = /(?:youtu\.be\/|www\.youtube\.com\/watch\?v=)([\w-]+)/
-      // const hasYouTube = Object.entries(clubs).map(([clubName, { video }]) => {
-      //   const match = getYouTube.exec(video)
-      //   if (match) {
-      //     return [clubName, match[1]]
-      //   } else {
-      //     return null
-      //   }
-      // }).filter(pair => pair)
+
+      clubsLoaded()
+
+      const getYouTube = /(?:youtu\.be\/|www\.youtube\.com\/watch\?v=)([\w-]+)/
+      const hasYouTube = Object.entries(clubs).map(([clubName, { video }]) => {
+        const match = getYouTube.exec(video)
+        if (match) {
+          return [clubName, match[1]]
+        } else {
+          return null
+        }
+      }).filter(pair => pair)
+      shuffleInPlace(hasYouTube)
+      Promise.all([
+        isOnline,
+        onSection.clubs
+      ]).then(([online]) => {
+        if (!online) return
+        clubAdsWrapper.classList.add('club-ad-available')
+
+        function addClubVideo ([name, videoId]) {
+          const entry = Object.assign(document.createElement('a'), {
+            href: `https://www.youtube.com/watch?v=${videoId}`,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: 'club-ad'
+          })
+          Object.assign(entry.dataset, { name, videoId })
+          ripple(entry)
+          entry.appendChild(Object.assign(document.createElement('img'), {
+            src: `https://img.youtube.com/vi/${videoId}/default.jpg`,
+            className: 'club-ad-thumbnail',
+            draggable: false
+          }))
+          entry.appendChild(Object.assign(document.createElement('span'), {
+            textContent: name,
+            className: 'club-ad-name'
+          }))
+          clubAdsList.appendChild(entry)
+        }
+        hasYouTube.slice(0, 3).forEach(addClubVideo)
+        if (hasYouTube.length > 3) {
+          const button = Object.assign(document.createElement('button'), {
+            textContent: name,
+            className: 'material club-ad-show-more'
+          })
+          ripple(button)
+          button.appendChild(Object.assign(document.createElement('i'), {
+            textContent: '\ue5cc',
+            className: 'material-icons club-ad-show-more-icon'
+          }))
+          button.appendChild(Object.assign(document.createElement('span'), {
+            textContent: 'Show more',
+            className: 'club-ad-show-more-label'
+          }))
+          clubAdsList.appendChild(button)
+          button.addEventListener('click', e => {
+            hasYouTube.slice(3).forEach(addClubVideo)
+            clubAdsList.removeChild(button)
+          })
+        }
+
+        let selectedClub = null
+        clubAdsList.addEventListener('click', e => {
+          const video = e.target.closest('.club-ad')
+          if (!video) return
+          e.preventDefault()
+          const { name, videoId } = video.dataset
+          clubAdWrapper.classList.add('club-ad-available')
+          clubName.textContent = name
+          ytIframe.src = `https://www.youtube.com/embed/${videoId}/`
+          selectedClub = name
+        })
+        showClubFromAd.addEventListener('click', e => {
+          forceShowClub(selectedClub)
+        })
+        closeClubAd.addEventListener('click', e => {
+          selectedClub = null
+          ytIframe.src = 'about:blank'
+          clubAdWrapper.classList.remove('club-ad-available')
+        })
+      })
     },
     sortName: (a, b) => a.localeCompare(b),
     searchableProps: ['room', 'day', 'time', 'desc'],
@@ -675,10 +764,10 @@ export function initLists () {
       clubAddList.textContent = savedClubs[clubName]
         ? localize('remove-from-list')
         : localize('add-to-list')
-      clubAddList.style.display =
-        (club && /lunch/i.test(club.time)) || savedClubs[clubName]
-          ? null
-          : 'none'
+      // clubAddList.style.display =
+      //   (club && /lunch/i.test(club.time)) || savedClubs[clubName]
+      //     ? null
+      //     : 'none'
     },
     defaultSearch: [
       '',
@@ -690,7 +779,8 @@ export function initLists () {
       ''
     ][now().getDay()]
   })
-  window.showClub = showClub
+  showClub = forceShowClub
+  getClubByName = getByName
   clubAddList.addEventListener('click', e => {
     const { name: currentClub, item: club } = getCurrentClub()
     if (!currentClub) return

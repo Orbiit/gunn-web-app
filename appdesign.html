@@ -184,6 +184,7 @@
     </script>
     <!-- /NOAPPDESIGN -->
 
+    <!-- Material icon codepoints: https://github.com/google/material-design-icons/blob/1ea7cb45a77b8b5979b12627b27a3999fbe4353a/iconfont/codepoints -->
     <div id="footer">
       <ul>
         <li data-section="utilities" tabindex="0" class="footer-item">
@@ -365,7 +366,17 @@
           data-l10n-arg="link"
         ></a>
       </p>
-
+      <div id="club-ads-wrapper">
+        <ul id="club-ads"></ul>
+        <div id="club-ad-wrapper">
+          <h1>
+            <span id="club-name"></span>
+            <button class="material" id="show-club-from-ad">More info</button>
+            <button class="material icon" id="close-club-ad"><i class="material-icons">&#xe5cd;</i></button>
+          </h1>
+          <iframe id="club-ad-viewer"></iframe>
+        </div>
+      </div>
       <ul class="material-list three-line short clickables list"></ul>
       <div class="lists-enabled center">
         <p data-l10n="lists-disabled"></p>
