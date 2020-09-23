@@ -344,7 +344,8 @@ export default {
     undoneify: 'Unmark as done',
     universe: 'Universe',
     you: 'You',
-    'yt-only': 'Only club videos on YouTube are shown here (for thumbnail reasons).',
+    'yt-only':
+      'Only club videos on YouTube are shown here (for thumbnail reasons).',
     'zero-error': "Please don't enter so many zeroes."
   },
   placeholders: {

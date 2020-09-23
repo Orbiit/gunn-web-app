@@ -1,12 +1,6 @@
 import { cookie } from './utils.js'
 
-const sections = [
-  'utilities',
-  'clubs',
-  'schedule',
-  'staff',
-  'options'
-]
+const sections = ['utilities', 'clubs', 'schedule', 'staff', 'options']
 const triggerSection = {}
 export const onSection = {}
 for (const section of sections) {
@@ -18,9 +12,7 @@ for (const section of sections) {
 }
 
 export function initFooter () {
-  let initSection = cookie.getItem(
-    '[gunn-web-app] section'
-  ) || 'schedule'
+  let initSection = cookie.getItem('[gunn-web-app] section') || 'schedule'
   const t = document.querySelector(
     `#footer > ul > li[data-section="${initSection}"]`
   )

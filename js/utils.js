@@ -1,4 +1,4 @@
-/* global XMLHttpRequest, localStorage */
+/* global XMLHttpRequest, localStorage, fetch */
 
 export const firstDay = '2020-08-17T00:00:00.000-07:00'
 export const lastDay = '2021-06-03T23:59:59.999-07:00'
@@ -12,8 +12,8 @@ export const googleCalendarId = encodeURIComponent(
 export const NADA = () => null
 
 export function shuffleInPlace (arr) {
-  for (let i = arr.length; i--;) {
-    const index = Math.random() * (i + 1) | 0
+  for (let i = arr.length; i--; ) {
+    const index = (Math.random() * (i + 1)) | 0
     ;[arr[i], arr[index]] = [arr[index], arr[i]]
   }
   return arr

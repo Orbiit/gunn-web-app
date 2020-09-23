@@ -19,17 +19,17 @@ function isLight (colour) {
     .split(/,\s*/)
     .map(a => +a)
   // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
-  return Math.round(
-    (parseInt(colour[0]) * 299 +
-      parseInt(colour[1]) * 587 +
-      parseInt(colour[2]) * 114) /
-      1000
-  ) > 150
+  return (
+    Math.round(
+      (parseInt(colour[0]) * 299 +
+        parseInt(colour[1]) * 587 +
+        parseInt(colour[2]) * 114) /
+        1000
+    ) > 150
+  )
 }
 export function getFontColour (colour) {
-  return isLight(colour)
-    ? 'rgba(0,0,0,0.8)'
-    : 'white'
+  return isLight(colour) ? 'rgba(0,0,0,0.8)' : 'white'
 }
 export function scheduleApp (options = {}) {
   let elem
@@ -374,7 +374,10 @@ export function scheduleApp (options = {}) {
         )
         innerHTML += `<div class="schedule-period ${
           period.name === 'GT' ? 'gunn-together' : ''
-        } ${isLight(periodName.colour) ? 'light' : 'dark'}" style="${getCSS(periodName.colour, period.name)}">`
+        } ${isLight(periodName.colour) ? 'light' : 'dark'}" style="${getCSS(
+          periodName.colour,
+          period.name
+        )}">`
         if (period.name !== 'GT') {
           innerHTML += `<span class="schedule-periodname">${escapeHTML(
             periodName.label
@@ -448,16 +451,20 @@ export function scheduleApp (options = {}) {
             innerHTML +=
               `<span class="small-heading">${localize('lunch-clubs')}</span>` +
               clubs
-                .map(
-                  club => {
-                    const clubData = getClubByName && getClubByName(club)
-                    return `<span class="club-links"><a href="#" data-club="${escapeHTML(club)}">${club}</a>${
-                      clubData && clubData.link
-                        ? ` (<a href="${escapeHTML(clubData.link)}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize('join')}</a>)`
-                        : ''
-                    }</span>`
-                  }
-                )
+                .map(club => {
+                  const clubData = getClubByName && getClubByName(club)
+                  return `<span class="club-links"><a href="#" data-club="${escapeHTML(
+                    club
+                  )}">${club}</a>${
+                    clubData && clubData.link
+                      ? ` (<a href="${escapeHTML(
+                          clubData.link
+                        )}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize(
+                          'join'
+                        )}</a>)`
+                      : ''
+                  }</span>`
+                })
                 .join('')
           }
         }

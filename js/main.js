@@ -280,7 +280,8 @@ function initSecondsCounter () {
 }
 
 function initPSA () {
-  getPsas().then(psaData => {
+  getPsas()
+    .then(psaData => {
       const psaContent = document.getElementById('psa')
       const prevPsa = document.getElementById('prev-psa')
       const nextPsa = document.getElementById('next-psa')

@@ -643,7 +643,11 @@ export function initLists () {
   const ytIframe = document.getElementById('club-ad-viewer')
   const showClubFromAd = document.getElementById('show-club-from-ad')
   const closeClubAd = document.getElementById('close-club-ad')
-  const { showItem: forceShowClub, getCurrent: getCurrentClub, getByName } = initList('club', {
+  const {
+    showItem: forceShowClub,
+    getCurrent: getCurrentClub,
+    getByName
+  } = initList('club', {
     jsonPath: 'json/clubs.json' + isAppDesign,
     insertExtra: clubs => {
       clubs[localize('club/self/club')] = {
@@ -659,65 +663,73 @@ export function initLists () {
       clubsLoaded()
 
       const getYouTube = /(?:youtu\.be\/|www\.youtube\.com\/watch\?v=)([\w-]+)/
-      const hasYouTube = Object.entries(clubs).map(([clubName, { video }]) => {
-        const match = getYouTube.exec(video)
-        if (match) {
-          return [clubName, match[1]]
-        } else {
-          return null
-        }
-      }).filter(pair => pair)
+      const hasYouTube = Object.entries(clubs)
+        .map(([clubName, { video }]) => {
+          const match = getYouTube.exec(video)
+          if (match) {
+            return [clubName, match[1]]
+          } else {
+            return null
+          }
+        })
+        .filter(pair => pair)
       shuffleInPlace(hasYouTube)
-      Promise.all([
-        isOnline,
-        onSection.clubs
-      ]).then(([online]) => {
+      Promise.all([isOnline, onSection.clubs]).then(([online]) => {
         if (!online) return
         clubAdsWrapper.classList.add('club-ad-available')
 
         function addClubVideo ([name, videoId]) {
           const entry = Object.assign(document.createElement('a'), {
             href: `https://www.youtube.com/watch?v=${videoId}`,
-            target: "_blank",
-            rel: "noopener noreferrer",
+            target: '_blank',
+            rel: 'noopener noreferrer',
             className: 'club-ad'
           })
           Object.assign(entry.dataset, { name, videoId })
           ripple(entry)
-          entry.appendChild(Object.assign(document.createElement('img'), {
-            src: `https://img.youtube.com/vi/${videoId}/default.jpg`,
-            className: 'club-ad-thumbnail',
-            draggable: false
-          }))
-          entry.appendChild(Object.assign(document.createElement('span'), {
-            textContent: name,
-            className: 'club-ad-name'
-          }))
+          entry.appendChild(
+            Object.assign(document.createElement('img'), {
+              src: `https://img.youtube.com/vi/${videoId}/default.jpg`,
+              className: 'club-ad-thumbnail',
+              draggable: false
+            })
+          )
+          entry.appendChild(
+            Object.assign(document.createElement('span'), {
+              textContent: name,
+              className: 'club-ad-name'
+            })
+          )
           clubAdsList.appendChild(entry)
         }
         hasYouTube.slice(0, 3).forEach(addClubVideo)
         if (hasYouTube.length > 3) {
           const button = Object.assign(document.createElement('button'), {
-            textContent: name,
             className: 'material club-ad-show-more'
           })
           ripple(button)
-          button.appendChild(Object.assign(document.createElement('i'), {
-            textContent: '\ue5cc',
-            className: 'material-icons club-ad-show-more-icon'
-          }))
-          button.appendChild(Object.assign(document.createElement('span'), {
-            textContent: localize('show-more'),
-            className: 'club-ad-show-more-label'
-          }))
+          button.appendChild(
+            Object.assign(document.createElement('i'), {
+              textContent: '\ue5cc',
+              className: 'material-icons club-ad-show-more-icon'
+            })
+          )
+          button.appendChild(
+            Object.assign(document.createElement('span'), {
+              textContent: localize('show-more'),
+              className: 'club-ad-show-more-label'
+            })
+          )
           clubAdsList.appendChild(button)
           button.addEventListener('click', e => {
             hasYouTube.slice(3).forEach(addClubVideo)
             clubAdsList.removeChild(button)
-            clubAdsList.appendChild(Object.assign(document.createElement('div'), {
-              textContent: localize('yt-only'),
-              className: 'club-ad-yt-only'
-            }))
+            clubAdsList.appendChild(
+              Object.assign(document.createElement('div'), {
+                textContent: localize('yt-only'),
+                className: 'club-ad-yt-only'
+              })
+            )
           })
         }
 
