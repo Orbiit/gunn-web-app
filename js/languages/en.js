@@ -262,6 +262,7 @@ export default {
     'import-problem': 'There was a problem.',
     'import-warning':
       'This will permanently override your existing settings. Do you want that?',
+    join: 'Join',
     loading: 'Loading...',
     lunch: 'Lunch',
     'lunch-clubs': 'Clubs',
@@ -289,6 +290,7 @@ export default {
     'remove-from-list': 'Remove from my clubs',
     'return-today': "Show today's schedule",
     self: 'SELF',
+    'show-more': 'Show more',
     staff: {
       basement: 'Basement:',
       department: 'Department:',
@@ -342,6 +344,7 @@ export default {
     undoneify: 'Unmark as done',
     universe: 'Universe',
     you: 'You',
+    'yt-only': 'Only club videos on YouTube are shown here (for thumbnail reasons).',
     'zero-error': "Please don't enter so many zeroes."
   },
   placeholders: {

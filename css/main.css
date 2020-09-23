@@ -866,9 +866,22 @@ body.light .percent-wrapper {
   justify-content: center;
   align-items: center;
   color: var(--theme);
+  flex: none;
 }
 .club-ad-show-more-label {
   margin-top: 10px;
+}
+.club-ad-yt-only {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 150px;
+  padding: 10px;
+  flex: none;
+  color: var(--secondary);
+  font-size: 14px;
+  white-space: normal;
 }
 
 p.secondary {

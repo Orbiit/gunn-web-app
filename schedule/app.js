@@ -453,7 +453,7 @@ export function scheduleApp (options = {}) {
                     const clubData = getClubByName && getClubByName(club)
                     return `<span class="club-links"><a href="#" data-club="${escapeHTML(club)}">${club}</a>${
                       clubData && clubData.link
-                        ? ` (<a href="${escapeHTML(clubData.link)}" target="_blank" rel="noopener noreferrer" class="join-club-link">join</a>)`
+                        ? ` (<a href="${escapeHTML(clubData.link)}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize('join')}</a>)`
                         : ''
                     }</span>`
                   }

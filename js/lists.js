@@ -707,13 +707,17 @@ export function initLists () {
             className: 'material-icons club-ad-show-more-icon'
           }))
           button.appendChild(Object.assign(document.createElement('span'), {
-            textContent: 'Show more',
+            textContent: localize('show-more'),
             className: 'club-ad-show-more-label'
           }))
           clubAdsList.appendChild(button)
           button.addEventListener('click', e => {
             hasYouTube.slice(3).forEach(addClubVideo)
             clubAdsList.removeChild(button)
+            clubAdsList.appendChild(Object.assign(document.createElement('div'), {
+              textContent: localize('yt-only'),
+              className: 'club-ad-yt-only'
+            }))
           })
         }
 
