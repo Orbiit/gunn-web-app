@@ -7,6 +7,7 @@
  */
 
 // Put the JSON output in json/clubs-links.json
+// diff json/clubs-links-N.json json/clubs-links.json
 
 JSON.stringify(
   (() => {
