@@ -663,33 +663,48 @@ export function initLists () {
       clubsLoaded()
 
       const getYouTube = /(?:youtu\.be\/|www\.youtube\.com\/watch\?v=)([\w-]+)/
-      const hasYouTube = Object.entries(clubs)
-        .map(([clubName, { video }]) => {
+      const showable = Object.entries(clubs)
+        .map(([clubName, { video, thumbnail }]) => {
+          if (thumbnail) {
+            // `thumbnail` is probably only defined for Google Drive videos
+            return {
+              name: clubName,
+              link: video,
+              embed: video.replace('view', 'preview'),
+              thumbnail
+            }
+          }
           const match = getYouTube.exec(video)
           if (match) {
-            return [clubName, match[1]]
+            const [, videoId] = match
+            return {
+              name: clubName,
+              link: `https://www.youtube.com/watch?v=${videoId}`,
+              embed: `https://www.youtube.com/embed/${videoId}/`,
+              thumbnail: `https://img.youtube.com/vi/${videoId}/default.jpg`
+            }
           } else {
             return null
           }
         })
         .filter(pair => pair)
-      shuffleInPlace(hasYouTube)
+      shuffleInPlace(showable)
       Promise.all([isOnline, onSection.clubs]).then(([online]) => {
         if (!online) return
         clubAdsWrapper.classList.add('club-ad-available')
 
-        function addClubVideo ([name, videoId]) {
+        function addClubVideo ({ name, link, embed, thumbnail }) {
           const entry = Object.assign(document.createElement('a'), {
-            href: `https://www.youtube.com/watch?v=${videoId}`,
+            href: link,
             target: '_blank',
             rel: 'noopener noreferrer',
             className: 'club-ad'
           })
-          Object.assign(entry.dataset, { name, videoId })
+          Object.assign(entry.dataset, { name, embed })
           ripple(entry)
           entry.appendChild(
             Object.assign(document.createElement('img'), {
-              src: `https://img.youtube.com/vi/${videoId}/default.jpg`,
+              src: thumbnail,
               className: 'club-ad-thumbnail',
               draggable: false
             })
@@ -702,8 +717,8 @@ export function initLists () {
           )
           clubAdsList.appendChild(entry)
         }
-        hasYouTube.slice(0, 3).forEach(addClubVideo)
-        if (hasYouTube.length > 3) {
+        showable.slice(0, 3).forEach(addClubVideo)
+        if (showable.length > 3) {
           const button = Object.assign(document.createElement('button'), {
             className: 'material club-ad-show-more'
           })
@@ -722,7 +737,7 @@ export function initLists () {
           )
           clubAdsList.appendChild(button)
           button.addEventListener('click', e => {
-            hasYouTube.slice(3).forEach(addClubVideo)
+            showable.slice(3).forEach(addClubVideo)
             clubAdsList.removeChild(button)
             clubAdsList.appendChild(
               Object.assign(document.createElement('div'), {
@@ -738,10 +753,10 @@ export function initLists () {
           const video = e.target.closest('.club-ad')
           if (!video) return
           e.preventDefault()
-          const { name, videoId } = video.dataset
+          const { name, embed } = video.dataset
           clubAdWrapper.classList.add('club-ad-available')
           clubName.textContent = name
-          ytIframe.src = `https://www.youtube.com/embed/${videoId}/`
+          ytIframe.src = embed
           selectedClub = name
         })
         showClubFromAd.addEventListener('click', e => {

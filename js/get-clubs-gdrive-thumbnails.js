@@ -154,6 +154,39 @@ export async function main2 () {
   await writeFile(imgurUrlsPath, JSON.stringify(imgurUrls, null, '\t'))
 }
 
+export async function main3 () {
+  const clubs = JSON.parse(await readFile(clubsPath, 'utf8'))
+  const counts = {
+    youtube: 0,
+    drive: 0,
+    drivePrivate: 0,
+    neither: 0,
+    noVideo: 0
+  }
+  for (const [name, { video, thumbnail }] of Object.entries(clubs)) {
+    if (video && (video.includes('youtube.com') || video.includes('youtu.be'))) {
+      counts.youtube++
+    } else if (video && video.includes('google.com')) {
+      counts.drive++
+      if (!thumbnail) {
+        counts.drivePrivate++
+        if (thumbnail !== null) {
+          console.log('[!] thumbnail undefined', { name, video })
+        }
+      }
+    } else {
+      counts.neither++
+      if (video) {
+        console.log('[!] neither youtube nor drive', { name, video })
+      } else {
+        counts.noVideo++
+        console.log('[?] no video', { name, video })
+      }
+    }
+  }
+  console.log(counts)
+}
+
 // node js/....js please run main
 //                ^^^^^^
 if (process.argv[2]) {

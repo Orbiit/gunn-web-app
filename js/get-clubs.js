@@ -111,6 +111,16 @@ async function main () {
   })
 
   for (const club of Object.values(clubs)) {
+    if (club.video?.includes('tinyurl.com')) {
+      // Follow redirect
+      const { headers } = await fetch(club.video, { redirect: 'manual' })
+      const redirect = headers.get('location')
+      if (redirect) {
+        club.video = redirect
+      } else {
+        console.log('[??]', headers)
+      }
+    }
     await imgurUrls.setThumbnailIfNeeded(club)
   }
   await imgurUrls.save()

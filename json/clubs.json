@@ -325,12 +325,13 @@
 		"day": "Wednesday",
 		"time": "11:40 AM",
 		"link": "https://pausd.zoom.us/j/95512160686",
-		"video": "https://tinyurl.com/gunncacvideo",
+		"video": "https://drive.google.com/file/d/18n5Bi_TjFW7RUhGRxqARWFFqKleTwCug/view?usp=sharing",
 		"signup": "https://tinyurl.com/gunncac",
 		"tier": 1,
 		"president": "Zora Zhang",
 		"teacher": "Danning Wang",
-		"email": "dwang@pausd.org"
+		"email": "dwang@pausd.org",
+		"thumbnail": "https://i.imgur.com/kRLrKr1.jpg"
 	},
 	"Competative Programming Club": {
 		"new": false,
@@ -1060,12 +1061,13 @@
 		"day": "Tuesday",
 		"time": "11:40 AM",
 		"link": "Tinyurl.com/ROCKmeetings",
-		"video": "http://tinyurl.com/ROCKclubfair",
+		"video": "https://drive.google.com/file/d/1n3-2kNiRK2bhP0TQtlhgkJeQUAkut_bw/view?usp=sharing",
 		"signup": "https://tinyurl.com/JoinAGunnClub",
 		"tier": 3,
 		"president": "Kate Williams",
 		"teacher": "Paul Dunlap",
-		"email": "pdunlap@pausd.org"
+		"email": "pdunlap@pausd.org",
+		"thumbnail": "https://i.imgur.com/Xy9GeOq.jpg"
 	},
 	"Red Cross": {
 		"new": false,
