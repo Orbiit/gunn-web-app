@@ -16,7 +16,8 @@ JSON.stringify(
         return Array.from(table.children, tr => {
           return Array.from(tr.children, td => {
             return [
-              td.textContent.trim() || undefined,
+              // Replace nbsp with space
+              td.textContent.trim().replace(/\xa0/g, ' ') || undefined,
               td.querySelector('a')?.href || undefined
             ]
           })

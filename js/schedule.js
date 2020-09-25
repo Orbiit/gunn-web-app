@@ -20,6 +20,7 @@ import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
   ajax,
   ALT_KEY,
+  apiKey,
   closeDialog,
   cookie,
   currentTime,
@@ -983,7 +984,7 @@ export function initSchedule (manualAltSchedulesProm) {
       ajax(
         // timeZone=America/Los_Angeles because the calendar is in UTC so
         // full-day events from the next day would otherwise be included
-        `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
+        `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=${apiKey}&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
         json => {
           json = JSON.parse(json).items
           const e = []

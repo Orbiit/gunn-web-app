@@ -8,12 +8,14 @@ import {
   legalHashDateRegex
 } from './data.js';
 import { toAlternateSchedules } from '../js/altScheduleGenerator.js?for=ugwita';
+import { apiKey } from '../js/common.js?for=ugwita'
 
 const calendarURL = "https://www.googleapis.com/calendar/v3/calendars/"
   + encodeURIComponent("fg978mo762lqm6get2ubiab0mk0f6m2c@import.calendar.google.com")
   + "/events?singleEvents=true&fields="
   + encodeURIComponent("items(description,end(date,dateTime),start(date,dateTime),summary)")
-  + "&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o";
+  + "&key="
+  + apiKey;
 
 function ajax(url, callback, error = () => {}) {
   let xmlHttp = new XMLHttpRequest();

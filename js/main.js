@@ -35,6 +35,7 @@ import {
 import { zoomImage } from '../touchy/rotate1.js'
 import {
   ALT_KEY,
+  apiKey,
   closeDialog,
   cookie,
   currentTime,
@@ -77,7 +78,7 @@ const calendarURL =
   encodeURIComponent(
     'items(description,end(date,dateTime),start(date,dateTime),summary)'
   ) +
-  '&key=AIzaSyDBYs4DdIaTjYx5WDz6nfdEAftXuctZV0o'
+  '&key=' + apiKey
 const keywords = [
   'self',
   'schedule',

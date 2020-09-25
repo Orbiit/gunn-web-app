@@ -75,7 +75,8 @@
 		"tier": 1,
 		"president": "Matthew Lum",
 		"teacher": "Mike Camicia",
-		"email": "mcamicia@pausd.org"
+		"email": "mcamicia@pausd.org",
+		"thumbnail": "https://i.imgur.com/uQTB5rI.jpg"
 	},
 	"Aeronautics Association": {
 		"new": false,
@@ -101,7 +102,8 @@
 		"tier": 2,
 		"president": "Caroline Chen",
 		"teacher": "Takeshi Kaneko",
-		"email": "tkaneko@pausd.org"
+		"email": "tkaneko@pausd.org",
+		"thumbnail": "https://i.imgur.com/4ZZ7xuz.jpg"
 	},
 	"American Cancer Society": {
 		"new": false,
@@ -166,7 +168,8 @@
 		"tier": 1,
 		"president": "Jessica Wang",
 		"teacher": "Rachel Dion",
-		"email": "rdion@pausd.org"
+		"email": "rdion@pausd.org",
+		"thumbnail": "https://i.imgur.com/7VF2Y0O.jpeg"
 	},
 	"Best Buddies Club": {
 		"new": false,
@@ -192,7 +195,8 @@
 		"tier": 2,
 		"president": "Shree Sandilya",
 		"teacher": "Karen Saxena",
-		"email": "ksaxena@pausd.org"
+		"email": "ksaxena@pausd.org",
+		"thumbnail": "https://i.imgur.com/YUc03SS.jpg"
 	},
 	"Biotechnology Club": {
 		"new": true,
@@ -280,7 +284,8 @@
 		"tier": 2,
 		"president": "Christopher Mo",
 		"teacher": "Yanan Vrudny",
-		"email": "yvrudny@pausd.org"
+		"email": "yvrudny@pausd.org",
+		"thumbnail": "https://i.imgur.com/Y1YoOYA.jpg"
 	},
 	"Christian Club": {
 		"new": false,
@@ -342,7 +347,8 @@
 		"tier": 1,
 		"president": "Aanya Vusirikala",
 		"teacher": "Kristen Owen",
-		"email": "kowen@pausd.org"
+		"email": "kowen@pausd.org",
+		"thumbnail": "https://i.imgur.com/LIZM6Uv.jpg"
 	},
 	"Cryptology Club": {
 		"new": false,
@@ -407,7 +413,8 @@
 		"tier": 1,
 		"president": "Isaac Oh",
 		"teacher": "Jeff Patrick",
-		"email": "jpatrick@pausd.org"
+		"email": "jpatrick@pausd.org",
+		"thumbnail": "https://i.imgur.com/OVnS6uU.jpeg"
 	},
 	"eSports Club": {
 		"new": true,
@@ -433,7 +440,8 @@
 		"tier": 2,
 		"president": "Ian Brown",
 		"teacher": "Edward Corpuz",
-		"email": "ecorpuz@pausd.org"
+		"email": "ecorpuz@pausd.org",
+		"thumbnail": "https://i.imgur.com/OT3lbrF.jpg"
 	},
 	"French Club/ National French Honor Society": {
 		"new": false,
@@ -459,7 +467,8 @@
 		"tier": 1,
 		"president": "Grant Cheng",
 		"teacher": "Mark Hernandez",
-		"email": "mhernandez@pausd.org"
+		"email": "mhernandez@pausd.org",
+		"thumbnail": "https://i.imgur.com/MiAwZFb.jpg"
 	},
 	"Genetics Club": {
 		"new": false,
@@ -472,7 +481,8 @@
 		"tier": 1,
 		"president": "Kailee Kee",
 		"teacher": "Elana Zizmor",
-		"email": "ezizmor@pausd.org"
+		"email": "ezizmor@pausd.org",
+		"thumbnail": "https://i.imgur.com/pa3rwVz.jpeg"
 	},
 	"GENUp PAUSD": {
 		"new": true,
@@ -485,7 +495,8 @@
 		"tier": 1,
 		"president": "Nikki Suzani",
 		"teacher": "Adam Yonkers",
-		"email": "ayonkers@pausd.org"
+		"email": "ayonkers@pausd.org",
+		"thumbnail": "https://i.imgur.com/XbigrYF.jpg"
 	},
 	"German Club": {
 		"new": false,
@@ -498,7 +509,8 @@
 		"tier": 2,
 		"president": "Christina (Tina) Siegel",
 		"teacher": "Claudia Schroeppel",
-		"email": "cschroeppel@pausd.org"
+		"email": "cschroeppel@pausd.org",
+		"thumbnail": "https://i.imgur.com/ij8dwym.jpg"
 	},
 	"Girls Tech Club": {
 		"new": false,
@@ -513,7 +525,8 @@
 		"coteacher": "Jess Hexsel",
 		"coemail": "jhexsel@pausd.org",
 		"teacher": "Josh Paley",
-		"email": "jpaley@pausd.org"
+		"email": "jpaley@pausd.org",
+		"thumbnail": "https://i.imgur.com/wLHswuG.jpg"
 	},
 	"Green Team": {
 		"new": false,
@@ -526,7 +539,8 @@
 		"tier": 2,
 		"president": "Saman de Silva",
 		"teacher": "Eric Ledgerwood",
-		"email": "eledgerwood@pausd.org"
+		"email": "eledgerwood@pausd.org",
+		"thumbnail": "https://i.imgur.com/Dalbav5.jpg"
 	},
 	"GSA (Gender and Sexuality Alliance)": {
 		"new": false,
@@ -565,7 +579,8 @@
 		"tier": 1,
 		"president": "Aaron Cheung",
 		"teacher": "Dr. Heather Mellows",
-		"email": "hmellows@pausd.org"
+		"email": "hmellows@pausd.org",
+		"thumbnail": "https://i.imgur.com/XMB2f7G.jpg"
 	},
 	"Health Club": {
 		"new": false,
@@ -578,7 +593,8 @@
 		"tier": 2,
 		"president": "Esther Tok",
 		"teacher": "Michael Bautista",
-		"email": "mbautista@pausd.org"
+		"email": "mbautista@pausd.org",
+		"thumbnail": "https://i.imgur.com/0R1iCfY.jpg"
 	},
 	"Helios Magazine Club": {
 		"new": true,
@@ -591,7 +607,8 @@
 		"tier": 1,
 		"president": "Jessica Zang",
 		"teacher": "Mark Gleason",
-		"email": "mgleason@pausd.org"
+		"email": "mgleason@pausd.org",
+		"thumbnail": "https://i.imgur.com/1oXcXID.jpeg"
 	},
 	"Hip Hop Club": {
 		"new": false,
@@ -617,7 +634,8 @@
 		"tier": 2,
 		"president": "Vasuda Dokiparthi",
 		"teacher": "Angela Merchant",
-		"email": "amerchant@pausd.org"
+		"email": "amerchant@pausd.org",
+		"thumbnail": "https://i.imgur.com/1G9Z2GZ.jpeg"
 	},
 	"Internet of Titans": {
 		"new": false,
@@ -669,7 +687,8 @@
 		"tier": 2,
 		"president": "Toby Grant-Valdez",
 		"teacher": "Matt Hall",
-		"email": "mhall@pausd.org"
+		"email": "mhall@pausd.org",
+		"thumbnail": "https://i.imgur.com/1PvYU1h.jpg"
 	},
 	"Jewish Student Union": {
 		"new": false,
@@ -682,7 +701,8 @@
 		"tier": 1,
 		"president": "Lotem Efrat",
 		"teacher": "Elana Zizmor",
-		"email": "ezizmor@pausd.org"
+		"email": "ezizmor@pausd.org",
+		"thumbnail": "https://i.imgur.com/DwISQ2R.jpg"
 	},
 	"K-Pop Dance Club": {
 		"new": true,
@@ -820,7 +840,8 @@
 		"tier": 2,
 		"president": "Nuha Mozumder",
 		"teacher": "Haley Perkins",
-		"email": "hperkins@pausd.org"
+		"email": "hperkins@pausd.org",
+		"thumbnail": "https://i.imgur.com/s2j2zBD.jpg"
 	},
 	"National Art Honor Society": {
 		"new": false,
@@ -887,7 +908,8 @@
 		"tier": 2,
 		"president": "Neha Rishi",
 		"teacher": "Jeff Patrick",
-		"email": "jpatrick@pausd.org"
+		"email": "jpatrick@pausd.org",
+		"thumbnail": "https://i.imgur.com/KDYy7W9.jpg"
 	},
 	"PC Building Club": {
 		"new": true,
@@ -926,7 +948,8 @@
 		"tier": 1,
 		"president": "Brian Eidson",
 		"teacher": "Ann Lorey",
-		"email": "alorey@pausd.org"
+		"email": "alorey@pausd.org",
+		"thumbnail": "https://i.imgur.com/LyS4wPH.jpg"
 	},
 	"Political and Civil Discourse Club": {
 		"new": true,
@@ -987,7 +1010,8 @@
 		"tier": 1,
 		"president": "Madeleine Chen",
 		"teacher": "Warren Collier",
-		"email": "wcollier@pausd.org"
+		"email": "wcollier@pausd.org",
+		"thumbnail": "https://i.imgur.com/QdqZuMX.jpg"
 	},
 	"Puzzles Club": {
 		"new": false,
@@ -1039,7 +1063,8 @@
 		"tier": 2,
 		"president": "Caroline Chen",
 		"teacher": "Arthur Kinyanjui",
-		"email": "akinyanjui@pausd.org"
+		"email": "akinyanjui@pausd.org",
+		"thumbnail": "https://i.imgur.com/IZSQDRF.jpg"
 	},
 	"Reptile Club": {
 		"new": true,
@@ -1052,7 +1077,8 @@
 		"tier": 1,
 		"president": "Kristy Rueff",
 		"teacher": "Timothy Aston",
-		"email": "taston@pausd.org"
+		"email": "taston@pausd.org",
+		"thumbnail": "https://i.imgur.com/SpX1sz6.jpeg"
 	},
 	"Research Science Innovation (RSI)": {
 		"new": false,
@@ -1088,7 +1114,8 @@
 		"tier": 1,
 		"president": "Calvin Cai",
 		"teacher": "Phil Lyons",
-		"email": "plyons@pausd.org"
+		"email": "plyons@pausd.org",
+		"thumbnail": "https://i.imgur.com/9oyI0RY.jpg"
 	},
 	"Science Bowl": {
 		"new": true,
@@ -1142,7 +1169,8 @@
 		"tier": 1,
 		"president": "Athina Chen",
 		"teacher": "Chris Redfield",
-		"email": "credfield@pausd.org"
+		"email": "credfield@pausd.org",
+		"thumbnail": "https://i.imgur.com/USlL3YJ.jpeg"
 	},
 	"Spanish Club": {
 		"new": false,
@@ -1207,7 +1235,8 @@
 		"tier": 1,
 		"president": "Catherine Fiorentino",
 		"teacher": "Marcus Jamison",
-		"email": "mjamison@pausd.org"
+		"email": "mjamison@pausd.org",
+		"thumbnail": "https://i.imgur.com/l0RX3f3.jpeg"
 	},
 	"TEDxGunnHighSchool": {
 		"new": false,
@@ -1222,7 +1251,8 @@
 		"coteacher": "Eric Ledgerwood",
 		"coemail": "eledgerwood@pausd.org",
 		"teacher": "Jessica Hexsel",
-		"email": "jhexsel@pausd.org"
+		"email": "jhexsel@pausd.org",
+		"thumbnail": "https://i.imgur.com/1R4DVsx.jpg"
 	},
 	"The Chariot": {
 		"new": false,
@@ -1235,7 +1265,8 @@
 		"tier": 2,
 		"president": "Neha Muthiah",
 		"teacher": "Justin Brown",
-		"email": "jdbrown@pausd.org"
+		"email": "jdbrown@pausd.org",
+		"thumbnail": "https://i.imgur.com/hcHhYIs.jpg"
 	},
 	"The Muse": {
 		"new": false,
@@ -1287,7 +1318,8 @@
 		"tier": 1,
 		"president": "Evelyn Gaskin",
 		"teacher": "Lynne Navarro",
-		"email": "lnavarro@pausd.org"
+		"email": "lnavarro@pausd.org",
+		"thumbnail": "https://i.imgur.com/izL32AA.jpg"
 	},
 	"Thespian Club": {
 		"new": false,
@@ -1300,7 +1332,8 @@
 		"tier": 2,
 		"president": "Sarah Emberling",
 		"teacher": "James Shelby",
-		"email": "jshelby@pausd.org"
+		"email": "jshelby@pausd.org",
+		"thumbnail": "https://i.imgur.com/HGTXIBZ.jpg"
 	},
 	"Throwback Club": {
 		"new": true,
@@ -1313,7 +1346,8 @@
 		"tier": 1,
 		"president": "Jonathan Tsang",
 		"teacher": "Amy Anderson",
-		"email": "amanderson@pausd.org"
+		"email": "amanderson@pausd.org",
+		"thumbnail": "https://i.imgur.com/vdis1P0.jpeg"
 	},
 	"TItan Science Journal Club": {
 		"new": true,
@@ -1364,7 +1398,8 @@
 		"tier": 1,
 		"president": "Sarah Bao",
 		"teacher": "Angela Merchant",
-		"email": "amerchant@pausd.org"
+		"email": "amerchant@pausd.org",
+		"thumbnail": "https://i.imgur.com/sJLIJQy.jpg"
 	},
 	"Youth Community Service - Interact (YCS-I)": {
 		"new": false,
@@ -1379,6 +1414,7 @@
 		"coteacher": "David Deggeller",
 		"coemail": "ddeggeller@pausd.org",
 		"teacher": "Diane Ichikawa",
-		"email": "dichikawa@pausd.org"
+		"email": "dichikawa@pausd.org",
+		"thumbnail": "https://i.imgur.com/RSpDlSR.jpeg"
 	}
 }

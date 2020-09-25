@@ -4,6 +4,7 @@ urlsToCache = [
   "./",
   "index.html",
   "../js/altScheduleGenerator.js?for=ugwita",
+  "../js/common.js?for=ugwita",
   "data.js",
   "main.js",
   "pretty.css"

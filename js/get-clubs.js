@@ -45,6 +45,8 @@ async function main () {
         return $(this)
           .text()
           .trim()
+          // Replace nbsp with space
+          .replace(/\xa0/g, ' ')
       })
       .get()
       // If it's empty, return `undefined` so that it's omitted from the JSON
