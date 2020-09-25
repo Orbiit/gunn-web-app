@@ -123,7 +123,10 @@ export class ImgurUrlManager {
   }
 
   async save () {
-    await writeFile(imgurUrlsPath, JSON.stringify(await this.imgurUrls, null, '\t'))
+    await writeFile(
+      imgurUrlsPath,
+      JSON.stringify(await this.imgurUrls, null, '\t')
+    )
   }
 }
 
@@ -164,7 +167,10 @@ export async function main3 () {
     noVideo: 0
   }
   for (const [name, { video, thumbnail }] of Object.entries(clubs)) {
-    if (video && (video.includes('youtube.com') || video.includes('youtu.be'))) {
+    if (
+      video &&
+      (video.includes('youtube.com') || video.includes('youtu.be'))
+    ) {
       counts.youtube++
     } else if (video && video.includes('google.com')) {
       counts.drive++
