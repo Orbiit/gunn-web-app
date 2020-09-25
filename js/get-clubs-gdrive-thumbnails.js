@@ -12,17 +12,31 @@ import fetch from 'node-fetch'
  * 4. Search for and select "Google Drive API"
  * 5. Click "Enable"
  */
-import { apiKey, getGDriveFileId } from './common.js'
+import { apiKey } from './common.js'
+
+const isGDriveRegex = /https?:\/\/drive\.google\.com\/file\/d\/([\w-]+)\/view/
+
+export function getGDriveFileId (link) {
+  const match = isGDriveRegex.exec(link)
+  if (match) {
+    return match[1]
+  } else {
+    return null
+  }
+}
 
 const apiBase = 'https://www.googleapis.com/drive/v3/files/'
+
+const imgurApiPath = fileURLToPath(
+  new URL('../imgur-api.json', import.meta.url)
+)
 
 class GDriveToImgur {
   clientId = this.getClientId()
 
+  loud = true
+
   async getClientId () {
-    const imgurApiPath = fileURLToPath(
-      new URL('../imgur-api.json', import.meta.url)
-    )
     const { clientId } = JSON.parse(await readFile(imgurApiPath, 'utf8'))
     return clientId
   }
@@ -32,50 +46,112 @@ class GDriveToImgur {
     form.append('image', imageUrl)
     form.append('type', 'url')
     if (name) form.append('name', name)
-    const { data: { link } } = await fetch('https://api.imgur.com/3/upload', {
+    const {
+      data: { link }
+    } = await fetch('https://api.imgur.com/3/upload', {
       method: 'POST',
       headers: {
         Authorization: `Client-ID ${await this.clientId}`
       },
       body: form
-    })
-      .then(r => r.ok ? r.json() : r.text().then(data => Promise.reject(new Error(data))))
+    }).then(r =>
+      r.ok ? r.json() : r.text().then(data => Promise.reject(new Error(data)))
+    )
     return link
+  }
+
+  async getImgurFromGDrive (fileId) {
+    const { loud } = this
+    if (fileId) {
+      const params = new URLSearchParams()
+      params.set('fields', 'thumbnailLink')
+      params.set('key', apiKey)
+      const { thumbnailLink } = await fetch(
+        apiBase + fileId + '/?' + params
+      ).then(r => (r.ok ? r.json() : {}))
+      if (thumbnailLink) {
+        if (loud) console.log('[:D] public!', thumbnailLink)
+        const imgur = await this.uploadImage(thumbnailLink)
+        if (loud) console.log('[^^] imgur', imgur)
+        return imgur
+      } else {
+        if (loud) console.log('[:(] not public', fileId)
+      }
+    }
+    return null
   }
 
   async applyThumbnail (club) {
     if (club.video && !club.thumbnail) {
       const fileId = getGDriveFileId(club.video)
       if (fileId) {
-        const params = new URLSearchParams()
-        params.set('fields', 'thumbnailLink')
-        params.set('key', apiKey)
-        const { thumbnailLink } = await fetch(apiBase + fileId + '/?' + params)
-          .then(r => r.ok ? r.json() : {})
-        if (thumbnailLink) {
-          console.log('[:D] public!', thumbnailLink)
-          club.thumbnail = await this.uploadImage(thumbnailLink)
-          console.log('[^^] imgur', club.thumbnail)
-        } else {
-          console.log('[:(] not public', club.video)
-        }
+        const imgur = await this.getImgurFromGDrive(fileId)
+        if (imgur) club.thumbnail = imgur
       }
     }
   }
 }
 
-const jsonPath = fileURLToPath(
-  new URL('../json/clubs.json', import.meta.url)
+const imgurUrlsPath = fileURLToPath(
+  new URL('../json/imgur-urls.json', import.meta.url)
 )
 
-async function main () {
-  const gDriveToImgur = new GDriveToImgur()
+export class ImgurUrlManager {
+  gDriveToImgur = new GDriveToImgur()
 
-  const clubs = JSON.parse(await readFile(jsonPath, 'utf8'))
-  for (const club of Object.values(clubs)) {
-    await gDriveToImgur.applyThumbnail(club)
+  imgurUrls = readFile(imgurUrlsPath, 'utf8').then(JSON.parse)
+
+  /**
+   * Resolves with the imgur URL or null if it is private
+   */
+  async getImgurFromFileId (fileId) {
+    const imgurUrls = await this.imgurUrls
+    if (Object.prototype.hasOwnProperty.call(imgurUrls, fileId)) {
+      return imgurUrls[fileId]
+    } else {
+      const imgurUrl = await this.gDriveToImgur.getImgurFromGDrive(fileId)
+      imgurUrls[fileId] = imgurUrl
+      return imgurUrl
+    }
   }
-  await writeFile(jsonPath, JSON.stringify(clubs, null, '\t'))
+
+  async setThumbnailIfNeeded (club) {
+    const fileId = getGDriveFileId(club.video)
+    if (fileId) {
+      club.thumbnail = await this.getImgurFromFileId(fileId)
+    }
+  }
+
+  async save () {
+    await writeFile(imgurUrlsPath, JSON.stringify(await this.imgurUrls, null, '\t'))
+  }
+}
+
+const clubsPath = fileURLToPath(new URL('../json/clubs.json', import.meta.url))
+
+async function main () {
+  const imgurUrls = new ImgurUrlManager()
+  const clubs = JSON.parse(await readFile(clubsPath, 'utf8'))
+  for (const club of Object.values(clubs)) {
+    await imgurUrls.setThumbnailIfNeeded(club)
+  }
+  await writeFile(clubsPath, JSON.stringify(clubs, null, '\t'))
+  await imgurUrls.save()
+}
+
+// I did something poorly the first round and do not want to annoy Imgur too
+// much so am doing this hacky thing
+// This will not be run again.
+export async function main2 () {
+  const clubs = JSON.parse(await readFile(clubsPath, 'utf8'))
+  const imgurUrls = {}
+  for (const club of Object.values(clubs)) {
+    const fileId = getGDriveFileId(club.video)
+    if (fileId && club.thumbnail) {
+      imgurUrls[fileId] = club.thumbnail
+    }
+  }
+  await writeFile(imgurUrlsPath, JSON.stringify(imgurUrls, null, '\t'))
 }
 
 // node js/....js please run main

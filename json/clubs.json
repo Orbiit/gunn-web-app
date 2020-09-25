@@ -36,7 +36,8 @@
 		"tier": 1,
 		"president": "Sonali Das",
 		"teacher": "Quan Sims",
-		"email": "qsims@pausd.org"
+		"email": "qsims@pausd.org",
+		"thumbnail": null
 	},
 	"A Cappella Club": {
 		"new": false,
@@ -116,7 +117,8 @@
 		"tier": 1,
 		"president": "Henry Moshfeghi",
 		"teacher": "Danielle Whichard",
-		"email": "dwhichard@pausd.org"
+		"email": "dwhichard@pausd.org",
+		"thumbnail": null
 	},
 	"Amnesty Club": {
 		"new": false,
@@ -142,7 +144,8 @@
 		"tier": 1,
 		"president": "Christine Kang",
 		"teacher": "Ethan Halter",
-		"email": "ehalter@pausd.org"
+		"email": "ehalter@pausd.org",
+		"thumbnail": null
 	},
 	"Asian Traditional Culture Club": {
 		"new": true,
@@ -182,7 +185,8 @@
 		"tier": 2,
 		"president": "Hyewon Ahn",
 		"teacher": "Sandra Conklin",
-		"email": "sconklin@pausd.org"
+		"email": "sconklin@pausd.org",
+		"thumbnail": null
 	},
 	"Bikex Club": {
 		"new": true,
@@ -209,7 +213,8 @@
 		"tier": 2,
 		"president": "Ankitha Raman",
 		"teacher": "Jessica Hexsel",
-		"email": "jhexsel@pausd.org"
+		"email": "jhexsel@pausd.org",
+		"thumbnail": null
 	},
 	"Black Student Union": {
 		"new": true,
@@ -298,7 +303,8 @@
 		"tier": 2,
 		"president": "Elena Creason",
 		"teacher": "Patricia Holmes",
-		"email": "pholmes@pausd.org"
+		"email": "pholmes@pausd.org",
+		"thumbnail": null
 	},
 	"Climbing Club": {
 		"new": false,
@@ -427,7 +433,8 @@
 		"tier": 2,
 		"president": "Ryan Choi",
 		"teacher": "Jennel Lopez",
-		"email": "jlopez@pausd.org"
+		"email": "jlopez@pausd.org",
+		"thumbnail": null
 	},
 	"Film Club": {
 		"new": false,
@@ -454,7 +461,8 @@
 		"tier": 2,
 		"president": "Kaley Chong",
 		"teacher": "Laura Lizundia",
-		"email": "llizundia@pausd.org"
+		"email": "llizundia@pausd.org",
+		"thumbnail": null
 	},
 	"Game Design Club": {
 		"new": false,
@@ -553,7 +561,8 @@
 		"tier": 2,
 		"president": "Claire Morse",
 		"teacher": "Daisy Renazco",
-		"email": "drenazco@pausd.org"
+		"email": "drenazco@pausd.org",
+		"thumbnail": null
 	},
 	"Gunn Med Club": {
 		"new": false,
@@ -566,7 +575,8 @@
 		"tier": 1,
 		"president": "Kailee Kee",
 		"teacher": "Gabriela Garger",
-		"email": "ggarger@pausd.org"
+		"email": "ggarger@pausd.org",
+		"thumbnail": null
 	},
 	"Harry Potter Club": {
 		"new": true,
@@ -788,7 +798,8 @@
 		"tier": 1,
 		"president": "Mona Pillai",
 		"teacher": "Danning Wang",
-		"email": "dwang@pausd.org"
+		"email": "dwang@pausd.org",
+		"thumbnail": null
 	},
 	"Mock Trial": {
 		"new": false,
@@ -854,7 +865,8 @@
 		"tier": 2,
 		"president": "Ju Hee (Jenna) Han",
 		"teacher": "Deanna Messinger",
-		"email": "dmessinger@pausd.org"
+		"email": "dmessinger@pausd.org",
+		"thumbnail": null
 	},
 	"Neuroscience Club": {
 		"new": false,
@@ -867,7 +879,8 @@
 		"tier": 2,
 		"president": "Hyewon Ahn",
 		"teacher": "Charlotte Kaufman",
-		"email": "ckaufman@pausd.org"
+		"email": "ckaufman@pausd.org",
+		"thumbnail": null
 	},
 	"Organic Garden Club": {
 		"new": false,
@@ -882,7 +895,8 @@
 		"coteacher": "Elizabeth Matchett",
 		"coemail": "lmatchett@pausd.org",
 		"teacher": "Cindy Peters",
-		"email": "cpeters@pausd.org"
+		"email": "cpeters@pausd.org",
+		"thumbnail": null
 	},
 	"Pandora's Box Creative Magazine": {
 		"new": false,
@@ -972,7 +986,8 @@
 		"tier": 1,
 		"president": "Clair Koo",
 		"teacher": "Julie Munger",
-		"email": "jmunger@pausd.org"
+		"email": "jmunger@pausd.org",
+		"thumbnail": null
 	},
 	"Powerlifting/Weightlifting Club": {
 		"new": true,
@@ -1156,7 +1171,8 @@
 		"tier": 1,
 		"president": "Amelia Yu",
 		"teacher": "Shaina Holdener",
-		"email": "sholdener@pausd.org"
+		"email": "sholdener@pausd.org",
+		"thumbnail": null
 	},
 	"Socially Responsible Investment Fund (SRIF)": {
 		"new": false,
@@ -1209,7 +1225,8 @@
 		"tier": 1,
 		"president": "Sharad Parulekar",
 		"teacher": "Rachel Congress",
-		"email": "rcongress@pausd.org"
+		"email": "rcongress@pausd.org",
+		"thumbnail": null
 	},
 	"Star Wars Club": {
 		"new": false,
@@ -1279,7 +1296,8 @@
 		"tier": 1,
 		"president": "Shana Ebrahimnejad",
 		"teacher": "Daljeet Gill",
-		"email": "dgill@pausd.org"
+		"email": "dgill@pausd.org",
+		"thumbnail": null
 	},
 	"The Music Studio": {
 		"new": true,
@@ -1359,7 +1377,8 @@
 		"tier": 2,
 		"president": "Clair Koo",
 		"teacher": "Jennel Lopez",
-		"email": "jlopez@pausd.org"
+		"email": "jlopez@pausd.org",
+		"thumbnail": null
 	},
 	"Title IX Club": {
 		"new": true,

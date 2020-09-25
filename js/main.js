@@ -78,7 +78,8 @@ const calendarURL =
   encodeURIComponent(
     'items(description,end(date,dateTime),start(date,dateTime),summary)'
   ) +
-  '&key=' + apiKey
+  '&key=' +
+  apiKey
 const keywords = [
   'self',
   'schedule',
