@@ -28,13 +28,16 @@ export default {
     barcode: 'Barcode',
     'barcode-desc':
       'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on {wikipedia|Wikipedia}.',
-    'bell-volume': 'Play a virtual bell (leave volume at 0 to disable): {volume} {play} Browsers won\'t play audio until you click somewhere, though.',
+    'bell-volume':
+      "Set the volume to zero to disable. Browsers won't play audio automatically until you click somewhere.",
     browsers:
       'UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.',
     bugs: 'Bug reports',
     category: 'Category: {category}',
     'chromebook-instruct':
       '{name|Chromebook}—pin this page to the shelf (menu > more tools > add to shelf)',
+    'click-for-audio':
+      '{icon} Click/tap anywhere so the virtual bell can play.',
     close: 'Close',
     'club-list': 'Club list',
     'club-name': 'Club name',
@@ -88,6 +91,7 @@ export default {
     'martin-ad': "{ad|Compelling utility} Martin's GPA Calculation Website",
     material:
       "Design based on {link|Material Design}'s icons, colours, and specifications.",
+    'matthew-creds': '{name|Matthew} for the virtual bell.',
     'min-grade': 'Minimum acceptable grade: {input}',
     minscore: 'Minimum finals score calculator',
     'msg-note':

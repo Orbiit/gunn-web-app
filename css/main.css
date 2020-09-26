@@ -1050,3 +1050,27 @@ p.secondary {
   margin-right: 10px;
   text-transform: uppercase;
 }
+
+#no-audio {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: var(--theme);
+  font-size: 14px;
+  align-items: center;
+  margin: 10px;
+  z-index: 15;
+  pointer-events: none;
+}
+#no-audio .material-icons {
+  margin-right: 10px;
+}
+.bell-volume {
+  display: flex;
+  align-items: center;
+}
+.bell-volume .material-range {
+  flex: auto;
+  margin: 0 24px;
+}

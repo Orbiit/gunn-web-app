@@ -776,7 +776,11 @@ export function initSchedule (manualAltSchedulesProm) {
     // https://en.wikipedia.org/wiki/E_(musical_note)#Designation_by_octave
     oscillator.frequency.setValueAtTime(659.255, audioCtx.currentTime) // value in hertz
     const gainNode = audioCtx.createGain()
-    gainNode.gain.setValueAtTime(+formatOptions.bellVolume / 100, audioCtx.currentTime)
+    gainNode.gain.setValueAtTime(
+      +formatOptions.bellVolume / 100,
+      audioCtx.currentTime
+    )
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime + 5)
     updateVolume = (volume = +formatOptions.bellVolume / 100) => {
       gainNode.gain.setValueAtTime(volume, audioCtx.currentTime)
     }
@@ -803,11 +807,25 @@ export function initSchedule (manualAltSchedulesProm) {
     }
   })
   volumeSlider.range = [0, +formatOptions.bellVolume / 100]
-  volumeSliderMarker.parentNode.replaceChild(volumeSlider.elem, volumeSliderMarker)
+  volumeSliderMarker.parentNode.replaceChild(
+    volumeSlider.elem,
+    volumeSliderMarker
+  )
   const playBellBtn = document.getElementById('play-bell')
   playBellBtn.addEventListener('click', e => {
     playBell()
   })
+  if (+formatOptions.bellVolume !== 0) {
+    const noAudioWarning = document.getElementById('no-audio')
+    noAudioWarning.style.display = 'flex'
+    document.addEventListener(
+      'click',
+      e => {
+        noAudioWarning.style.display = null
+      },
+      { once: true }
+    )
+  }
   const weekwrapper = document.querySelector('#weekwrapper')
   let lastWeek = null
   function makeWeekHappen () {
@@ -1288,7 +1306,8 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
-    scheduleapp.addTimer(
+  scheduleapp
+    .addTimer(
       getNext => {
         if (+formatOptions.bellVolume !== 0) {
           // The five second bell ends when the period starts
@@ -1306,7 +1325,8 @@ export function initSchedule (manualAltSchedulesProm) {
           return +formatOptions.bellVolume !== 0
         }
       }
-    ).update()
+    )
+    .update()
   function isSchoolDay (d) {
     return scheduleapp.getSchedule(d).periods.length
   }
@@ -1764,7 +1784,8 @@ export function initSchedule (manualAltSchedulesProm) {
       document.querySelector('#periodcustomisermarker')
     )
 
-  const openLinkBefore = formatOptions.timeBeforeAutoLink === 'off'
+  const openLinkBefore =
+    formatOptions.timeBeforeAutoLink === 'off'
       ? null
       : +formatOptions.timeBeforeAutoLink
   let openLinkInIframe
@@ -1785,8 +1806,7 @@ export function initSchedule (manualAltSchedulesProm) {
     nextLinkOpen.update()
     saveFormatOptions()
   })
-  openLinkInIframe =
-    formatOptions.openNewTab !== 'yes' && setIframe
+  openLinkInIframe = formatOptions.openNewTab !== 'yes' && setIframe
   const iframeDialog = document.getElementById('iframe-window')
   const iframe = document.getElementById('iframe')
   const iframeTitleLink = document.getElementById('iframe-title')

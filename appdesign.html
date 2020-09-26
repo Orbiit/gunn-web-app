@@ -149,7 +149,7 @@
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
-      //*
+      /*
       const start = Date.now()
       const baseTime = new Date(2020, 8, 23, 11, 39, 50).getTime()
       // const baseTime = new Date().getTime()
@@ -544,7 +544,7 @@
           <label data-l10n="numbers"></label>
         </p>
       </div>
-      <div class="center">
+      <div class="center" style="display: none;">
         <button
           class="material ripple-light raised"
           id="disable-lists"
@@ -611,17 +611,17 @@
           data-l10n-arg="time"
         ></span>
       </p>
-      <p data-l10n="bell-volume">
+      <p data-l10n="bell-volume"></p>
+      <div class="bell-volume">
+        <button class="material icon" id="play-bell" data-l10n-arg="play">
+          <i class="material-icons">&#xe037;</i>
+        </button>
         <span
           class="material-dropdown"
           id="bell-volume-marker"
           data-l10n-arg="volume"
         ></span>
-        <button class="material icon" id="play-bell"
-        data-l10n-arg="play">
-          <i class="material-icons">&#xe037;</i>
-        </button>
-      </p>
+      </div>
 
       <h1 data-l10n="assignments"></h1>
       <p>
@@ -890,6 +890,14 @@
             data-l10n-arg="name"
           ></a>
         </p>
+        <p data-l10n="matthew-creds">
+          <a
+            href="https://example.com/if-you-see-this-please-tell-sean-because-he-is-dumb"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-l10n-arg="name"
+          ></a>
+        </p>
         <p data-l10n="henry-creds">
           <a
             href="https://poolehenry.github.io/"
@@ -1037,6 +1045,10 @@
         <button class="material red close" data-l10n="ok"></button>
       </div>
     </div>
+
+    <p id="no-audio" data-l10n="click-for-audio">
+      <i class="material-icons" data-l10n-arg="icon">&#xe7f6;</i>
+    </p>
 
     <div class="ios-cover" id="ios-add-to-home-screen">
       <div class="ios-dialog">
