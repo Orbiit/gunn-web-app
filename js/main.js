@@ -730,6 +730,7 @@ function showIOSDialog () {
     document.getElementById('ios-no-thanks').addEventListener('click', e => {
       theThing.classList.add('ok')
       cookie.setItem('[gunn-web-app] no-thx-ios', true)
+      closeDialog()
     })
   }
 }

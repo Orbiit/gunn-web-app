@@ -19,7 +19,7 @@
     "uglify-js": "^3.4.1"
   },
   "scripts": {
-    "build": "node build.js",
+    "build": "node build.js && prettier-standard js/languages/example.json",
     "check-l10n": "node js/languages/check-l10n.js",
     "format": "prettier-standard --format --lint",
     "inc-sw": "node js/inc-sw.js",

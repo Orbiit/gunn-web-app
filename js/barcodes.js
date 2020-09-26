@@ -104,7 +104,11 @@ export function initBarcodes () {
     viewbtn.addEventListener(
       'click',
       e => {
-        li.classList.add('viewbarcode')
+        setTimeout(() => {
+          // Wait a moment before showing barcode in case there's some race
+          // condition or something (see #150)
+          li.classList.add('viewbarcode')
+        })
         window.history.replaceState(
           {},
           '',
