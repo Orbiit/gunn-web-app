@@ -220,7 +220,11 @@ export function makeDropdown (wrapper, values) {
     }
   }
 }
-export function createRange (minRange = 0, onchange = NADA, oninput = NADA) {
+export function createRange ({
+  minRange = 0,
+  onchange = NADA,
+  oninput = NADA
+} = {}) {
   const range = document.createElement('div')
   range.classList.add('material-range')
   range.tabIndex = 0
