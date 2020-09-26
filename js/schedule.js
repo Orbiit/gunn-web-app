@@ -314,7 +314,7 @@ export function initSchedule (manualAltSchedulesProm) {
         off: 'yes',
         onChange: checked => {
           // Set it to `setIframe` only if checked
-          scheduleapp.options.openLinkInIframe = checked && setIframe
+          openLinkInIframe = checked && setIframe
         }
       }
     }
@@ -1114,11 +1114,6 @@ export function initSchedule (manualAltSchedulesProm) {
         alternate: { description }
       }
     },
-    notifSettings,
-    openLinkBefore:
-      formatOptions.timeBeforeAutoLink === 'off'
-        ? null
-        : +formatOptions.timeBeforeAutoLink,
     autorender: false
   })
   setOnSavedClubsUpdate(scheduleapp.render)
@@ -1173,7 +1168,7 @@ export function initSchedule (manualAltSchedulesProm) {
         )
         const { label, link } =
           (currentPeriod !== -1 &&
-            periodSymbols[getPeriodName(currentPeriod)]) ||
+            periodstyles[getPeriodName(currentPeriod)]) ||
           {}
         const text =
           currentPeriod === -1
@@ -1233,9 +1228,9 @@ export function initSchedule (manualAltSchedulesProm) {
         return null
       },
       next => {
-        if (options.openLinkInIframe) {
+        if (openLinkInIframe) {
           const { link, label } = periodstyles[next.period]
-          options.openLinkInIframe(link, label)
+          openLinkInIframe(link, label)
         } else {
           // https://stackoverflow.com/a/11384018
           window.open(periodstyles[next.period].link, '_blank')
@@ -1705,6 +1700,10 @@ export function initSchedule (manualAltSchedulesProm) {
       document.querySelector('#periodcustomisermarker')
     )
 
+  const openLinkBefore = formatOptions.timeBeforeAutoLink === 'off'
+      ? null
+      : +formatOptions.timeBeforeAutoLink
+  let openLinkInIframe
   const openLinkDropdownWrapper = document.getElementById('link-time-before')
   const openLinkDropdown = makeDropdown(openLinkDropdownWrapper, [
     [60 * 60, localize('time-before/before-1-00-00')],
@@ -1716,14 +1715,13 @@ export function initSchedule (manualAltSchedulesProm) {
     [1 * 60, localize('time-before/before-0-01-00')],
     [0, localize('time-before/immediately')],
     [null, localize('time-before/never')]
-  ]).set(scheduleapp.options.openLinkBefore)
+  ]).set(openLinkBefore)
   openLinkDropdown.onChange(async time => {
-    scheduleapp.options.openLinkBefore = time
-    formatOptions.timeBeforeNotif = time === null ? 'off' : time
+    formatOptions.timeBeforeAutoLink = time === null ? 'off' : time
     nextLinkOpen.update()
     saveFormatOptions()
   })
-  scheduleapp.options.openLinkInIframe =
+  openLinkInIframe =
     formatOptions.openNewTab !== 'yes' && setIframe
   const iframeDialog = document.getElementById('iframe-window')
   const iframe = document.getElementById('iframe')

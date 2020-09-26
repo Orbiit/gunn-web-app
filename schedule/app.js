@@ -487,9 +487,11 @@ export function scheduleApp (options = {}) {
     if (currentMinute !== lastMinute) {
       returnval.render()
       lastMinute = currentMinute
-      for (const { timer, getNextFn } of timers) {
-        if (timer.enabled && !timer.next) {
-          timer.next = getNextFn(getNext)
+      // If it's enabled yet there's no next set, keep trying to get one. This
+      // is not very efficient but it should suffice.
+      for (const { timer, next, update } of timers) {
+        if (timer.enabled && !next) {
+          update()
         }
       }
     }
@@ -498,9 +500,10 @@ export function scheduleApp (options = {}) {
     } else {
       animationID = null
     }
-    for (const { timer, onNext } of timers) {
-      if (timer && currentTime() >= timer.time) {
-        onNext(timer.next, { getDate, getSchedule, getUsefulTimePhrase })
+    for (const { next, onNext, update } of timers) {
+      if (next && currentTime() >= next.time) {
+        onNext()
+        update()
       }
     }
   }
@@ -575,11 +578,18 @@ export function scheduleApp (options = {}) {
     },
     addTimer (getNextFn, onNext, timer = { enabled: true }) {
       timer.update = () => {
-        timer.next = timer.enabled ? getNextFn(getNext) : null
+        entry.next = timer.enabled ? getNextFn(getNext) : null
         return timer
       }
-      timer.next = null
-      timers.push({ timer, getNextFn, onNext })
+      const entry = {
+        timer,
+        onNext: () => {
+          onNext(entry.next, { getDate, getSchedule, getUsefulTimePhrase })
+        },
+        update: timer.update,
+        next: null
+      }
+      timers.push(entry)
       return timer
     },
     getPeriodSpan,
