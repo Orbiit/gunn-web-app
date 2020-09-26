@@ -6,10 +6,10 @@ export default {
     'add-barcode': 'Add barcode',
     'add-home':
       'Tap the share button {share-icon}, select "{add-home|Add to Home Screen}" in the bottom row,{add-home-img}then tap "{add|Add}."',
-    'add-ugwa': 'To add UGWA to your home screen',
+    'add-ugwa': 'Install UGWA as an app',
     'allow-swipe': 'Enable swiping between days?',
     'android-instruct':
-      '{name|Android}—tap on the menu and select "add to home screen"',
+      '{name|Android}—tap on the menu and select "Add to Home Screen"',
     announcements: 'Announcements',
     'asgn-after': 'After the schedule',
     'asgn-algorithms': 'By use of A L G O R I T H M S',
@@ -28,14 +28,15 @@ export default {
     barcode: 'Barcode',
     'barcode-desc':
       'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on {wikipedia|Wikipedia}.',
+    bell: 'Virtual bell',
     'bell-volume':
       "Set the volume to zero to disable. Browsers won't play audio automatically until you click somewhere.",
     browsers:
-      'UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.',
+      'UGWA only aims to support the latest versions of Chrome and iOS Safari; others are low-priority.',
     bugs: 'Bug reports',
     category: 'Category: {category}',
-    'chromebook-instruct':
-      '{name|Chromebook}—pin this page to the shelf (menu > more tools > add to shelf)',
+    'chrome-instruct':
+      '{name|Chrome}—click the plus sign in the address bar and select "Install"',
     'click-for-audio':
       '{icon} Click/tap anywhere so the virtual bell can play.',
     close: 'Close',
@@ -55,7 +56,7 @@ export default {
     'current-grade': 'Current grade: {input}',
     'dark-theme': 'Dark theme',
     'desktop-instruct':
-      '{name|Desktop}—bookmark this page or pin this tab (right click on the tab and select "Pin tab")',
+      '{name|Other browsers}—click the star button in the address bar or right click the tab and select "Pin tab"',
     'disable-lists': 'Disable club/staff lists',
     'edit-asgn': 'Assignment properties',
     // 'edit-h': 'Set period 8 times',
@@ -77,7 +78,7 @@ export default {
     intent:
       'The app was originally made to make the features of TheGunnApp available to Chromebook users.',
     'ios-instruct':
-      '{name|iOS}—tap on the share icon and select "add to home screen"',
+      '{name|iOS}—in iOS Safari, tap on the share icon and select "Add to Home Screen"',
     'kevin-creds': '{name|Kevin} for the French translation.',
     'kill-sw': 'Unregister service worker',
     languages: 'Languages',
@@ -113,7 +114,7 @@ export default {
       'Automatically open a period\'s link {time} when it starts. {emphasis|NOTE: Pages cannot be opened automatically unless you allow the "Pop-ups and redirects" permission in the site settings.}',
     options: 'Options',
     'other-apps':
-      'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {bellhop|Bellhop} by Kartik C. · {nugwa|Not UGWA} by Tomer S. · {hw-central|Homework Central} by Saumya S.',
+      'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {bellhop|Bellhop} by Kartik C. · {nugwa|Not UGWA} by Tomer S. · {hw-central|Homework Central} by Saumya S. · {ugwa-backend|UGWA Backend} by Kevin Y.',
     'other-versions':
       'Other versions: {gunn-schedule|Gunn Schedule} (no alternate schedules) · {ugwita|Ugwita} (ugly) · {ugwa2|Ugwa 2} (not done) · {ugwisha|Ugwisha}.',
     periods: 'Periods',
@@ -121,7 +122,7 @@ export default {
     'prev-chats': 'Previous chats',
     reload: 'Restart UGWA',
     'report-bugs':
-      'You can {gh|make a new issue on GitHub} or email {email|sy24484@pausd.us} to make a feature request or bug report.',
+      'You can {gh|make a new issue on GitHub} or email {email|seanthesheep22@outlook.com} to make a feature request or bug report.',
     s1a: 'Crisis Text Line',
     s1b: '741-741',
     s1c:

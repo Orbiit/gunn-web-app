@@ -13,6 +13,7 @@ button.material.icon.asgn-done-btn {
   margin-left: -16px;
   color: inherit;
   text-shadow: inherit;
+  flex: none;
 }
 .schedule-container .asgn-done-btn {
   transition: background-color 0.2s;
@@ -27,6 +28,7 @@ button.material.icon.asgn-done-btn {
 .asgn-line {
   font-size: 14px;
   position: relative;
+  display: flex;
 }
 .asgn-line .asgn-category {
   margin-right: 10px;

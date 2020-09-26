@@ -86,18 +86,23 @@ a.material:hover,
 .schedule-container .material:hover {
   background-color: var(--ripple);
 }
+.material-switch-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
 .material-switch {
   display: inline-block;
   margin: 0;
   height: 14px;
   width: 36px;
   border-radius: 7px;
-  margin: 0 15px;
+  margin-right: 15px;
   vertical-align: bottom;
   cursor: pointer;
   position: relative;
   transition: all 0.2s;
   background-color: var(--off-switch-back);
+  flex: none;
 }
 .material-switch.checked {
   background-color: var(--active-back);
@@ -144,6 +149,10 @@ a.material:hover,
   left: calc(100% - 20px);
   margin-left: 3px;
 }
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+}
 .radio-wrapper,
 .radio-wrapper * {
   cursor: pointer;
@@ -163,6 +172,7 @@ a.material:hover,
   margin-right: 15px;
   transition: all 0.2s;
   border-color: var(--secondary);
+  flex: none;
 }
 .material-radio::before,
 .material-radio::after {

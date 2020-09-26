@@ -1030,17 +1030,9 @@ p.secondary {
   flex: 1 0 0;
 }
 
-.ad {
-  display: block;
-  border-radius: 5px;
-  background-color: var(--theme);
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  font-size: 16px;
-  padding: 10px;
-}
-.ad:hover {
-  text-decoration: none;
+.ad.material {
+  width: 100%;
+  justify-content: flex-start;
 }
 .ad-badge {
   font-size: 12px;
