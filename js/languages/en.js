@@ -28,6 +28,7 @@ export default {
     barcode: 'Barcode',
     'barcode-desc':
       'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on {wikipedia|Wikipedia}.',
+    'bell-volume': 'Play a virtual bell (leave volume at 0 to disable): {volume} {play} Browsers won\'t play audio until you click somewhere, though.',
     browsers:
       'UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.',
     bugs: 'Bug reports',
@@ -100,6 +101,7 @@ export default {
       '{create|Create Assync account} or {id} {join|Sync to account}',
     'notif-time-before':
       'Send a notification {time} when a period starts or ends. (Notifications will only be sent while UGWA is running.)',
+    notifications: 'Notifications',
     numbers: 'Numbers only',
     ok: 'OK',
     'open-chat': 'Join chat',

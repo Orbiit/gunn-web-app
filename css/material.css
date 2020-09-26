@@ -424,6 +424,7 @@ ul.material-list li.error,
 }
 
 .material-range {
+  display: inline-block;
   position: relative;
   height: 24px;
   width: 120px;

@@ -15,7 +15,7 @@ import { ColourPicker } from './colour.js'
 import { DatePicker } from './date.js'
 import { localize, localizeWith } from './l10n.js'
 import { onClubsLoaded } from '../js/lists.js'
-import { makeDropdown, materialInput, ripple } from './material.js'
+import { createRange, makeDropdown, materialInput, ripple } from './material.js'
 import { setOnSavedClubsUpdate } from './saved-clubs.js'
 import {
   ajax,
@@ -25,6 +25,7 @@ import {
   cookie,
   currentTime,
   escapeHTML,
+  getAudioContext,
   googleCalendarId,
   isAppDesign,
   logError,
@@ -317,7 +318,8 @@ export function initSchedule (manualAltSchedulesProm) {
           openLinkInIframe = checked && setIframe
         }
       }
-    }
+    },
+    bellVolume: { default: '0' }
   }
   const formatOptionsCookie = cookie.getItem(
     '[gunn-web-app] scheduleapp.formatOptions'
@@ -763,6 +765,49 @@ export function initSchedule (manualAltSchedulesProm) {
       notifDropdownWrapper.parentNode
     )
   }
+  let stopBell = null
+  let updateVolume = null
+  function playBell () {
+    if (stopBell) stopBell()
+    const audioCtx = getAudioContext()
+    const oscillator = audioCtx.createOscillator()
+    oscillator.type = 'square'
+    // Thanks Matthew for the bell pitch
+    // https://en.wikipedia.org/wiki/E_(musical_note)#Designation_by_octave
+    oscillator.frequency.setValueAtTime(659.255, audioCtx.currentTime) // value in hertz
+    const gainNode = audioCtx.createGain()
+    gainNode.gain.setValueAtTime(+formatOptions.bellVolume / 100, audioCtx.currentTime)
+    updateVolume = (volume = +formatOptions.bellVolume / 100) => {
+      gainNode.gain.setValueAtTime(volume, audioCtx.currentTime)
+    }
+    oscillator.connect(gainNode)
+    gainNode.connect(audioCtx.destination)
+    oscillator.start()
+    stopBell = () => {
+      clearTimeout(timeoutId)
+      oscillator.stop()
+      stopBell = null
+      updateVolume = null
+    }
+    // Thanks Timothy for timing the bell!
+    const timeoutId = setTimeout(stopBell, 5000)
+  }
+  const volumeSliderMarker = document.getElementById('bell-volume-marker')
+  const volumeSlider = createRange({
+    showMin: false,
+    oninput: ([, volume]) => updateVolume && updateVolume(volume),
+    onchange: ([, volume]) => {
+      if (updateVolume) updateVolume(volume)
+      formatOptions.bellVolume = Math.round(volume * 100)
+      saveFormatOptions()
+    }
+  })
+  volumeSlider.range = [0, +formatOptions.bellVolume / 100]
+  volumeSliderMarker.parentNode.replaceChild(volumeSlider.elem, volumeSliderMarker)
+  const playBellBtn = document.getElementById('play-bell')
+  playBellBtn.addEventListener('click', e => {
+    playBell()
+  })
   const weekwrapper = document.querySelector('#weekwrapper')
   let lastWeek = null
   function makeWeekHappen () {
@@ -1243,6 +1288,25 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
+    scheduleapp.addTimer(
+      getNext => {
+        if (+formatOptions.bellVolume !== 0) {
+          // The five second bell ends when the period starts
+          const next = getNext((pdTime, nowTime) => pdTime - 5 > nowTime)
+          return next && { time: next.time - 5000 }
+        } else {
+          return null
+        }
+      },
+      next => {
+        playBell()
+      },
+      {
+        get enabled () {
+          return +formatOptions.bellVolume !== 0
+        }
+      }
+    ).update()
   function isSchoolDay (d) {
     return scheduleapp.getSchedule(d).periods.length
   }

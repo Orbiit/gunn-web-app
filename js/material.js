@@ -223,7 +223,8 @@ export function makeDropdown (wrapper, values) {
 export function createRange ({
   minRange = 0,
   onchange = NADA,
-  oninput = NADA
+  oninput = NADA,
+  showMin = true
 } = {}) {
   const range = document.createElement('div')
   range.classList.add('material-range')
@@ -231,7 +232,7 @@ export function createRange ({
   const minKnob = document.createElement('div')
   minKnob.classList.add('range-knob')
   minKnob.classList.add('range-min')
-  range.appendChild(minKnob)
+  if (showMin) range.appendChild(minKnob)
   const maxKnob = document.createElement('div')
   maxKnob.classList.add('range-knob')
   maxKnob.classList.add('range-max')
@@ -270,7 +271,7 @@ export function createRange ({
     if (controlling) return
     rect = range.getBoundingClientRect()
     const pos = getPos(e)
-    if (pos < (min + max) / 2) {
+    if (showMin && pos < (min + max) / 2) {
       controlling = 'min'
       min = pos
     } else {

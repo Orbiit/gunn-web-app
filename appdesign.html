@@ -149,11 +149,11 @@
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
-      /*
+      //*
       const start = Date.now()
-      const baseTime = new Date(2020, 8, 23, 11, 25).getTime()
+      const baseTime = new Date(2020, 8, 23, 11, 39, 50).getTime()
       // const baseTime = new Date().getTime()
-      const speed = 100
+      const speed = 1
       setCurrentTime(() => {
         return (Date.now() - start) * speed + baseTime
       })
@@ -544,13 +544,6 @@
           <label data-l10n="numbers"></label>
         </p>
       </div>
-      <p data-l10n="notif-time-before">
-        <span
-          class="material-dropdown"
-          id="notif-time-before"
-          data-l10n-arg="time"
-        ></span>
-      </p>
       <div class="center">
         <button
           class="material ripple-light raised"
@@ -608,6 +601,26 @@
           <span class="material-switch" id="use-iframe" tabindex="0"></span>
           <span data-l10n="use-iframe"></span>
         </label>
+      </p>
+
+      <h1 data-l10n="notifications"></h1>
+      <p data-l10n="notif-time-before">
+        <span
+          class="material-dropdown"
+          id="notif-time-before"
+          data-l10n-arg="time"
+        ></span>
+      </p>
+      <p data-l10n="bell-volume">
+        <span
+          class="material-dropdown"
+          id="bell-volume-marker"
+          data-l10n-arg="volume"
+        ></span>
+        <button class="material icon" id="play-bell"
+        data-l10n-arg="play">
+          <i class="material-icons">&#xe037;</i>
+        </button>
       </p>
 
       <h1 data-l10n="assignments"></h1>
