@@ -667,6 +667,50 @@ export function initSchedule (manualAltSchedulesProm) {
     refresh.click()
   }
 
+  const periodSymbols = {
+    Brunch: localize('symbols/brunch'),
+    Lunch: localize('symbols/lunch'),
+    Flex: localize('symbols/flex'),
+    SELF: localize('symbols/self'),
+    A: localize('symbols/period-a'),
+    B: localize('symbols/period-b'),
+    C: localize('symbols/period-c'),
+    D: localize('symbols/period-d'),
+    E: localize('symbols/period-e'),
+    F: localize('symbols/period-f'),
+    G: localize('symbols/period-g'),
+    H: localize('symbols/period-h'),
+    '0': localize('symbols/period-zero'),
+    GT: '?'
+  }
+  const ICON_SIZE = 256
+  const ICON_FONT = '"Roboto", sans-serif'
+  const ICON_PADDING = 0.2
+  const maxSize = ICON_SIZE * (1 - 2 * ICON_PADDING)
+  const iconCanvas = document.createElement('canvas')
+  const iconCtx = iconCanvas.getContext('2d')
+  iconCanvas.width = ICON_SIZE
+  iconCanvas.height = ICON_SIZE
+  iconCtx.textAlign = 'center'
+  iconCtx.textBaseline = 'middle'
+  function getIcon (period) {
+    const { colour = '#000000', label } = periodstyles[period]
+    if (colour[0] === '#') {
+      iconCtx.fillStyle = colour
+      iconCtx.fillRect(0, 0, ICON_SIZE, ICON_SIZE)
+      iconCtx.fillStyle = getFontColour(colour)
+    } else {
+      return `./.period-images/${period}?${colour}`
+    }
+    const text = periodSymbols[period] || label
+    iconCtx.font = `${maxSize}px ${ICON_FONT}`
+    const { width } = iconCtx.measureText(text)
+    const fontSize = Math.min((maxSize * maxSize) / width, maxSize)
+    iconCtx.font = `${fontSize}px ${ICON_FONT}`
+    // It is annoying having to do fontSize * 0.1 so it looks vertically centred
+    iconCtx.fillText(text, ICON_SIZE / 2, ICON_SIZE / 2 + fontSize * 0.1)
+    return iconCanvas.toDataURL()
+  }
   const notifSettings = {
     enabled: false,
     timeBefore: 5 * 60
@@ -710,7 +754,7 @@ export function initSchedule (manualAltSchedulesProm) {
         formatOptions.timeBeforeNotif = 'off'
         notifSettings.enabled = false
       }
-      scheduleapp.updateNextNotif()
+      nextNotif.update()
       saveFormatOptions()
     })
   } else {
@@ -1104,7 +1148,106 @@ export function initSchedule (manualAltSchedulesProm) {
   }
   scheduleapp.options.isSummer = (y, m, d) =>
     !datepicker.inrange({ y: y, m: m, d: d })
-  scheduleapp.updateNextNotif()
+  const nextNotif = scheduleapp
+    .addTimer(
+      getNext => {
+        const { timeBefore } = notifSettings
+        const next = getNext((pdTime, nowTime) => pdTime - timeBefore > nowTime)
+        return (
+          next && {
+            time: next.time - timeBefore * 1000,
+            link: next.type === 'start'
+          }
+        )
+      },
+      (next, { getDate, getSchedule, getUsefulTimePhrase }) => {
+        const today = getDate(now())
+        const currentMinute = (currentTime() - today.getTime()) / 1000 / 60
+        // Apparently getPeriodName gets the period type even though it's
+        // already in `periods[index].name` in order to deal with SELF
+        // becoming flex even though this could've been dealt with in
+        // getSchedule before returning the schedule??
+        const { periods, getPeriodName } = getSchedule(today)
+        const currentPeriod = periods.findIndex(
+          period => currentMinute < period.end.totalminutes
+        )
+        const { label, link } =
+          (currentPeriod !== -1 &&
+            periodSymbols[getPeriodName(currentPeriod)]) ||
+          {}
+        const text =
+          currentPeriod === -1
+            ? localize('over', 'times')
+            : currentMinute < periods[currentPeriod].start.totalminutes
+            ? localizeWith('starting', 'times', {
+                P: label,
+                T: getUsefulTimePhrase(
+                  Math.ceil(
+                    periods[currentPeriod].start.totalminutes - currentMinute
+                  )
+                )
+              })
+            : localizeWith('ending', 'times', {
+                P: label,
+                T: getUsefulTimePhrase(
+                  Math.ceil(
+                    periods[currentPeriod].end.totalminutes - currentMinute
+                  )
+                )
+              })
+        const openLink = next.link && link
+        const notification = new Notification(text, {
+          icon:
+            currentPeriod === -1 ? null : getIcon(getPeriodName(currentPeriod)),
+          body: openLink ? localize('notif-click-desc') : ''
+        })
+        notification.addEventListener('click', e => {
+          e.preventDefault()
+          if (openLink) {
+            const win = window.open(link, '_blank')
+            win.focus()
+          }
+        })
+      },
+      {
+        get enabled () {
+          return notifSettings.enabled
+        }
+      }
+    )
+    .update()
+  const nextLinkOpen = scheduleapp
+    .addTimer(
+      getNext => {
+        if (formatOptions.timeBeforeAutoLink !== 'off') {
+          const openLinkBefore = +formatOptions.timeBeforeAutoLink
+          const next = getNext(
+            (pdTime, nowTime, pdName) =>
+              periodstyles[pdName].link && pdTime - openLinkBefore > nowTime,
+            { end: false }
+          )
+          if (next) {
+            return { ...next, time: next.time - openLinkBefore * 1000 }
+          }
+        }
+        return null
+      },
+      next => {
+        if (options.openLinkInIframe) {
+          const { link, label } = periodstyles[next.period]
+          options.openLinkInIframe(link, label)
+        } else {
+          // https://stackoverflow.com/a/11384018
+          window.open(periodstyles[next.period].link, '_blank')
+        }
+      },
+      {
+        get enabled () {
+          return formatOptions.timeBeforeAutoLink !== 'off'
+        }
+      }
+    )
+    .update()
   function isSchoolDay (d) {
     return scheduleapp.getSchedule(d).periods.length
   }
@@ -1577,10 +1720,11 @@ export function initSchedule (manualAltSchedulesProm) {
   openLinkDropdown.onChange(async time => {
     scheduleapp.options.openLinkBefore = time
     formatOptions.timeBeforeNotif = time === null ? 'off' : time
-    scheduleapp.updateNextLinkOpen()
+    nextLinkOpen.update()
     saveFormatOptions()
   })
-  scheduleapp.options.openLinkInIframe = formatOptions.openNewTab !== 'yes' && setIframe
+  scheduleapp.options.openLinkInIframe =
+    formatOptions.openNewTab !== 'yes' && setIframe
   const iframeDialog = document.getElementById('iframe-window')
   const iframe = document.getElementById('iframe')
   const iframeTitleLink = document.getElementById('iframe-title')

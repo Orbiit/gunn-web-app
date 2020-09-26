@@ -1,5 +1,3 @@
-/* global Notification */
-
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
@@ -57,50 +55,6 @@ export function scheduleApp (options = {}) {
       return `${((hr - 1) % 12) + 1}:${messytime.slice(2)}${
         hr < 12 ? 'a' : 'p'
       }m`
-  }
-  const periodSymbols = {
-    Brunch: localize('symbols/brunch'),
-    Lunch: localize('symbols/lunch'),
-    Flex: localize('symbols/flex'),
-    SELF: localize('symbols/self'),
-    A: localize('symbols/period-a'),
-    B: localize('symbols/period-b'),
-    C: localize('symbols/period-c'),
-    D: localize('symbols/period-d'),
-    E: localize('symbols/period-e'),
-    F: localize('symbols/period-f'),
-    G: localize('symbols/period-g'),
-    H: localize('symbols/period-h'),
-    '0': localize('symbols/period-zero'),
-    GT: '?'
-  }
-  const ICON_SIZE = 256
-  const ICON_FONT = '"Roboto", sans-serif'
-  const ICON_PADDING = 0.2
-  const maxSize = ICON_SIZE * (1 - 2 * ICON_PADDING)
-  const iconCanvas = document.createElement('canvas')
-  const iconCtx = iconCanvas.getContext('2d')
-  iconCanvas.width = ICON_SIZE
-  iconCanvas.height = ICON_SIZE
-  iconCtx.textAlign = 'center'
-  iconCtx.textBaseline = 'middle'
-  function getIcon (period) {
-    const { colour, label } = getPeriod(period)
-    if (colour[0] === '#') {
-      iconCtx.fillStyle = colour
-      iconCtx.fillRect(0, 0, ICON_SIZE, ICON_SIZE)
-      iconCtx.fillStyle = getFontColour(colour)
-    } else {
-      return `./.period-images/${period}?${colour}`
-    }
-    const text = periodSymbols[period] || label
-    iconCtx.font = `${maxSize}px ${ICON_FONT}`
-    const { width } = iconCtx.measureText(text)
-    const fontSize = Math.min((maxSize * maxSize) / width, maxSize)
-    iconCtx.font = `${fontSize}px ${ICON_FONT}`
-    // It is annoying having to do fontSize * 0.1 so it looks vertically centred
-    iconCtx.fillText(text, ICON_SIZE / 2, ICON_SIZE / 2 + fontSize * 0.1)
-    return iconCanvas.toDataURL()
   }
   function getCSS (colour, id) {
     if (colour[0] === '#') {
@@ -523,33 +477,33 @@ export function scheduleApp (options = {}) {
     }
     return null
   }
-  function getNextNotif () {
-    const { timeBefore } = options.notifSettings
-    const next = getNext((pdTime, nowTime) => pdTime - timeBefore > nowTime)
-    return (
-      next && {
-        showTime: next.time - timeBefore * 1000,
-        link: next.type === 'start'
-      }
-    )
-  }
-  function getNextLinkOpen () {
-    if (options.openLinkBefore !== null) {
-      const next = getNext(
-        (pdTime, nowTime, pdName) =>
-          getPeriod(pdName).link && pdTime - options.openLinkBefore > nowTime,
-        { end: false }
-      )
-      if (next) {
-        return { ...next, time: next.time - options.openLinkBefore * 1000 }
-      }
-    }
-    return null
-  }
-  let nextNotif = null
-  let nextLinkOpen = null
+  const timers = []
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
+  function checkMinute () {
+    const currentMinute = now()
+      .toISOString()
+      .slice(0, 16)
+    if (currentMinute !== lastMinute) {
+      returnval.render()
+      lastMinute = currentMinute
+      for (const { timer, getNextFn } of timers) {
+        if (timer.enabled && !timer.next) {
+          timer.next = getNextFn(getNext)
+        }
+      }
+    }
+    if (options.update) {
+      timeoutID = setTimeout(checkMinute, checkSpeed)
+    } else {
+      animationID = null
+    }
+    for (const { timer, onNext } of timers) {
+      if (timer && currentTime() >= timer.time) {
+        onNext(timer.next, { getDate, getSchedule, getUsefulTimePhrase })
+      }
+    }
+  }
   const returnval = {
     options,
     element: elem,
@@ -565,96 +519,6 @@ export function scheduleApp (options = {}) {
       lastMinute = now()
         .toISOString()
         .slice(0, 16)
-      function checkMinute () {
-        const currentMinute = now()
-          .toISOString()
-          .slice(0, 16)
-        if (currentMinute !== lastMinute) {
-          returnval.render()
-          lastMinute = currentMinute
-          if (options.notifSettings.enabled && !nextNotif) {
-            // Try getting next notification
-            nextNotif = getNextNotif()
-          }
-          if (options.openLinkBefore !== null && !nextLinkOpen) {
-            // Try getting next notification
-            nextLinkOpen = getNextLinkOpen()
-          }
-        }
-        if (options.update) {
-          timeoutID = setTimeout(checkMinute, checkSpeed)
-        } else {
-          animationID = null
-        }
-        if (nextNotif) {
-          if (currentTime() >= nextNotif.showTime) {
-            const today = getDate(now())
-            const currentMinute = (currentTime() - today.getTime()) / 1000 / 60
-            // Apparently getPeriodName gets the period type even though it's
-            // already in `periods[index].name` in order to deal with SELF
-            // becoming flex even though this could've been dealt with in
-            // getSchedule before returning the schedule??
-            const { periods, getPeriodName } = getSchedule(today)
-            const currentPeriod = periods.findIndex(
-              period => currentMinute < period.end.totalminutes
-            )
-            const { label, link } =
-              currentPeriod !== -1
-                ? getPeriod(getPeriodName(currentPeriod))
-                : {}
-            const text =
-              currentPeriod === -1
-                ? localize('over', 'times')
-                : currentMinute < periods[currentPeriod].start.totalminutes
-                ? localizeWith('starting', 'times', {
-                    P: label,
-                    T: getUsefulTimePhrase(
-                      Math.ceil(
-                        periods[currentPeriod].start.totalminutes -
-                          currentMinute
-                      )
-                    )
-                  })
-                : localizeWith('ending', 'times', {
-                    P: label,
-                    T: getUsefulTimePhrase(
-                      Math.ceil(
-                        periods[currentPeriod].end.totalminutes - currentMinute
-                      )
-                    )
-                  })
-            const openLink = nextNotif.link && link
-            const notification = new Notification(text, {
-              icon:
-                currentPeriod === -1
-                  ? null
-                  : getIcon(getPeriodName(currentPeriod)),
-              body: openLink ? localize('notif-click-desc') : ''
-            })
-            notification.addEventListener('click', e => {
-              e.preventDefault()
-              if (openLink) {
-                const win = window.open(link, '_blank')
-                win.focus()
-              }
-            })
-
-            nextNotif = getNextNotif()
-          }
-        }
-        if (nextLinkOpen) {
-          if (currentTime() >= nextLinkOpen.time) {
-            if (options.openLinkInIframe) {
-              const { link, label } = getPeriod(nextLinkOpen.period)
-              options.openLinkInIframe(link, label)
-            } else {
-              // https://stackoverflow.com/a/11384018
-              window.open(getPeriod(nextLinkOpen.period).link, '_blank')
-            }
-            nextLinkOpen = getNextLinkOpen()
-          }
-        }
-      }
       timeoutID = setTimeout(checkMinute, checkSpeed)
     },
     stopupdate () {
@@ -709,11 +573,14 @@ export function scheduleApp (options = {}) {
       }
       return week
     },
-    updateNextNotif () {
-      nextNotif = options.notifSettings.enabled ? getNextNotif() : null
-    },
-    updateNextLinkOpen () {
-      nextNotif = getNextLinkOpen()
+    addTimer (getNextFn, onNext, timer = { enabled: true }) {
+      timer.update = () => {
+        timer.next = timer.enabled ? getNextFn(getNext) : null
+        return timer
+      }
+      timer.next = null
+      timers.push({ timer, getNextFn, onNext })
+      return timer
     },
     getPeriodSpan,
     getSchedule,
