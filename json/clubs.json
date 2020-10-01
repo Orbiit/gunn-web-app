@@ -333,9 +333,9 @@
 		"email": "dwang@pausd.org",
 		"thumbnail": "https://i.imgur.com/kRLrKr1.jpg"
 	},
-	"Competative Programming Club": {
+	"Competitive Programming Club": {
 		"new": false,
-		"desc": "In Gunn Competition Programming Club, we teach students programming algorithms and languages. We motivate and train students to solve problems with their programming skills and participate in prestigious competitive programming contests, such as USACO, Codeforces, PicoCTF, and local programming competitions. We plan on hosting a programming competition for middle and high schoolers in the spring. During club time, we share knowledge and have fun with our club members!",
+		"desc": "In Gunn Competitive Programming Club, we teach students algorithms and data structures. We motivate and train students to solve problems with their programming skills and participate in prestigious competitive programming contests, such as USACO, Codeforces, PicoCTF, and local programming competitions. We plan on hosting a programming competition for middle and high schoolers in the spring. During club time, we share knowledge and have fun with our club members!",
 		"day": "Tuesday",
 		"time": "3:45 PM",
 		"tier": 2,
