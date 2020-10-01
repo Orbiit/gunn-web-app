@@ -185,12 +185,7 @@
 	},
 	"Kimberly Brasil": {
 		"jobTitle": "Attendance/Secretary",
-		"email": "kbrasil@pausd.org",
-		"periods": {
-			"5": [[["Cont Herit",null]],[["Cont Herit",null]]],
-			"6": [[["Cont Herit",null]],[["Cont Herit",null]]],
-			"7": [[["Cont Herit",null]],[["Cont Herit",null]]]
-		}
+		"email": "kbrasil@pausd.org"
 	},
 	"Justin Brown": {
 		"jobTitle": "Teacher",
@@ -206,13 +201,7 @@
 	"Paul Brown": {
 		"jobTitle": "Student Attendant",
 		"phone": "354-8262",
-		"email": "pbrown@pausd.org",
-		"periods": {
-			"1": [[["Am Clas11H","N - 106"]],[["Am Clas11H","N - 106"]]],
-			"2": [[["Film Lit","N - 106"]],[["Film Lit","N - 106"]]],
-			"4": [[["Film Lit","N - 106"]],[["Film Lit","N - 106"]]],
-			"5": [[["Am Clas11H","N - 106"]],[["Am Clas11H","N - 106"]]]
-		}
+		"email": "pbrown@pausd.org"
 	},
 	"Andrea Bueno": {
 		"jobTitle": "Counselor",
@@ -257,10 +246,7 @@
 	"Rossana castil": {
 		"jobTitle": "Wellness Outreach Worker",
 		"phone": "354-8214 ext. 6941",
-		"email": "rcastil@pausd.org",
-		"periods": {
-			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
-		}
+		"email": "rcastil@pausd.org"
 	},
 	"Kathryn Catalano": {
 		"jobTitle": "Teacher",
@@ -634,10 +620,7 @@
 	"Gordon Goodspeed": {
 		"jobTitle": "Custodian I",
 		"phone": "354-8205",
-		"email": "ggoodspeed@pausd.org",
-		"periods": {
-			"SELF": [[["SELF",null]],null]
-		}
+		"email": "ggoodspeed@pausd.org"
 	},
 	"Michalis Gordon": {
 		"jobTitle": "Assistant Principal-HS",
@@ -730,15 +713,7 @@
 	"Luciano Hernandez": {
 		"jobTitle": "Custodial Supervisor",
 		"phone": "354-8205 ext. 5527",
-		"email": "lhernandez@pausd.org",
-		"periods": {
-			"1": [[["Film Lit","N - 105"]],[["Film Lit","N - 105"]]],
-			"3": [[["Film Lit","N - 105"]],[["Am Clas11H","N - 105"]]],
-			"4": [[["Am Clas11H","N - 105"]],[["Am Clas11H","N - 105"]]],
-			"5": [[["AP English Lit & Comp","N - 105"]],null],
-			"6": [[["AP English Lit & Comp","N - 105"]],null],
-			"SELF": [[["SELF",null]],null]
-		}
+		"email": "lhernandez@pausd.org"
 	},
 	"Mark Hernandez": {
 		"jobTitle": "Teacher",
@@ -857,14 +832,7 @@
 	"Eric Jackson": {
 		"jobTitle": "Student Attendant",
 		"phone": "354-8262",
-		"email": "ejackson@pausd.org",
-		"periods": {
-			"3": [[["Lit Style","N - 113"]],[["Cont Herit","N - 113"]]],
-			"4": [[["Cont Herit","N - 113"]],[["Lit Style","N - 113"]]],
-			"5": [[["Lit Style","N - 113"]],[["Lit Style","N - 113"]]],
-			"6": [[["Lit Style","N - 113"]],[["Lit Style","N - 113"]]],
-			"7": [[["Cont Herit","N - 113"]],[["Cont Herit","N - 113"]]]
-		}
+		"email": "ejackson@pausd.org"
 	},
 	"Marcus Jamison": {
 		"jobTitle": "Teacher",
@@ -899,14 +867,7 @@
 	"Bridget Johnson": {
 		"jobTitle": "Secretary II",
 		"phone": "354-8280 ext. 6250",
-		"email": "bjohnson@pausd.org",
-		"periods": {
-			"1": [[["AP US History","C-03"]],null],
-			"2": [[["AP US History","C-03"]],null],
-			"3": [[["AP US History","C-03"]],null],
-			"4": [[["Wld Hist","C-01"]],null],
-			"5": [[["Wld Hist","C-01"]],null]
-		}
+		"email": "bjohnson@pausd.org"
 	},
 	"Christopher Johnson": {
 		"jobTitle": "Teacher",
@@ -922,14 +883,7 @@
 	},
 	"Kevin Johnson": {
 		"jobTitle": "Athletic Assistant",
-		"email": "kjohnson@pausd.org",
-		"periods": {
-			"1": [[["AP US History","C-03"]],null],
-			"2": [[["AP US History","C-03"]],null],
-			"3": [[["AP US History","C-03"]],null],
-			"4": [[["Wld Hist","C-01"]],null],
-			"5": [[["Wld Hist","C-01"]],null]
-		}
+		"email": "kjohnson@pausd.org"
 	},
 	"Takeshi Kaneko": {
 		"jobTitle": "Teacher",
@@ -1007,12 +961,7 @@
 	"Kim Knaack": {
 		"jobTitle": "Reproduction Technician",
 		"phone": "354-8279 ext. 5537",
-		"email": "kknaack@pausd.org",
-		"periods": {
-			"5": [[["Cont Herit",null]],[["Cont Herit",null]]],
-			"6": [[["Cont Herit",null]],[["Cont Herit",null]]],
-			"7": [[["Cont Herit",null]],[["Cont Herit",null]]]
-		}
+		"email": "kknaack@pausd.org"
 	},
 	"Jacintha Kompella": {
 		"jobTitle": "Teacher",
@@ -1556,15 +1505,7 @@
 	},
 	"Scott Peters": {
 		"jobTitle": "Student Attendant",
-		"email": "speters@pausd.org",
-		"periods": {
-			"2": [[["Fiber Arts","K - 03"]],[["Interior11","K - 03"]]],
-			"3": [[["Ind Study",null]],[["SportsNutr","K - 05"]]],
-			"4": [[["Culinary Arts - Introduction","K - 05"]],[["Culinary Arts - International","K - 05"]]],
-			"5": [[["Culinary Arts - Introduction","K - 05"]],[["Culinary Arts - International","K - 05"]]],
-			"6": [[["Ind Study",null]],[["Ind Study",null]]],
-			"SELF": [[["SELF",null]],null]
-		}
+		"email": "speters@pausd.org"
 	},
 	"Julius Phu": {
 		"jobTitle": "Dishwasher",
@@ -1683,15 +1624,7 @@
 	},
 	"Howard Selznick": {
 		"jobTitle": "Student Attendant",
-		"email": "hselznick@pausd.org",
-		"periods": {
-			"1": [[["Wld Hist","C-07"]],null],
-			"3": [[["Wld Hist","C-07"]],null],
-			"4": [[["AP US History","C-07"]],null],
-			"5": [[["AP US History","C-07"]],null],
-			"7": [[["AP US History","C-07"]],null],
-			"SELF": [[["SELF",null]],null]
-		}
+		"email": "hselznick@pausd.org"
 	},
 	"James Shelby": {
 		"jobTitle": "Teacher",

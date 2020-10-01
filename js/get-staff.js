@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import cheerio from 'cheerio'
 import fs from 'fs/promises'
 import { fileURLToPath } from 'url'
+import colours from 'colors/safe.js'
 
 const getEmailRegex = /insertEmail\("[^"]*", "([^"]*)", "([^"]*)"/
 function getEmail (script) {
@@ -83,6 +84,17 @@ function getTeacherSchedules (sections, teacherData) {
   return teachers
 }
 
+function noFirstName (name) {
+  const index = name.indexOf(' ')
+  return index !== -1 ? name.slice(index + 1) : name
+}
+
+// "Ana Maria Gonzalez Barrios" will match "Barrios" but "Kim Knaack" will not
+// match "Kristen Kim" and "Eric Jackson" will not match "Katherine Ja"
+function lastNamesHave (name, lastName) {
+  return new RegExp(String.raw`\b${lastName}\b`).test(noFirstName(name))
+}
+
 async function main () {
   const staff = {}
 
@@ -112,31 +124,6 @@ async function main () {
         .find('.fsFullName')
         .text()
         .trim()
-      let matches = schedules.filter(([[last]]) => name.includes(last))
-      let periods
-      if (matches.length === 0) {
-        console.warn(`[!] No schedule for ${name}`)
-      } else if (matches.length > 1) {
-        matches = matches.filter(([[, first]]) => name.includes(first))
-        if (matches.length > 1) {
-          console.warn(`[!] More than one schedule found for ${name}`, matches)
-        }
-      }
-      if (matches.length === 1) {
-        const [[, teacher]] = matches
-        periods = Object.fromEntries(
-          Object.entries(teacher.periods).map(
-            ([period, { semester1, semester2, yearlong }]) => {
-              const sem1Courses = semester1.sort(([a], [b]) => a.localeCompare(b))
-              const sem2Courses = semester2.sort(([a], [b]) => a.localeCompare(b))
-              return [
-                period,
-                substitute(yearlong ? [sem1Courses, null] : [sem1Courses, sem2Courses])
-              ]
-            }
-          )
-        )
-      }
       staff[name] = {
         jobTitle: teacher
           .find('.fsTitles')
@@ -152,12 +139,51 @@ async function main () {
             .find('.fsPhones > a')
             .text()
             .trim() || undefined,
-        email: getEmail(teacher.find('.fsEmail > div > script').html()),
-        periods
+        email: getEmail(teacher.find('.fsEmail > div > script').html())
       }
     })
-    console.log(`Page ${page} done.`)
+    console.log(colours.green(`Page ${page} done.`))
     page++
+  }
+
+  // Overcomplicated because Luciano and Marc Hernandez are different but Tarn
+  // and Melinda Wilson are the same.
+  const staffSurnames = Object.keys(staff).map(noFirstName)
+  for (const [name, obj] of Object.entries(staff)) {
+    const staffSameSurname = staffSurnames.filter(last => lastNamesHave(name, last))
+    let matches = schedules.filter(([[last]]) => lastNamesHave(name, last))
+    if (matches.length === 0) {
+      // console.warn(`[!] No schedule for ${name}`)
+    } else if (staffSameSurname.length > 1 || matches.length > 1) {
+      // If more than one staff member has the same last name (the Hernándeces),
+      // or more than one schedule (the Halls), filter by first name. This isn't
+      // the case for Ms. Wilson so hopefully this is fine.
+      // In other words, if there's only one staff member and one schedule with
+      // the last name, then it's a match even if the first name doesn't match.
+      const newMatches = matches.filter(([[, first]]) => name.includes(first))
+      if (newMatches.length > 1) {
+        console.log(colours.yellow(`[!] More than one schedule found for ${name}`), matches)
+      } else if (newMatches.length === 0) {
+        console.log(colours.cyan(`--- None of the schedule's first names match ${name}`), matches.map(([[, first]]) => first))
+      }
+      matches = newMatches
+    }
+    if (matches.length === 1) {
+      const [[[last, first], teacher]] = matches
+      if (!name.includes(first)) console.log(colours.grey('(ok but note:)'), name, '=/=', first, last)
+      obj.periods = Object.fromEntries(
+        Object.entries(teacher.periods).map(
+          ([period, { semester1, semester2, yearlong }]) => {
+            const sem1Courses = semester1.sort(([a], [b]) => a.localeCompare(b))
+            const sem2Courses = semester2.sort(([a], [b]) => a.localeCompare(b))
+            return [
+              period,
+              substitute(yearlong ? [sem1Courses, null] : [sem1Courses, sem2Courses])
+            ]
+          }
+        )
+      )
+    }
   }
 
   const output = fileURLToPath(new URL('../json/staff.json', import.meta.url))
