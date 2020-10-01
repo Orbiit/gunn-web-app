@@ -122,7 +122,10 @@ async function main () {
       time: actualTime2 || noSecondsTime,
       link: cleanLinks(link || zoom),
       video: cleanLinks(video),
-      signup: signup === 'Contact club president to Join' ? undefined : cleanLinks(signup),
+      signup:
+        signup === 'Contact club president to Join'
+          ? undefined
+          : cleanLinks(signup),
       tier,
       president,
       coteacher,

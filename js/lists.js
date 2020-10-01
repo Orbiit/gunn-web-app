@@ -46,10 +46,12 @@ function addSemToRow (row, courses) {
     // Assumes all the courses are in the same room, but that's not the case for
     // Bissegger's second semester period 4 it seems.
     const [, room] = courseWithRoom
-    courseNames.appendChild(Object.assign(document.createElement('span'), {
-      className: 'staff-schedule-room',
-      textContent: ` (${room})`
-    }))
+    courseNames.appendChild(
+      Object.assign(document.createElement('span'), {
+        className: 'staff-schedule-room',
+        textContent: ` (${room})`
+      })
+    )
   }
 }
 function addRowToTable (table, period, classes) {
@@ -132,9 +134,14 @@ function initList (
           name,
           // Hidden feature: to search by a specific property, you can use
           // P_R_O_P_N_A_M_E and regex search (r/...).
-          search: ['N_A_M_E ' + name, ...searchableProps.map(prop => typeof prop === 'function' ? prop(item) : [...prop.toUpperCase()].join('_') + ' ' + (item[prop] || ''))].join(
-            '\n'
-          )
+          search: [
+            'N_A_M_E ' + name,
+            ...searchableProps.map(prop =>
+              typeof prop === 'function'
+                ? prop(item)
+                : [...prop.toUpperCase()].join('_') + ' ' + (item[prop] || '')
+            )
+          ].join('\n')
         })
         ripple(li)
         elements.appendChild(li)
@@ -166,7 +173,9 @@ function initList (
       )
       if (showItemOnLoad) {
         const normalized = normalizeFromUrl(showItemOnLoad[1])
-        const name = Object.keys(data).find(name => normalizeFromUrl(name) === normalized)
+        const name = Object.keys(data).find(
+          name => normalizeFromUrl(name) === normalized
+        )
         if (name) {
           showItem(name)
         }
@@ -662,7 +671,32 @@ export function initLists () {
     sortName: (a, b) =>
       a[a.lastIndexOf(' ') + 1].charCodeAt() -
       b[b.lastIndexOf(' ') + 1].charCodeAt(),
-    searchableProps: ['jobTitle', 'department', 'email', 'phone', ({ periods }) => periods ? 'P_E_R_I_O_D_S ' + Object.entries(periods).map(([pd, sems]) => pd + ': ' + sems.map(sem => sem ? sem.map(([course, room]) => `${course} - ${room}`).join(', ') : '').join(' / ')).join(' | ') : ''],
+    searchableProps: [
+      'jobTitle',
+      'department',
+      'email',
+      'phone',
+      ({ periods }) =>
+        periods
+          ? 'P_E_R_I_O_D_S ' +
+            Object.entries(periods)
+              .map(
+                ([pd, sems]) =>
+                  pd +
+                  ': ' +
+                  sems
+                    .map(sem =>
+                      sem
+                        ? sem
+                            .map(([course, room]) => `${course} - ${room}`)
+                            .join(', ')
+                        : ''
+                    )
+                    .join(' / ')
+              )
+              .join(' | ')
+          : ''
+    ],
     secondaryProps: ['jobTitle', 'email'],
     errMsg: localize('staff/error'),
     searchPlaceholder: localize('staff', 'placeholders'),
@@ -818,7 +852,16 @@ export function initLists () {
       })
     },
     sortName: (a, b) => a.localeCompare(b),
-    searchableProps: ['room', 'day', 'time', 'desc', 'presidents', 'teacher', 'coteacher', 'tier'],
+    searchableProps: [
+      'room',
+      'day',
+      'time',
+      'desc',
+      'presidents',
+      'teacher',
+      'coteacher',
+      'tier'
+    ],
     secondaryProps: ['day', 'time'],
     errMsg: localize('club/error'),
     searchPlaceholder: localize('clubs', 'placeholders'),
