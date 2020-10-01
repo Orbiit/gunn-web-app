@@ -241,9 +241,13 @@ export function initSchedule (manualAltSchedulesProm) {
   // FORBIDDEN CHARACTERS: " (used for radio CSS selector) and . (used for
   // storing in localStorage)
   const formatOptionInfo = {
+    // 0
     _: { default: FORMATTING_VERSION },
+    // 1
     hourCycle: { default: '12', radio: { name: 'hour' } },
+    // 2
     timeLength: { default: 'full', radio: { name: 'format' } },
+    // 3
     showSelf: {
       default: '0'
       // toggle: {
@@ -252,6 +256,7 @@ export function initSchedule (manualAltSchedulesProm) {
       //   off: '0'
       // }
     },
+    // 4
     asgnPos: {
       default: 'after',
       radio: {
@@ -259,6 +264,7 @@ export function initSchedule (manualAltSchedulesProm) {
         onChange: value => asgnThing.displaySection(value)
       }
     },
+    // 5
     asgnSort: {
       default: 'chrono-primero',
       radio: {
@@ -266,6 +272,7 @@ export function initSchedule (manualAltSchedulesProm) {
         onChange: value => asgnThing.todayIs(getPeriodSpan, now(), value)
       }
     },
+    // 6
     showAddAsgn: {
       default: 'yes',
       toggle: {
@@ -278,12 +285,16 @@ export function initSchedule (manualAltSchedulesProm) {
         }
       }
     },
+    // 7
     showRock: { default: 'show' },
+    // 8
     showZero: { default: 'no', toggle: { id: 'show0', on: 'yes', off: 'no' } },
+    // 9
     hidePreps: {
       default: 'preps',
       toggle: { id: 'hide-preps', on: 'prepnt', off: 'prep' }
     },
+    // 10
     showH: {
       default: 'unset',
       toggle: {
@@ -296,7 +307,9 @@ export function initSchedule (manualAltSchedulesProm) {
         }
       }
     },
+    // 11
     timeBeforeNotif: { default: 'off' },
+    // 12
     allowSwipe: {
       default: 'swipe',
       toggle: {
@@ -306,7 +319,9 @@ export function initSchedule (manualAltSchedulesProm) {
         onChange: 'no-reload'
       }
     },
+    // 13
     timeBeforeAutoLink: { default: 'off' },
+    // 14
     openNewTab: {
       default: '',
       toggle: {
@@ -319,7 +334,10 @@ export function initSchedule (manualAltSchedulesProm) {
         }
       }
     },
-    bellVolume: { default: '0' }
+    // 15
+    bellVolume: { default: '' },
+    // 16
+    _reserved: { default: '' }
   }
   const formatOptionsCookie = cookie.getItem(
     '[gunn-web-app] scheduleapp.formatOptions'

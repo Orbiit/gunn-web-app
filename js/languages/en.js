@@ -29,8 +29,7 @@ export default {
     'barcode-desc':
       'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on {wikipedia|Wikipedia}.',
     bell: 'Virtual bell',
-    'bell-volume':
-      "Set the volume to zero to disable. Browsers won't play audio automatically until you click somewhere.",
+    'bell-volume': 'Set the volume to zero to disable.',
     browsers:
       'UGWA only aims to support the latest versions of Chrome and iOS Safari; others are low-priority.',
     bugs: 'Bug reports',
