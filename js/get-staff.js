@@ -15,7 +15,7 @@ function getEmail (script) {
 }
 
 function pageUrl (page) {
-  return `https://gunn.pausd.org/fs/elements/11437?const_page=${page}`
+  return `https://gunn.pausd.org/fs/elements/11437?const_page=${page}&const_search_group_ids=&const_search_role_ids=`
 }
 
 const icSectionData =
@@ -25,7 +25,7 @@ const icSectionData =
 function getTeacherSchedules (sections, teacherData) {
   const teachers = {}
 
-  function noteTeacher (teacher, period, course, semester) {
+  function noteTeacher (teacher, period, room, course, semester) {
     // Not all teachers (Ames, Matchett) have an email on IC
     const teacherId = `${teacher.lastName}/${teacher.firstName}`
     if (!teachers[teacherId]) {
@@ -48,16 +48,16 @@ function getTeacherSchedules (sections, teacherData) {
       periods[period] = { semester1: [], semester2: [], yearlong: null }
     }
     if (semester === 'S1S2') {
-      periods[period].semester1.push(course)
-      periods[period].semester2.push(course)
+      periods[period].semester1.push([course, room])
+      periods[period].semester2.push([course, room])
       if (periods[period].yearlong === null) {
         periods[period].yearlong = true
       }
     } else if (semester === 'S1') {
-      periods[period].semester1.push(course)
+      periods[period].semester1.push([course, room])
       periods[period].yearlong = false
     } else if (semester === 'S2') {
-      periods[period].semester2.push(course)
+      periods[period].semester2.push([course, room])
       periods[period].yearlong = false
     } else {
       throw new Error(`\`semester\` ${semester} is not one of: S1S2, S1, S2.`)
@@ -66,14 +66,18 @@ function getTeacherSchedules (sections, teacherData) {
 
   for (const {
     teachers: teacherDisplay,
-    periods: [periodStr],
+    room,
+    periods: periodStr,
     name: course,
     semester
   } of sections) {
     const [period] = periodStr.split(' / ')
+    if (!period) {
+      continue
+    }
     const { teacher, coteacher } = teacherData[teacherDisplay] || {}
-    if (teacher) noteTeacher(teacher, period, course, semester)
-    if (coteacher) noteTeacher(coteacher, period, course, semester)
+    if (teacher) noteTeacher(teacher, period, room, course, semester)
+    if (coteacher) noteTeacher(coteacher, period, room, course, semester)
   }
 
   return teachers
@@ -88,6 +92,14 @@ async function main () {
   const schedules = Object.entries(getTeacherSchedules(sections, teachers)).map(
     ([name, value]) => [name.split('/'), value]
   )
+
+  // Dumb hack so that some things aren't prettified
+  const substitutions = new Map()
+  function substitute (value) {
+    const id = 'eeee_' + Math.random().toString(36).slice(2)
+    substitutions.set(id, value)
+    return id
+  }
 
   let page = 1
   while (true) {
@@ -115,11 +127,11 @@ async function main () {
         periods = Object.fromEntries(
           Object.entries(teacher.periods).map(
             ([period, { semester1, semester2, yearlong }]) => {
-              const sem1Courses = semester1.sort().join(', ')
-              const sem2Courses = semester2.sort().join(', ')
+              const sem1Courses = semester1.sort(([a], [b]) => a.localeCompare(b))
+              const sem2Courses = semester2.sort(([a], [b]) => a.localeCompare(b))
               return [
                 period,
-                yearlong ? sem1Courses : `${sem1Courses}|${sem2Courses}`
+                substitute(yearlong ? [sem1Courses, null] : [sem1Courses, sem2Courses])
               ]
             }
           )
@@ -149,7 +161,11 @@ async function main () {
   }
 
   const output = fileURLToPath(new URL('../json/staff.json', import.meta.url))
-  await fs.writeFile(output, JSON.stringify(staff, null, '\t'))
+  let json = JSON.stringify(staff, null, '\t')
+  for (const [id, value] of substitutions) {
+    json = json.replace(`"${id}"`, JSON.stringify(value))
+  }
+  await fs.writeFile(output, json)
 }
 
 main()

@@ -33,11 +33,11 @@ function containsString (pattern) {
   return str => str.toLowerCase().includes(pattern)
 }
 
-function addSemToRow (row, sem) {
+function addSemToRow (row, courses) {
   row.appendChild(
     Object.assign(document.createElement('div'), {
       className: 'staff-schedule-class',
-      textContent: sem
+      textContent: courses.map(([course]) => course).join(', ')
     })
   )
 }
@@ -52,12 +52,17 @@ function addRowToTable (table, period, classes) {
     })
   )
   if (classes) {
-    if (classes.includes('|')) {
-      const [sem1, sem2] = classes.split('|')
-      addSemToRow(row, sem1)
-      addSemToRow(row, sem2)
-    } else {
-      addSemToRow(row, classes)
+    // Classes format is pretty unpredictable it seems
+    try {
+      const [sem1, sem2] = classes
+      if (sem2 !== null) {
+        addSemToRow(row, sem1)
+        addSemToRow(row, sem2)
+      } else {
+        addSemToRow(row, sem1)
+      }
+    } catch (err) {
+      logError(err)
     }
   } else {
     row.classList.add('staff-schedule-no-classes')
