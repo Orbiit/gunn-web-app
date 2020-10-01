@@ -1016,7 +1016,8 @@ p.secondary {
   display: flex;
   text-align: center;
   align-items: center;
-  height: 48px;
+  min-height: 48px;
+  height: 0;
   border-bottom: 1px solid var(--light-border);
 }
 .staff-schedule-period {
@@ -1028,6 +1029,9 @@ p.secondary {
 }
 .staff-schedule-class {
   flex: 1 0 0;
+}
+.staff-schedule-room {
+  color: var(--secondary);
 }
 
 .ad.material {

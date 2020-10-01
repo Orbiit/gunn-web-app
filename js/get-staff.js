@@ -95,6 +95,17 @@ function lastNamesHave (name, lastName) {
   return new RegExp(String.raw`\b${lastName}\b`).test(noFirstName(name))
 }
 
+function checkRooms (semester) {
+  const rooms = semester.map(([, room]) => room).filter(room => room)
+  if (rooms.length > 1) {
+    if (!rooms.slice(1).every(room => room === rooms[0])) {
+      console.log(colours.red('There are differences'), semester)
+    }
+  } else if (rooms.length === 0 && semester.length > 0) {
+    // console.log(colours.blue('No rooms'), semester)
+  }
+}
+
 async function main () {
   const staff = {}
 
@@ -176,6 +187,8 @@ async function main () {
           ([period, { semester1, semester2, yearlong }]) => {
             const sem1Courses = semester1.sort(([a], [b]) => a.localeCompare(b))
             const sem2Courses = semester2.sort(([a], [b]) => a.localeCompare(b))
+            checkRooms(sem1Courses)
+            checkRooms(sem2Courses)
             return [
               period,
               substitute(yearlong ? [sem1Courses, null] : [sem1Courses, sem2Courses])
