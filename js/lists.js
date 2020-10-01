@@ -81,6 +81,10 @@ function addRowToTable (table, period, classes) {
   table.appendChild(row)
 }
 
+function normalizeFromUrl (str) {
+  return str.toLowerCase().replace(/\W/g, '')
+}
+
 function initList (
   type,
   {
@@ -106,6 +110,7 @@ function initList (
   const info = document.getElementById(`info-${type}`)
   const h1 = info.querySelector('h1')
   const content = info.querySelector('.content')
+  const permalink = info.querySelector('.info-permalink')
   searchMarker.parentNode.replaceChild(search.wrapper, searchMarker)
   let data
   ajax(
@@ -155,6 +160,18 @@ function initList (
       }
       list.appendChild(elements)
       if (search.input.value) doSearch()
+
+      const showItemOnLoad = new RegExp(`(?:\\?|&)show-${type}=([^&]+)`).exec(
+        window.location.search
+      )
+      if (showItemOnLoad) {
+        const normalized = normalizeFromUrl(showItemOnLoad[1])
+        const name = Object.keys(data).find(name => normalizeFromUrl(name) === normalized)
+        if (name) {
+          showItem(name)
+        }
+        window.history.replaceState({}, '', window.location.pathname)
+      }
     },
     err => {
       list.innerHTML = `<li class="error">${err}${errMsg}</li>`
@@ -255,6 +272,7 @@ function initList (
     if (item.special && specialItem) {
       specialItem(item, content)
     }
+    permalink.href = `?show-${type}=${normalizeFromUrl(name)}`
   }
   list.addEventListener(
     'click',
