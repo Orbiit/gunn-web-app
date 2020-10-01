@@ -10,6 +10,26 @@ import { ImgurUrlManager } from './get-clubs-gdrive-thumbnails.js'
 const spreadsheetUrl =
   'https://docs.google.com/spreadsheets/u/1/d/1HUaNWegOIk972lGweoSuNcXtfX7XuGBTQU-gcTsvD9s/pub'
 
+// Spreadsheet name -> (probably correct) Google Doc name (from clubs-links)
+const clubRenaming = {
+  'Rubiks Cube Club': "Rubik's Cube Club",
+  'Cash Club Corp Gunn': 'Cash Club Corp',
+  'Competative Programming Club': 'Competitive Programming Club',
+  'March For Our Lives': 'March for Our Lives',
+  'Political and Civil Discourse Club': 'Civil and Political Discourse'
+}
+
+// The Muse didn't insert a space
+// "signup": "https://forms.gle/AfVsyUTeDmRtX8pi7https://forms.gle/AfVsyUTeDmRtX8pi7",
+// grrr
+function cleanLinks (rawLink) {
+  if (!rawLink) return rawLink
+  // Assuming that all the links here use https://
+  rawLink = rawLink.replace(/(\S)(https?:\/\/)/g, '$1 $2').split('?fbclid=')[0]
+  if (!rawLink.startsWith('http')) rawLink = 'https://' + rawLink
+  return rawLink
+}
+
 async function main () {
   const imgurUrls = new ImgurUrlManager()
 
@@ -32,7 +52,7 @@ async function main () {
     const [
       ,
       newness,
-      name,
+      lisaHallName,
       tierText,
       desc,
       day,
@@ -58,7 +78,9 @@ async function main () {
       // If it's empty, return `undefined` so that it's omitted from the JSON
       .map(str => str || undefined)
 
-    if (!name) return
+    if (!lisaHallName) return
+
+    const name = clubRenaming[lisaHallName] || lisaHallName
 
     const tierMatch = /TIER ([123]) CLUB/.exec(tierText)
     if (!tierMatch) {
@@ -98,9 +120,9 @@ async function main () {
       // Hall's spreadsheet (not always the case though, as someone put "11:40
       // PM" for their time on the document)
       time: actualTime2 || noSecondsTime,
-      link: link || zoom,
-      video,
-      signup,
+      link: cleanLinks(link || zoom),
+      video: cleanLinks(video),
+      signup: signup === 'Contact club president to Join' ? undefined : cleanLinks(signup),
       tier,
       president,
       coteacher,
