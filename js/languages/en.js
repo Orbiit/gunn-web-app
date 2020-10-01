@@ -44,7 +44,7 @@ export default {
     'club-name': 'Club name',
     clubs: 'Clubs',
     'clubs-disclaimer':
-      "Please note that club information was taken from the administration's {link|chartered club list as of September 20th, 2020}, so attribute inaccuracies to them.",
+      "Please note that club information was taken from the administration's {doc-link|chartered club list document} and {link|spreadsheet as of September 30th, 2020}, so attribute inaccuracies to them.",
     comm: 'Interstudent communication',
     'control-centre': 'Control Centre',
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",
@@ -156,7 +156,7 @@ export default {
     sponsor: 'Sponsored by the ROCK team.',
     staff: 'Staff',
     'staff-disclaimer':
-      "Please note that staff information was taken from the administration's {link|staff directory as of July 4th, 2020}, so attribute inaccuracies to them.",
+      "Please note that staff information was taken from the administration's {link|staff directory as of September 30th, 2020}, so attribute inaccuracies to them.",
     'staff-list': 'Staff list',
     'staff-name': 'Staff name',
     support: 'Student resources',

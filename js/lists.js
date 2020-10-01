@@ -33,13 +33,26 @@ function containsString (pattern) {
   return str => str.toLowerCase().includes(pattern)
 }
 
-function addSemToRow (row, sem) {
-  row.appendChild(
+function addSemToRow (row, courses) {
+  const courseNames = row.appendChild(
     Object.assign(document.createElement('div'), {
       className: 'staff-schedule-class',
-      textContent: sem
+      textContent: courses.map(([course]) => course).join(', ')
     })
   )
+  // Find first course with a room
+  const courseWithRoom = courses.find(([, room]) => room)
+  if (courseWithRoom) {
+    // Assumes all the courses are in the same room, but that's not the case for
+    // Bissegger's second semester period 4 it seems.
+    const [, room] = courseWithRoom
+    courseNames.appendChild(
+      Object.assign(document.createElement('span'), {
+        className: 'staff-schedule-room',
+        textContent: ` (${room})`
+      })
+    )
+  }
 }
 function addRowToTable (table, period, classes) {
   const row = document.createElement('div')
@@ -52,17 +65,26 @@ function addRowToTable (table, period, classes) {
     })
   )
   if (classes) {
-    if (classes.includes('|')) {
-      const [sem1, sem2] = classes.split('|')
-      addSemToRow(row, sem1)
-      addSemToRow(row, sem2)
-    } else {
-      addSemToRow(row, classes)
+    // Classes format is pretty unpredictable it seems
+    try {
+      const [sem1, sem2] = classes
+      if (sem2 !== null) {
+        addSemToRow(row, sem1)
+        addSemToRow(row, sem2)
+      } else {
+        addSemToRow(row, sem1)
+      }
+    } catch (err) {
+      logError(err)
     }
   } else {
     row.classList.add('staff-schedule-no-classes')
   }
   table.appendChild(row)
+}
+
+function normalizeFromUrl (str) {
+  return str.toLowerCase().replace(/\W/g, '')
 }
 
 function initList (
@@ -90,6 +112,7 @@ function initList (
   const info = document.getElementById(`info-${type}`)
   const h1 = info.querySelector('h1')
   const content = info.querySelector('.content')
+  const permalink = info.querySelector('.info-permalink')
   searchMarker.parentNode.replaceChild(search.wrapper, searchMarker)
   let data
   ajax(
@@ -109,9 +132,16 @@ function initList (
         })
         Object.assign(li.dataset, {
           name,
-          search: [name, ...searchableProps.map(prop => item[prop] || '')].join(
-            ' '
-          )
+          // Hidden feature: to search by a specific property, you can use
+          // P_R_O_P_N_A_M_E and regex search (r/...).
+          search: [
+            'N_A_M_E ' + name,
+            ...searchableProps.map(prop =>
+              typeof prop === 'function'
+                ? prop(item)
+                : [...prop.toUpperCase()].join('_') + ' ' + (item[prop] || '')
+            )
+          ].join('\n')
         })
         ripple(li)
         elements.appendChild(li)
@@ -137,6 +167,20 @@ function initList (
       }
       list.appendChild(elements)
       if (search.input.value) doSearch()
+
+      const showItemOnLoad = new RegExp(`(?:\\?|&)show-${type}=([^&]+)`).exec(
+        window.location.search
+      )
+      if (showItemOnLoad) {
+        const normalized = normalizeFromUrl(showItemOnLoad[1])
+        const name = Object.keys(data).find(
+          name => normalizeFromUrl(name) === normalized
+        )
+        if (name) {
+          showItem(name)
+        }
+        window.history.replaceState({}, '', window.location.pathname)
+      }
     },
     err => {
       list.innerHTML = `<li class="error">${err}${errMsg}</li>`
@@ -169,14 +213,26 @@ function initList (
         p.appendChild(document.createTextNode(' '))
         switch (type) {
           case 'link': {
-            p.appendChild(
-              Object.assign(document.createElement('a'), {
-                href: prop === 'email' ? `mailto:${item[prop]}` : item[prop],
-                target: '_blank',
-                rel: 'noopener noreferrer',
-                textContent: item[prop] + ''
-              })
-            )
+            let first = true
+            for (const link of (item[prop] || '').split(' ')) {
+              if (first) {
+                first = false
+              } else {
+                p.appendChild(document.createTextNode(' '))
+              }
+              if (link.startsWith('http') || link.includes('@')) {
+                p.appendChild(
+                  Object.assign(document.createElement('a'), {
+                    href: link.includes('@') ? `mailto:${item[prop]}` : link,
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                    textContent: link
+                  })
+                )
+              } else {
+                p.appendChild(document.createTextNode(link))
+              }
+            }
             break
           }
           case 'schedule': {
@@ -225,6 +281,7 @@ function initList (
     if (item.special && specialItem) {
       specialItem(item, content)
     }
+    permalink.href = `?show-${type}=${normalizeFromUrl(name)}`
   }
   list.addEventListener(
     'click',
@@ -614,7 +671,32 @@ export function initLists () {
     sortName: (a, b) =>
       a[a.lastIndexOf(' ') + 1].charCodeAt() -
       b[b.lastIndexOf(' ') + 1].charCodeAt(),
-    searchableProps: ['jobTitle', 'department'],
+    searchableProps: [
+      'jobTitle',
+      'department',
+      'email',
+      'phone',
+      ({ periods }) =>
+        periods
+          ? 'P_E_R_I_O_D_S ' +
+            Object.entries(periods)
+              .map(
+                ([pd, sems]) =>
+                  pd +
+                  ': ' +
+                  sems
+                    .map(sem =>
+                      sem
+                        ? sem
+                            .map(([course, room]) => `${course} - ${room}`)
+                            .join(', ')
+                        : ''
+                    )
+                    .join(' / ')
+              )
+              .join(' | ')
+          : ''
+    ],
     secondaryProps: ['jobTitle', 'email'],
     errMsg: localize('staff/error'),
     searchPlaceholder: localize('staff', 'placeholders'),
@@ -770,7 +852,16 @@ export function initLists () {
       })
     },
     sortName: (a, b) => a.localeCompare(b),
-    searchableProps: ['room', 'day', 'time', 'desc'],
+    searchableProps: [
+      'room',
+      'day',
+      'time',
+      'desc',
+      'presidents',
+      'teacher',
+      'coteacher',
+      'tier'
+    ],
     secondaryProps: ['day', 'time'],
     errMsg: localize('club/error'),
     searchPlaceholder: localize('clubs', 'placeholders'),

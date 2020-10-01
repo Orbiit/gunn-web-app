@@ -4,7 +4,9 @@
  * URL params
  * @param {section} section.js - the section to be viewed
  * @param {club-search} lists.js - default search content in club search bar
- * @param {staff-search} lists.js - deault search content in staff search bar
+ * @param {staff-search} lists.js - default search content in staff search bar
+ * @param {show-club} lists.js - default club to show on load
+ * @param {show-staff} lists.js - default staff member to show on load
  * @param {date} schedule.js - the date whose schedule is to be viewed
  * @param {barcode} barcodes.js - the barcode to display
  * @param {all-langs} l10n.js - show all test and WIP languages

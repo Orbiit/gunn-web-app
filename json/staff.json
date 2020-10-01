@@ -5,12 +5,12 @@
 		"phone": "354-8266 ext. 5242",
 		"email": "sames@pausd.org",
 		"periods": {
-			"2": "Yoga",
-			"3": "Yoga",
-			"4": "PE 9",
-			"5": "Yoga",
-			"7": "PE 9",
-			"SELF": "SELF"
+			"2": [[["Yoga","V-17"]],null],
+			"3": [[["Yoga","V-17"]],null],
+			"4": [[["PE 9","Bow GYM"]],null],
+			"5": [[["Yoga","V-17"]],null],
+			"7": [[["PE 9","Bow GYM"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Amy Anderson": {
@@ -19,13 +19,20 @@
 		"phone": "354-8215 ext. 6752",
 		"email": "amanderson@pausd.org",
 		"periods": {
-			"1": "PE 9",
-			"2": "PE 9",
-			"4": "PE 9",
-			"5": "PE 9",
-			"6": "PE 9",
-			"7": "PE 9",
-			"SELF": "SELF"
+			"1": [[["PE 9","Bow GYM"]],null],
+			"2": [[["PE 9","Bow GYM"]],null],
+			"4": [[["PE 9","Bow GYM"]],null],
+			"5": [[["PE 9","Bow GYM"]],null],
+			"6": [[["PE 9","Bow GYM"]],null],
+			"7": [[["PE 9","Bow GYM"]],null],
+			"SELF": [[["SELF",null]],null]
+		}
+	},
+	"Leonel Argumedo": {
+		"jobTitle": "Assistant Principal",
+		"email": "largumedo@pausd.org",
+		"periods": {
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Adriana Aro": {
@@ -34,12 +41,12 @@
 		"phone": "354-8262",
 		"email": "aaro@pausd.org",
 		"periods": {
-			"1": "US Hist",
-			"2": "Wld Hist",
-			"3": "Therapeutic Elective",
-			"6": "Wld Hist",
-			"7": "US Hist",
-			"SELF": "SELF"
+			"1": [[["US Hist","V-26"]],null],
+			"2": [[["Wld Hist","V-25"]],null],
+			"3": [[["Therapeutic Elective","K - 10"]],null],
+			"6": [[["Wld Hist","V-25"]],null],
+			"7": [[["US Hist","V-26"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Arlena Arteaga": {
@@ -47,11 +54,11 @@
 		"phone": "354-8237 ext. 5873",
 		"email": "aarteaga@pausd.org",
 		"periods": {
-			"1": "Wld Hist",
-			"3": "USGovtLL|ContWld LL",
-			"4": "WldHist LL",
-			"5": "Wld Hist",
-			"7": "USGovtLL|ContWld LL"
+			"1": [[["Wld Hist","G - 06"]],null],
+			"3": [[["USGovtLL","G - 06"]],[["ContWld LL","G - 06"]]],
+			"4": [[["WldHist LL","G - 06"]],null],
+			"5": [[["Wld Hist","G - 06"]],null],
+			"7": [[["USGovtLL","G - 06"]],[["ContWld LL","G - 06"]]]
 		}
 	},
 	"Timothy Aston": {
@@ -59,22 +66,27 @@
 		"phone": "354-8246 ext. 6749",
 		"email": "taston@pausd.org",
 		"periods": {
-			"1": "Bio SLC",
-			"2": "Biology",
-			"3": "Biology",
-			"4": "Biology",
-			"7": "Focus on Success"
+			"1": [[["Bio SLC","V-01"]],null],
+			"2": [[["Biology","V-01"]],null],
+			"3": [[["Biology","V-01"]],null],
+			"4": [[["Biology","V-01"]],null],
+			"7": [[["Focus on Success","K - 14"]],null]
 		}
+	},
+	"Gunn Attendance": {
+		"jobTitle": "Report an absence",
+		"phone": "650-354-8210",
+		"email": "gunn-attendance@pausd.org"
 	},
 	"Brittany Axelrod": {
 		"jobTitle": "Teacher",
 		"email": "baxelrod@pausd.org",
 		"periods": {
-			"2": "Alg2",
-			"3": "Alg2",
-			"4": "Alg 1A",
-			"5": "Academic Math",
-			"7": "Alg 1A"
+			"2": [[["Alg2","N - 213"]],null],
+			"3": [[["Alg2","N - 213"]],null],
+			"4": [[["Alg 1A","N - 202"]],null],
+			"5": [[["Academic Math","K - 09"]],null],
+			"7": [[["Alg 1A","N - 202"]],null]
 		}
 	},
 	"Neil Barana": {
@@ -86,11 +98,11 @@
 		"jobTitle": "Teacher",
 		"email": "nmedina@pausd.org",
 		"periods": {
-			"1": "Spanish 2",
-			"2": "Spanish 3",
-			"3": "Spanish 3",
-			"5": "Spanish 2",
-			"6": "Spanish 2"
+			"1": [[["Spanish 2","G - 02"]],null],
+			"2": [[["Spanish 3","G - 02"]],null],
+			"3": [[["Spanish 3","G - 02"]],null],
+			"5": [[["Spanish 2","G - 02"]],null],
+			"6": [[["Spanish 2","G - 02"]],null]
 		}
 	},
 	"Normalyn Bato": {
@@ -103,12 +115,12 @@
 		"phone": "354-8247 ext. 6781",
 		"email": "mbautista@pausd.org",
 		"periods": {
-			"1": "APCompSci A",
-			"2": "APCompSci A",
-			"5": "AP Calculus AB",
-			"6": "AP Calculus AB",
-			"7": "AP Calculus AB",
-			"SELF": "SELF"
+			"1": [[["APCompSci A","N-215 Lab"]],null],
+			"2": [[["APCompSci A","N-215 Lab"]],null],
+			"5": [[["AP Calculus AB","N - 203"]],null],
+			"6": [[["AP Calculus AB","N - 203"]],null],
+			"7": [[["AP Calculus AB","N - 203"]],null],
+			"SELF": [[["SELF","N - 203"]],null]
 		}
 	},
 	"Gretchen Berg": {
@@ -121,13 +133,13 @@
 		"phone": "354-8237",
 		"email": "dbisbee@pausd.org",
 		"periods": {
-			"1": "US Govt|ContWld 11",
-			"2": "Wld Hist",
-			"3": "Wld Hist",
-			"4": "US Govt|ContWld 11",
-			"6": "Wld Hist",
-			"7": "US Govt|ContWld 11",
-			"SELF": "SELF"
+			"1": [[["US Govt","V-25"]],[["ContWld 11","V-25"]]],
+			"2": [[["Wld Hist","V-25"]],null],
+			"3": [[["Wld Hist","V-25"]],null],
+			"4": [[["US Govt","V-25"]],[["ContWld 11","V-25"]]],
+			"6": [[["Wld Hist","V-25"]],null],
+			"7": [[["US Govt","V-25"]],[["ContWld 11","V-25"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Catherine Bissegger": {
@@ -135,43 +147,35 @@
 		"phone": "354-8262",
 		"email": "cbissegger@pausd.org",
 		"periods": {
-			"2": "Acad Planning",
-			"3": "Lit Style|Lit Style",
-			"4": "Acad Planning|Acad Planning, Lit Style",
-			"5": "Lit Style|Lit Style",
-			"7": "Lit Style|Lit Style",
-			"SELF": "SELF"
+			"2": [[["Acad Planning","K - 15"]],null],
+			"3": [[["Lit Style","V-04"]],[["Lit Style","V-04"]]],
+			"4": [[["Acad Planning","K - 15"]],[["Acad Planning","K - 15"],["Lit Style","N - 104"]]],
+			"5": [[["Lit Style","N - 104"]],[["Lit Style","N - 104"]]],
+			"7": [[["Lit Style","V-04"]],[["Lit Style","V-04"]]],
+			"SELF": [[["SELF",null]],null]
 		}
-	},
-	"Todd Bittle": {
-		"jobTitle": "Counselor",
-		"email": "tbittle@pausd.org"
 	},
 	"Kristy Blackburn": {
 		"jobTitle": "Teacher",
 		"phone": "354-8238 ext. 5112",
 		"email": "kblackburn@pausd.org",
 		"periods": {
-			"1": "Beginning Journalism|AmerLit",
-			"2": "Adv Journ, MLM GraphPub, MLM GraphPubH",
-			"3": "AmerLit|AmerLit",
-			"6": "AmerLit|AmerLit",
-			"SELF": "SELF"
+			"1": [[["Beginning Journalism","P-117"]],[["AmerLit","N - 106"]]],
+			"2": [[["Adv Journ","P-117"],["MLM GraphPub","P-117"],["MLM GraphPubH","P-117"]],null],
+			"3": [[["AmerLit","N - 106"]],[["AmerLit","N - 106"]]],
+			"6": [[["AmerLit","N - 106"]],[["AmerLit","N - 106"]]],
+			"SELF": [[["SELF","P-117"]],null]
 		}
-	},
-	"Elizabeth Bogardus": {
-		"jobTitle": "Teacher",
-		"email": "ebogardus@pausd.org"
 	},
 	"Barbara Boissevain": {
 		"jobTitle": "Teacher",
 		"phone": "354-8264",
 		"email": "bboissevain@pausd.org",
 		"periods": {
-			"3": "Art Spec 1",
-			"4": "Art Spec 1",
-			"5": "Pt/Dr 1",
-			"7": "AP Stud Art, Adv Photo, Adv Photo H"
+			"3": [[["Art Spec 1","M - 05"]],null],
+			"4": [[["Art Spec 1","M - 05"]],null],
+			"5": [[["Pt/Dr 1","M - 04"]],null],
+			"7": [[["Adv Photo","M - 01"],["Adv Photo H","M - 01"],["AP Stud Art","M - 01"]],null]
 		}
 	},
 	"Brandon Boyd": {
@@ -181,68 +185,43 @@
 	},
 	"Kimberly Brasil": {
 		"jobTitle": "Attendance/Secretary",
-		"email": "kbrasil@pausd.org",
-		"periods": {
-			"5": "Cont Herit|Cont Herit",
-			"6": "Cont Herit|Cont Herit",
-			"7": "Cont Herit|Cont Herit"
-		}
-	},
-	"Donald Bratton": {
-		"jobTitle": "Custodian I",
-		"phone": "354-8205",
-		"email": "dbratton@pausd.org"
-	},
-	"Donald Briggs": {
-		"jobTitle": "Teacher",
-		"phone": "354-8266 ext. 5558",
-		"email": "dbriggs@pausd.org"
+		"email": "kbrasil@pausd.org"
 	},
 	"Justin Brown": {
 		"jobTitle": "Teacher",
 		"phone": "354-8238 ext. 6084",
 		"email": "jdbrown@pausd.org",
 		"periods": {
-			"1": "Am Clas11H|Am Clas11H",
-			"2": "Film Lit|Film Lit",
-			"4": "Film Lit|Film Lit",
-			"5": "Am Clas11H|Am Clas11H"
+			"1": [[["Am Clas11H","N - 106"]],[["Am Clas11H","N - 106"]]],
+			"2": [[["Film Lit","N - 106"]],[["Film Lit","N - 106"]]],
+			"4": [[["Film Lit","N - 106"]],[["Film Lit","N - 106"]]],
+			"5": [[["Am Clas11H","N - 106"]],[["Am Clas11H","N - 106"]]]
 		}
 	},
 	"Paul Brown": {
 		"jobTitle": "Student Attendant",
 		"phone": "354-8262",
-		"email": "pbrown@pausd.org",
-		"periods": {
-			"1": "Am Clas11H|Am Clas11H",
-			"2": "Film Lit|Film Lit",
-			"4": "Film Lit|Film Lit",
-			"5": "Am Clas11H|Am Clas11H"
-		}
+		"email": "pbrown@pausd.org"
 	},
 	"Andrea Bueno": {
 		"jobTitle": "Counselor",
 		"phone": "354-8226 ext. 6531",
 		"email": "abueno@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
-	},
-	"Tracy Callaway": {
-		"jobTitle": "Student Attendant",
-		"email": "tcallaway@pausd.org"
 	},
 	"Mike Camicia": {
 		"jobTitle": "Teacher",
 		"phone": "354-8255 ext. 5373",
 		"email": "mcamicia@pausd.org",
 		"periods": {
-			"2": "Auto 1",
-			"3": "Auto 2",
-			"4": "Auto 1",
-			"6": "Auto 1",
-			"7": "Auto 2",
-			"SELF": "SELF"
+			"2": [[["Auto 1","L-08"]],null],
+			"3": [[["Auto 2","L-08"]],null],
+			"4": [[["Auto 1","L-08"]],null],
+			"6": [[["Auto 1","L-08"]],null],
+			"7": [[["Auto 2","L-08"]],null],
+			"SELF": [[["SELF","L-08"]],null]
 		}
 	},
 	"Jonathan Cano": {
@@ -254,9 +233,9 @@
 		"phone": "354-8262 ext. 1446",
 		"email": "ccarlomagno@pausd.org",
 		"periods": {
-			"1": "Conceptual Physics",
-			"3": "Conceptual Physics",
-			"SELF": "SELF"
+			"1": [[["Conceptual Physics","L-01"]],null],
+			"3": [[["Conceptual Physics","L-01"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Monica Casey": {
@@ -267,22 +246,19 @@
 	"Rossana castil": {
 		"jobTitle": "Wellness Outreach Worker",
 		"phone": "354-8214 ext. 6941",
-		"email": "rcastil@pausd.org",
-		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
-		}
+		"email": "rcastil@pausd.org"
 	},
 	"Kathryn Catalano": {
 		"jobTitle": "Teacher",
 		"phone": "354-8246 ext. 6953",
 		"email": "kcatalano@pausd.org",
 		"periods": {
-			"3": "Chemistry H",
-			"4": "Chemistry H",
-			"5": "Chemistry",
-			"6": "Chemistry",
-			"7": "Chemistry",
-			"SELF": "SELF"
+			"3": [[["Chemistry H","J - 08"]],null],
+			"4": [[["Chemistry H","J - 08"]],null],
+			"5": [[["Chemistry","J - 08"]],null],
+			"6": [[["Chemistry","L-01"]],null],
+			"7": [[["Chemistry","L-01"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Roberto Ceja Jr": {
@@ -294,7 +270,7 @@
 		"phone": "354-8285 ext. 6359",
 		"email": "ocelis@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Jorge Chavez": {
@@ -302,7 +278,7 @@
 		"phone": "354-8226 ext. 5406",
 		"email": "jchavez@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
 	},
 	"Gagan Cheema": {
@@ -315,10 +291,10 @@
 		"phone": "354-8247 ext. 5621",
 		"email": "bchen@pausd.org",
 		"periods": {
-			"2": "Geom A",
-			"3": "Alg2/Trg A",
-			"4": "Alg2/Trg A",
-			"7": "Geom A"
+			"2": [[["Geom A","N - 203"]],null],
+			"3": [[["Alg2/Trg A","N - 203"]],null],
+			"4": [[["Alg2/Trg A","N - 203"]],null],
+			"7": [[["Geom A","N - 204"]],null]
 		}
 	},
 	"Cristina Cismas Florea": {
@@ -326,10 +302,10 @@
 		"phone": "354-8247",
 		"email": "ccismas@pausd.org",
 		"periods": {
-			"2": "Geom H",
-			"3": "Geom H",
-			"5": "Geom A",
-			"6": "Geom A"
+			"2": [[["Geom H","N - 208"]],null],
+			"3": [[["Geom H","N - 208"]],null],
+			"5": [[["Geom A","N - 208"]],null],
+			"6": [[["Geom A","N - 208"]],null]
 		}
 	},
 	"Melissa Clark": {
@@ -342,12 +318,12 @@
 		"phone": "354-8246",
 		"email": "ccohn@pausd.org",
 		"periods": {
-			"1": "Physics",
-			"2": "Physics",
-			"3": "Physics",
-			"5": "Physics",
-			"7": "Physics",
-			"SELF": "SELF"
+			"1": [[["Physics","J - 05"]],null],
+			"2": [[["Physics","J - 05"]],null],
+			"3": [[["Physics","J - 05"]],null],
+			"5": [[["Physics","J - 05"]],null],
+			"7": [[["Physics","J - 05"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Lisa Collart": {
@@ -360,11 +336,11 @@
 		"phone": "354-8237 ext. 6382",
 		"email": "wcollier@pausd.org",
 		"periods": {
-			"1": "Psych 11|Psych 11",
-			"3": "AP Psychology",
-			"4": "AP Psychology",
-			"6": "AP Psychology",
-			"7": "AP Psychology"
+			"1": [[["Psych 11","C-02"]],[["Psych 11","C-02"]]],
+			"3": [[["AP Psychology","C-02"]],null],
+			"4": [[["AP Psychology","C-02"]],null],
+			"6": [[["AP Psychology","C-02"]],null],
+			"7": [[["AP Psychology","C-02"]],null]
 		}
 	},
 	"Angel Colon Chin": {
@@ -376,12 +352,12 @@
 		"phone": "354-8247 ext. 5719",
 		"email": "rcongress@pausd.org",
 		"periods": {
-			"1": "Alg2/Trg A",
-			"2": "Alg2/Trg A",
-			"4": "AP Statistics",
-			"5": "AP Statistics",
-			"7": "Alg2/Trg A",
-			"SELF": "SELF"
+			"1": [[["Alg2/Trg A","N - 201"]],null],
+			"2": [[["Alg2/Trg A","N - 201"]],null],
+			"4": [[["AP Statistics","N - 201"]],null],
+			"5": [[["AP Statistics","N - 201"]],null],
+			"7": [[["Alg2/Trg A","N - 204"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Sandra Conklin": {
@@ -389,11 +365,11 @@
 		"phone": "354-8265 ext. 1560",
 		"email": "sconklin@pausd.org",
 		"periods": {
-			"1": "Funct Acad, Voc Trng",
-			"2": "Funct Acad, Voc Trng",
-			"4": "Acad Enhancement SAI",
-			"6": "Funct Acad, Voc Trng",
-			"7": "Funct Acad, Voc Trng"
+			"1": [[["Funct Acad","F - 02"],["Voc Trng","F - 02"]],null],
+			"2": [[["Funct Acad","F - 02"],["Voc Trng","F - 02"]],null],
+			"4": [[["Acad Enhancement SAI","K - 09"]],null],
+			"6": [[["Funct Acad","F - 02"],["Voc Trng","F - 02"]],null],
+			"7": [[["Funct Acad","F - 02"],["Voc Trng","F - 02"]],null]
 		}
 	},
 	"Edward Corpuz": {
@@ -401,10 +377,10 @@
 		"phone": "849-7905 ext. 6105",
 		"email": "ecorpuz@pausd.org",
 		"periods": {
-			"1": "BroadJourn",
-			"2": "AdvDigiFilm, Video Prod",
-			"3": "Adv Video H, Video Prod",
-			"7": "Adv Audio/Music Prod, Audio/MusicProd"
+			"1": [[["BroadJourn","L-06 "]],null],
+			"2": [[["AdvDigiFilm","L-06 "],["Video Prod","L-06 "]],null],
+			"3": [[["Adv Video H","L-06 "],["Video Prod","L-06 "]],null],
+			"7": [[["Adv Audio/Music Prod","L-06 "],["Audio/MusicProd","L-06 "]],null]
 		}
 	},
 	"Braumon Creighton": {
@@ -412,25 +388,34 @@
 		"phone": "849-8266 ext. 6954",
 		"email": "bcreighton@pausd.org",
 		"periods": {
-			"1": "PE 10",
-			"3": "PE 9",
-			"4": "PE 10",
-			"5": "PE 10",
-			"6": "PE 10",
-			"7": "PE 10"
+			"1": [[["PE 10","Bow GYM"]],null],
+			"3": [[["PE 9","Bow GYM"]],null],
+			"4": [[["PE 10","Bow GYM"]],null],
+			"5": [[["PE 10","Bow GYM"]],null],
+			"6": [[["PE 10","Bow GYM"]],null],
+			"7": [[["PE 10","Bow GYM"]],null]
 		}
+	},
+	"Juan Cruz Gomez": {
+		"jobTitle": "Family Engagement Specialist",
+		"phone": "354-8222 ext. 1681",
+		"email": "jcruzgomez@pausd.org"
 	},
 	"Raquel Cuevas Ceja": {
 		"jobTitle": "Teacher",
 		"phone": "354-8262",
 		"email": "rcuevasceja@pausd.org",
 		"periods": {
-			"1": "Funct Acad, Voc Trng",
-			"4": "Funct Acad, Voc Trng",
-			"5": "Funct Acad, Voc Trng",
-			"6": "Funct Acad, Voc Trng",
-			"7": "Funct Acad, Voc Trng"
+			"1": [[["Funct Acad","K - 12"],["Voc Trng","K - 12"]],null],
+			"4": [[["Funct Acad","K - 12"],["Voc Trng","K - 12"]],null],
+			"5": [[["Funct Acad","K - 12"],["Voc Trng","K - 12"]],null],
+			"6": [[["Funct Acad","K - 12"],["Voc Trng","K - 12"]],null],
+			"7": [[["Funct Acad","K - 12"],["Voc Trng","K - 12"]],null]
 		}
+	},
+	"Kamille De Guzman": {
+		"jobTitle": "Student Attendant",
+		"email": "kdeguzman@pausd.org"
 	},
 	"Christopher Dean": {
 		"jobTitle": "Custodian I",
@@ -442,16 +427,11 @@
 		"phone": "354-8247 ext. 5327",
 		"email": "ddeggeller@pausd.org",
 		"periods": {
-			"3": "AP Calculus BC",
-			"4": "AP Calculus BC",
-			"5": "Alg2/Trg A",
-			"6": "Alg2/Trg A"
+			"3": [[["AP Calculus BC","N - 204"]],null],
+			"4": [[["AP Calculus BC","N - 204"]],null],
+			"5": [[["Alg2/Trg A","N - 204"]],null],
+			"6": [[["Alg2/Trg A","N - 204"]],null]
 		}
-	},
-	"Emily DeVitis": {
-		"jobTitle": "Teacher",
-		"phone": "354-8247 ext. 5320",
-		"email": "edevitis@pausd.org"
 	},
 	"Narinder Dhillon": {
 		"jobTitle": "Student Attendant",
@@ -471,12 +451,12 @@
 		"phone": "354-8247 ext. 5483",
 		"email": "rdion@pausd.org",
 		"periods": {
-			"1": "AP Calculus AB",
-			"3": "AP Calculus AB",
-			"4": "AP Calculus AB",
-			"5": "Alg2/TrigH",
-			"6": "Alg2/TrigH",
-			"SELF": "SELF"
+			"1": [[["AP Calculus AB","N - 212"]],null],
+			"3": [[["AP Calculus AB","N - 212"]],null],
+			"4": [[["AP Calculus AB","N - 212"]],null],
+			"5": [[["Alg2/TrigH","N - 212"]],null],
+			"6": [[["Alg2/TrigH","N - 212"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Genavae Dixon": {
@@ -489,19 +469,15 @@
 		"phone": "354-8284 ext. 5266",
 		"email": "tdouglas@pausd.org"
 	},
-	"Anne Dumontier": {
-		"jobTitle": "Teacher",
-		"email": "adumontier@pausd.org"
-	},
 	"Paul Dunlap": {
 		"jobTitle": "Teacher",
 		"phone": "354-8238 ext. 5248",
 		"email": "pdunlap@pausd.org",
 		"periods": {
-			"1": "AP English Lit & Comp",
-			"2": "AP English Lit & Comp",
-			"5": "|WritCr 11",
-			"6": "|Cont Herit"
+			"1": [[["AP English Lit & Comp","N - 114"]],null],
+			"2": [[["AP English Lit & Comp","N - 114"]],null],
+			"5": [[],[["WritCr 11","N - 114"]]],
+			"6": [[],[["Cont Herit","N - 114"]]]
 		}
 	},
 	"Marie-Jose Durquet": {
@@ -509,9 +485,9 @@
 		"phone": "849-7903 ext. 1403",
 		"email": "mdurquet@pausd.org",
 		"periods": {
-			"4": "Photo 1",
-			"5": "Photo 1",
-			"6": "Photo 1"
+			"4": [[["Photo 1","M - 01"]],null],
+			"5": [[["Photo 1","M - 01"]],null],
+			"6": [[["Photo 1","M - 03"]],null]
 		}
 	},
 	"Martha Elderon": {
@@ -524,10 +500,6 @@
 		"phone": "354-8262",
 		"email": "teverett@pausd.org"
 	},
-	"Travis Fenech": {
-		"jobTitle": "Student Attendant",
-		"email": "tfenech@pausd.org"
-	},
 	"Steven Fetter": {
 		"jobTitle": "Theater Production Technician",
 		"email": "sfetter@pausd.org"
@@ -537,7 +509,7 @@
 		"phone": "354-8224 ext. 6917",
 		"email": "jfidani@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
 	},
 	"Tara Firenzi": {
@@ -545,8 +517,8 @@
 		"phone": "354-8237 ext. 6002",
 		"email": "tfirenzi@pausd.org",
 		"periods": {
-			"3": "|USFor Pol H",
-			"SELF": "SELF"
+			"3": [[],[["USFor Pol H","C-04"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"William Foster": {
@@ -563,10 +535,6 @@
 		"phone": "868-8752 ext. 5668",
 		"email": "rfujii@pausd.org"
 	},
-	"Michael Galaviz": {
-		"jobTitle": "Psychologist",
-		"email": "mgalaviz@pausd.org"
-	},
 	"Megan Garcia": {
 		"jobTitle": "Library Assistant II",
 		"phone": "354-8252 ext. 6802",
@@ -577,12 +545,12 @@
 		"phone": "354-8241 ext. 5980",
 		"email": "ggarger@pausd.org",
 		"periods": {
-			"2": "Spanish 2",
-			"3": "AP Spanish Literature",
-			"5": "AP Spanish Language",
-			"6": "AP Spanish Language",
-			"7": "AP Spanish Language",
-			"SELF": "SELF"
+			"2": [[["Spanish 2","G - 04"]],null],
+			"3": [[["AP Spanish Literature","G - 04"]],null],
+			"5": [[["AP Spanish Language","G - 04"]],null],
+			"6": [[["AP Spanish Language","G - 04"]],null],
+			"7": [[["AP Spanish Language","G - 04"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Erika Garibay Diaz": {
@@ -590,7 +558,7 @@
 		"phone": "354-8262",
 		"email": "egaribaydiaz@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Joanne Marie Garlejo": {
@@ -603,7 +571,7 @@
 		"phone": "354-8252 ext. 6802",
 		"email": "dgill@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Diane Gleason": {
@@ -611,10 +579,10 @@
 		"phone": "354-8247 ext. 5565",
 		"email": "dgleason@pausd.org",
 		"periods": {
-			"4": "Analysis H",
-			"5": "Analysis H",
-			"6": "Analysis H",
-			"7": "Analysis H"
+			"4": [[["Analysis H","N - 206"]],null],
+			"5": [[["Analysis H","N - 206"]],null],
+			"6": [[["Analysis H","N - 206"]],null],
+			"7": [[["Analysis H","N - 206"]],null]
 		}
 	},
 	"Mark Gleason": {
@@ -622,11 +590,11 @@
 		"phone": "849-7906 ext. 5981",
 		"email": "mgleason@pausd.org",
 		"periods": {
-			"3": "GraphDes",
-			"4": "Adv Gr Des, GraphDes",
-			"5": "Gprd/Yrbk",
-			"6": "Digital Art Spectrum",
-			"7": "Digital Art Spectrum"
+			"3": [[["GraphDes","P-117"]],null],
+			"4": [[["Adv Gr Des","P-117"],["GraphDes","P-117"]],null],
+			"5": [[["Gprd/Yrbk","P-117"]],null],
+			"6": [[["Digital Art Spectrum","P-117"]],null],
+			"7": [[["Digital Art Spectrum","P-117"]],null]
 		}
 	},
 	"Robert Glenister": {
@@ -643,26 +611,23 @@
 		"phone": "354-8241 ext. 6592",
 		"email": "abarrios@pausd.org",
 		"periods": {
-			"1": "Spanish 3",
-			"3": "Spanish 1",
-			"6": "Spanish 3",
-			"7": "Spanish 3"
+			"1": [[["Spanish 3","H-05"]],null],
+			"3": [[["Spanish 1","H-05"]],null],
+			"6": [[["Spanish 3","H-05"]],null],
+			"7": [[["Spanish 3","H-05"]],null]
 		}
 	},
 	"Gordon Goodspeed": {
 		"jobTitle": "Custodian I",
 		"phone": "354-8205",
-		"email": "ggoodspeed@pausd.org",
-		"periods": {
-			"SELF": "SELF"
-		}
+		"email": "ggoodspeed@pausd.org"
 	},
 	"Michalis Gordon": {
 		"jobTitle": "Assistant Principal-HS",
 		"phone": "354-8206 ext. 6865",
 		"email": "mgordon@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Kristina Granlund-Moyer": {
@@ -670,32 +635,20 @@
 		"phone": "354-8254 ext. 6722",
 		"email": "kgranlund@pausd.org",
 		"periods": {
-			"1": "Prnc Of Engr H PLTW, Prnc Of Engr PLTW",
-			"2": "Int Engr Des PLTW, Int Engr Des PLTW H",
-			"5": "Engn Tech",
-			"6": "Engn Tech",
-			"SELF": "SELF"
+			"1": [[["Prnc Of Engr H PLTW","F - 04 Lab"],["Prnc Of Engr PLTW","F - 04 Lab"]],null],
+			"2": [[["Int Engr Des PLTW","F - 04 Lab"],["Int Engr Des PLTW H","F - 04 Lab"]],null],
+			"5": [[["Engn Tech","L-05"]],null],
+			"6": [[["Engn Tech","L-05"]],null],
+			"SELF": [[["SELF","L-05"]],null]
 		}
-	},
-	"Meenakshi Gupta": {
-		"jobTitle": "Teacher",
-		"email": "mgupta@pausd.org"
-	},
-	"Daniel Hahn": {
-		"jobTitle": "Teacher",
-		"email": "dhahn@pausd.org"
-	},
-	"Coleman Hall": {
-		"jobTitle": "Teacher",
-		"email": "cohall@pausd.org"
 	},
 	"Lisa Hall": {
 		"jobTitle": "Teacher",
 		"phone": "354-8228 ext. 5956",
 		"email": "lhall@pausd.org",
 		"periods": {
-			"1": "Stu Govt",
-			"2": "Lit Style|Lit Style"
+			"1": [[["Stu Govt","P-105"]],null],
+			"2": [[["Lit Style","P-105"]],[["Lit Style","P-105"]]]
 		}
 	},
 	"Matthew Hall": {
@@ -703,12 +656,12 @@
 		"phone": "354-8241",
 		"email": "mhall@pausd.org",
 		"periods": {
-			"2": "Japanes 2",
-			"4": "Japanes 1",
-			"5": "Japanes 3",
-			"6": "Japanes 4H, JapnLangAP",
-			"7": "Japanes 2",
-			"SELF": "SELF"
+			"2": [[["Japanes 2","H-03"]],null],
+			"4": [[["Japanes 1","H-03"]],null],
+			"5": [[["Japanes 3","H-03"]],null],
+			"6": [[["Japanes 4H","H-03"],["JapnLangAP","H-03"]],null],
+			"7": [[["Japanes 2","H-03"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Ethan Halter": {
@@ -716,12 +669,12 @@
 		"phone": "354-8228 ext. 5429",
 		"email": "ehalter@pausd.org",
 		"periods": {
-			"1": "Cont Herit|Lit Style",
-			"2": "Lit Style|Cont Herit",
-			"3": "Lit Style|Lit Style",
-			"5": "Cont Herit|Cont Herit",
-			"7": "Lit Style|Lit Style",
-			"SELF": "SELF"
+			"1": [[["Cont Herit","V-04"]],[["Lit Style","V-04"]]],
+			"2": [[["Lit Style","V-04"]],[["Cont Herit","V-04"]]],
+			"3": [[["Lit Style","V-04"]],[["Lit Style","V-04"]]],
+			"5": [[["Cont Herit","V-04"]],[["Cont Herit","V-04"]]],
+			"7": [[["Lit Style","V-04"]],[["Lit Style","V-04"]]],
+			"SELF": [[["SELF","V-04"]],null]
 		}
 	},
 	"Nigel Hansen": {
@@ -738,11 +691,11 @@
 		"phone": "354-8247",
 		"email": "khawes@pausd.org",
 		"periods": {
-			"1": "IntrAnl/Calc",
-			"2": "Alg2/TrigH",
-			"4": "IntrAnl/Calc",
-			"6": "IntrAnl/Calc",
-			"7": "Alg2/TrigH"
+			"1": [[["IntrAnl/Calc","N - 209"]],null],
+			"2": [[["Alg2/TrigH","N - 209"]],null],
+			"4": [[["IntrAnl/Calc","N - 209"]],null],
+			"6": [[["IntrAnl/Calc","N - 209"]],null],
+			"7": [[["Alg2/TrigH","N - 209"]],null]
 		}
 	},
 	"Kerstin Helbing": {
@@ -750,50 +703,29 @@
 		"phone": "849-7922 ext. 5008",
 		"email": "khelbing@pausd.org",
 		"periods": {
-			"1": "EL 28",
-			"2": "EL 28",
-			"5": "Eng LL 1, Eng LL 2",
-			"6": "Eng LL 1, Eng LL 2",
-			"SELF": "SELF"
-		}
-	},
-	"David Hernandez": {
-		"jobTitle": "Student Attendant",
-		"phone": "354-8262",
-		"email": "dhernandez@pausd.org",
-		"periods": {
-			"1": "Film Lit|Film Lit",
-			"3": "Film Lit|Am Clas11H",
-			"4": "Am Clas11H|Am Clas11H",
-			"5": "AP English Lit & Comp",
-			"6": "AP English Lit & Comp",
-			"SELF": "SELF"
+			"1": [[["EL 28","K - 04"]],null],
+			"2": [[["EL 28","K - 04"]],null],
+			"5": [[["Eng LL 1","K - 04"],["Eng LL 2","K - 04"]],null],
+			"6": [[["Eng LL 1","K - 04"],["Eng LL 2","K - 04"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Luciano Hernandez": {
 		"jobTitle": "Custodial Supervisor",
 		"phone": "354-8205 ext. 5527",
-		"email": "lhernandez@pausd.org",
-		"periods": {
-			"1": "Film Lit|Film Lit",
-			"3": "Film Lit|Am Clas11H",
-			"4": "Am Clas11H|Am Clas11H",
-			"5": "AP English Lit & Comp",
-			"6": "AP English Lit & Comp",
-			"SELF": "SELF"
-		}
+		"email": "lhernandez@pausd.org"
 	},
 	"Mark Hernandez": {
 		"jobTitle": "Teacher",
 		"phone": "354-8238 ext. 5569",
 		"email": "mhernandez@pausd.org",
 		"periods": {
-			"1": "Film Lit|Film Lit",
-			"3": "Film Lit|Am Clas11H",
-			"4": "Am Clas11H|Am Clas11H",
-			"5": "AP English Lit & Comp",
-			"6": "AP English Lit & Comp",
-			"SELF": "SELF"
+			"1": [[["Film Lit","N - 105"]],[["Film Lit","N - 105"]]],
+			"3": [[["Film Lit","N - 105"]],[["Am Clas11H","N - 105"]]],
+			"4": [[["Am Clas11H","N - 105"]],[["Am Clas11H","N - 105"]]],
+			"5": [[["AP English Lit & Comp","N - 105"]],null],
+			"6": [[["AP English Lit & Comp","N - 105"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Elena Herrera": {
@@ -811,11 +743,11 @@
 		"phone": "354-8247 ext. 6796",
 		"email": "jhexsel@pausd.org",
 		"periods": {
-			"2": "Geom",
-			"4": "Geom",
-			"5": "AP Comp. Sci. Princ",
-			"6": "AP Comp. Sci. Princ",
-			"SELF": "SELF"
+			"2": [[["Geom","N - 206"]],null],
+			"4": [[["Geom","N - 206"]],null],
+			"5": [[["AP Comp. Sci. Princ","N -115 Lab"]],null],
+			"6": [[["AP Comp. Sci. Princ","N -115 Lab"]],null],
+			"SELF": [[["SELF","N -115 Lab"]],null]
 		}
 	},
 	"Hindi Hipp": {
@@ -828,11 +760,11 @@
 		"phone": "354-8238 ext. 6795",
 		"email": "sholdener@pausd.org",
 		"periods": {
-			"1": "Cont Herit|Cont Herit",
-			"2": "Cont Herit|Cont Herit",
-			"3": "Cont Herit|Cont Herit",
-			"4": "Cont Herit|Cont Herit",
-			"5": "Lit Style|Lit Style"
+			"1": [[["Cont Herit","N - 103"]],[["Cont Herit","N - 103"]]],
+			"2": [[["Cont Herit","N - 103"]],[["Cont Herit","N - 103"]]],
+			"3": [[["Cont Herit","N - 103"]],[["Cont Herit","N - 103"]]],
+			"4": [[["Cont Herit","N - 103"]],[["Cont Herit","N - 103"]]],
+			"5": [[["Lit Style","N - 103"]],[["Lit Style","N - 103"]]]
 		}
 	},
 	"Patricia Holmes": {
@@ -840,12 +772,12 @@
 		"phone": "849-7951 ext. 5479",
 		"email": "pholmes@pausd.org",
 		"periods": {
-			"1": "Law 1",
-			"3": "US Govt|ContWld 11",
-			"5": "US Govt|ContWld 11",
-			"6": "CR/CivLaw|CR/CivLaw",
-			"7": "Law 1",
-			"SELF": "SELF"
+			"1": [[["Law 1","F - 06"]],null],
+			"3": [[["US Govt","F - 06"]],[["ContWld 11","F - 06"]]],
+			"5": [[["US Govt","F - 06"]],[["ContWld 11","F - 06"]]],
+			"6": [[["CR/CivLaw","F - 06"]],[["CR/CivLaw","F - 06"]]],
+			"7": [[["Law 1","F - 06"]],null],
+			"SELF": [[["SELF","F - 06"]],null]
 		}
 	},
 	"Laurel Howard": {
@@ -853,12 +785,12 @@
 		"phone": "354-8237",
 		"email": "lahoward@pausd.org",
 		"periods": {
-			"1": "Wld Hist",
-			"3": "Wld Hist",
-			"4": "AP US History",
-			"5": "AP US History",
-			"7": "AP US History",
-			"SELF": "SELF"
+			"1": [[["Wld Hist","C-07"]],null],
+			"3": [[["Wld Hist","C-07"]],null],
+			"4": [[["AP US History","C-07"]],null],
+			"5": [[["AP US History","C-07"]],null],
+			"7": [[["AP US History","C-07"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Diane Ichikawa": {
@@ -866,11 +798,11 @@
 		"phone": "354-8238 ext. 5489",
 		"email": "dichikawa@pausd.org",
 		"periods": {
-			"1": "Lit Style|Lit Style",
-			"2": "Yoga",
-			"4": "AP English Lit & Comp",
-			"6": "Lit Style|Lit Style",
-			"7": "Lit Style|Lit Style"
+			"1": [[["Lit Style","N - 112"]],[["Lit Style","N - 112"]]],
+			"2": [[["Yoga","V-17"]],null],
+			"4": [[["AP English Lit & Comp","N - 112"]],null],
+			"6": [[["Lit Style","N - 112"]],[["Lit Style","N - 112"]]],
+			"7": [[["Lit Style","N - 112"]],[["Lit Style","N - 112"]]]
 		}
 	},
 	"Marc Igler": {
@@ -878,11 +810,11 @@
 		"phone": "354-8238 ext. 5807",
 		"email": "migler@pausd.org",
 		"periods": {
-			"1": "Class Myth|",
-			"2": "Escape Lit|Am Clas11H",
-			"3": "|Am Clas11H",
-			"4": "Escape Lit|Class Myth",
-			"6": "Class Myth|Am Clas11H"
+			"1": [[["Class Myth","N - 107"]],[]],
+			"2": [[["Escape Lit","N - 107"]],[["Am Clas11H","N - 107"]]],
+			"3": [[],[["Am Clas11H","N - 107"]]],
+			"4": [[["Escape Lit","N - 107"]],[["Class Myth","N - 107"]]],
+			"6": [[["Class Myth","N - 107"]],[["Am Clas11H","N - 105"]]]
 		}
 	},
 	"Katherine Ja": {
@@ -890,49 +822,38 @@
 		"phone": "354-8238 ext. 6957",
 		"email": "kja@pausd.org",
 		"periods": {
-			"3": "Lit Style|Cont Herit",
-			"4": "Cont Herit|Lit Style",
-			"5": "Lit Style|Lit Style",
-			"6": "Lit Style|Lit Style",
-			"7": "Cont Herit|Cont Herit"
+			"3": [[["Lit Style","N - 113"]],[["Cont Herit","N - 113"]]],
+			"4": [[["Cont Herit","N - 113"]],[["Lit Style","N - 113"]]],
+			"5": [[["Lit Style","N - 113"]],[["Lit Style","N - 113"]]],
+			"6": [[["Lit Style","N - 113"]],[["Lit Style","N - 113"]]],
+			"7": [[["Cont Herit","N - 113"]],[["Cont Herit","N - 113"]]]
 		}
 	},
 	"Eric Jackson": {
 		"jobTitle": "Student Attendant",
 		"phone": "354-8262",
-		"email": "ejackson@pausd.org",
-		"periods": {
-			"3": "Lit Style|Cont Herit",
-			"4": "Cont Herit|Lit Style",
-			"5": "Lit Style|Lit Style",
-			"6": "Lit Style|Lit Style",
-			"7": "Cont Herit|Cont Herit"
-		}
+		"email": "ejackson@pausd.org"
 	},
 	"Marcus Jamison": {
 		"jobTitle": "Teacher",
 		"phone": "354-8247",
 		"email": "mjamison@pausd.org",
 		"periods": {
-			"1": "AP Statistics",
-			"2": "AP Statistics",
-			"4": "Geom H",
-			"5": "Geom H",
-			"7": "Geom H",
-			"SELF": "SELF"
+			"1": [[["AP Statistics","N - 210"]],null],
+			"2": [[["AP Statistics","N - 210"]],null],
+			"4": [[["Geom H","N - 210"]],null],
+			"5": [[["Geom H","N - 210"]],null],
+			"7": [[["Geom H","N - 210"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
-	},
-	"Kristen Jensen": {
-		"jobTitle": "School-based MHT I",
-		"email": "kjensen@pausd.org"
 	},
 	"Curtis Johansen": {
 		"jobTitle": "Teacher",
 		"phone": "354-8257 ext. 5923",
 		"email": "cjohansen@pausd.org",
 		"periods": {
-			"5": "PE 10",
-			"6": "PE 10"
+			"5": [[["PE 10","Bow GYM"]],null],
+			"6": [[["PE 10","Bow GYM"]],null]
 		}
 	},
 	"Derek Johanson": {
@@ -940,72 +861,53 @@
 		"phone": "849-7935 ext. 6818",
 		"email": "djohanson@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
 	},
 	"Bridget Johnson": {
 		"jobTitle": "Secretary II",
 		"phone": "354-8280 ext. 6250",
-		"email": "bjohnson@pausd.org",
-		"periods": {
-			"1": "AP US History",
-			"2": "AP US History",
-			"3": "AP US History",
-			"4": "Wld Hist",
-			"5": "Wld Hist"
-		}
+		"email": "bjohnson@pausd.org"
 	},
 	"Christopher Johnson": {
 		"jobTitle": "Teacher",
 		"phone": "354-8237 ext. 6078",
 		"email": "cjohnson@pausd.org",
 		"periods": {
-			"1": "AP US History",
-			"2": "AP US History",
-			"3": "AP US History",
-			"4": "Wld Hist",
-			"5": "Wld Hist"
+			"1": [[["AP US History","C-03"]],null],
+			"2": [[["AP US History","C-03"]],null],
+			"3": [[["AP US History","C-03"]],null],
+			"4": [[["Wld Hist","C-01"]],null],
+			"5": [[["Wld Hist","C-01"]],null]
 		}
 	},
 	"Kevin Johnson": {
 		"jobTitle": "Athletic Assistant",
-		"email": "kjohnson@pausd.org",
-		"periods": {
-			"1": "AP US History",
-			"2": "AP US History",
-			"3": "AP US History",
-			"4": "Wld Hist",
-			"5": "Wld Hist"
-		}
+		"email": "kjohnson@pausd.org"
 	},
 	"Takeshi Kaneko": {
 		"jobTitle": "Teacher",
 		"phone": "354-8247",
 		"email": "tkaneko@pausd.org",
 		"periods": {
-			"1": "Funct Object Or Prog",
-			"2": "Funct Object Or Prog",
-			"3": "Funct Object Or Prog",
-			"6": "IntrAnl/Calc",
-			"7": "IntrAnl/Calc",
-			"SELF": "SELF"
+			"1": [[["Funct Object Or Prog","N -115 Lab"]],null],
+			"2": [[["Funct Object Or Prog","N -115 Lab"]],null],
+			"3": [[["Funct Object Or Prog","N -115 Lab"]],null],
+			"6": [[["IntrAnl/Calc","N - 205"]],null],
+			"7": [[["IntrAnl/Calc","N - 205"]],null],
+			"SELF": [[["SELF","N - 205"]],null]
 		}
-	},
-	"Chris Karas": {
-		"jobTitle": "Teacher",
-		"phone": "354-8247 ext. 6192",
-		"email": "ckaras@pausd.org"
 	},
 	"Charlotte Kaufman": {
 		"jobTitle": "Teacher",
 		"phone": "354-8241",
 		"email": "ckaufman@pausd.org",
 		"periods": {
-			"1": "French 2",
-			"5": "French 2",
-			"6": "French 1",
-			"7": "French 2",
-			"SELF": "SELF"
+			"1": [[["French 2","G - 03"]],null],
+			"5": [[["French 2","G - 03"]],null],
+			"6": [[["French 1","G - 03"]],null],
+			"7": [[["French 2","G - 03"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Stephen Kelly": {
@@ -1018,11 +920,11 @@
 		"phone": "849-7906 ext. 6820",
 		"email": "jking@pausd.org",
 		"periods": {
-			"1": "Art Spec 1",
-			"2": "Art Spec 1",
-			"3": "Advanced Ceramics 1, Advanced Ceramics 2, ArtStu3D AP",
-			"5": "Art Spec 1",
-			"7": "Ceramics 1"
+			"1": [[["Art Spec 1","M - 03"]],null],
+			"2": [[["Art Spec 1","M - 03"]],null],
+			"3": [[["Advanced Ceramics 1","M - 03"],["Advanced Ceramics 2","M - 03"],["ArtStu3D AP","M - 03"]],null],
+			"5": [[["Art Spec 1","M - 03"]],null],
+			"7": [[["Ceramics 1","M - 03"]],null]
 		}
 	},
 	"Arthur Kinyanjui": {
@@ -1030,12 +932,12 @@
 		"phone": "354-8237 ext. 5937",
 		"email": "akinyanjui@pausd.org",
 		"periods": {
-			"1": "Wld Hist",
-			"3": "Wld Hist",
-			"4": "Wld Hist",
-			"6": "AP Human Geography",
-			"7": "Wld Hist",
-			"SELF": "SELF"
+			"1": [[["Wld Hist","E-02"]],null],
+			"3": [[["Wld Hist","E-02"]],null],
+			"4": [[["Wld Hist","E-02"]],null],
+			"6": [[["AP Human Geography","E-02"]],null],
+			"7": [[["Wld Hist","E-02"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Linda Kirsch": {
@@ -1048,35 +950,30 @@
 		"phone": "354-8238 ext. 6798",
 		"email": "tkitada@pausd.org",
 		"periods": {
-			"3": "Visual Story|Visual Story",
-			"4": "Lit Style|Lit Style",
-			"5": "Cont Herit|Lit Style",
-			"6": "Lit Style|Lit Style",
-			"7": "Cont Herit|Visual Story",
-			"SELF": "SELF"
+			"3": [[["Visual Story","N - 108"]],[["Visual Story","N - 108"]]],
+			"4": [[["Lit Style","N - 108"]],[["Lit Style","N - 108"]]],
+			"5": [[["Cont Herit","N - 108"]],[["Lit Style","N - 108"]]],
+			"6": [[["Lit Style","N - 108"]],[["Lit Style","N - 108"]]],
+			"7": [[["Cont Herit","N - 108"]],[["Visual Story","N - 108"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Kim Knaack": {
 		"jobTitle": "Reproduction Technician",
 		"phone": "354-8279 ext. 5537",
-		"email": "kknaack@pausd.org",
-		"periods": {
-			"5": "Cont Herit|Cont Herit",
-			"6": "Cont Herit|Cont Herit",
-			"7": "Cont Herit|Cont Herit"
-		}
+		"email": "kknaack@pausd.org"
 	},
 	"Jacintha Kompella": {
 		"jobTitle": "Teacher",
 		"phone": "354-8246",
 		"email": "jkompella@pausd.org",
 		"periods": {
-			"1": "AP Physics 1",
-			"2": "AP Physics 1",
-			"3": "AP Physics C",
-			"5": "AP Physics 1",
-			"6": "AP Physics 1",
-			"SELF": "SELF"
+			"1": [[["AP Physics 1","J - 10"]],null],
+			"2": [[["AP Physics 1","J - 10"]],null],
+			"3": [[["AP Physics C","J - 09"]],null],
+			"5": [[["AP Physics 1","J - 10"]],null],
+			"6": [[["AP Physics 1","J - 10"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Leslie Kousnetz": {
@@ -1088,7 +985,7 @@
 		"phone": "354-8244 ext. 5155",
 		"email": "plaplace@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Leighton Lang": {
@@ -1105,12 +1002,12 @@
 		"phone": "354-8246 ext. 5772",
 		"email": "eledgerwood@pausd.org",
 		"periods": {
-			"3": "Chemistry",
-			"4": "Chemistry",
-			"5": "AP Environmental Science",
-			"6": "AP Environmental Science",
-			"7": "AP Environmental Science",
-			"SELF": "SELF"
+			"3": [[["Chemistry","J - 06"]],null],
+			"4": [[["Chemistry","J - 06"]],null],
+			"5": [[["AP Environmental Science","J - 03"]],null],
+			"6": [[["AP Environmental Science","J - 03"]],null],
+			"7": [[["AP Environmental Science","J - 03"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Jena Lee": {
@@ -1118,10 +1015,10 @@
 		"phone": "354-8246 ext. 6582",
 		"email": "jlee@pausd.org",
 		"periods": {
-			"1": "AP Biology",
-			"2": "AP Biology",
-			"6": "Biology",
-			"7": "Biology"
+			"1": [[["AP Biology","J - 02"]],null],
+			"2": [[["AP Biology","J - 02"]],null],
+			"6": [[["Biology","J - 04"]],null],
+			"7": [[["Biology","J - 04"]],null]
 		}
 	},
 	"Michelle Lee": {
@@ -1129,29 +1026,21 @@
 		"phone": "354-8200 ext. 1498",
 		"email": "mlee@pausd.org",
 		"periods": {
-			"1": "AP Biology",
-			"2": "AP Biology",
-			"6": "Biology",
-			"7": "Biology"
+			"3": [[["Therapeutic Elective","K - 10"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Teri Lee": {
 		"jobTitle": "Teacher",
 		"phone": "354-8262 ext. 5460",
-		"email": "tlee@pausd.org",
-		"periods": {
-			"1": "AP Biology",
-			"2": "AP Biology",
-			"6": "Biology",
-			"7": "Biology"
-		}
+		"email": "tlee@pausd.org"
 	},
 	"David Leftwich": {
 		"jobTitle": "Counselor",
 		"phone": "354-8225 ext. 4710",
 		"email": "dleftwich@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
 	},
 	"Kira Levina": {
@@ -1165,16 +1054,18 @@
 		"phone": "354-8264 ext. 1444",
 		"email": "slewis@pausd.org",
 		"periods": {
-			"1": "Orchstr",
-			"2": "Band",
-			"4": "Orchstr",
-			"5": "Orchstr",
-			"6": "Symph Band"
+			"1": [[["Orchstr","S-102"],["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Orchstr","S-102"],["Prep",null],["Prep 12",null]]],
+			"2": [[["Band","S-102"],["SchServ 11",null]],[["Band","S-102"]]],
+			"3": [[["SchServ 11",null]],[]],
+			"4": [[["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Prep",null],["Prep 12",null]]],
+			"5": [[["Orchstr","S-102"],["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Orchstr","S-102"],["Prep",null],["Prep 12",null]]],
+			"6": [[["SchServ 11",null],["Symph Band","S-102"]],[["Symph Band","S-102"]]],
+			"7": [[["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Prep",null],["Prep 12",null]]]
 		}
 	},
-	"Uland Li": {
-		"jobTitle": "Student Attendant",
-		"email": "uli@pausd.org"
+	"Denise Li": {
+		"jobTitle": "Family Engagement Specialist",
+		"email": "dli@pausd.org"
 	},
 	"Liz Libbey": {
 		"jobTitle": "Guidance Technician Asst",
@@ -1185,11 +1076,11 @@
 		"phone": "354-8287 ext. 5130",
 		"email": "bliberatore@pausd.org",
 		"periods": {
-			"2": "AP Music Theory",
-			"3": "Treb Choir",
-			"7": "Conc Choir",
-			"8": "Adv Vocal",
-			"SELF": "SELF"
+			"2": [[["AP Music Theory","S-121"]],null],
+			"3": [[["Treb Choir","S-121"]],null],
+			"7": [[["Conc Choir","S-121"]],null],
+			"8": [[["Adv Vocal","S-121"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Florina Limburg": {
@@ -1197,12 +1088,12 @@
 		"phone": "354-8247 ext. 5975",
 		"email": "flimburg@pausd.org",
 		"periods": {
-			"2": "Alg2/TrigH",
-			"3": "Alg2/TrigH",
-			"4": "Alg2/TrigH",
-			"5": "Alg 1A",
-			"6": "Alg 1A",
-			"SELF": "SELF"
+			"2": [[["Alg2/TrigH","N - 207"]],null],
+			"3": [[["Alg2/TrigH","N - 207"]],null],
+			"4": [[["Alg2/TrigH","N - 207"]],null],
+			"5": [[["Alg 1A","N - 207"]],null],
+			"6": [[["Alg 1A","N - 207"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Dawna Linsdell": {
@@ -1210,12 +1101,12 @@
 		"phone": "354-8247 ext. 5229",
 		"email": "dlinsdell@pausd.org",
 		"periods": {
-			"1": "Econ AP",
-			"3": "Econ AP",
-			"5": "Econ AP",
-			"6": "Econ AP",
-			"7": "Econ AP",
-			"SELF": "SELF"
+			"1": [[["Econ AP","E-01"]],null],
+			"3": [[["Econ AP","E-01"]],null],
+			"5": [[["Econ AP","E-01"]],null],
+			"6": [[["Econ AP","E-01"]],null],
+			"7": [[["Econ AP","E-01"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Joshua Little": {
@@ -1223,12 +1114,12 @@
 		"phone": "354-8246 ext. 6958",
 		"email": "jlittle@pausd.org",
 		"periods": {
-			"1": "Biology H",
-			"2": "Biology H",
-			"3": "Biology H",
-			"4": "Biology H",
-			"6": "Biology H",
-			"SELF": "SELF"
+			"1": [[["Biology H","V-02"]],null],
+			"2": [[["Biology H","V-02"]],null],
+			"3": [[["Biology H","V-02"]],null],
+			"4": [[["Biology H","V-02"]],null],
+			"6": [[["Biology H","V-02"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Laura Lizundia": {
@@ -1236,12 +1127,12 @@
 		"phone": "354-8241 ext. 5101",
 		"email": "llizundia@pausd.org",
 		"periods": {
-			"1": "French 3",
-			"2": "French 3",
-			"3": "AP French Language",
-			"5": "French 3",
-			"6": "AP French Language",
-			"SELF": "SELF"
+			"1": [[["French 3","H-01"]],null],
+			"2": [[["French 3","H-01"]],null],
+			"3": [[["AP French Language","H-01"]],null],
+			"5": [[["French 3","H-01"]],null],
+			"6": [[["AP French Language","H-01"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Kristen Lo": {
@@ -1249,24 +1140,24 @@
 		"phone": "354-8258 ext. 5682",
 		"email": "klo@pausd.org",
 		"periods": {
-			"1": "Theatre 2",
-			"2": "Theatre 1",
-			"3": "Theatre 1|",
-			"5": "Theatre 3, Theatre 4",
-			"8": "Stage Tech, Stage Tech 2, Stage Tech 2D|Stage Tech, Stage Tech 2, Stage Tech 2D, Stg Tech11",
-			"SELF": "SELF"
+			"1": [[["Theatre 2","S-147"]],null],
+			"2": [[["Theatre 1","S-147"]],null],
+			"3": [[["Theatre 1","S-147"]],[]],
+			"5": [[["Theatre 3","S-147"],["Theatre 4","S-147"]],null],
+			"8": [[["Stage Tech","S-01"],["Stage Tech 2","S-01"],["Stage Tech 2D","S-01"]],[["Stage Tech","S-01"],["Stage Tech 2","S-01"],["Stage Tech 2D","S-01"],["Stg Tech11",null]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Jennel Lopez": {
 		"jobTitle": "Teacher",
 		"email": "jlopez@pausd.org",
 		"periods": {
-			"2": "Geom",
-			"4": "Geom",
-			"5": "Acad Planning",
-			"6": "Geom",
-			"7": "Acad Planning",
-			"SELF": "SELF"
+			"2": [[["Geom","N - 206"]],null],
+			"4": [[["Geom","N - 206"]],null],
+			"5": [[["Acad Planning","K - 15"]],null],
+			"6": [[["Geom","N - 202"]],null],
+			"7": [[["Acad Planning","K - 15"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Rocio Lopez": {
@@ -1279,24 +1170,12 @@
 		"phone": "354-8246 ext. 5375",
 		"email": "alorey@pausd.org",
 		"periods": {
-			"1": "AP Physics C: Mechanics|AP Physics C: E&M",
-			"2": "AP Physics C: Mechanics|AP Physics C: E&M",
-			"3": "AP Physics 1",
-			"5": "AP Physics C: Mechanics|AP Physics C: E&M",
-			"7": "AP Physics 1",
-			"SELF": "SELF"
-		}
-	},
-	"Margaret Lowe": {
-		"jobTitle": "Job Coach",
-		"email": "malowe@pausd.org",
-		"periods": {
-			"1": "Theatre 2",
-			"2": "Theatre 1",
-			"3": "Theatre 1|",
-			"5": "Theatre 3, Theatre 4",
-			"8": "Stage Tech, Stage Tech 2, Stage Tech 2D|Stage Tech, Stage Tech 2, Stage Tech 2D, Stg Tech11",
-			"SELF": "SELF"
+			"1": [[["AP Physics C: Mechanics","J - 09"]],[["AP Physics C: E&M","J - 09"]]],
+			"2": [[["AP Physics C: Mechanics","J - 09"]],[["AP Physics C: E&M","J - 09"]]],
+			"3": [[["AP Physics 1","J - 10"]],null],
+			"5": [[["AP Physics C: Mechanics","J - 09"]],[["AP Physics C: E&M","J - 09"]]],
+			"7": [[["AP Physics 1","J - 10"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Phillip Lyons": {
@@ -1304,11 +1183,11 @@
 		"phone": "354-8237 ext. 5576",
 		"email": "plyons@pausd.org",
 		"periods": {
-			"1": "Econ AP",
-			"2": "Econ AP",
-			"4": "Econ AP",
-			"5": "Econ AP",
-			"6": "US Hist"
+			"1": [[["Econ AP","F - 01"]],null],
+			"2": [[["Econ AP","F - 01"]],null],
+			"4": [[["Econ AP","F - 01"]],null],
+			"5": [[["Econ AP","F - 01"]],null],
+			"6": [[["US Hist","F - 01"]],null]
 		}
 	},
 	"Armando Macias": {
@@ -1326,7 +1205,7 @@
 		"phone": "354-8254 ext. 6746",
 		"email": "cmain@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Carlos Martinez": {
@@ -1344,11 +1223,11 @@
 		"phone": "354-8241 ext. 5019",
 		"email": "lmatchett@pausd.org",
 		"periods": {
-			"2": "Span/Span1",
-			"3": "SpCiv/CulH",
-			"4": "Spanish 3",
-			"5": "Spanish 3",
-			"SELF": "SELF"
+			"2": [[["Span/Span1","H-05"]],null],
+			"3": [[["SpCiv/CulH","G - 03"]],null],
+			"4": [[["Spanish 3","H-05"]],null],
+			"5": [[["Spanish 3","H-05"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Nora Matta": {
@@ -1356,7 +1235,7 @@
 		"phone": "354-8237 ext. 6959",
 		"email": "nmatta@pausd.org",
 		"periods": {
-			"2": "US Hist"
+			"2": [[["US Hist","E-02"]],null]
 		}
 	},
 	"Matthew McGinn": {
@@ -1364,11 +1243,11 @@
 		"phone": "354-8266 ext. 5778",
 		"email": "mmcginn@pausd.org",
 		"periods": {
-			"1": "PE 9",
-			"2": "PE 9",
-			"3": "PE 9",
-			"5": "PE 9",
-			"6": "PE 9"
+			"1": [[["PE 9","Bow GYM"]],null],
+			"2": [[["PE 9","Bow GYM"]],null],
+			"3": [[["PE 9","Bow GYM"]],null],
+			"5": [[["PE 9","Bow GYM"]],null],
+			"6": [[["PE 9","Bow GYM"]],null]
 		}
 	},
 	"Heather Mellows": {
@@ -1376,11 +1255,11 @@
 		"phone": "354-8246 ext. 6835",
 		"email": "hmellows@pausd.org",
 		"periods": {
-			"3": "Astrophysics",
-			"4": "Astrophysics",
-			"5": "Chemistry H",
-			"6": "Chemistry H",
-			"7": "Chemistry H"
+			"3": [[["Astrophysics","J - 03"]],null],
+			"4": [[["Astrophysics","J - 03"]],null],
+			"5": [[["Chemistry H","J - 08"]],null],
+			"6": [[["Chemistry H","J - 08"]],null],
+			"7": [[["Chemistry H","J - 08"]],null]
 		}
 	},
 	"Nicole Menache": {
@@ -1388,9 +1267,9 @@
 		"phone": "354-8238 ext. 5220",
 		"email": "nmenache@pausd.org",
 		"periods": {
-			"1": "Focus on Success",
-			"3": "BasCollSk|BasCollSk",
-			"6": "Focus on Success"
+			"1": [[["Focus on Success","K - 14"]],null],
+			"3": [[["BasCollSk","N - 102"]],[["BasCollSk","N - 102"]]],
+			"6": [[["Focus on Success","K - 14"]],null]
 		}
 	},
 	"Angela Merchant": {
@@ -1398,12 +1277,12 @@
 		"phone": "354-8246 ext. 5677",
 		"email": "amerchant@pausd.org",
 		"periods": {
-			"1": "Bio Tech",
-			"2": "Bio Tech",
-			"3": "Bio Tech",
-			"6": "Biology H",
-			"7": "Biology H",
-			"SELF": "SELF"
+			"1": [[["Bio Tech","L-02"]],null],
+			"2": [[["Bio Tech","L-02"]],null],
+			"3": [[["Bio Tech","L-02"]],null],
+			"6": [[["Biology H","L-02"]],null],
+			"7": [[["Biology H","L-02"]],null],
+			"SELF": [[["SELF","L-02"]],null]
 		}
 	},
 	"Deanna Messinger": {
@@ -1411,9 +1290,9 @@
 		"phone": "354-8256 ext. 5539",
 		"email": "dmessinger@pausd.org",
 		"periods": {
-			"1": "Pt/Dr 1",
-			"3": "Adv.Draw/Painting H",
-			"4": "AP Stud Art, AP Studio Art - Drawing, Adv.Draw/Painting II"
+			"1": [[["Pt/Dr 1","M - 04"]],null],
+			"3": [[["Adv.Draw/Painting H","M - 04"]],null],
+			"4": [[["Adv.Draw/Painting II","M - 04"],["AP Stud Art","M - 04"],["AP Studio Art - Drawing","M - 04"]],null]
 		}
 	},
 	"Anne Marie Metzler": {
@@ -1421,12 +1300,12 @@
 		"phone": "354-8262 ext. 5119",
 		"email": "ametzler@pausd.org",
 		"periods": {
-			"1": "Biology",
-			"2": "Biology",
-			"3": "Wld Hist",
-			"6": "Academic Communications",
-			"7": "Academic Communications",
-			"SELF": "SELF"
+			"1": [[["Biology","J - 04"]],null],
+			"2": [[["Biology","J - 04"]],null],
+			"3": [[["Wld Hist","V-25"]],null],
+			"6": [[["Academic Communications","K - 09"]],null],
+			"7": [[["Academic Communications","K - 09"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Brian Miguel": {
@@ -1434,12 +1313,12 @@
 		"phone": "354-8237",
 		"email": "bmiguel@pausd.org",
 		"periods": {
-			"1": "US Govt|ContWld 11",
-			"2": "US Govt|ContWld 11",
-			"3": "World History-SLC",
-			"4": "US Govt|ContWld 11",
-			"6": "US Govt|ContWld 11",
-			"SELF": "SELF"
+			"1": [[["US Govt","C-06"]],[["ContWld 11","C-06"]]],
+			"2": [[["US Govt","C-06"]],[["ContWld 11","C-06"]]],
+			"3": [[["World History-SLC","C-06"]],null],
+			"4": [[["US Govt","C-06"]],[["ContWld 11","C-06"]]],
+			"6": [[["US Govt","C-06"]],[["ContWld 11","C-06"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Jane Miller": {
@@ -1451,13 +1330,13 @@
 		"phone": "354-8237 ext. 5351",
 		"email": "jasmiller@pausd.org",
 		"periods": {
-			"1": "US Govt|ContWld 11",
-			"2": "US Govt|ContWld 11",
-			"3": "US Govt|ContWld 11",
-			"4": "Wld Hist",
-			"5": "Wld Hist",
-			"6": "Wld Hist",
-			"SELF": "SELF"
+			"1": [[["US Govt","C-03"]],[["ContWld 11","C-03"]]],
+			"2": [[["US Govt","C-03"]],[["ContWld 11","C-03"]]],
+			"3": [[["US Govt","C-03"]],[["ContWld 11","C-03"]]],
+			"4": [[["Wld Hist","C-03"]],null],
+			"5": [[["Wld Hist","C-03"]],null],
+			"6": [[["Wld Hist","C-03"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Ginger Monson": {
@@ -1475,8 +1354,8 @@
 		"phone": "354-8238 ext. 5430",
 		"email": "vmoyer@pausd.org",
 		"periods": {
-			"1": "Lit Style|Lit Style",
-			"2": "Lit Style|Lit Style"
+			"1": [[["Lit Style","N - 113"]],[["Lit Style","N - 113"]]],
+			"2": [[["Lit Style","N - 113"]],[["Lit Style","N - 113"]]]
 		}
 	},
 	"Julie Munger": {
@@ -1484,12 +1363,12 @@
 		"phone": "354-8238 ext. 6229",
 		"email": "jmunger@pausd.org",
 		"periods": {
-			"1": "Inter Comp",
-			"2": "Cont Herit|Cont Herit",
-			"3": "ReadBetLines|ReadBetLines",
-			"5": "ReadBetLines|Cont Herit",
-			"6": "ERWC",
-			"SELF": "SELF"
+			"1": [[["Inter Comp","N - 111"]],null],
+			"2": [[["Cont Herit","N - 111"]],[["Cont Herit","N - 111"]]],
+			"3": [[["ReadBetLines","N - 111"]],[["ReadBetLines","N - 111"]]],
+			"5": [[["ReadBetLines","N - 111"]],[["Cont Herit","N - 111"]]],
+			"6": [[["ERWC","N - 111"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Lynne Navarro": {
@@ -1502,11 +1381,6 @@
 		"phone": "354-8260 ext. 6885",
 		"email": "hnewland@pausd.org"
 	},
-	"Emily Nguyen": {
-		"jobTitle": "Student Attendant",
-		"phone": "354-8262",
-		"email": "enguyen@pausd.org"
-	},
 	"Vicky Niemann": {
 		"jobTitle": "Typist Clerk III",
 		"phone": "354-8262 ext. 6902",
@@ -1517,16 +1391,12 @@
 		"phone": "354-8241 ext. 5405",
 		"email": "tninooliva@pausd.org",
 		"periods": {
-			"1": "AP Spanish Language",
-			"2": "Spanish 1",
-			"3": "AP Spanish Language",
-			"5": "Spanish 1",
-			"6": "Spanish 1"
+			"1": [[["AP Spanish Language","G - 01"]],null],
+			"2": [[["Spanish 1","G - 01"]],null],
+			"3": [[["AP Spanish Language","G - 01"]],null],
+			"5": [[["Spanish 1","G - 01"]],null],
+			"6": [[["Spanish 1","G - 01"]],null]
 		}
-	},
-	"Brian Northen": {
-		"jobTitle": "Teacher",
-		"email": "bnorthen@pausd.org"
 	},
 	"Richelle Ochoa": {
 		"jobTitle": "Student Attendant",
@@ -1538,112 +1408,104 @@
 		"phone": "354-8246 ext. 5582",
 		"email": "coconnell@pausd.org",
 		"periods": {
-			"1": "Chemistry H",
-			"4": "Chemistry",
-			"5": "Chemistry",
-			"6": "Chemistry",
-			"7": "Chemistry H",
-			"SELF": "SELF"
+			"1": [[["Chemistry H","J - 06"]],null],
+			"4": [[["Chemistry","L-01"]],null],
+			"5": [[["Chemistry","J - 06"]],null],
+			"6": [[["Chemistry","J - 06"]],null],
+			"7": [[["Chemistry H","J - 06"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Jose Ordonez": {
 		"jobTitle": "Tutorial Center Assistant",
 		"email": "jordonez@pausd.org",
 		"periods": {
-			"SELF": "SELF"
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Kristen Owen": {
 		"jobTitle": "Teacher",
 		"email": "kowen@pausd.org",
 		"periods": {
-			"2": "Contemporary Heritage SLC|Literary Style SLC",
-			"3": "Focus on Success",
-			"4": "Focus on Success",
-			"6": "Cont Herit|Cont Herit",
-			"SELF": "SELF"
+			"2": [[["Contemporary Heritage SLC","N - 110"]],[["Literary Style SLC","N - 110"]]],
+			"3": [[["Focus on Success","K - 14"]],null],
+			"4": [[["Focus on Success","K - 14"]],null],
+			"6": [[["Cont Herit","N - 110"]],[["Cont Herit","N - 110"]]],
+			"SELF": [[["SELF","N - 110"]],null]
 		}
 	},
 	"Joshua Paley": {
 		"jobTitle": "Teacher",
 		"email": "jpaley@pausd.org",
 		"periods": {
-			"3": "APCompSci A",
-			"4": "APCompSci A",
-			"5": "Funct Object Or Prog",
-			"6": "Funct Object Or Prog",
-			"7": "CS Capstone"
+			"3": [[["APCompSci A","N-215 Lab"]],null],
+			"4": [[["APCompSci A","N-215 Lab"]],null],
+			"5": [[["Funct Object Or Prog","N-215 Lab"]],null],
+			"6": [[["Funct Object Or Prog","N-215 Lab"]],null],
+			"7": [[["CS Capstone","N-215 Lab"]],null]
 		}
 	},
 	"Marjorie Paronable": {
 		"jobTitle": "Teacher",
 		"email": "mparonable@pausd.org",
 		"periods": {
-			"1": "Contemporary Heritage|Cont Herit",
-			"2": "Contemporary Heritage|Cont Herit",
-			"4": "Lit Style|Lit Style",
-			"5": "Lit Style|Lit Style",
-			"7": "Lit Style|Lit Style",
-			"SELF": "SELF"
+			"1": [[["Contemporary Heritage","N - 104"]],[["Cont Herit","N - 104"]]],
+			"2": [[["Contemporary Heritage","N - 104"]],[["Cont Herit","N - 104"]]],
+			"4": [[["Lit Style","N - 104"]],[["Lit Style","N - 104"]]],
+			"5": [[["Lit Style","N - 104"]],[["Lit Style","N - 104"]]],
+			"7": [[["Lit Style","N - 104"]],[["Lit Style","N - 104"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Jeff Patrick": {
 		"jobTitle": "Teacher",
 		"email": "jpatrick@pausd.org",
 		"periods": {
-			"2": "Econ 11|Econ 11",
-			"3": "Econ 11|Econ 11",
-			"4": "US Govt|ContWld 11",
-			"5": "Econ 11|Econ 11",
-			"SELF": "SELF"
+			"2": [[["Econ 11","C-08"]],[["Econ 11","C-08"]]],
+			"3": [[["Econ 11","C-08"]],[["Econ 11","C-08"]]],
+			"4": [[["US Govt","C-08"]],[["ContWld 11","C-08"]]],
+			"5": [[["Econ 11","C-08"]],[["Econ 11","C-08"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Laurie Pennington": {
 		"jobTitle": "Teacher",
 		"email": "lpennington@pausd.org",
 		"periods": {
-			"1": "Conceptual Physics",
-			"2": "Conceptual Physics",
-			"3": "Conceptual Physics",
-			"6": "Physics",
-			"SELF": "SELF"
+			"1": [[["Conceptual Physics","L-01"]],null],
+			"2": [[["Conceptual Physics","L-01"]],null],
+			"3": [[["Conceptual Physics","L-01"]],null],
+			"6": [[["Physics","J - 05"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Haley Perkins": {
 		"jobTitle": "Teacher",
 		"email": "hperkins@pausd.org",
 		"periods": {
-			"1": "AP Psychology",
-			"2": "AP Psychology",
-			"4": "US Hist",
-			"5": "US Hist",
-			"7": "US Hist",
-			"SELF": "SELF"
+			"1": [[["AP Psychology","C-04"]],null],
+			"2": [[["AP Psychology","C-04"]],null],
+			"4": [[["US Hist","C-04"]],null],
+			"5": [[["US Hist","C-04"]],null],
+			"7": [[["US Hist","C-04"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Cindy Peters": {
 		"jobTitle": "Teacher",
 		"email": "cpeters@pausd.org",
 		"periods": {
-			"2": "Fiber Arts|Interior11",
-			"3": "Ind Study|SportsNutr",
-			"4": "Culinary Arts - Introduction|Culinary Arts - International",
-			"5": "Culinary Arts - Introduction|Culinary Arts - International",
-			"6": "Ind Study|Ind Study",
-			"SELF": "SELF"
+			"2": [[["Fiber Arts","K - 03"]],[["Interior11","K - 03"]]],
+			"3": [[["Ind Study",null]],[["SportsNutr","K - 05"]]],
+			"4": [[["Culinary Arts - Introduction","K - 05"]],[["Culinary Arts - International","K - 05"]]],
+			"5": [[["Culinary Arts - Introduction","K - 05"]],[["Culinary Arts - International","K - 05"]]],
+			"6": [[["Ind Study",null]],[["Ind Study",null]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Scott Peters": {
 		"jobTitle": "Student Attendant",
-		"email": "speters@pausd.org",
-		"periods": {
-			"2": "Fiber Arts|Interior11",
-			"3": "Ind Study|SportsNutr",
-			"4": "Culinary Arts - Introduction|Culinary Arts - International",
-			"5": "Culinary Arts - Introduction|Culinary Arts - International",
-			"6": "Ind Study|Ind Study",
-			"SELF": "SELF"
-		}
+		"email": "speters@pausd.org"
 	},
 	"Julius Phu": {
 		"jobTitle": "Dishwasher",
@@ -1653,23 +1515,23 @@
 		"jobTitle": "Teacher",
 		"email": "epinkston@pausd.org",
 		"periods": {
-			"2": "IntrAnl/Calc",
-			"3": "IntrAnl/Calc",
-			"4": "Alg 1A",
-			"6": "Geom",
-			"7": "Alg 1A",
-			"SELF": "SELF"
+			"2": [[["IntrAnl/Calc","N - 202"]],null],
+			"3": [[["IntrAnl/Calc","N - 202"]],null],
+			"4": [[["Alg 1A","N - 202"]],null],
+			"6": [[["Geom","N - 202"]],null],
+			"7": [[["Alg 1A","N - 202"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Maria Powell": {
 		"jobTitle": "Teacher",
 		"email": "mpowell@pausd.org",
 		"periods": {
-			"1": "Biology",
-			"2": "Biology",
-			"4": "AP Biology",
-			"6": "AP Biology",
-			"7": "AP Biology"
+			"1": [[["Biology","J - 04"]],null],
+			"2": [[["Biology","J - 04"]],null],
+			"4": [[["AP Biology","J - 02"]],null],
+			"6": [[["AP Biology","J - 02"]],null],
+			"7": [[["AP Biology","J - 02"]],null]
 		}
 	},
 	"Cecilia Ramirez": {
@@ -1684,61 +1546,53 @@
 		"jobTitle": "Teacher",
 		"email": "credfield@pausd.org",
 		"periods": {
-			"2": "Applied Math|Applied Math",
-			"5": "AP Calculus BC",
-			"6": "AP Calculus BC",
-			"7": "AP Calculus BC"
+			"2": [[["Applied Math","N - 212"]],[["Applied Math","N - 212"]]],
+			"5": [[["AP Calculus BC","N - 208"]],null],
+			"6": [[["AP Calculus BC","N - 208"]],null],
+			"7": [[["AP Calculus BC","N - 208"]],null]
 		}
 	},
 	"Daisy Renazco": {
 		"jobTitle": "Teacher",
 		"email": "drenazco@pausd.org",
 		"periods": {
-			"2": "Alg2",
-			"3": "Alg2",
-			"4": "AP Comp. Sci. Princ",
-			"6": "Alg2",
-			"SELF": "SELF"
+			"2": [[["Alg2","N - 213"]],null],
+			"3": [[["Alg2","N - 213"]],null],
+			"4": [[["AP Comp. Sci. Princ",null]],null],
+			"6": [[["Alg2","N - 213"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Erin Reyes": {
 		"jobTitle": "Counselor",
 		"email": "ereyes@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
-	},
-	"Lauren Rocha": {
-		"jobTitle": "Wellness Outreach Worker",
-		"email": "lrocha@pausd.org"
 	},
 	"Cora Ross": {
 		"jobTitle": "Counselor",
 		"email": "cross@pausd.org",
 		"periods": {
-			"Meetings": "Counseling, Counseling, Counseling, Counseling"
+			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
 	},
 	"Kimberly Sabbag": {
 		"jobTitle": "Teacher",
 		"email": "ksabbag@pausd.org",
 		"periods": {
-			"1": "PE 10",
-			"2": "PE 10",
-			"3": "PE 10",
-			"4": "PE 10",
-			"6": "PE 10",
-			"7": "PE 10",
-			"SELF": "SELF"
+			"1": [[["PE 10","Bow GYM"]],null],
+			"2": [[["PE 10","Bow GYM"]],null],
+			"3": [[["PE 10","Bow GYM"]],null],
+			"4": [[["PE 10","Bow GYM"]],null],
+			"6": [[["PE 10","Bow GYM"]],null],
+			"7": [[["PE 10","Bow GYM"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Ernesto Salcedo Aguirre": {
 		"jobTitle": "Custodian I",
 		"email": "eaguirre@pausd.org"
-	},
-	"Daniel Salomon": {
-		"jobTitle": "Custodian II",
-		"email": "dsalomon@pausd.org"
 	},
 	"Jorge Sanchez": {
 		"jobTitle": "Campus Supervisor/Secondary",
@@ -1748,9 +1602,9 @@
 		"jobTitle": "Teacher",
 		"email": "ksaxena@pausd.org",
 		"periods": {
-			"1": "Pre Calc",
-			"3": "Pre Calc",
-			"SELF": "SELF"
+			"1": [[["Pre Calc","N - 213"]],null],
+			"3": [[["Pre Calc","N - 213"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Travis Schollnick": {
@@ -1761,75 +1615,48 @@
 		"jobTitle": "Teacher",
 		"email": "cschroeppel@pausd.org",
 		"periods": {
-			"1": "GermanLangAP",
-			"2": "German 3",
-			"5": "German 1",
-			"6": "German 2",
-			"SELF": "SELF"
+			"1": [[["GermanLangAP","H-02"]],null],
+			"2": [[["German 3","H-02"]],null],
+			"5": [[["German 1","H-02"]],null],
+			"6": [[["German 2","H-02"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
-	},
-	"Navneet Schworetzky": {
-		"jobTitle": "Teacher",
-		"email": "nschworetzky@pausd.org"
 	},
 	"Howard Selznick": {
 		"jobTitle": "Student Attendant",
-		"email": "hselznick@pausd.org",
-		"periods": {
-			"1": "Wld Hist",
-			"3": "Wld Hist",
-			"4": "AP US History",
-			"5": "AP US History",
-			"7": "AP US History",
-			"SELF": "SELF"
-		}
-	},
-	"Karen Serrano Vides": {
-		"jobTitle": "Student Attendant",
-		"email": "kserranovides@pausd.org"
+		"email": "hselznick@pausd.org"
 	},
 	"James Shelby": {
 		"jobTitle": "Teacher",
 		"email": "jshelby@pausd.org",
 		"periods": {
-			"1": "Theatre 2",
-			"2": "Theatre 1",
-			"3": "Theatre 1|",
-			"5": "Theatre 3, Theatre 4",
-			"8": "|Stg Tech11",
-			"SELF": "SELF"
+			"1": [[["Theatre 2","S-147"]],null],
+			"2": [[["Theatre 1","S-147"]],null],
+			"3": [[["Theatre 1","S-147"]],[]],
+			"5": [[["Theatre 3","S-147"],["Theatre 4","S-147"]],null],
+			"8": [[],[["Stg Tech11",null]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Quan Sims": {
 		"jobTitle": "Teacher",
 		"email": "qsims@pausd.org",
 		"periods": {
-			"3": "Cont Herit|Cont Herit",
-			"4": "Cont Herit|Acad Planning",
-			"5": "Cont Herit|Cont Herit",
-			"6": "Acad Planning",
-			"7": "Cont Herit|Cont Herit",
-			"SELF": "SELF"
+			"3": [[["Cont Herit","N - 109"]],[["Cont Herit","N - 109"]]],
+			"4": [[["Cont Herit","N - 113"]],[["Acad Planning","K - 15"]]],
+			"5": [[["Cont Herit","N - 109"]],[["Cont Herit","N - 109"]]],
+			"6": [[["Acad Planning","K - 15"]],null],
+			"7": [[["Cont Herit","N - 113"]],[["Cont Herit","N - 113"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Christopher Stephenson": {
 		"jobTitle": "Job Coach",
 		"email": "cstephenson@pausd.org"
 	},
-	"Robert Stephenson": {
-		"jobTitle": "Teacher",
-		"email": "rstephenson@pausd.org"
-	},
 	"Pam Steward": {
 		"jobTitle": "Tutorial Center Assistant",
 		"email": "psteward@pausd.org"
-	},
-	"Greer Stone": {
-		"jobTitle": "Teacher",
-		"email": "gstone@pausd.org",
-		"periods": {
-			"5": "US Hist"
-		}
 	},
 	"Wendy Stratton": {
 		"jobTitle": "Principal",
@@ -1839,9 +1666,9 @@
 		"jobTitle": "Teacher",
 		"email": "tsummers@pausd.org",
 		"periods": {
-			"2": "Band",
-			"3": "Wind Ens",
-			"6": "Symph Band"
+			"2": [[["Band","S-102"]],null],
+			"3": [[["Wind Ens","S-102"]],null],
+			"6": [[["Symph Band","S-102"]],null]
 		}
 	},
 	"Peggy Syvertson": {
@@ -1856,39 +1683,39 @@
 		"jobTitle": "Teacher",
 		"email": "ltabuchi@pausd.org",
 		"periods": {
-			"2": "Escape Lit|Film Lit",
-			"3": "AmerLit|AmerLit",
-			"4": "Escape Lit|Film Lit",
-			"5": "Econ 11|Econ 11",
-			"6": "AmerLit|AmerLit",
-			"SELF": "SELF"
+			"2": [[["Escape Lit","N - 107"]],[["Film Lit","N - 106"]]],
+			"3": [[["AmerLit","N - 106"]],[["AmerLit","N - 106"]]],
+			"4": [[["Escape Lit","N - 107"]],[["Film Lit","N - 106"]]],
+			"5": [[["Econ 11","C-08"]],[["Econ 11","C-08"]]],
+			"6": [[["AmerLit","N - 106"]],[["AmerLit","N - 106"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Gopi Tantod": {
 		"jobTitle": "Teacher",
 		"email": "gtantod@pausd.org",
 		"periods": {
-			"1": "Analysis H",
-			"2": "Analysis H",
-			"3": "Analysis H"
+			"1": [[["Analysis H","N - 205"]],null],
+			"2": [[["Analysis H","N - 205"]],null],
+			"3": [[["Analysis H","N - 205"]],null]
 		}
-	},
-	"Edward Tostado": {
-		"jobTitle": "Job Coach",
-		"email": "etostado@pausd.org"
 	},
 	"Jeanette Tucker": {
 		"jobTitle": "Teacher",
 		"email": "jtucker@pausd.org",
 		"periods": {
-			"1": "Liv Skill|",
-			"2": "Liv Skill|Ind Study",
-			"3": "Liv Skill|Liv Skill",
-			"4": "|Liv Skill",
-			"6": "Liv Skill|Liv Skill",
-			"7": "Liv Skill|Liv Skill",
-			"SELF": "SELF"
+			"1": [[["Liv Skill","V-03"]],[]],
+			"2": [[["Liv Skill","V-03"]],[["Ind Study",null]]],
+			"3": [[["Liv Skill","V-03"]],[["Liv Skill","V-03"]]],
+			"4": [[],[["Liv Skill","V-03"]]],
+			"6": [[["Liv Skill","V-03"]],[["Liv Skill","V-03"]]],
+			"7": [[["Liv Skill","V-03"]],[["Liv Skill","V-03"]]],
+			"SELF": [[["SELF",null]],null]
 		}
+	},
+	"Melenaite Tupou": {
+		"jobTitle": "Family Engagement Specialist",
+		"email": "mtupou@pausd.org"
 	},
 	"Amanda Valenzuela": {
 		"jobTitle": "Student Attendant",
@@ -1898,16 +1725,12 @@
 		"jobTitle": "Teacher",
 		"email": "svanzandt@pausd.org",
 		"periods": {
-			"1": "Acad Planning",
-			"2": "US Govt|ContWld 11",
-			"3": "Acad Planning",
-			"5": "US Govt|ContWld 11",
-			"7": "US Govt|ContWld 11"
+			"1": [[["Acad Planning","K - 15"]],null],
+			"2": [[["US Govt","K - 01"]],[["ContWld 11","K - 01"]]],
+			"3": [[["Acad Planning","K - 15"]],null],
+			"5": [[["US Govt","K - 01"]],[["ContWld 11","K - 01"]]],
+			"7": [[["US Govt","K - 01"]],[["ContWld 11","K - 01"]]]
 		}
-	},
-	"Mike VanDiver": {
-		"jobTitle": "Student Attendant",
-		"email": "mvandiver@pausd.org"
 	},
 	"Nestor Vidonia": {
 		"jobTitle": "Custodian I",
@@ -1917,88 +1740,88 @@
 		"jobTitle": "Teacher",
 		"email": "yvrudny@pausd.org",
 		"periods": {
-			"1": "Chinese 1",
-			"2": "ChLangCulAP, ChineseCiv&CultureH",
-			"3": "Chinese 3",
-			"4": "Chinese 2",
-			"5": "Chinese 3"
+			"1": [[["Chinese 1","H-04"]],null],
+			"2": [[["ChineseCiv&CultureH","H-04"],["ChLangCulAP","H-04"]],null],
+			"3": [[["Chinese 3","H-04"]],null],
+			"4": [[["Chinese 2","H-04"]],null],
+			"5": [[["Chinese 3","H-04"]],null]
 		}
 	},
 	"Danning Wang": {
 		"jobTitle": "Teacher",
 		"email": "dwang@pausd.org",
 		"periods": {
-			"1": "Geom A",
-			"3": "Geom A",
-			"4": "Geom A",
-			"5": "Alg2",
-			"7": "Geom A",
-			"SELF": "SELF"
+			"1": [[["Geom A","N - 211"]],null],
+			"3": [[["Geom A","N - 211"]],null],
+			"4": [[["Geom A","N - 203"]],null],
+			"5": [[["Alg2","N - 211"]],null],
+			"7": [[["Geom A","N - 211"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Mark Weisman": {
 		"jobTitle": "Teacher",
 		"email": "mweisman@pausd.org",
 		"periods": {
-			"1": "US Hist",
-			"2": "US Govt|ContWld 11",
-			"4": "US Hist",
-			"6": "US Govt|ContWld 11",
-			"7": "US Hist"
+			"1": [[["US Hist","V-26"]],null],
+			"2": [[["US Govt","V-26"]],[["ContWld 11","V-26"]]],
+			"4": [[["US Hist","V-26"]],null],
+			"6": [[["US Govt","V-26"]],[["ContWld 11","V-26"]]],
+			"7": [[["US Hist","V-26"]],null]
 		}
 	},
 	"Jordan Wells": {
 		"jobTitle": "Teacher",
 		"email": "jwells@pausd.org",
 		"periods": {
-			"1": "AmerLit|AmerLit",
-			"2": "Philos Lit|Philos Lit",
-			"3": "Philos Lit|Philos Lit",
-			"5": "AmerLit|AmerLit",
-			"7": "AmerLit|AmerLit"
+			"1": [[["AmerLit","N - 101"]],[["AmerLit","N - 101"]]],
+			"2": [[["Philos Lit","N - 101"]],[["Philos Lit","N - 101"]]],
+			"3": [[["Philos Lit","N - 101"]],[["Philos Lit","N - 101"]]],
+			"5": [[["AmerLit","N - 101"]],[["AmerLit","N - 101"]]],
+			"7": [[["AmerLit","N - 101"]],[["AmerLit","N - 101"]]]
 		}
 	},
 	"Danielle Whichard": {
 		"jobTitle": "Teacher",
 		"email": "dwhichard@pausd.org",
 		"periods": {
-			"1": "AVID",
-			"2": "AVID",
-			"3": "Cont Herit|Cont Herit",
-			"5": "Cont Herit|Cont Herit",
-			"6": "AVID",
-			"SELF": "SELF"
+			"1": [[["AVID","N - 109"]],null],
+			"2": [[["AVID","N - 109"]],null],
+			"3": [[["Cont Herit","N - 109"]],[["Cont Herit","N - 109"]]],
+			"5": [[["Cont Herit","N - 109"]],[["Cont Herit","N - 109"]]],
+			"6": [[["AVID","N - 109"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Tarn Wilson": {
 		"jobTitle": "Teacher",
 		"email": "twilson@pausd.org",
 		"periods": {
-			"7": "WritCr 11|WritCr 11",
-			"8": "ExplExp-AAR",
-			"SELF": "SELF"
+			"7": [[["WritCr 11","N - 101"]],[["WritCr 11","N - 101"]]],
+			"8": [[["ExplExp-AAR","N - 101"]],null],
+			"SELF": [[["SELF","N - 101"]],null]
 		}
 	},
 	"Christina Woznicki": {
 		"jobTitle": "Teacher",
 		"email": "cwoznicki@pausd.org",
 		"periods": {
-			"1": "Marine Biology",
-			"2": "Marine Biology",
-			"4": "Biology",
-			"6": "Biology",
-			"7": "Biology"
+			"1": [[["Marine Biology","J - 01"]],null],
+			"2": [[["Marine Biology","J - 01"]],null],
+			"4": [[["Biology","J - 01"]],null],
+			"6": [[["Biology","J - 01"]],null],
+			"7": [[["Biology","J - 01"]],null]
 		}
 	},
 	"Adam Yonkers": {
 		"jobTitle": "Teacher",
 		"email": "ayonkers@pausd.org",
 		"periods": {
-			"1": "US Hist",
-			"2": "US Govt|ContWld 11",
-			"3": "US Hist",
-			"5": "US Govt|ContWld 11",
-			"7": "US Govt|ContWld 11"
+			"1": [[["US Hist","K - 01"]],null],
+			"2": [[["US Govt","K - 01"]],[["ContWld 11","K - 01"]]],
+			"3": [[["US Hist","K - 01"]],null],
+			"5": [[["US Govt","K - 01"]],[["ContWld 11","K - 01"]]],
+			"7": [[["US Govt","K - 01"]],[["ContWld 11","K - 01"]]]
 		}
 	},
 	"Alana Young Nicholson": {
@@ -2009,24 +1832,24 @@
 		"jobTitle": "Teacher",
 		"email": "eyun@pausd.org",
 		"periods": {
-			"1": "Geom H",
-			"3": "Princ of Bus B",
-			"4": "Princ of Bus B",
-			"6": "Geom H",
-			"7": "BEAM",
-			"SELF": "SELF"
+			"1": [[["Geom H","N - 204"]],null],
+			"3": [[["Princ of Bus B",null]],null],
+			"4": [[["Princ of Bus B",null]],null],
+			"6": [[["Geom H","N - 210"]],null],
+			"7": [[["BEAM","N - 205"]],null],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Kate Zavack": {
 		"jobTitle": "Teacher",
 		"email": "kzavack@pausd.org",
 		"periods": {
-			"1": "Cont Herit|Literary Style",
-			"2": "Am Clas11H SJ, AmerLit 11|Literary Style",
-			"4": "Am Clas11H|Am Clas11H",
-			"5": "Am Clas11H|Am Clas11H",
-			"7": "Am Clas11H|Am Clas11H",
-			"SELF": "SELF"
+			"1": [[["Cont Herit","N - 110"]],[["Literary Style","N - 110"]]],
+			"2": [[["Am Clas11H SJ","N - 110"],["AmerLit 11","N - 110"]],[["Literary Style","N - 110"]]],
+			"4": [[["Am Clas11H","N - 110"]],[["Am Clas11H","N - 110"]]],
+			"5": [[["Am Clas11H","N - 110"]],[["Am Clas11H","N - 110"]]],
+			"7": [[["Am Clas11H","N - 110"]],[["Am Clas11H","N - 110"]]],
+			"SELF": [[["SELF",null]],null]
 		}
 	},
 	"Erika Zepeda": {
@@ -2037,11 +1860,11 @@
 		"jobTitle": "Teacher",
 		"email": "ezizmor@pausd.org",
 		"periods": {
-			"1": "Chemistry",
-			"3": "Chemistry",
-			"5": "AP Chemistry",
-			"6": "AP Chemistry",
-			"7": "AP Chemistry"
+			"1": [[["Chemistry","J - 07"]],null],
+			"3": [[["Chemistry","J - 07"]],null],
+			"5": [[["AP Chemistry","J - 07"]],null],
+			"6": [[["AP Chemistry","J - 07"]],null],
+			"7": [[["AP Chemistry","J - 07"]],null]
 		}
 	}
 }
