@@ -1,7 +1,124 @@
+import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { currentTime, escapeHTML, now } from '../js/utils.js'
+
+const l10nArgFinder = /\{(\w+)\}/g
+function wrap (node, meta = {}) {
+  if (node._wrapped) throw new Error('already wrapped')
+  if (meta.l10nArg) {
+    node.dataset.l10nArg = meta.l10nArg
+  }
+  let marker
+  let l10nArgs
+  const wrapped = {
+    _wrapped: true,
+    node,
+    add (child) {
+      node.appendChild(child.node)
+      return wrapped
+    },
+    children (children) {
+      for (const child of children) {
+        if (child) {
+          if (typeof child === 'string') {
+            node.appendChild(document.createTextNode(child))
+          } else {
+            node.appendChild(child.node)
+          }
+        }
+      }
+      return wrapped
+    },
+    remove (...children) {
+      for (const child of children) {
+        node.removeChild(child.node)
+      }
+      return wrapped
+    },
+    addTo (parent) {
+      parent.node.appendChild(node)
+      return wrapped
+    },
+    style (styles) {
+      Object.assign(node.style, styles)
+      return wrapped
+    },
+    dataset (styles) {
+      Object.assign(node.dataset, styles)
+      return wrapped
+    },
+    classList (classes) {
+      for (const cls of classes) {
+        if (cls && typeof cls === 'string') {
+          node.classList.add(cls)
+        }
+      }
+      return wrapped
+    },
+    ensureHidden () {
+      if (!marker) {
+        marker = document.createTextNode('')
+      }
+      if (node.parentNode) {
+        node.parentNode.replaceChild(marker, node)
+      }
+      return wrapped
+    },
+    ensureShown () {
+      if (marker && marker.parentNode) {
+        marker.parentNode.replaceChild(node, marker)
+      }
+      return wrapped
+    },
+    ensureShownIf (test) {
+      return test ? wrapped.ensureShown() : wrapped.ensureHidden()
+    },
+    removeChildren () {
+      while (node.firstChild) node.removeChild(node.firstChild)
+      return wrapped
+    },
+    applyL10n (l10n, values) {
+      if (!l10nArgs) {
+        l10nArgs = {}
+        for (const child of node.children) {
+          if (child.dataset.l10nArg) {
+            l10nArgs[child.dataset.l10nArg] = child
+          }
+        }
+      }
+      wrapped.removeChildren()
+      let exec
+      let lastIndex = 0
+      while ((exec = l10nArgFinder.exec(l10n))) {
+        node.appendChild(
+          document.createTextNode(l10n.slice(lastIndex, exec.index))
+        )
+        const argName = exec[1]
+        if (l10nArgs[argName]) {
+          l10nArgs[argName].textContent = values[argName]
+          node.appendChild(l10nArgs[argName])
+        }
+        lastIndex = exec.index + exec[0].length
+      }
+      node.appendChild(document.createTextNode(l10n.slice(lastIndex)))
+      return wrapped
+    },
+    ripple () {
+      ripple(node)
+      return wrapped
+    }
+  }
+  return wrapped
+}
+function elem (tagName, { l10nArg, ...attributes } = {}) {
+  return wrap(Object.assign(document.createElement(tagName), attributes), {
+    l10nArg
+  })
+}
+const span = (...args) => elem('span', ...args)
+const div = (...args) => elem('div', ...args)
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
@@ -30,10 +147,10 @@ export function getFontColour (colour) {
   return isLight(colour) ? 'rgba(0,0,0,0.8)' : 'white'
 }
 export function scheduleApp (options = {}) {
-  let elem
+  let element
   const container = document.createElement('div')
-  if (options.element) elem = options.element
-  else elem = document.createElement('div')
+  if (options.element) element = options.element
+  else element = document.createElement('div')
   container.classList.add('schedule-container')
   container.addEventListener('click', e => {
     if (e.target.dataset.club) {
@@ -58,11 +175,18 @@ export function scheduleApp (options = {}) {
   }
   function getCSS (colour, id) {
     if (colour[0] === '#') {
-      return `background-color:${colour};color:${getFontColour(colour)};`
+      return {
+        backgroundColor: colour,
+        color: getFontColour(colour)
+      }
     } else {
-      return `background-image: url('./.period-images/${id}?${encodeURIComponent(
-        colour
-      )}'); color: white; text-shadow: 0 0 10px black;`
+      return {
+        backgroundImage: `url('./.period-images/${id}?${encodeURIComponent(
+          colour
+        )}')`,
+        color: 'white',
+        textShadow: '0 0 10px black'
+      }
     }
   }
   function getUsefulTimePhrase (minutes) {
@@ -199,7 +323,7 @@ export function scheduleApp (options = {}) {
   }
   function generateDay (offset = 0) {
     let d = now()
-    let innerHTML
+    const wrapper = div()
     let checkfuture = true
     const totalminute = d.getMinutes() + d.getHours() * 60
     if (offset !== 0) {
@@ -215,27 +339,70 @@ export function scheduleApp (options = {}) {
       date: { ano, mez, dia, weekday }
     } = getSchedule(d)
     const day = days[weekday]
-    innerHTML = `<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez +
-      1}-${dia}`}">${localizeWith('date', 'times', {
+    const dayNameDisplay = elem('h2', { className: 'schedule-dayname' })
+    const dateDisplay = elem('a')
+    // !!
+    dayNameDisplay.node.textContent = day
+    dateDisplay.node.href = `?date=${ano}-${mez + 1}-${dia}`
+    dateDisplay.node.textContent = localizeWith('date', 'times', {
       M: months[mez],
       D: dia
-    })}</a></h3>`
+    })
     const assignments = options.getAssignments(d)
     if (assignments.noPeriod) {
       innerHTML += assignments.noPeriod
     }
-    if (summer)
-      return (
-        innerHTML +
-        `<span class="schedule-noschool">${localize('summer')}</span>`
-      )
+    const summerDisplay = span({
+      className: 'schedule-noschool',
+      textContent: localize('summer')
+    })
+    const alternateDisplay = span({
+      className: 'schedule-alternatemsg'
+    }).children([elem('strong', { l10nArg: 'D' })])
+    const scheduleEndDisplay = span({ className: 'schedule-end' }).children([
+      elem('strong', { l10nArg: 'D' })
+    ])
+    const progressDisplay = div()
+    const progressBarDisplay = div({
+      className: 'schedule-periodprogress'
+    }).add(progressDisplay)
+    const endingInDisplay = elem('p', {
+      className: 'schedule-endingin'
+    }).children([
+      elem('strong', { l10nArg: 'P' }), // TODO: make this a period span
+      elem('strong', { l10nArg: 'T' })
+    ])
+    const periodDisplays = []
+    const schoolDisplay = div().children([
+      scheduleEndDisplay,
+      progressBarDisplay,
+      endingInDisplay
+    ])
+    const noSchoolDisplay = span({
+      className: 'schedule-noschool',
+      textContent: getPeriod('NO_SCHOOL').label
+    })
+    wrapper.children([
+      dayNameDisplay,
+      elem('h3', { className: 'schedule-date' }).add(dateDisplay),
+      summerDisplay,
+      alternateDisplay,
+      schoolDisplay,
+      noSchoolDisplay
+    ])
+    // !!
+    // !!
+    // !!
+    summerDisplay.ensureShownIf(summer)
+    alternateDisplay.ensureShownIf(!summer && alternate)
     if (alternate) {
-      innerHTML += `<span class="schedule-alternatemsg">${localizeWith(
-        'alt-msg',
-        'other',
-        { D: `<strong>${alternate.description}</strong>` }
-      )}</span>`
+      alternateDisplay.applyL10n(localize('alt-msg'), {
+        D: alternate.description
+      })
     }
+    schoolDisplay.ensureShownIf(!summer && periods.length)
+    noSchoolDisplay.ensureShownIf(!summer && !periods.length)
+    if (summer) return
     if (periods.length) {
       // If a day ends in an optional period, don't count it.
       // 'Flex' is temporarily in the list because it's kind of optional this
@@ -244,17 +411,14 @@ export function scheduleApp (options = {}) {
       const [lastRequiredPeriod] = periods
         .filter(({ name }) => !optionalPeriods.includes(name))
         .slice(-1)
+      scheduleEndDisplay.ensureShownIf(lastRequiredPeriod)
       if (lastRequiredPeriod) {
-        innerHTML += `<span class="schedule-end">${localizeWith(
-          'end-time',
-          'times',
-          {
-            T: `<strong>${getHumanTime(
-              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
-                ('0' + lastRequiredPeriod.end.minute).slice(-2)
-            )}</strong>`
-          }
-        )}</span>`
+        scheduleEndDisplay.applyL10n(localize('end-time', 'times'), {
+          T: getHumanTime(
+            ('0' + lastRequiredPeriod.end.hour).slice(-2) +
+              ('0' + lastRequiredPeriod.end.minute).slice(-2)
+          )
+        })
       }
       // QUESTION: Should there be feedback for days with only optional periods?
       // Later QUESTION: What did I mean by "feedback"??
@@ -263,55 +427,57 @@ export function scheduleApp (options = {}) {
         let i
         for (i = 0; i < periods.length; i++)
           if (totalminute < periods[i].end.totalminutes) break
-        let str
         let compactTime, period, compactStr
+        progressBarDisplay.ensureHidden()
         if (i >= periods.length) {
-          str = `<p class="schedule-endingin">${localizeWith('ended', 'times', {
-            P: getPeriodSpan((period = getPeriodName(periods.length - 1))),
-            T: `<strong>${(compactTime = getUsefulTimePhrase(
+          // after school (endOfDay is an hour past)
+          period = getPeriodName(periods.length - 1)
+          endingInDisplay.applyL10n(localize('ended', 'times'), {
+            P: period, // TODO: get period span?
+            T: getUsefulTimePhrase(
               totalminute - periods[periods.length - 1].end.totalminutes
-            ))}</strong>`
-          })}</p>`
+            )
+          })
+          compactTime = getUsefulTimePhrase(
+            totalminute - periods[periods.length - 1].end.totalminutes
+          )
           compactStr = localize('appname')
           returnval.endOfDay =
             totalminute - periods[periods.length - 1].end.totalminutes >= 60
-        }
-        // after school (endOfDay is an hour past)
-        else if (totalminute >= periods[i].start.totalminutes) {
-          str = `<div class="schedule-periodprogress"><div style="width: ${((totalminute -
-            periods[i].start.totalminutes) /
-            (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
-            100}%;"></div></div><p class="schedule-endingin">${localizeWith(
-            'ending',
-            'times',
-            {
-              P: getPeriodSpan((period = getPeriodName(i))),
-              T: `<strong>${(compactTime = getUsefulTimePhrase(
-                periods[i].end.totalminutes - totalminute
-              ))}</strong>`
-            }
-          )}</p>`
+        } else if (totalminute >= periods[i].start.totalminutes) {
+          // during a period
+          progressBarDisplay.ensureShown()
+          progressDisplay.node.style.width =
+            ((totalminute - periods[i].start.totalminutes) /
+              (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
+              100 +
+            '%'
+          period = getPeriodName(i)
+          endingInDisplay.applyL10n(localize('ending', 'times'), {
+            P: period, // TODO: get period span?
+            T: getUsefulTimePhrase(periods[i].end.totalminutes - totalminute)
+          })
+          compactTime = getUsefulTimePhrase(
+            periods[i].end.totalminutes - totalminute
+          )
           compactStr = localizeWith('ending-short', 'times', { T: compactTime })
-        }
-        // during a period
-        else {
-          str = `<p class="schedule-endingin">${localizeWith(
-            'starting',
-            'times',
-            {
-              P: getPeriodSpan((period = getPeriodName(i))),
-              T: `<strong>${(compactTime = getUsefulTimePhrase(
-                periods[i].start.totalminutes - totalminute
-              ))}</strong>`
-            }
-          )}</p>`
+        } else {
+          // passing period or before school
+          period = getPeriodName(i)
+          endingInDisplay.applyL10n(localize('ending', 'times'), {
+            P: period, // TODO: get period span?
+            T: getUsefulTimePhrase(periods[i].start.totalminutes - totalminute)
+          })
+          compactTime = getUsefulTimePhrase(
+            periods[i].start.totalminutes - totalminute
+          )
           compactStr = localizeWith('starting-short', 'times', {
             T: compactTime,
             P: getPeriod(period).label
-          }) // passing period or before school
+          })
         }
-        innerHTML += str
         if (setTitle) {
+          // TODO: move this elsewhere
           if (options.compact) document.title = compactStr
           else
             document.title = str
@@ -322,78 +488,154 @@ export function scheduleApp (options = {}) {
               .replace(/&amp;/g, '&')
         }
       }
+      for (const display of periodDisplays) display.wrapper.ensureHidden()
+      let i = 0
       for (const period of periods) {
+        // TODO: Avoid needlessly rerendering periods by storing old values directly in the wrapped elements
+        if (!periodDisplays[i]) {
+          const periodNameLabelDisplay = wrap(document.createTextNode(''))
+          const addAsgnBtnDisplay = elem('button', {
+            className: 'material icon pd-btn add-asgn'
+          })
+            .add(
+              elem('i', {
+                className: 'material-icons',
+                textContent: 'add_task'
+              })
+            )
+            .ripple()
+          const periodLinkDisplay = elem('a', {
+            className: 'material icon pd-btn',
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          })
+            .add(
+              elem('i', { className: 'material-icons', textContent: '\ue89e' })
+            )
+            .ripple()
+          const periodNameDisplay = span({
+            className: 'schedule-periodname'
+          }).children([
+            periodNameLabelDisplay,
+            span({ className: 'pd-btns' }).children([
+              addAsgnBtnDisplay,
+              periodLinkDisplay
+            ])
+          ])
+          const gtBadgeDisplay = div({
+            className: 'gunn-together-badge',
+            textContent: localize('gunn-together/name')
+          })
+          const gtSubtitleDisplay = span({
+            textContent: localize('gunn-together/subtitle')
+          })
+          const periodTimeDisplay = span()
+          const periodStatusDisplay = span().children([
+            elem('strong', { l10nArg: 'T' }),
+            elem('strong', { l10nArg: 'T1' }),
+            elem('span', { l10nArg: 'T2' })
+          ])
+          const lunchClubHeadingDisplay = span({ className: 'small-heading' })
+          const lunchClubsDisplay = span()
+          const wrapper = div().children([
+            periodNameDisplay,
+            gtBadgeDisplay,
+            gtSubtitleDisplay,
+            periodTimeDisplay,
+            periodStatusDisplay,
+            lunchClubHeadingDisplay,
+            lunchClubsDisplay
+          ])
+          schoolDisplay.add(wrapper)
+          periodDisplays[i] = {
+            wrapper,
+            periodNameDisplay,
+            periodNameLabelDisplay,
+            addAsgnBtnDisplay,
+            periodLinkDisplay,
+            gtBadgeDisplay,
+            gtSubtitleDisplay,
+            periodTimeDisplay,
+            periodStatusDisplay,
+            lunchClubHeadingDisplay,
+            lunchClubsDisplay
+          }
+        }
+        const {
+          wrapper: periodDisplay,
+          periodNameDisplay,
+          periodNameLabelDisplay,
+          addAsgnBtnDisplay,
+          periodLinkDisplay,
+          gtBadgeDisplay,
+          gtSubtitleDisplay,
+          periodTimeDisplay,
+          periodStatusDisplay,
+          lunchClubHeadingDisplay,
+          lunchClubsDisplay
+        } = periodDisplays[i]
+        i++
+        periodDisplay.ensureShown()
         const periodName = getPeriod(
           period.name === 'Flex' && isSELF ? 'SELF' : period.name
         )
-        innerHTML += `<div class="schedule-period ${
-          period.name === 'GT' ? 'gunn-together' : ''
-        } ${isLight(periodName.colour) ? 'light' : 'dark'}" style="${getCSS(
-          periodName.colour,
-          period.name
-        )}">`
+        periodDisplay.className = ''
+        periodDisplay
+          .classList([
+            'schedule-period',
+            period.name === 'GT' && 'gunn-together',
+            isLight(periodName.colour) ? 'light' : 'dark'
+          ])
+          .style(
+            getCSS(
+              periodName.colour,
+              period.name
+            )
+          )
+        periodNameDisplay.ensureShownIf(period.name !== 'GT')
         if (period.name !== 'GT') {
-          innerHTML += `<span class="schedule-periodname">${escapeHTML(
-            periodName.label
-          )}<span class="pd-btns">${
-            options.displayAddAsgn
-              ? `<button class="material icon pd-btn add-asgn" data-pd="${
-                  period.name
-                }" title="${localize(
-                  'add-asgn'
-                )}"><i class="material-icons">add_task</i></button>`
-              : ''
-          }${
-            periodName.link
-              ? `<a class="material icon pd-btn" target="_blank" href="${periodName.link}" rel="noopener noreferrer"><i class="material-icons">\ue89e</i></a>`
-              : ''
-          }</span></span>`
+          periodNameLabelDisplay.node.nodeValue = periodName.label
+          addAsgnBtnDisplay.ensureShownIf(options.displayAddAsgn)
+          periodLinkDisplay.ensureShownIf(periodName.link)
+          periodLinkDisplay.node.href = periodName.link
         }
-        if (period.gunnTogether || period.name === 'GT') {
-          innerHTML += `<div class="gunn-together-badge">${localize(
-            'gunn-together/name'
-          )}</div>`
-        }
-        if (period.name === 'GT') {
-          innerHTML += `<span>${localize('gunn-together/subtitle')}</span>`
-        }
-        innerHTML += `<span>${getHumanTime(
+        gtBadgeDisplay.ensureShownIf(
+          period.gunnTogether || period.name === 'GT'
+        )
+        gtSubtitleDisplay.ensureShownIf(period.name === 'GT')
+        periodTimeDisplay.node.textContent = `${getHumanTime(
           ('0' + period.start.hour).slice(-2) +
             ('0' + period.start.minute).slice(-2)
-        )} &ndash; ${getHumanTime(
+        )} – ${getHumanTime(
           ('0' + period.end.hour).slice(-2) +
             ('0' + period.end.minute).slice(-2)
-        )} &middot; ${localizeWith('long', 'times', {
+        )} · ${localizeWith('long', 'times', {
           T: getUsefulTimePhrase(
             period.end.totalminutes - period.start.totalminutes
           )
-        })}</span>`
+        })}`
         if (checkfuture) {
-          innerHTML += `<span>`
-          if (totalminute >= period.end.totalminutes)
-            innerHTML += localizeWith('self-ended', 'times', {
-              T: `<strong>${getUsefulTimePhrase(
-                totalminute - period.end.totalminutes
-              )}</strong>`
+          if (totalminute >= period.end.totalminutes) {
+            periodStatusDisplay.applyL10n(localize('self-ended', 'times'), {
+              T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
             })
-          else if (totalminute < period.start.totalminutes)
-            innerHTML += localizeWith('self-starting', 'times', {
-              T: `<strong>${getUsefulTimePhrase(
-                period.start.totalminutes - totalminute
-              )}</strong>`
+          } else if (totalminute < period.start.totalminutes) {
+            periodStatusDisplay.applyL10n(localize('self-starting', 'times'), {
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
             })
-          else
-            innerHTML += localizeWith('self-ending', 'times', {
-              T1: `<strong>${getUsefulTimePhrase(
-                period.end.totalminutes - totalminute
-              )}</strong>`,
+          } else {
+            periodStatusDisplay.applyL10n(localize('self-ending', 'times'), {
+              T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
               T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
             })
-          innerHTML += `</span>`
+          }
         }
         if (assignments[period.name]) {
+          // TODO
           innerHTML += assignments[period.name]
         }
+        lunchClubHeadingDisplay.ensureHidden()
+        lunchClubsDisplay.ensureHidden()
         if (period.name === 'Lunch' && dayToPrime[weekday]) {
           const clubs = []
           Object.keys(savedClubs).forEach(clubName => {
@@ -402,40 +644,37 @@ export function scheduleApp (options = {}) {
             }
           })
           if (clubs.length) {
-            innerHTML +=
-              `<span class="small-heading">${localize('lunch-clubs')}</span>` +
-              clubs
-                .map(club => {
+            lunchClubHeadingDisplay.ensureShown()
+            lunchClubsDisplay
+              .ensureShown()
+              .removeChildren()
+              .children(
+                clubs.map(club => {
                   const clubData = getClubByName && getClubByName(club)
-                  const extraData =
+                  return span({ className: 'club-links' }).children([
+                    elem('a', { href: '#', textContent: club }).dataset({
+                      club
+                    }),
+                    clubData && clubData.link && ' (',
                     clubData &&
-                    [
-                      clubData.link
-                        ? `<a href="${escapeHTML(
-                            clubData.link
-                          )}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize(
-                            'join'
-                          )}</a>`
-                        : null,
-                      clubData.time ? escapeHTML(clubData.time) : null
-                    ].filter(d => d)
-                  return `<span class="club-links"><a href="#" data-club="${escapeHTML(
-                    club
-                  )}">${club}</a>${
-                    extraData ? ` (${extraData.join(' &middot; ')})` : ''
-                  }</span>`
+                      clubData.link &&
+                      elem('a', {
+                        href: clubData.link,
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        className: 'join-club-link',
+                        textContent: localize('join')
+                      }),
+                    clubData && clubData.time && ' · ' + clubData.time,
+                    clubData && clubData.link && ')'
+                  ])
                 })
-                .join('')
+              )
           }
         }
-        innerHTML += `</div>`
       }
-    } else {
-      innerHTML += `<span class="schedule-noschool">${
-        getPeriod('NO_SCHOOL').label
-      }</span>`
     }
-    return innerHTML
+    return wrapper
   }
   if (!options.offset) options.offset = 0
   /**
@@ -509,10 +748,12 @@ export function scheduleApp (options = {}) {
   }
   const returnval = {
     options,
-    element: elem,
+    element,
     container,
     render () {
-      container.innerHTML = generateDay(options.offset)
+      wrap(container)
+        .removeChildren()
+        .add(generateDay(options.offset)) // TEMP
     },
     update () {
       options.update = true
@@ -596,7 +837,7 @@ export function scheduleApp (options = {}) {
     getSchedule,
     generateHtmlForOffset: generateDay
   }
-  elem.appendChild(container)
+  element.appendChild(container)
   generateDay() // Calculate endOfDay, but don't render the HTML yet
   return returnval
 }
