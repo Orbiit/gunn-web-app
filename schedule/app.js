@@ -31,12 +31,6 @@ function wrap (node, meta = {}) {
       }
       return wrapped
     },
-    remove (...children) {
-      for (const child of children) {
-        node.removeChild(child.node)
-      }
-      return wrapped
-    },
     addTo (parent) {
       parent.node.appendChild(node)
       return wrapped
@@ -58,18 +52,20 @@ function wrap (node, meta = {}) {
       return wrapped
     },
     ensureHidden () {
-      if (!marker) {
-        marker = document.createTextNode('')
-      }
-      if (node.parentNode) {
-        node.parentNode.replaceChild(marker, node)
-      }
+      node.style.display = 'none'
+      // if (!marker) {
+      //   marker = document.createTextNode('')
+      // }
+      // if (node.parentNode) {
+      //   node.parentNode.replaceChild(marker, node)
+      // }
       return wrapped
     },
     ensureShown () {
-      if (marker && marker.parentNode) {
-        marker.parentNode.replaceChild(node, marker)
-      }
+      node.style.display = null
+      // if (marker && marker.parentNode) {
+      //   marker.parentNode.replaceChild(node, marker)
+      // }
       return wrapped
     },
     ensureShownIf (test) {
@@ -321,37 +317,10 @@ export function scheduleApp (options = {}) {
       date: { ano, mez, dia, weekday }
     }
   }
-  function generateDay (offset = 0) {
-    let d = now()
+  function generateWrapper () {
     const wrapper = div()
-    let checkfuture = true
-    const totalminute = d.getMinutes() + d.getHours() * 60
-    if (offset !== 0) {
-      d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
-      checkfuture = false
-    }
-    const {
-      periods,
-      alternate,
-      summer,
-      getPeriodName,
-      isSELF,
-      date: { ano, mez, dia, weekday }
-    } = getSchedule(d)
-    const day = days[weekday]
     const dayNameDisplay = elem('h2', { className: 'schedule-dayname' })
-    const dateDisplay = elem('a')
-    // !!
-    dayNameDisplay.node.textContent = day
-    dateDisplay.node.href = `?date=${ano}-${mez + 1}-${dia}`
-    dateDisplay.node.textContent = localizeWith('date', 'times', {
-      M: months[mez],
-      D: dia
-    })
-    const assignments = options.getAssignments(d)
-    if (assignments.noPeriod) {
-      innerHTML += assignments.noPeriod
-    }
+    const dateDisplay = elem('a', { className: 'totally-not-a-link' })
     const summerDisplay = span({
       className: 'schedule-noschool',
       textContent: localize('summer')
@@ -360,7 +329,7 @@ export function scheduleApp (options = {}) {
       className: 'schedule-alternatemsg'
     }).children([elem('strong', { l10nArg: 'D' })])
     const scheduleEndDisplay = span({ className: 'schedule-end' }).children([
-      elem('strong', { l10nArg: 'D' })
+      elem('strong', { l10nArg: 'T' })
     ])
     const progressDisplay = div()
     const progressBarDisplay = div({
@@ -390,165 +359,202 @@ export function scheduleApp (options = {}) {
       schoolDisplay,
       noSchoolDisplay
     ])
-    // !!
-    // !!
-    // !!
-    summerDisplay.ensureShownIf(summer)
-    alternateDisplay.ensureShownIf(!summer && alternate)
-    if (alternate) {
-      alternateDisplay.applyL10n(localize('alt-msg'), {
-        D: alternate.description
+    function setDay (offset = 0) {
+      let d = now()
+      let checkfuture = true
+      const totalminute = d.getMinutes() + d.getHours() * 60
+      if (offset !== 0) {
+        d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
+        checkfuture = false
+      }
+      const {
+        periods,
+        alternate,
+        summer,
+        getPeriodName,
+        isSELF,
+        date: { ano, mez, dia, weekday }
+      } = getSchedule(d)
+      const day = days[weekday]
+      dayNameDisplay.node.textContent = day
+      dateDisplay.node.href = `?date=${ano}-${mez + 1}-${dia}`
+      dateDisplay.node.textContent = localizeWith('date', 'times', {
+        M: months[mez],
+        D: dia
       })
-    }
-    schoolDisplay.ensureShownIf(!summer && periods.length)
-    noSchoolDisplay.ensureShownIf(!summer && !periods.length)
-    if (summer) return
-    if (periods.length) {
-      // If a day ends in an optional period, don't count it.
-      // 'Flex' is temporarily in the list because it's kind of optional this
-      // year.
-      const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
-      const [lastRequiredPeriod] = periods
-        .filter(({ name }) => !optionalPeriods.includes(name))
-        .slice(-1)
-      scheduleEndDisplay.ensureShownIf(lastRequiredPeriod)
-      if (lastRequiredPeriod) {
-        scheduleEndDisplay.applyL10n(localize('end-time', 'times'), {
-          T: getHumanTime(
-            ('0' + lastRequiredPeriod.end.hour).slice(-2) +
-              ('0' + lastRequiredPeriod.end.minute).slice(-2)
-          )
+      const assignments = options.getAssignments(d)
+      if (assignments.noPeriod) {
+        innerHTML += assignments.noPeriod
+      }
+      summerDisplay.ensureShownIf(summer)
+      alternateDisplay.ensureShownIf(!summer && alternate)
+      if (alternate) {
+        alternateDisplay.applyL10n(localize('alt-msg'), {
+          D: alternate.description
         })
       }
-      // QUESTION: Should there be feedback for days with only optional periods?
-      // Later QUESTION: What did I mean by "feedback"??
-      // "Feedback" as in a note that the entire day is optional.
-      if (checkfuture) {
-        let i
-        for (i = 0; i < periods.length; i++)
-          if (totalminute < periods[i].end.totalminutes) break
-        let compactTime, period, compactStr
+      schoolDisplay.ensureShownIf(!summer && periods.length)
+      noSchoolDisplay.ensureShownIf(!summer && !periods.length)
+      if (summer) return
+      if (periods.length) {
+        // If a day ends in an optional period, don't count it.
+        // 'Flex' is temporarily in the list because it's kind of optional this
+        // year.
+        const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
+        const [lastRequiredPeriod] = periods
+          .filter(({ name }) => !optionalPeriods.includes(name))
+          .slice(-1)
+        scheduleEndDisplay.ensureShownIf(lastRequiredPeriod)
+        if (lastRequiredPeriod) {
+          scheduleEndDisplay.applyL10n(localize('end-time', 'times'), {
+            T: getHumanTime(
+              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
+                ('0' + lastRequiredPeriod.end.minute).slice(-2)
+            )
+          })
+        }
+        // QUESTION: Should there be feedback for days with only optional periods?
+        // Later QUESTION: What did I mean by "feedback"??
+        // "Feedback" as in a note that the entire day is optional.
         progressBarDisplay.ensureHidden()
-        if (i >= periods.length) {
-          // after school (endOfDay is an hour past)
-          period = getPeriodName(periods.length - 1)
-          endingInDisplay.applyL10n(localize('ended', 'times'), {
-            P: period, // TODO: get period span?
-            T: getUsefulTimePhrase(
+        if (checkfuture) {
+          let i
+          for (i = 0; i < periods.length; i++)
+            if (totalminute < periods[i].end.totalminutes) break
+          let compactTime, period, compactStr
+          if (i >= periods.length) {
+            // after school (endOfDay is an hour past)
+            period = getPeriodName(periods.length - 1)
+            endingInDisplay.applyL10n(localize('ended', 'times'), {
+              P: period, // TODO: get period span?
+              T: getUsefulTimePhrase(
+                totalminute - periods[periods.length - 1].end.totalminutes
+              )
+            })
+            compactTime = getUsefulTimePhrase(
               totalminute - periods[periods.length - 1].end.totalminutes
             )
-          })
-          compactTime = getUsefulTimePhrase(
-            totalminute - periods[periods.length - 1].end.totalminutes
-          )
-          compactStr = localize('appname')
-          returnval.endOfDay =
-            totalminute - periods[periods.length - 1].end.totalminutes >= 60
-        } else if (totalminute >= periods[i].start.totalminutes) {
-          // during a period
-          progressBarDisplay.ensureShown()
-          progressDisplay.node.style.width =
-            ((totalminute - periods[i].start.totalminutes) /
-              (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
-              100 +
-            '%'
-          period = getPeriodName(i)
-          endingInDisplay.applyL10n(localize('ending', 'times'), {
-            P: period, // TODO: get period span?
-            T: getUsefulTimePhrase(periods[i].end.totalminutes - totalminute)
-          })
-          compactTime = getUsefulTimePhrase(
-            periods[i].end.totalminutes - totalminute
-          )
-          compactStr = localizeWith('ending-short', 'times', { T: compactTime })
-        } else {
-          // passing period or before school
-          period = getPeriodName(i)
-          endingInDisplay.applyL10n(localize('ending', 'times'), {
-            P: period, // TODO: get period span?
-            T: getUsefulTimePhrase(periods[i].start.totalminutes - totalminute)
-          })
-          compactTime = getUsefulTimePhrase(
-            periods[i].start.totalminutes - totalminute
-          )
-          compactStr = localizeWith('starting-short', 'times', {
-            T: compactTime,
-            P: getPeriod(period).label
-          })
-        }
-        if (setTitle) {
-          // TODO: move this elsewhere
-          if (options.compact) document.title = compactStr
-          else
-            document.title = str
-              .replace(/<[^>]+>/g, '')
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '"')
-              .replace(/&amp;/g, '&')
-        }
-      }
-      for (const display of periodDisplays) display.wrapper.ensureHidden()
-      let i = 0
-      for (const period of periods) {
-        // TODO: Avoid needlessly rerendering periods by storing old values directly in the wrapped elements
-        if (!periodDisplays[i]) {
-          const periodNameLabelDisplay = wrap(document.createTextNode(''))
-          const addAsgnBtnDisplay = elem('button', {
-            className: 'material icon pd-btn add-asgn'
-          })
-            .add(
-              elem('i', {
-                className: 'material-icons',
-                textContent: 'add_task'
-              })
+            compactStr = localize('appname')
+            returnval.endOfDay =
+              totalminute - periods[periods.length - 1].end.totalminutes >= 60
+          } else if (totalminute >= periods[i].start.totalminutes) {
+            // during a period
+            progressBarDisplay.ensureShown()
+            progressDisplay.node.style.width =
+              ((totalminute - periods[i].start.totalminutes) /
+                (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
+                100 +
+              '%'
+            period = getPeriodName(i)
+            endingInDisplay.applyL10n(localize('ending', 'times'), {
+              P: period, // TODO: get period span?
+              T: getUsefulTimePhrase(periods[i].end.totalminutes - totalminute)
+            })
+            compactTime = getUsefulTimePhrase(
+              periods[i].end.totalminutes - totalminute
             )
-            .ripple()
-          const periodLinkDisplay = elem('a', {
-            className: 'material icon pd-btn',
-            target: '_blank',
-            rel: 'noopener noreferrer'
-          })
-            .add(
-              elem('i', { className: 'material-icons', textContent: '\ue89e' })
+            compactStr = localizeWith('ending-short', 'times', { T: compactTime })
+          } else {
+            // passing period or before school
+            period = getPeriodName(i)
+            endingInDisplay.applyL10n(localize('ending', 'times'), {
+              P: period, // TODO: get period span?
+              T: getUsefulTimePhrase(periods[i].start.totalminutes - totalminute)
+            })
+            compactTime = getUsefulTimePhrase(
+              periods[i].start.totalminutes - totalminute
             )
-            .ripple()
-          const periodNameDisplay = span({
-            className: 'schedule-periodname'
-          }).children([
-            periodNameLabelDisplay,
-            span({ className: 'pd-btns' }).children([
-              addAsgnBtnDisplay,
-              periodLinkDisplay
+            compactStr = localizeWith('starting-short', 'times', {
+              T: compactTime,
+              P: getPeriod(period).label
+            })
+          }
+          if (setTitle) {
+            // TODO: move this elsewhere
+            if (options.compact) document.title = compactStr
+            else
+              document.title = str
+                .replace(/<[^>]+>/g, '')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&amp;/g, '&')
+          }
+        }
+        for (const display of periodDisplays) display.wrapper.ensureHidden()
+        let i = 0
+        for (const period of periods) {
+          // TODO: Avoid needlessly rerendering periods by storing old values directly in the wrapped elements
+          if (!periodDisplays[i]) {
+            const periodNameLabelDisplay = wrap(document.createTextNode(''))
+            const addAsgnBtnDisplay = elem('button', {
+              className: 'material icon pd-btn add-asgn'
+            })
+              .add(
+                elem('i', {
+                  className: 'material-icons',
+                  textContent: 'add_task'
+                })
+              )
+              .ripple()
+            const periodLinkDisplay = elem('a', {
+              className: 'material icon pd-btn',
+              target: '_blank',
+              rel: 'noopener noreferrer'
+            })
+              .add(
+                elem('i', { className: 'material-icons', textContent: '\ue89e' })
+              )
+              .ripple()
+            const periodNameDisplay = span({
+              className: 'schedule-periodname'
+            }).children([
+              periodNameLabelDisplay,
+              span({ className: 'pd-btns' }).children([
+                addAsgnBtnDisplay,
+                periodLinkDisplay
+              ])
             ])
-          ])
-          const gtBadgeDisplay = div({
-            className: 'gunn-together-badge',
-            textContent: localize('gunn-together/name')
-          })
-          const gtSubtitleDisplay = span({
-            textContent: localize('gunn-together/subtitle')
-          })
-          const periodTimeDisplay = span()
-          const periodStatusDisplay = span().children([
-            elem('strong', { l10nArg: 'T' }),
-            elem('strong', { l10nArg: 'T1' }),
-            elem('span', { l10nArg: 'T2' })
-          ])
-          const lunchClubHeadingDisplay = span({ className: 'small-heading' })
-          const lunchClubsDisplay = span()
-          const wrapper = div().children([
-            periodNameDisplay,
-            gtBadgeDisplay,
-            gtSubtitleDisplay,
-            periodTimeDisplay,
-            periodStatusDisplay,
-            lunchClubHeadingDisplay,
-            lunchClubsDisplay
-          ])
-          schoolDisplay.add(wrapper)
-          periodDisplays[i] = {
-            wrapper,
+            const gtBadgeDisplay = div({
+              className: 'gunn-together-badge',
+              textContent: localize('gunn-together/name')
+            })
+            const gtSubtitleDisplay = span({
+              textContent: localize('gunn-together/subtitle')
+            })
+            const periodTimeDisplay = span()
+            const periodStatusDisplay = span().children([
+              elem('strong', { l10nArg: 'T' }),
+              elem('strong', { l10nArg: 'T1' }),
+              elem('span', { l10nArg: 'T2' })
+            ])
+            const lunchClubHeadingDisplay = span({ className: 'small-heading' })
+            const lunchClubsDisplay = span()
+            const wrapper = div().children([
+              periodNameDisplay,
+              gtBadgeDisplay,
+              gtSubtitleDisplay,
+              periodTimeDisplay,
+              periodStatusDisplay,
+              lunchClubHeadingDisplay,
+              lunchClubsDisplay
+            ])
+            schoolDisplay.add(wrapper)
+            periodDisplays[i] = {
+              wrapper,
+              periodNameDisplay,
+              periodNameLabelDisplay,
+              addAsgnBtnDisplay,
+              periodLinkDisplay,
+              gtBadgeDisplay,
+              gtSubtitleDisplay,
+              periodTimeDisplay,
+              periodStatusDisplay,
+              lunchClubHeadingDisplay
+            }
+          }
+          const {
+            wrapper: periodDisplay,
             periodNameDisplay,
             periodNameLabelDisplay,
             addAsgnBtnDisplay,
@@ -557,126 +563,117 @@ export function scheduleApp (options = {}) {
             gtSubtitleDisplay,
             periodTimeDisplay,
             periodStatusDisplay,
-            lunchClubHeadingDisplay,
-            lunchClubsDisplay
-          }
-        }
-        const {
-          wrapper: periodDisplay,
-          periodNameDisplay,
-          periodNameLabelDisplay,
-          addAsgnBtnDisplay,
-          periodLinkDisplay,
-          gtBadgeDisplay,
-          gtSubtitleDisplay,
-          periodTimeDisplay,
-          periodStatusDisplay,
-          lunchClubHeadingDisplay,
-          lunchClubsDisplay
-        } = periodDisplays[i]
-        i++
-        periodDisplay.ensureShown()
-        const periodName = getPeriod(
-          period.name === 'Flex' && isSELF ? 'SELF' : period.name
-        )
-        periodDisplay.className = ''
-        periodDisplay
-          .classList([
-            'schedule-period',
-            period.name === 'GT' && 'gunn-together',
-            isLight(periodName.colour) ? 'light' : 'dark'
-          ])
-          .style(
-            getCSS(
-              periodName.colour,
-              period.name
-            )
+            lunchClubHeadingDisplay
+          } = periodDisplays[i]
+          i++
+          periodDisplay.ensureShown()
+          const periodName = getPeriod(
+            period.name === 'Flex' && isSELF ? 'SELF' : period.name
           )
-        periodNameDisplay.ensureShownIf(period.name !== 'GT')
-        if (period.name !== 'GT') {
-          periodNameLabelDisplay.node.nodeValue = periodName.label
-          addAsgnBtnDisplay.ensureShownIf(options.displayAddAsgn)
-          periodLinkDisplay.ensureShownIf(periodName.link)
-          periodLinkDisplay.node.href = periodName.link
-        }
-        gtBadgeDisplay.ensureShownIf(
-          period.gunnTogether || period.name === 'GT'
-        )
-        gtSubtitleDisplay.ensureShownIf(period.name === 'GT')
-        periodTimeDisplay.node.textContent = `${getHumanTime(
-          ('0' + period.start.hour).slice(-2) +
-            ('0' + period.start.minute).slice(-2)
-        )} – ${getHumanTime(
-          ('0' + period.end.hour).slice(-2) +
-            ('0' + period.end.minute).slice(-2)
-        )} · ${localizeWith('long', 'times', {
-          T: getUsefulTimePhrase(
-            period.end.totalminutes - period.start.totalminutes
-          )
-        })}`
-        if (checkfuture) {
-          if (totalminute >= period.end.totalminutes) {
-            periodStatusDisplay.applyL10n(localize('self-ended', 'times'), {
-              T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
-            })
-          } else if (totalminute < period.start.totalminutes) {
-            periodStatusDisplay.applyL10n(localize('self-starting', 'times'), {
-              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
-            })
-          } else {
-            periodStatusDisplay.applyL10n(localize('self-ending', 'times'), {
-              T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
-              T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
-            })
-          }
-        }
-        if (assignments[period.name]) {
-          // TODO
-          innerHTML += assignments[period.name]
-        }
-        lunchClubHeadingDisplay.ensureHidden()
-        lunchClubsDisplay.ensureHidden()
-        if (period.name === 'Lunch' && dayToPrime[weekday]) {
-          const clubs = []
-          Object.keys(savedClubs).forEach(clubName => {
-            if (savedClubs[clubName] % dayToPrime[weekday] === 0) {
-              clubs.push(clubName)
-            }
-          })
-          if (clubs.length) {
-            lunchClubHeadingDisplay.ensureShown()
-            lunchClubsDisplay
-              .ensureShown()
-              .removeChildren()
-              .children(
-                clubs.map(club => {
-                  const clubData = getClubByName && getClubByName(club)
-                  return span({ className: 'club-links' }).children([
-                    elem('a', { href: '#', textContent: club }).dataset({
-                      club
-                    }),
-                    clubData && clubData.link && ' (',
-                    clubData &&
-                      clubData.link &&
-                      elem('a', {
-                        href: clubData.link,
-                        target: '_blank',
-                        rel: 'noopener noreferrer',
-                        className: 'join-club-link',
-                        textContent: localize('join')
-                      }),
-                    clubData && clubData.time && ' · ' + clubData.time,
-                    clubData && clubData.link && ')'
-                  ])
-                })
+          periodDisplay.className = ''
+          periodDisplay
+            .classList([
+              'schedule-period',
+              period.name === 'GT' && 'gunn-together',
+              isLight(periodName.colour) ? 'light' : 'dark'
+            ])
+            .style(
+              getCSS(
+                periodName.colour,
+                period.name
               )
+            )
+          periodNameDisplay.ensureShownIf(period.name !== 'GT')
+          if (period.name !== 'GT') {
+            periodNameLabelDisplay.node.nodeValue = periodName.label
+            addAsgnBtnDisplay.ensureShownIf(options.displayAddAsgn)
+            periodLinkDisplay.ensureShownIf(periodName.link)
+            periodLinkDisplay.node.href = periodName.link
+          }
+          gtBadgeDisplay.ensureShownIf(
+            period.gunnTogether || period.name === 'GT'
+          )
+          gtSubtitleDisplay.ensureShownIf(period.name === 'GT')
+          periodTimeDisplay.node.textContent = `${getHumanTime(
+            ('0' + period.start.hour).slice(-2) +
+              ('0' + period.start.minute).slice(-2)
+          )} – ${getHumanTime(
+            ('0' + period.end.hour).slice(-2) +
+              ('0' + period.end.minute).slice(-2)
+          )} · ${localizeWith('long', 'times', {
+            T: getUsefulTimePhrase(
+              period.end.totalminutes - period.start.totalminutes
+            )
+          })}`
+          if (checkfuture) {
+            if (totalminute >= period.end.totalminutes) {
+              periodStatusDisplay.applyL10n(localize('self-ended', 'times'), {
+                T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
+              })
+            } else if (totalminute < period.start.totalminutes) {
+              periodStatusDisplay.applyL10n(localize('self-starting', 'times'), {
+                T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+              })
+            } else {
+              periodStatusDisplay.applyL10n(localize('self-ending', 'times'), {
+                T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
+                T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
+              })
+            }
+          }
+          if (assignments[period.name]) {
+            // TODO
+            innerHTML += assignments[period.name]
+          }
+          lunchClubHeadingDisplay.ensureHidden()
+          for (const clubDisplay of periodDisplay.node.querySelectorAll('.club-links')) {
+            periodDisplay.node.removeChild(clubDisplay)
+          }
+          if (period.name === 'Lunch' && dayToPrime[weekday]) {
+            const clubs = []
+            Object.keys(savedClubs).forEach(clubName => {
+              if (savedClubs[clubName] % dayToPrime[weekday] === 0) {
+                clubs.push(clubName)
+              }
+            })
+            if (clubs.length) {
+              lunchClubHeadingDisplay.ensureShown()
+              periodDisplay
+                .children(
+                  clubs.map(club => {
+                    const clubData = getClubByName && getClubByName(club)
+                    return span({ className: 'club-links' }).children([
+                      elem('a', { href: '#', textContent: club }).dataset({
+                        club
+                      }),
+                      clubData && clubData.link && ' (',
+                      clubData &&
+                        clubData.link &&
+                        elem('a', {
+                          href: clubData.link,
+                          target: '_blank',
+                          rel: 'noopener noreferrer',
+                          className: 'join-club-link',
+                          textContent: localize('join')
+                        }),
+                      clubData && clubData.time && ' · ' + clubData.time,
+                      clubData && clubData.link && ')'
+                    ])
+                  })
+                )
+            }
           }
         }
       }
     }
-    return wrapper
+    return {
+      wrapper,
+      setDay
+    }
   }
   if (!options.offset) options.offset = 0
+  const { wrapper, setDay } = generateWrapper()
+  wrap(container).add(wrapper)
   /**
    * onBlur runs once when the tab loses focus. This is to prevent Google from
    * using the current time in the tab title for the site name in Google Search
@@ -686,7 +683,7 @@ export function scheduleApp (options = {}) {
   function onBlur () {
     setTitle = true
     // Recalculate the schedule to update the title.
-    generateDay(options.offset)
+    setDay(options.offset)
     window.removeEventListener('blur', onBlur, false)
   }
   window.addEventListener('blur', onBlur, false)
@@ -751,9 +748,7 @@ export function scheduleApp (options = {}) {
     element,
     container,
     render () {
-      wrap(container)
-        .removeChildren()
-        .add(generateDay(options.offset)) // TEMP
+      setDay(options.offset)
     },
     update () {
       options.update = true
@@ -835,9 +830,9 @@ export function scheduleApp (options = {}) {
     },
     getPeriodSpan,
     getSchedule,
-    generateHtmlForOffset: generateDay
+    // generateHtmlForOffset: generateDay
   }
   element.appendChild(container)
-  generateDay() // Calculate endOfDay, but don't render the HTML yet
+  setDay(options.offset) // Calculate endOfDay, but don't render the HTML yet
   return returnval
 }
