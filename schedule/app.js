@@ -417,6 +417,7 @@ export function scheduleApp (options = {}) {
         // Later QUESTION: What did I mean by "feedback"??
         // "Feedback" as in a note that the entire day is optional.
         progressBarDisplay.ensureHidden()
+        endingInDisplay.ensureShownIf(checkfuture)
         if (checkfuture) {
           let i
           for (i = 0; i < periods.length; i++)
@@ -570,7 +571,8 @@ export function scheduleApp (options = {}) {
           const periodName = getPeriod(
             period.name === 'Flex' && isSELF ? 'SELF' : period.name
           )
-          periodDisplay.className = ''
+          periodDisplay.node.className = ''
+          periodDisplay.node.style = null
           periodDisplay
             .classList([
               'schedule-period',
@@ -605,6 +607,7 @@ export function scheduleApp (options = {}) {
               period.end.totalminutes - period.start.totalminutes
             )
           })}`
+          periodStatusDisplay.ensureShownIf(checkfuture)
           if (checkfuture) {
             if (totalminute >= period.end.totalminutes) {
               periodStatusDisplay.applyL10n(localize('self-ended', 'times'), {
