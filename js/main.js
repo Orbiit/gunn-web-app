@@ -289,6 +289,7 @@ function initPSA () {
       const psaContent = document.getElementById('psa')
       const prevPsa = document.getElementById('prev-psa')
       const nextPsa = document.getElementById('next-psa')
+      const markAllUnread = document.getElementById('all-unread')
       const notifBadge = document.getElementById('notif')
       const newPsaCount = document.getElementById('new-psa-count')
       const newBadge = document.getElementById('new-psa')
@@ -337,10 +338,13 @@ function initPSA () {
                 '[gunn-web-app] scheduleapp.psa',
                 psaData[lastRead]
               )
+              const unreadCount = psaData.length - lastRead - 1
+              markAllUnread.style.display =
+                unreadCount > 1 ? 'inline-flex' : 'none'
               if (lastRead === psaData.length - 1) {
                 notifBadge.style.display = null
               } else {
-                newPsaCount.textContent = psaData.length - lastRead - 1
+                newPsaCount.textContent = unreadCount
               }
             }
           }
@@ -354,6 +358,9 @@ function initPSA () {
       })
       nextPsa.addEventListener('click', e => {
         if (currentPsa < psaData.length - 1) displayPsa(++currentPsa)
+      })
+      markAllUnread.addEventListener('click', e => {
+        displayPsa((currentPsa = psaData.length - 1))
       })
     })
     .catch(err => {

@@ -88,6 +88,7 @@ export default {
     lonely:
       "UGWA will graduate this school year. You should try making your own Gunn schedule app, so it can be advertised by UGWA for next year's students!",
     map: 'Map',
+    'mark-psas-read': '{icon} Mark all as read',
     'martin-ad': "{ad|Compelling utility} Martin's GPA Calculation Website",
     material:
       "Design based on {link|Material Design}'s icons, colours, and specifications.",

@@ -172,6 +172,7 @@ export function scheduleApp (options = {}) {
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek < 8) name = 'ABCDEFG'[7 - gtWeek]
+        else if (gtWeek === 8) name = 'G'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }

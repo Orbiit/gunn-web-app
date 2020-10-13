@@ -139,9 +139,6 @@ button.material.icon.asgn-done-btn {
 }
 
 /* ADD ASSIGNMENT BUTTONS */
-.asgn-upcoming .add-asgn {
-  float: right;
-}
 .add-asgn i {
   pointer-events: none;
 }
@@ -226,6 +223,5 @@ button.material.icon.asgn-done-btn {
   font-family: monospace;
 }
 button.assync-refresh {
-  float: right;
   margin-left: 10px;
 }

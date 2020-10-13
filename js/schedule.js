@@ -1131,16 +1131,21 @@ export function initSchedule (manualAltSchedulesProm) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
   }
-  const hPeriods = JSON.parse(
-    cookie.getItem('[gunn-web-app] scheduleapp.h')
-  ) || [
+  const defaultHPeriodNormal = [
+    makeHMTM(15, 45).totalminutes,
+    makeHMTM(17, 0).totalminutes
+  ]
+  const defaultHPeriods = [
     null,
     [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
-    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-    null,
-    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-    null
+    defaultHPeriodNormal,
+    defaultHPeriodNormal,
+    defaultHPeriodNormal,
+    defaultHPeriodNormal
   ]
+  const hPeriods =
+    JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) ||
+    defaultHPeriods
   const scheduleAppWrapper = document.querySelector('#schedulewrapper')
   let manualAltSchedules = {}
   manualAltSchedulesProm.then(schedules => {
@@ -1777,11 +1782,8 @@ export function initSchedule (manualAltSchedulesProm) {
   addCustomiser(localizeWith('periodx', 'other', { X: '5' }), 'E')
   addCustomiser(localizeWith('periodx', 'other', { X: '6' }), 'F')
   addCustomiser(localizeWith('periodx', 'other', { X: '7' }), 'G')
-  // Always show the H period customisation because period customisers can't be
-  // (easily) added in dynamically, and the show H period option doesn't reload.
-  if (formatOptions.showH === 'yes-h-period2') {
-    addCustomiser(localizeWith('periodx', 'other', { X: '8' }), 'H')
-  }
+  // Always showing because why not (it's hard to dynamically show/hide this)
+  addCustomiser(localizeWith('periodx', 'other', { X: '8' }), 'H')
   addCustomiser(localize('flex'), 'Flex')
   // if (+formatOptions.showSelf)
   addCustomiser(localize('self'), 'SELF')
@@ -1831,7 +1833,14 @@ export function initSchedule (manualAltSchedulesProm) {
   }
 
   const hEditBtn = document.getElementById('edit-h')
-  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen, hEditBtn)
+  initHEditor(
+    hPeriods,
+    scheduleapp,
+    formatOptions,
+    makeWeekHappen,
+    hEditBtn,
+    defaultHPeriods
+  )
 }
 
 function initHEditor (
@@ -1839,7 +1848,8 @@ function initHEditor (
   scheduleapp,
   formatOptions,
   makeWeekHappen,
-  hEditBtn
+  hEditBtn,
+  defaultHPeriods
 ) {
   function getHumanTime (minutes) {
     if (formatOptions.hourCycle === '0') return minutes % 60
@@ -1933,7 +1943,7 @@ function initHEditor (
           days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
       }
     })
-    range.range = (hPeriods[day] || [17 * 60, 18 * 60]).map(
+    range.range = (hPeriods[day] || defaultHPeriods[day]).map(
       m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME)
     )
     if (!hPeriods[day]) range.elem.classList.add('disabled')

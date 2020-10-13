@@ -533,6 +533,10 @@ export function initAssignments ({
   heading.textContent = localize('asgn')
   section.appendChild(heading)
 
+  const flex = document.createElement('span')
+  flex.className = 'flex'
+  heading.appendChild(flex)
+
   const addBtn = document.createElement('button')
   addBtn.classList.add('material')
   addBtn.classList.add('icon')
