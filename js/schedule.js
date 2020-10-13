@@ -1131,21 +1131,17 @@ export function initSchedule (manualAltSchedulesProm) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
   }
-  const defaultHPeriodNormal = [
-    makeHMTM(15, 45).totalminutes,
-    makeHMTM(17, 0).totalminutes
-  ]
-  const defaultHPeriods = [
+  const hPeriods = JSON.parse(
+    cookie.getItem('[gunn-web-app] scheduleapp.h')
+  ) || [
     null,
     [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
-    defaultHPeriodNormal,
-    defaultHPeriodNormal,
-    defaultHPeriodNormal,
-    defaultHPeriodNormal
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    null,
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    null,
+    null
   ]
-  const hPeriods =
-    JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) ||
-    defaultHPeriods
   const scheduleAppWrapper = document.querySelector('#schedulewrapper')
   let manualAltSchedules = {}
   manualAltSchedulesProm.then(schedules => {
@@ -1833,14 +1829,7 @@ export function initSchedule (manualAltSchedulesProm) {
   }
 
   const hEditBtn = document.getElementById('edit-h')
-  initHEditor(
-    hPeriods,
-    scheduleapp,
-    formatOptions,
-    makeWeekHappen,
-    hEditBtn,
-    defaultHPeriods
-  )
+  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen, hEditBtn)
 }
 
 function initHEditor (
@@ -1848,8 +1837,7 @@ function initHEditor (
   scheduleapp,
   formatOptions,
   makeWeekHappen,
-  hEditBtn,
-  defaultHPeriods
+  hEditBtn
 ) {
   function getHumanTime (minutes) {
     if (formatOptions.hourCycle === '0') return minutes % 60
@@ -1858,6 +1846,16 @@ function initHEditor (
     if (formatOptions.hourCycle === '24') return `${h}:${m}`
     else return `${((h - 1) % 12) + 1}:${m}${h < 12 ? 'a' : 'p'}m`
   }
+
+  const defaultHPeriods = [
+    null,
+    [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    null
+  ]
 
   const days = localize('ds').split('  ')
   const MIN_TIME = 15 * 60
