@@ -785,6 +785,7 @@ body.light .percent-wrapper {
 }
 .h-day .material-switch {
   vertical-align: middle;
+  margin-left: 20px;
 }
 .h-day .material-range {
   width: 100%;

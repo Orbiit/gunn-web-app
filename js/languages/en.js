@@ -58,7 +58,7 @@ export default {
       '{name|Other browsers}—click the star button in the address bar or right click the tab and select "Pin tab"',
     'disable-lists': 'Disable club/staff lists',
     'edit-asgn': 'Assignment properties',
-    // 'edit-h': 'Set period 8 times',
+    'edit-h': 'Set period 8 times',
     errors: 'Runtime error log',
     'export-copy': 'copy export code',
     'export-file': 'download export code',
