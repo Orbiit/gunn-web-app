@@ -69,7 +69,7 @@ label {
   flex: auto;
 }
 a {
-  color: #ff594c;
+  color: var(--theme);
   text-decoration: none;
 }
 a:hover,
@@ -117,6 +117,15 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-font-smoothing: antialiased;
   width: 24px;
   overflow: hidden;
+}
+
+/* TEMP: Unity day */
+.unity-day {
+  --theme: #ff7f4d;
+  --focus: rgba(255, 127, 77, 0.2);
+  --active-back: rgba(255, 127, 77, 0.5);
+
+  background-image: linear-gradient(var(--theme), transparent);
 }
 
 /* SECTIONS */
@@ -195,7 +204,7 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: var(--focus);
 }
 body #footer .footer-item.active {
-  color: #ff594c;
+  color: var(--theme);
   padding-top: 6px;
 }
 #footer .footer-item i {
@@ -606,7 +615,7 @@ body.light .percent-wrapper {
   white-space: pre-wrap;
 }
 .strikethrough {
-  color: #ff594c;
+  color: var(--theme);
   text-decoration: line-through;
 }
 .chat-input-length {

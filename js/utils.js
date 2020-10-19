@@ -137,6 +137,10 @@ export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
   ? '?for=appdesign'
   : ''
 
+// Should be in hexadecimal for the colour picker
+// TEMP: Unity day orange
+export const THEME_COLOUR = now().getDate() === 21 && now().getMonth() === 10 - 1 ? '#ff7f4d' : '#ff594c'
+
 const scrim = document.createElement('div')
 scrim.className = 'scrim'
 let openDialog = null

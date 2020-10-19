@@ -11,6 +11,7 @@ import {
   now,
   showDialog,
   shuffleInPlace,
+  THEME_COLOUR,
   toEach
 } from './utils.js'
 
@@ -347,7 +348,7 @@ function egg () {
     )
     .appendChild(
       Object.assign(document.createElement('style'), {
-        textContent: '.egg-snake:focus {box-shadow: 0 0 3px #FF594C;}'
+        textContent: `.egg-snake:focus {box-shadow: 0 0 3px ${THEME_COLOUR};}`
       })
     )
     .parentNode.appendChild(
@@ -499,7 +500,7 @@ function egg () {
   }
   const render = () => {
     c.clearRect(0, 0, 20, 20)
-    c.fillStyle = '#FF594C'
+    c.fillStyle = THEME_COLOUR
     snake.forEach(([x, y]) => {
       c.fillRect(x, y, 1, 1)
     })

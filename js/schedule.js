@@ -32,6 +32,7 @@ import {
   now,
   schoolTimeZone,
   showDialog,
+  THEME_COLOUR,
   toEach
 } from './utils.js'
 
@@ -1338,6 +1339,12 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
+  // TEMP: Unity day orange
+  scheduleapp.onNewDay(() => {
+    if (now().getDate() === 21 && now().getMonth() === 10 - 1) {
+      document.body.classList.add('unity-day')
+    }
+  }, true)
   function isSchoolDay (d) {
     return scheduleapp.getSchedule(d).periods.length
   }
@@ -1570,7 +1577,7 @@ export function initSchedule (manualAltSchedulesProm) {
   )
   function addPeriodCustomisers (elem) {
     function period (name, id) {
-      const { label: val = '', colour = '#FF594C', link = '' } = periodstyles[
+      const { label: val = '', colour = THEME_COLOUR, link = '' } = periodstyles[
         id
       ]
       let isImage = colour[0] !== '#'
@@ -1614,7 +1621,7 @@ export function initSchedule (manualAltSchedulesProm) {
         },
         false
       )
-      picker.colour = isImage ? '#FF594C' : colour
+      picker.colour = isImage ? THEME_COLOUR : colour
       div.appendChild(pickertrigger)
       const inputWrapper = document.createElement('div')
       inputWrapper.className = 'inputs-wrapper'
@@ -1857,7 +1864,7 @@ function initHEditor (
     null
   ]
 
-  const days = localize('ds').split('  ')
+  const days = localize('days').split('  ')
   const MIN_TIME = 15 * 60
   const MAX_TIME = 21 * 60
   const MIN_LENGTH = 10

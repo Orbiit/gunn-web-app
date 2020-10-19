@@ -8,6 +8,13 @@ export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
 }
+function getDateId () {
+  const today = now()
+  // toISOString uses UTC D:
+  // Just returns a unique ID per day, so no leading zeroes or adding one to
+  // month needed
+  return `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`
+}
 const colourtoy = document.createElement('div')
 function isLight (colour) {
   colourtoy.style.backgroundColor = colour
@@ -166,13 +173,14 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
-        // So far: 55 64321
-        //         012345678
+        // So far: 55 6432171
+        //         0123456789
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek < 8) name = 'ABCDEFG'[7 - gtWeek]
         else if (gtWeek === 8) name = 'G'
+        else if (gtWeek === 9) name = 'A'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
@@ -479,6 +487,8 @@ export function scheduleApp (options = {}) {
     return null
   }
   const timers = []
+  const onNewDays = []
+  let lastToday = getDateId()
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
   function checkMinute () {
@@ -506,6 +516,10 @@ export function scheduleApp (options = {}) {
         onNext()
         update()
       }
+    }
+    if (getDateId() !== lastToday) {
+      lastToday = getDateId()
+      for (const onNewDay of onNewDays) onNewDay()
     }
   }
   const returnval = {
@@ -592,6 +606,10 @@ export function scheduleApp (options = {}) {
       }
       timers.push(entry)
       return timer
+    },
+    onNewDay (callback, callImmediately = false) {
+      onNewDays.push(callback)
+      if (callImmediately) callback()
     },
     getPeriodSpan,
     getSchedule,
