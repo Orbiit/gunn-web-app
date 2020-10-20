@@ -124,8 +124,6 @@ input[type='number']::-webkit-outer-spin-button {
   --theme: #ff7f4d;
   --focus: rgba(255, 127, 77, 0.2);
   --active-back: rgba(255, 127, 77, 0.5);
-
-  background-image: linear-gradient(var(--theme), transparent);
 }
 
 /* SECTIONS */
