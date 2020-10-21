@@ -180,7 +180,7 @@ export function scheduleApp (options = {}) {
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek < 8) name = 'ABCDEFG'[7 - gtWeek]
         else if (gtWeek === 8) name = 'G'
-        else if (gtWeek === 9) name = 'A'
+        else if (gtWeek === 9) name = 'F'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
