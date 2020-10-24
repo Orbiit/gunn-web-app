@@ -1339,12 +1339,6 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
-  // TEMP: Unity day orange
-  scheduleapp.onNewDay(() => {
-    if (now().getDate() === 21 && now().getMonth() === 10 - 1) {
-      document.body.classList.add('unity-day')
-    }
-  }, true)
   function isSchoolDay (d) {
     return scheduleapp.getSchedule(d).periods.length
   }

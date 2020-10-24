@@ -119,13 +119,6 @@ input[type='number']::-webkit-outer-spin-button {
   overflow: hidden;
 }
 
-/* TEMP: Unity day */
-.unity-day {
-  --theme: #ff7f4d;
-  --focus: rgba(255, 127, 77, 0.2);
-  --active-back: rgba(255, 127, 77, 0.5);
-}
-
 /* SECTIONS */
 .section {
   display: none;
