@@ -151,9 +151,9 @@
 
       /*
       const start = Date.now()
-      // const baseTime = new Date(2020, 8, 23, 11, 39, 50).getTime()
-      const baseTime = new Date().getTime()
-      const speed = 1000
+      const baseTime = new Date(2020, 9, 27, 23, 50, 50).getTime()
+      // const baseTime = new Date().getTime()
+      const speed = 60
       setCurrentTime(() => {
         return (Date.now() - start) * speed + baseTime
       })
@@ -425,8 +425,9 @@
           <p id="hallo-theme-description2"></p>
           <div class="submit-photos">
             <a target="_blank" rel="noopener noreferrer" href="https://www.gunnsec.org/overall-halloweek-rules.html" class="material" id="hallo-theme-form">Submit photos</a>
-            <span>Form closes in <strong>3 hours and 36 minutes</strong>.</span>
+            <span>Form closes in <strong id="hallo-closes"></strong>.</span>
           </div>
+          <p class="hallo-submit-closed">Photo submissions are closed.</p>
         </div>
         <div class="hallo-content hallo-scores-wrapper" id="hallo-scores"></div>
       </div>

@@ -209,11 +209,14 @@ export function scheduleApp (options = {}) {
   function offsetToDate (offset, d = now()) {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
   }
+  function getTotalMinutes (d = now()) {
+    return d.getMinutes() + d.getHours() * 60
+  }
   function generateDay (offset = 0) {
     let d = now()
     let innerHTML
     let checkfuture = true
-    const totalminute = d.getMinutes() + d.getHours() * 60
+    const totalminute = getTotalMinutes(d)
     if (offset !== 0) {
       d = offsetToDate(offset, d)
       checkfuture = false
@@ -492,6 +495,7 @@ export function scheduleApp (options = {}) {
   const timers = []
   const onNewDays = []
   const onViewingDayChanges = []
+  const onMinutes = []
   let lastToday = getDateId()
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
@@ -508,6 +512,9 @@ export function scheduleApp (options = {}) {
         if (timer.enabled && !next) {
           update()
         }
+      }
+      for (const trigger of onMinutes) {
+        trigger()
       }
     }
     if (options.update) {
@@ -623,8 +630,17 @@ export function scheduleApp (options = {}) {
       onNewDays.push(callback)
       if (callImmediately) callback()
     },
-    onViewingDayChange (callback, callImmediately = false) {
+    onViewingDayChange (callback, { onNewDay = false, callImmediately = false } = {}) {
       onViewingDayChanges.push(callback)
+      if (onNewDay) {
+        onNewDays.push(() => {
+          callback({
+            offset: options.offset,
+            date: offsetToDate(options.offset),
+            change: 'new day'
+          })
+        })
+      }
       if (callImmediately) {
         callback({
           offset: options.offset,
@@ -633,6 +649,18 @@ export function scheduleApp (options = {}) {
         })
       }
     },
+    onMinute (callback, callImmediately = false) {
+      const trigger = () => {
+        callback({
+          getUsefulTimePhrase,
+          totalMinutes: getTotalMinutes()
+        })
+      }
+      onMinutes.push(trigger)
+      if (callImmediately) trigger()
+      return trigger
+    },
+    getTotalMinutes,
     getPeriodSpan,
     getSchedule,
     generateHtmlForOffset: generateDay

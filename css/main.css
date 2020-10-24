@@ -1175,6 +1175,13 @@ p.secondary {
   border: 1px solid currentColor;
   margin-right: 20px;
 }
+.hallo-closed .submit-photos,
+#hallo-week:not(.hallo-closed) .hallo-submit-closed {
+  display: none;
+}
+.hallo-submit-closed {
+  margin-bottom: 0;
+}
 .hallo-scores-wrapper {
   padding: 0;
 }

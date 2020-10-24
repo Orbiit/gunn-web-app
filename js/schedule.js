@@ -1293,7 +1293,7 @@ export function initSchedule (manualAltSchedulesProm) {
           const openLinkBefore = +formatOptions.timeBeforeAutoLink
           const next = getNext(
             (pdTime, nowTime, pdName) =>
-              periodstyles[pdName].link && pdTime - openLinkBefore > nowTime,
+              periodstyles[pdName] && periodstyles[pdName].link && pdTime - openLinkBefore > nowTime,
             { end: false }
           )
           if (next) {
@@ -2006,7 +2006,8 @@ function initHalloWeek (scheduleapp) {
     themeName: document.getElementById('hallo-theme-name'),
     themeDesc: document.getElementById('hallo-theme-description'),
     themeDesc2: document.getElementById('hallo-theme-description2'),
-    themeFormLink: document.getElementById('hallo-theme-form')
+    themeFormLink: document.getElementById('hallo-theme-form'),
+    closeTime: document.getElementById('hallo-closes')
   }
   elems.wrapper.addEventListener('click', e => {
     if (!elems.toggle.contains(e.target)) {
@@ -2042,11 +2043,24 @@ function initHalloWeek (scheduleapp) {
   elems.selectScores.addEventListener('click', e => {
     selectTab(false)
   })
+  const OPEN_TIME = 9 * 60 // 9 am
+  const CLOSE_TIME = 16 * 60 // 4 pm
+  function formOpen (totalMinutes) {
+    return totalMinutes >= OPEN_TIME && totalMinutes <= CLOSE_TIME
+  }
+  let showingToday = false
+  function conditionallyShowForm () {
+    if (showingToday && formOpen(scheduleapp.getTotalMinutes())) {
+      elems.wrapper.classList.remove('hallo-closed')
+    } else {
+      elems.wrapper.classList.add('hallo-closed')
+    }
+  }
   function setDay (day, isToday) {
     if (day >= 1 && day <= 5) {
       const { name, description, description2, form } = themes[day]
       elems.wrapper.style.display = null
-      elems.themeWrapper.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./images/hallo-week/day-${day}.jpg')`;
+      elems.themeWrapper.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./images/hallo-week/day-${day}.jpg')`;
       elems.heading.textContent = `Hallo-Week: ${name}`
       elems.themeName.textContent = name
       elems.themeDesc.textContent = description
@@ -2056,7 +2070,11 @@ function initHalloWeek (scheduleapp) {
       } else {
         elems.themeDesc2.style.display = 'none'
       }
-      elems.themeFormLink.href = form
+      showingToday = isToday
+      if (isToday) {
+        elems.themeFormLink.href = form
+      }
+      conditionallyShowForm()
     } else {
       elems.wrapper.style.display = 'none'
     }
@@ -2064,5 +2082,14 @@ function initHalloWeek (scheduleapp) {
   scheduleapp.onViewingDayChange(({ date, change, offset }) => {
     if (!change) return
     setDay(date.getFullYear() === 2020 && date.getMonth() === 9 && date.getDate() - 25, offset === 0)
-  }, true)
+  }, {
+    onNewDay: true,
+    callImmediately: true
+  })
+  scheduleapp.onMinute(({ getUsefulTimePhrase, totalMinutes }) => {
+    if (formOpen(totalMinutes)) {
+      elems.closeTime.textContent = getUsefulTimePhrase(CLOSE_TIME - totalMinutes)
+    }
+    conditionallyShowForm()
+  }).trigger()
 }
