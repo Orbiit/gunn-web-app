@@ -1091,6 +1091,7 @@ p.secondary {
   transition: box-shadow .5s;
   overflow: hidden;
   position: relative;
+  white-space: pre-wrap;
 }
 #hallo-week.hallo-collapsed {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -1150,7 +1151,6 @@ p.secondary {
   margin: 0;
 }
 .hallo-theme {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../images/hallo-week/day-1.jpg');
   background-size: cover;
   background-position: center;
   color: white;
@@ -1174,4 +1174,12 @@ p.secondary {
 .submit-photos .material {
   border: 1px solid currentColor;
   margin-right: 20px;
+}
+.hallo-scores-wrapper {
+  padding: 0;
+}
+.hallo-scores {
+  border: none;
+  width: 100%;
+  height: 300px;
 }

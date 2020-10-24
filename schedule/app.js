@@ -206,13 +206,16 @@ export function scheduleApp (options = {}) {
       date: { ano, mez, dia, weekday }
     }
   }
+  function offsetToDate (offset, d = now()) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
+  }
   function generateDay (offset = 0) {
     let d = now()
     let innerHTML
     let checkfuture = true
     const totalminute = d.getMinutes() + d.getHours() * 60
     if (offset !== 0) {
-      d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
+      d = offsetToDate(offset, d)
       checkfuture = false
     }
     const {
@@ -488,6 +491,7 @@ export function scheduleApp (options = {}) {
   }
   const timers = []
   const onNewDays = []
+  const onViewingDayChanges = []
   let lastToday = getDateId()
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
@@ -547,8 +551,16 @@ export function scheduleApp (options = {}) {
       return options.offset
     },
     set offset (o) {
+      const oldOffset = options.offset
       options.offset = o
       if (options.autorender) returnval.render()
+      for (const callback of onViewingDayChanges) {
+        callback({
+          offset: options.offset,
+          date: offsetToDate(options.offset),
+          change: oldOffset !== o
+        })
+      }
     },
     setPeriod (id, { name, colour, link }, update) {
       if (name !== undefined) options.periods[id].label = name
@@ -610,6 +622,16 @@ export function scheduleApp (options = {}) {
     onNewDay (callback, callImmediately = false) {
       onNewDays.push(callback)
       if (callImmediately) callback()
+    },
+    onViewingDayChange (callback, callImmediately = false) {
+      onViewingDayChanges.push(callback)
+      if (callImmediately) {
+        callback({
+          offset: options.offset,
+          date: offsetToDate(options.offset),
+          change: 'init'
+        })
+      }
     },
     getPeriodSpan,
     getSchedule,

@@ -1962,11 +1962,13 @@ function initHEditor (
 const themes = {
   1: {
     name: 'Mortified Monday',
-    description: 'It\'s Pajama day! The perfect day to roll out of bed straight into a Zoom call!'
+    description: 'It\'s Pajama day! The perfect day to roll out of bed straight into a Zoom call!',
+    form: 'https://forms.gle/jeTnPAJmquDJUn7W9'
   },
   2: {
     name: 'The Shining Twins Tuesday',
-    description: 'Find someone to twin with for the day! Wear matching outfits and don\'t forget to take pictures!'
+    description: 'Find someone to twin with for the day! Wear matching outfits and don\'t forget to take pictures!',
+    form: 'https://forms.gle/EzodHnQsdxgRsevz6'
   },
   3: {
     name: 'Willy Wonka Wendsday', // sic
@@ -1977,22 +1979,34 @@ const themes = {
       'Juniors: Black licorice (Black)',
       'Seniors: Kit Kats (Red)',
       'Teachers: Almond Joy (Blue)'
-    ].join('\n')
+    ].join('\n'),
+    form: 'https://forms.gle/BVPx7gvWwef94fuE9'
   },
   4: {
     name: 'Monsters University Thursday',
     description: 'Deck out in your favorite university or Gunn merch and show it off with pride!',
-    description2: 'Wear something pink in support of Breast Cancer Awareness Month for +1 point!'
+    description2: 'Wear something pink in support of Breast Cancer Awareness Month for +1 point!',
+    form: 'https://forms.gle/Pp1q2SNW7p4UjnE38'
   },
   5: {
     name: 'Halloween Friday!',
-    description: 'Wear your Halloween costume  and show it off!' // sic
+    description: 'Wear your Halloween costume  and show it off!', // sic
+    form: 'https://forms.gle/51nScKt6KMij5Z1u5'
   }
 }
 function initHalloWeek (scheduleapp) {
   const elems = {
     wrapper: document.getElementById('hallo-week'),
-    toggle: document.getElementById('toggle-hallo')
+    toggle: document.getElementById('toggle-hallo'),
+    heading: document.getElementById('hallo-heading'),
+    selectScores: document.getElementById('hallo-select-scores'),
+    scores: document.getElementById('hallo-scores'),
+    selectTheme: document.getElementById('hallo-select-theme'),
+    themeWrapper: document.getElementById('hallo-theme'),
+    themeName: document.getElementById('hallo-theme-name'),
+    themeDesc: document.getElementById('hallo-theme-description'),
+    themeDesc2: document.getElementById('hallo-theme-description2'),
+    themeFormLink: document.getElementById('hallo-theme-form')
   }
   elems.wrapper.addEventListener('click', e => {
     if (!elems.toggle.contains(e.target)) {
@@ -2002,4 +2016,53 @@ function initHalloWeek (scheduleapp) {
   elems.toggle.addEventListener('click', e => {
     elems.wrapper.classList.toggle('hallo-collapsed')
   })
+  let scoresAdded = false
+  function selectTab (showThemes) {
+    if (showThemes) {
+      elems.selectTheme.classList.add('hallo-selected')
+      elems.selectScores.classList.remove('hallo-selected')
+    } else {
+      elems.selectTheme.classList.remove('hallo-selected')
+      elems.selectScores.classList.add('hallo-selected')
+    }
+    elems.themeWrapper.style.display = showThemes ? null : 'none'
+    elems.scores.style.display = showThemes ? 'none' : null
+    if (!showThemes && !scoresAdded) {
+      scoresAdded = true
+      const iframe = document.createElement('iframe')
+      iframe.src = 'https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vTYqxj9SP4K4rA84NqYXLycLAquuQVwiMnI-Zykr29JRNA1mRfXgq8UJ7bwS01qstA4TfPDbB62zbBW/pubhtml/sheet?headers=false&gid=0'
+      iframe.className = 'hallo-scores'
+      elems.scores.appendChild(iframe)
+    }
+  }
+  selectTab(true)
+  elems.selectTheme.addEventListener('click', e => {
+    selectTab(true)
+  })
+  elems.selectScores.addEventListener('click', e => {
+    selectTab(false)
+  })
+  function setDay (day, isToday) {
+    if (day >= 1 && day <= 5) {
+      const { name, description, description2, form } = themes[day]
+      elems.wrapper.style.display = null
+      elems.themeWrapper.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./images/hallo-week/day-${day}.jpg')`;
+      elems.heading.textContent = `Hallo-Week: ${name}`
+      elems.themeName.textContent = name
+      elems.themeDesc.textContent = description
+      if (description2) {
+        elems.themeDesc2.style.display = null
+        elems.themeDesc2.textContent = description2
+      } else {
+        elems.themeDesc2.style.display = 'none'
+      }
+      elems.themeFormLink.href = form
+    } else {
+      elems.wrapper.style.display = 'none'
+    }
+  }
+  scheduleapp.onViewingDayChange(({ date, change, offset }) => {
+    if (!change) return
+    setDay(date.getFullYear() === 2020 && date.getMonth() === 9 && date.getDate() - 25, offset === 0)
+  }, true)
 }
