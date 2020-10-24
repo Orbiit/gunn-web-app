@@ -412,11 +412,11 @@ export function initSchedule (manualAltSchedulesProm) {
   const hideSupportIcon = document.getElementById('hide-support')
   const supportList = document.getElementById('support-list')
   if (formatOptions.showRock === 'hide') {
-    hideSupportIcon.textContent = 'expand_more'
+    hideSupportIcon.textContent = '\ue5cf'
     supportList.style.height = 0
   }
   hideSupportIcon.parentNode.addEventListener('click', e => {
-    const nowHidden = hideSupportIcon.textContent === 'expand_less'
+    const nowHidden = hideSupportIcon.textContent === '\ue5ce'
     if (supportList.style.height) {
       supportList.style.height = nowHidden ? 0 : supportList.scrollHeight + 'px'
     } else {
@@ -427,7 +427,7 @@ export function initSchedule (manualAltSchedulesProm) {
           : supportList.scrollHeight + 'px'
       })
     }
-    hideSupportIcon.textContent = nowHidden ? 'expand_more' : 'expand_less'
+    hideSupportIcon.textContent = nowHidden ? '\ue5cf' : '\ue5ce'
     formatOptions.showRock = nowHidden ? 'hide' : 'show'
     saveFormatOptions()
   })
@@ -1837,6 +1837,7 @@ export function initSchedule (manualAltSchedulesProm) {
 
   const hEditBtn = document.getElementById('edit-h')
   initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen, hEditBtn)
+  initHalloWeek(scheduleapp)
 }
 
 function initHEditor (
@@ -1955,4 +1956,50 @@ function initHEditor (
     sliderWrapper.appendChild(range.elem)
   }
   document.getElementById('h-days').appendChild(hDays)
+}
+
+// TEMP: Hallo-Week
+const themes = {
+  1: {
+    name: 'Mortified Monday',
+    description: 'It\'s Pajama day! The perfect day to roll out of bed straight into a Zoom call!'
+  },
+  2: {
+    name: 'The Shining Twins Tuesday',
+    description: 'Find someone to twin with for the day! Wear matching outfits and don\'t forget to take pictures!'
+  },
+  3: {
+    name: 'Willy Wonka Wendsday', // sic
+    description: 'Dress up as candy in your class colors!',
+    description2: [
+      'Freshman: Candy corn (Yellow)',
+      'Sophomores: Carmel apples (Green)', // sic
+      'Juniors: Black licorice (Black)',
+      'Seniors: Kit Kats (Red)',
+      'Teachers: Almond Joy (Blue)'
+    ].join('\n')
+  },
+  4: {
+    name: 'Monsters University Thursday',
+    description: 'Deck out in your favorite university or Gunn merch and show it off with pride!',
+    description2: 'Wear something pink in support of Breast Cancer Awareness Month for +1 point!'
+  },
+  5: {
+    name: 'Halloween Friday!',
+    description: 'Wear your Halloween costume  and show it off!' // sic
+  }
+}
+function initHalloWeek (scheduleapp) {
+  const elems = {
+    wrapper: document.getElementById('hallo-week'),
+    toggle: document.getElementById('toggle-hallo')
+  }
+  elems.wrapper.addEventListener('click', e => {
+    if (!elems.toggle.contains(e.target)) {
+      elems.wrapper.classList.remove('hallo-collapsed')
+    }
+  })
+  elems.toggle.addEventListener('click', e => {
+    elems.wrapper.classList.toggle('hallo-collapsed')
+  })
 }

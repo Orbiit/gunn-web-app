@@ -1080,3 +1080,98 @@ p.secondary {
   flex: auto;
   margin: 0 24px;
 }
+
+/* TEMP: Hallo-week */
+#hallo-week {
+  --theme: #E55A19;
+  border-radius: 10px;
+  border: 1px solid var(--theme);
+  margin: 10px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: box-shadow .5s;
+  overflow: hidden;
+  position: relative;
+}
+#hallo-week.hallo-collapsed {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.hallo-heading {
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  transition: padding .5s;
+}
+.hallo-collapsed .hallo-heading {
+  padding: 10px 20px;
+}
+.hallo-heading h3 {
+  font-size: 30px;
+  font-weight: normal;
+  margin: 0;
+  align-self: center;
+  transition: font-size .5s;
+}
+.hallo-collapsed .hallo-heading h3 {
+  font-size: 24px;
+}
+.hallo-heading .material {
+  flex: none;
+}
+.hallo-tabs {
+  display: flex;
+  border-bottom: 10px solid var(--theme);
+  padding: 0 20px;
+  overflow: hidden;
+  max-height: 36px;
+  transition: max-height .5s, border-bottom-width .5s;
+}
+.hallo-tabs .material {
+  border-radius: 5px 5px 0 0;
+}
+.hallo-tabs .hallo-selected {
+  background-color: var(--theme);
+  color: white;
+}
+.hallo-collapsed .hallo-tabs {
+  max-height: 0;
+  border-bottom-width: 0;
+}
+.hallo-content {
+  padding: 20px;
+  overflow: hidden;
+  max-height: 100vh;
+  transition: max-height .5s, padding .5s;
+}
+.hallo-content h4 {
+  font-weight: normal;
+  font-size: 24px;
+  margin: 0;
+}
+.hallo-theme {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../images/hallo-week/day-1.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+.hallo-collapsed .hallo-content {
+  max-height: 0;
+  padding: 0 20px;
+  transition: max-height .2s, padding .5s;
+}
+.hallo-close-icon::after {
+  content: '\00e5ce'
+}
+.hallo-collapsed .hallo-close-icon::after {
+  content: '\00e5cf'
+}
+.submit-photos {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.submit-photos .material {
+  border: 1px solid currentColor;
+  margin-right: 20px;
+}
