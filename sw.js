@@ -1,6 +1,6 @@
 /* eslint-env serviceworker */
 
-const CACHE_NAME = 'ugwa-sw-1603248417365'
+const CACHE_NAME = 'ugwa-sw-1603586880818'
 const urlsToCache = [
   './',
   'images/newmap.min.png',
@@ -25,6 +25,14 @@ const urlsToCache = [
   'js/languages/en-gt-core.js',
   'js/languages/fr.js',
   'json/alt-schedules-2020.txt',
+  // TEMP: Hallo-Weak
+  'images/hallo-week/day-1.jpg',
+  'images/hallo-week/day-2.jpg',
+  'images/hallo-week/day-3.jpg',
+  'images/hallo-week/day-4.jpg',
+  'images/hallo-week/day-5.jpg',
+  'images/hallo-week/wednesday.jpg',
+  'images/hallo-week/friday.jpg',
   'images/gunn-together.svg'
 ]
 
