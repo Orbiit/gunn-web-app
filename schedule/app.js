@@ -8,12 +8,11 @@ export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
 }
-function getDateId () {
-  const today = now()
+function getDateId (d = now()) {
   // toISOString uses UTC D:
-  // Just returns a unique ID per day, so no leading zeroes or adding one to
-  // month needed
-  return `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`
+  // Just returns a unique ID per day, so no leading zeroes needed
+  // Adding 1 to month to make it human readable, though
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 }
 const colourtoy = document.createElement('div')
 function isLight (colour) {
@@ -211,6 +210,17 @@ export function scheduleApp (options = {}) {
   }
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
+  }
+  // TEMP: Halloweak
+  const specialDays = {
+    '2020-10-28': {
+      imageUrl: './images/hallo-week/wednesday.jpg',
+      link: 'https://www.instagram.com/p/CGvOH0Lgu_g/'
+    },
+    '2020-10-30': {
+      imageUrl: './images/hallo-week/friday.jpg',
+      link: 'https://www.instagram.com/p/CGtm8A5AayN/'
+    }
   }
   function generateDay (offset = 0) {
     let d = now()
@@ -443,6 +453,15 @@ export function scheduleApp (options = {}) {
                 .join('')
           }
         }
+        // TEMP: HalloWeek
+        if (period.name === 'Lunch' && specialDays[getDateId(d)]) {
+          const { imageUrl, link } = specialDays[getDateId(d)]
+          innerHTML += `<span class="small-heading">Event</span><a href="${
+            link
+          }" target="_blank" rel="noopener noreferrer" class="hallo-image"><img src="${
+            imageUrl
+          }" draggable="false"/><button class="material icon raised"><i class="material-icons">&#xe895;</i></button></a>`
+        }
         innerHTML += `</div>`
       }
     } else {
@@ -610,6 +629,7 @@ export function scheduleApp (options = {}) {
       }
       return week
     },
+    // Runs the given callback some amount of time before a period starts/ends
     addTimer (getNextFn, onNext, timer = { enabled: true }) {
       timer.update = () => {
         entry.next = timer.enabled ? getNextFn(getNext) : null
@@ -626,10 +646,12 @@ export function scheduleApp (options = {}) {
       timers.push(entry)
       return timer
     },
+    // Runs the given callback when a new day starts
     onNewDay (callback, callImmediately = false) {
       onNewDays.push(callback)
       if (callImmediately) callback()
     },
+    // Runs the given callback when the user views a different day
     onViewingDayChange (callback, { onNewDay = false, callImmediately = false } = {}) {
       onViewingDayChanges.push(callback)
       if (onNewDay) {
@@ -649,6 +671,7 @@ export function scheduleApp (options = {}) {
         })
       }
     },
+    // Runs the given callback when the minute changes
     onMinute (callback, callImmediately = false) {
       const trigger = () => {
         callback({

@@ -1123,13 +1123,14 @@ p.secondary {
 .hallo-tabs {
   display: flex;
   border-bottom: 10px solid var(--theme);
-  padding: 0 20px;
+  padding: 0 15px;
   overflow: hidden;
   max-height: 36px;
   transition: max-height .5s, border-bottom-width .5s;
 }
 .hallo-tabs .material {
   border-radius: 5px 5px 0 0;
+  margin: 0 5px;
 }
 .hallo-tabs .hallo-selected {
   background-color: var(--theme);
@@ -1180,7 +1181,7 @@ p.secondary {
   display: none;
 }
 .hallo-submit-closed {
-  margin-bottom: 0;
+  margin: 0;
 }
 .hallo-scores-wrapper {
   padding: 0;
@@ -1189,4 +1190,27 @@ p.secondary {
   border: none;
   width: 100%;
   height: 300px;
+}
+.hallo-image {
+  position: relative;
+  display: block;
+}
+.hallo-image img {
+  max-height: 200px;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  border-radius: 10px;
+}
+.hallo-image .material.icon {
+  pointer-events: none;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  transition: opacity .5s;
+}
+.schedule-period:hover .hallo-image .material.icon {
+  opacity: 1;
 }

@@ -2091,5 +2091,5 @@ function initHalloWeek (scheduleapp) {
       elems.closeTime.textContent = getUsefulTimePhrase(CLOSE_TIME - totalMinutes)
     }
     conditionallyShowForm()
-  }).trigger()
+  })()
 }
