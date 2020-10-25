@@ -456,11 +456,7 @@ export function scheduleApp (options = {}) {
         // TEMP: HalloWeek
         if (period.name === 'Lunch' && specialDays[getDateId(d)]) {
           const { imageUrl, link } = specialDays[getDateId(d)]
-          innerHTML += `<span class="small-heading">Event</span><a href="${
-            link
-          }" target="_blank" rel="noopener noreferrer" class="hallo-image"><img src="${
-            imageUrl
-          }" draggable="false"/><button class="material icon raised"><i class="material-icons">&#xe895;</i></button></a>`
+          innerHTML += `<span class="small-heading">Event</span><a href="${link}" target="_blank" rel="noopener noreferrer" class="hallo-image"><img src="${imageUrl}" draggable="false"/><button class="material icon raised"><i class="material-icons">&#xe895;</i></button></a>`
         }
         innerHTML += `</div>`
       }
@@ -580,8 +576,8 @@ export function scheduleApp (options = {}) {
       const oldOffset = options.offset
       options.offset = o
       if (options.autorender) returnval.render()
-      for (const callback of onViewingDayChanges) {
-        callback({
+      for (const listener of onViewingDayChanges) {
+        listener({
           offset: options.offset,
           date: offsetToDate(options.offset),
           change: oldOffset !== o
@@ -647,16 +643,19 @@ export function scheduleApp (options = {}) {
       return timer
     },
     // Runs the given callback when a new day starts
-    onNewDay (callback, callImmediately = false) {
-      onNewDays.push(callback)
-      if (callImmediately) callback()
+    onNewDay (listener, callImmediately = false) {
+      onNewDays.push(listener)
+      if (callImmediately) listener()
     },
     // Runs the given callback when the user views a different day
-    onViewingDayChange (callback, { onNewDay = false, callImmediately = false } = {}) {
-      onViewingDayChanges.push(callback)
+    onViewingDayChange (
+      listener,
+      { onNewDay = false, callImmediately = false } = {}
+    ) {
+      onViewingDayChanges.push(listener)
       if (onNewDay) {
         onNewDays.push(() => {
-          callback({
+          listener({
             offset: options.offset,
             date: offsetToDate(options.offset),
             change: 'new day'
@@ -664,7 +663,7 @@ export function scheduleApp (options = {}) {
         })
       }
       if (callImmediately) {
-        callback({
+        listener({
           offset: options.offset,
           date: offsetToDate(options.offset),
           change: 'init'
@@ -672,9 +671,9 @@ export function scheduleApp (options = {}) {
       }
     },
     // Runs the given callback when the minute changes
-    onMinute (callback, callImmediately = false) {
+    onMinute (listener, callImmediately = false) {
       const trigger = () => {
-        callback({
+        listener({
           getUsefulTimePhrase,
           totalMinutes: getTotalMinutes()
         })

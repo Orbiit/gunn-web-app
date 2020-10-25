@@ -1293,7 +1293,9 @@ export function initSchedule (manualAltSchedulesProm) {
           const openLinkBefore = +formatOptions.timeBeforeAutoLink
           const next = getNext(
             (pdTime, nowTime, pdName) =>
-              periodstyles[pdName] && periodstyles[pdName].link && pdTime - openLinkBefore > nowTime,
+              periodstyles[pdName] &&
+              periodstyles[pdName].link &&
+              pdTime - openLinkBefore > nowTime,
             { end: false }
           )
           if (next) {
@@ -1571,9 +1573,11 @@ export function initSchedule (manualAltSchedulesProm) {
   )
   function addPeriodCustomisers (elem) {
     function period (name, id) {
-      const { label: val = '', colour = THEME_COLOUR, link = '' } = periodstyles[
-        id
-      ]
+      const {
+        label: val = '',
+        colour = THEME_COLOUR,
+        link = ''
+      } = periodstyles[id]
       let isImage = colour[0] !== '#'
       let init = true
       const div = document.createElement('div')
@@ -1956,21 +1960,23 @@ function initHEditor (
 const themes = {
   1: {
     name: 'Mortified Monday',
-    description: 'It\'s Pajama day! The perfect day to roll out of bed straight into a Zoom call!',
+    description:
+      "It's Pajama day! The perfect day to roll out of bed straight into a Zoom call!",
     form: 'https://forms.gle/jeTnPAJmquDJUn7W9'
   },
   2: {
     name: 'The Shining Twins Tuesday',
-    description: 'Find someone to twin with for the day! Wear matching outfits and don\'t forget to take pictures!',
+    description:
+      "Find someone to twin with for the day! Wear matching outfits and don't forget to take pictures!",
     form: 'https://forms.gle/EzodHnQsdxgRsevz6'
   },
   3: {
     name: 'Willy Wonka Wendsday', // sic
     description: 'Dress up as candy in your class colors!',
     description2: [
-      'Freshman: Candy corn (Yellow)',
-      'Sophomores: Carmel apples (Green)', // sic
-      'Juniors: Black licorice (Black)',
+      'Freshman: Candy Corn (Yellow)',
+      'Sophomores: Carmel Apples (Green)', // sic
+      'Juniors: Black Licorice (Black)',
       'Seniors: Kit Kats (Red)',
       'Teachers: Almond Joy (Blue)'
     ].join('\n'),
@@ -1978,8 +1984,10 @@ const themes = {
   },
   4: {
     name: 'Monsters University Thursday',
-    description: 'Deck out in your favorite university or Gunn merch and show it off with pride!',
-    description2: 'Wear something pink in support of Breast Cancer Awareness Month for +1 point!',
+    description:
+      'Deck out in your favorite university or Gunn merch and show it off with pride!',
+    description2:
+      'Wear something pink in support of Breast Cancer Awareness Month for +1 point!',
     form: 'https://forms.gle/Pp1q2SNW7p4UjnE38'
   },
   5: {
@@ -2025,7 +2033,8 @@ function initHalloWeek (scheduleapp) {
     if (!showThemes && !scoresAdded) {
       scoresAdded = true
       const iframe = document.createElement('iframe')
-      iframe.src = 'https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vTYqxj9SP4K4rA84NqYXLycLAquuQVwiMnI-Zykr29JRNA1mRfXgq8UJ7bwS01qstA4TfPDbB62zbBW/pubhtml/sheet?headers=false&gid=0'
+      iframe.src =
+        'https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vTYqxj9SP4K4rA84NqYXLycLAquuQVwiMnI-Zykr29JRNA1mRfXgq8UJ7bwS01qstA4TfPDbB62zbBW/pubhtml/sheet?headers=false&gid=0'
       iframe.className = 'hallo-scores'
       elems.scores.appendChild(iframe)
     }
@@ -2054,7 +2063,7 @@ function initHalloWeek (scheduleapp) {
     if (day >= 1 && day <= 5) {
       const { name, description, description2, form } = themes[day]
       elems.wrapper.style.display = null
-      elems.themeWrapper.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./images/hallo-week/day-${day}.jpg')`;
+      elems.themeWrapper.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./images/hallo-week/day-${day}.jpg')`
       elems.heading.textContent = `Hallo-Week: ${name}`
       elems.themeName.textContent = name
       elems.themeDesc.textContent = description
@@ -2073,16 +2082,26 @@ function initHalloWeek (scheduleapp) {
       elems.wrapper.style.display = 'none'
     }
   }
-  scheduleapp.onViewingDayChange(({ date, change, offset }) => {
-    if (!change) return
-    setDay(date.getFullYear() === 2020 && date.getMonth() === 9 && date.getDate() - 25, offset === 0)
-  }, {
-    onNewDay: true,
-    callImmediately: true
-  })
+  scheduleapp.onViewingDayChange(
+    ({ date, change, offset }) => {
+      if (!change) return
+      setDay(
+        date.getFullYear() === 2020 &&
+          date.getMonth() === 9 &&
+          date.getDate() - 25,
+        offset === 0
+      )
+    },
+    {
+      onNewDay: true,
+      callImmediately: true
+    }
+  )
   scheduleapp.onMinute(({ getUsefulTimePhrase, totalMinutes }) => {
     if (formOpen(totalMinutes)) {
-      elems.closeTime.textContent = getUsefulTimePhrase(CLOSE_TIME - totalMinutes)
+      elems.closeTime.textContent = getUsefulTimePhrase(
+        CLOSE_TIME - totalMinutes
+      )
     }
     conditionallyShowForm()
   })()
