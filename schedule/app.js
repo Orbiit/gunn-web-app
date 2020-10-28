@@ -172,14 +172,13 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
-        // So far: 55 6432171
-        //         0123456789
+        // So far: 55 64321767
+        //         01234567890
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek < 8) name = 'ABCDEFG'[7 - gtWeek]
-        // Speculative until the next alternate schedules
-        else if (gtWeek >= 8 && gtWeek <= 11) name = ' ABCDEFG'[15 - gtWeek]
+        else if (gtWeek >= 8 && gtWeek <= 9) name = ' ABCDEFG'[15 - gtWeek]
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
