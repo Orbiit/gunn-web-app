@@ -172,13 +172,17 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
-        // So far: 55 64321767
-        //         01234567890
+        // So far:
+        // GTPD 55 643217674
+        // Week 0         1
+        //      012345678901
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek < 8) name = 'ABCDEFG'[7 - gtWeek]
         else if (gtWeek >= 8 && gtWeek <= 9) name = ' ABCDEFG'[15 - gtWeek]
+        else if (gtWeek === 10) name = 'G'
+        else if (gtWeek === 11) name = 'D'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
@@ -209,17 +213,6 @@ export function scheduleApp (options = {}) {
   }
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
-  }
-  // TEMP: Halloweak
-  const specialDays = {
-    '2020-10-28': {
-      imageUrl: './images/hallo-week/wednesday.jpg',
-      link: 'https://www.instagram.com/p/CGvOH0Lgu_g/'
-    },
-    '2020-10-30': {
-      imageUrl: './images/hallo-week/friday.jpg',
-      link: 'https://www.instagram.com/p/CGtm8A5AayN/'
-    }
   }
   function generateDay (offset = 0) {
     let d = now()
@@ -451,11 +444,6 @@ export function scheduleApp (options = {}) {
                 })
                 .join('')
           }
-        }
-        // TEMP: HalloWeek
-        if (period.name === 'Lunch' && specialDays[getDateId(d)]) {
-          const { imageUrl, link } = specialDays[getDateId(d)]
-          innerHTML += `<span class="small-heading">Event</span><a href="${link}" target="_blank" rel="noopener noreferrer" class="hallo-image"><img src="${imageUrl}" draggable="false"/><button class="material icon raised"><i class="material-icons">&#xe895;</i></button></a>`
         }
         innerHTML += `</div>`
       }
