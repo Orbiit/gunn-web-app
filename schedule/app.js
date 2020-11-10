@@ -89,13 +89,17 @@ export function scheduleApp (options = {}) {
       getPeriod(period).label
     )}</span>`
   }
-  function isSELFDay (month, date) {
-    return (
-      options.self &&
-      options.selfDays.includes(
-        ('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2)
-      )
-    )
+  // function isSELFDay (month, date) {
+  //   return (
+  //     options.self &&
+  //     options.selfDays.includes(
+  //       ('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2)
+  //     )
+  //   )
+  // }
+  function isSELFDay () {
+    // Hacky solution to turn off the old behaviour of replacing flex with SELF
+    return false
   }
   getFontColour('rgba(0,0,0,0.2)')
   let setTitle = false
