@@ -113,7 +113,7 @@ window.langs.fr = {
     'prev-chats': 'Chats précédents',
     reload: 'Redémarrer UGWA',
     'report-bugs':
-      'Vous pouvez {gh|faire un nouveau numéro sur GitHub} ou envoyer un email à {email|sy24484@pausd.us} pour faire une demande de fonctionnalité ou un rapport de bogue.',
+      'Vous pouvez {gh|faire un nouveau numéro sur GitHub} ou envoyer un email à {email|seanthesheep22+gwa@outlook.com} pour faire une demande de fonctionnalité ou un rapport de bogue.',
     s1a: 'Ligne crise de textos',
     s1b: '741-741',
     s1c:

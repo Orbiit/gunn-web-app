@@ -122,7 +122,7 @@ export default {
     'prev-chats': 'Previous chats',
     reload: 'Restart UGWA',
     'report-bugs':
-      'You can {gh|make a new issue on GitHub} or email {email|seanthesheep22@outlook.com} to make a feature request or bug report.',
+      'You can {gh|make a new issue on GitHub} or email {email|seanthesheep22+gwa@outlook.com} to make a feature request or bug report.',
     s1a: 'Crisis Text Line',
     s1b: '741-741',
     s1c:

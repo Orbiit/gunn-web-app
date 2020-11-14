@@ -72,7 +72,7 @@ window.langs.test = {
     'before-gh-link': '',
     'gh-link': 'eísu Guithublu',
     'inter-link': ' au ',
-    'sean-email': 'sy24484@pausd.us',
+    'sean-email': 'seanthesheep22+gwa@outlook.com',
     'after-email': '-corruselectrone von a se valseunte vansetuens',
     browsers: 'TSGDE va seunt puo vonte je saeau veuanx.',
     about: 'Abóux',

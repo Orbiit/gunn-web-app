@@ -86,7 +86,7 @@ window.langs['en-gt'] = {
       '{name|An Zhuo system Unify}— in dish single on point hit and selected select " add plus To the Lord Screen screen "',
     bugs: 'wrong error Report Inform',
     'report-bugs':
-      'you can To {gh|in GitHub on hair cloth new period Journal} or Electricity child mail Pieces {email|sy24484 @ pausd. us} mention Out Work can please begging or wrong error Report Inform.',
+      'you can To {gh|in GitHub on hair cloth new period Journal} or Electricity child mail Pieces {email|ShawYeptwotentwo+melon@outertable.throughNews} mention Out Work can please begging or wrong error Report Inform.',
     browsers:
       'UGWA only Purpose in support hold most new Version this of Chrome with iOS   Safari (and Do not Yes MacOS   Safari); its he Version this of excellent first level More low.',
     about: 'turn off in',

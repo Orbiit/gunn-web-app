@@ -77,7 +77,7 @@ window.langs['x-mleng'] = {
     'before-gh-link': 'You can ',
     'gh-link': 'make a new issue on GitHub',
     'inter-link': ' or email ',
-    'sean-email': 'sy24484@pausd.us',
+    'sean-email': 'seanthesheep22+gwa@outlook.com',
     'after-email': ' to make a feature request or bug report.',
     browsers:
       'UGWA only aims to support the latest versions of Chrome and iOS Safari (not MacOS Safari); other versions are low-priority.',
