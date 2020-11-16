@@ -1,120 +1,9 @@
+import { applyL10n, createReactive } from '../js/dumb-reactive.js'
 import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { currentTime, escapeHTML, now } from '../js/utils.js'
-
-const l10nArgFinder = /\{(\w+)\}/g
-function wrap (node, meta = {}) {
-  if (node._wrapped) throw new Error('already wrapped')
-  if (meta.l10nArg) {
-    node.dataset.l10nArg = meta.l10nArg
-  }
-  let marker
-  let l10nArgs
-  const wrapped = {
-    _wrapped: true,
-    node,
-    add (child) {
-      node.appendChild(child.node)
-      return wrapped
-    },
-    children (children) {
-      for (const child of children) {
-        if (child) {
-          if (typeof child === 'string') {
-            node.appendChild(document.createTextNode(child))
-          } else {
-            node.appendChild(child.node)
-          }
-        }
-      }
-      return wrapped
-    },
-    addTo (parent) {
-      parent.node.appendChild(node)
-      return wrapped
-    },
-    style (styles) {
-      Object.assign(node.style, styles)
-      return wrapped
-    },
-    dataset (styles) {
-      Object.assign(node.dataset, styles)
-      return wrapped
-    },
-    classList (classes) {
-      for (const cls of classes) {
-        if (cls && typeof cls === 'string') {
-          node.classList.add(cls)
-        }
-      }
-      return wrapped
-    },
-    ensureHidden () {
-      node.style.display = 'none'
-      // if (!marker) {
-      //   marker = document.createTextNode('')
-      // }
-      // if (node.parentNode) {
-      //   node.parentNode.replaceChild(marker, node)
-      // }
-      return wrapped
-    },
-    ensureShown () {
-      node.style.display = null
-      // if (marker && marker.parentNode) {
-      //   marker.parentNode.replaceChild(node, marker)
-      // }
-      return wrapped
-    },
-    ensureShownIf (test) {
-      return test ? wrapped.ensureShown() : wrapped.ensureHidden()
-    },
-    removeChildren () {
-      while (node.firstChild) node.removeChild(node.firstChild)
-      return wrapped
-    },
-    applyL10n (l10n, values) {
-      if (!l10nArgs) {
-        l10nArgs = {}
-        for (const child of node.children) {
-          if (child.dataset.l10nArg) {
-            l10nArgs[child.dataset.l10nArg] = child
-          }
-        }
-      }
-      wrapped.removeChildren()
-      let exec
-      let lastIndex = 0
-      while ((exec = l10nArgFinder.exec(l10n))) {
-        node.appendChild(
-          document.createTextNode(l10n.slice(lastIndex, exec.index))
-        )
-        const argName = exec[1]
-        if (l10nArgs[argName]) {
-          l10nArgs[argName].textContent = values[argName]
-          node.appendChild(l10nArgs[argName])
-        }
-        lastIndex = exec.index + exec[0].length
-      }
-      node.appendChild(document.createTextNode(l10n.slice(lastIndex)))
-      return wrapped
-    },
-    ripple () {
-      ripple(node)
-      return wrapped
-    }
-  }
-  return wrapped
-}
-function elem (tagName, { l10nArg, ...attributes } = {}) {
-  return wrap(Object.assign(document.createElement(tagName), attributes), {
-    l10nArg
-  })
-}
-const span = (...args) => elem('span', ...args)
-const div = (...args) => elem('div', ...args)
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
@@ -342,7 +231,7 @@ export function scheduleApp (options = {}) {
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
   }
-  function renderScheduleForDay (offset = 0) {
+  function getRenderedScheduleForDay (offset = 0) {
     let d = now()
     let isToday = true
     const totalminute = getTotalMinutes(d)
@@ -509,9 +398,8 @@ export function scheduleApp (options = {}) {
               'span.pd-btns',
               options.displayAddAsgn && [
                 {
-                  type: 'button.material.icon.pd-btn.add-asgn',
-                  // dataset: { pd:  },
-                  ripple: true
+                  type: 'ripple-btn.material.icon.pd-btn.add-asgn',
+                  dataset: { pd: period.name }
                 },
                 ['i.material-icons', 'add_task']
               ]
@@ -556,7 +444,6 @@ export function scheduleApp (options = {}) {
     }
 
     return [
-      'div.schedule-container',
       ['h2.schedule-dayname', day],
       [
         'h3.schedule-date',
@@ -581,365 +468,11 @@ export function scheduleApp (options = {}) {
       ...schedule
     ]
   }
-  function generateWrapper () {
-    const wrapper = div()
-    const dayNameDisplay = elem('h2', { className: 'schedule-dayname' })
-    const dateDisplay = elem('a', { className: 'totally-not-a-link' })
-    const summerDisplay = span({
-      className: 'schedule-noschool',
-      textContent: localize('summer')
-    })
-    const alternateDisplay = span({
-      className: 'schedule-alternatemsg'
-    }).children([elem('strong', { l10nArg: 'D' })])
-    const scheduleEndDisplay = span({ className: 'schedule-end' }).children([
-      elem('strong', { l10nArg: 'T' })
-    ])
-    const progressDisplay = div()
-    const progressBarDisplay = div({
-      className: 'schedule-periodprogress'
-    }).add(progressDisplay)
-    const endingInDisplay = elem('p', {
-      className: 'schedule-endingin'
-    }).children([
-      elem('strong', { l10nArg: 'P' }), // TODO: make this a period span
-      elem('strong', { l10nArg: 'T' })
-    ])
-    const periodDisplays = []
-    const schoolDisplay = div().children([
-      scheduleEndDisplay,
-      progressBarDisplay,
-      endingInDisplay
-    ])
-    const noSchoolDisplay = span({
-      className: 'schedule-noschool',
-      textContent: getPeriod('NO_SCHOOL').label
-    })
-    wrapper.children([
-      dayNameDisplay,
-      elem('h3', { className: 'schedule-date' }).add(dateDisplay),
-      summerDisplay,
-      alternateDisplay,
-      schoolDisplay,
-      noSchoolDisplay
-    ])
-    function setDay (offset = 0) {
-      let d = now()
-      let checkfuture = true
-      const totalminute = getTotalMinutes(d)
-      if (offset !== 0) {
-        d = offsetToDate(offset, d)
-        checkfuture = false
-      }
-      const {
-        periods,
-        alternate,
-        summer,
-        isSELF,
-        date: { ano, mez, dia, weekday }
-      } = getSchedule(d)
-      const day = days[weekday]
-      dayNameDisplay.node.textContent = day
-      dateDisplay.node.href = `?date=${ano}-${mez + 1}-${dia}`
-      dateDisplay.node.textContent = localizeWith('date', 'times', {
-        M: months[mez],
-        D: dia
-      })
-      const assignments = options.getAssignments(d)
-      if (assignments.noPeriod) {
-        innerHTML += assignments.noPeriod
-      }
-      summerDisplay.ensureShownIf(summer)
-      alternateDisplay.ensureShownIf(!summer && alternate)
-      if (alternate) {
-        alternateDisplay.applyL10n(localize('alt-msg'), {
-          D: alternate.description
-        })
-      }
-      schoolDisplay.ensureShownIf(!summer && periods.length)
-      noSchoolDisplay.ensureShownIf(!summer && !periods.length)
-      if (summer) return
-      if (periods.length) {
-        // If a day ends in an optional period, don't count it.
-        // 'Flex' is temporarily in the list because it's kind of optional this
-        // year.
-        const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
-        const [lastRequiredPeriod] = periods
-          .filter(({ name }) => !optionalPeriods.includes(name))
-          .slice(-1)
-        scheduleEndDisplay.ensureShownIf(lastRequiredPeriod)
-        if (lastRequiredPeriod) {
-          scheduleEndDisplay.applyL10n(localize('end-time', 'times'), {
-            T: getHumanTime(
-              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
-                ('0' + lastRequiredPeriod.end.minute).slice(-2)
-            )
-          })
-        }
-        // QUESTION: Should there be feedback for days with only optional periods?
-        // Later QUESTION: What did I mean by "feedback"??
-        // "Feedback" as in a note that the entire day is optional.
-        progressBarDisplay.ensureHidden()
-        endingInDisplay.ensureShownIf(checkfuture)
-        if (checkfuture) {
-          let i
-          for (i = 0; i < periods.length; i++)
-            if (totalminute < periods[i].end.totalminutes) break
-          let compactTime, period, compactStr
-          if (i >= periods.length) {
-            // after school (endOfDay is an hour past)
-            period = getPeriodName(periods.length - 1)
-            endingInDisplay.applyL10n(localize('ended', 'times'), {
-              P: period, // TODO: get period span?
-              T: getUsefulTimePhrase(
-                totalminute - periods[periods.length - 1].end.totalminutes
-              )
-            })
-            compactTime = getUsefulTimePhrase(
-              totalminute - periods[periods.length - 1].end.totalminutes
-            )
-            compactStr = localize('appname')
-            returnval.endOfDay =
-              totalminute - periods[periods.length - 1].end.totalminutes >= 60
-          } else if (totalminute >= periods[i].start.totalminutes) {
-            // during a period
-            progressBarDisplay.ensureShown()
-            progressDisplay.node.style.width =
-              ((totalminute - periods[i].start.totalminutes) /
-                (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
-                100 +
-              '%'
-            period = getPeriodName(i)
-            endingInDisplay.applyL10n(localize('ending', 'times'), {
-              P: period, // TODO: get period span?
-              T: getUsefulTimePhrase(periods[i].end.totalminutes - totalminute)
-            })
-            compactTime = getUsefulTimePhrase(
-              periods[i].end.totalminutes - totalminute
-            )
-            compactStr = localizeWith('ending-short', 'times', { T: compactTime })
-          } else {
-            // passing period or before school
-            period = getPeriodName(i)
-            endingInDisplay.applyL10n(localize('ending', 'times'), {
-              P: period, // TODO: get period span?
-              T: getUsefulTimePhrase(periods[i].start.totalminutes - totalminute)
-            })
-            compactTime = getUsefulTimePhrase(
-              periods[i].start.totalminutes - totalminute
-            )
-            compactStr = localizeWith('starting-short', 'times', {
-              T: compactTime,
-              P: getPeriod(period).label
-            })
-          }
-          if (setTitle) {
-            // TODO: move this elsewhere
-            if (options.compact) document.title = compactStr
-            else
-              document.title = str
-                .replace(/<[^>]+>/g, '')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>')
-                .replace(/&quot;/g, '"')
-                .replace(/&amp;/g, '&')
-          }
-        }
-        for (const display of periodDisplays) display.wrapper.ensureHidden()
-        let i = 0
-        for (const period of periods) {
-          // TODO: Avoid needlessly rerendering periods by storing old values directly in the wrapped elements
-          if (!periodDisplays[i]) {
-            const periodNameLabelDisplay = wrap(document.createTextNode(''))
-            const addAsgnBtnDisplay = elem('button', {
-              className: 'material icon pd-btn add-asgn'
-            })
-              .add(
-                elem('i', {
-                  className: 'material-icons',
-                  textContent: 'add_task'
-                })
-              )
-              .ripple()
-            const periodLinkDisplay = elem('a', {
-              className: 'material icon pd-btn',
-              target: '_blank',
-              rel: 'noopener noreferrer'
-            })
-              .add(
-                elem('i', { className: 'material-icons', textContent: '\ue89e' })
-              )
-              .ripple()
-            const periodNameDisplay = span({
-              className: 'schedule-periodname'
-            }).children([
-              periodNameLabelDisplay,
-              span({ className: 'pd-btns' }).children([
-                addAsgnBtnDisplay,
-                periodLinkDisplay
-              ])
-            ])
-            const gtBadgeDisplay = div({
-              className: 'gunn-together-badge',
-              textContent: localize('gunn-together/name')
-            })
-            const gtSubtitleDisplay = span({
-              textContent: localize('gunn-together/subtitle')
-            })
-            const periodTimeDisplay = span()
-            const periodStatusDisplay = span().children([
-              elem('strong', { l10nArg: 'T' }),
-              elem('strong', { l10nArg: 'T1' }),
-              elem('span', { l10nArg: 'T2' })
-            ])
-            const lunchClubHeadingDisplay = span({ className: 'small-heading' })
-            const lunchClubsDisplay = span()
-            const wrapper = div().children([
-              periodNameDisplay,
-              gtBadgeDisplay,
-              gtSubtitleDisplay,
-              periodTimeDisplay,
-              periodStatusDisplay,
-              lunchClubHeadingDisplay,
-              lunchClubsDisplay
-            ])
-            schoolDisplay.add(wrapper)
-            periodDisplays[i] = {
-              wrapper,
-              periodNameDisplay,
-              periodNameLabelDisplay,
-              addAsgnBtnDisplay,
-              periodLinkDisplay,
-              gtBadgeDisplay,
-              gtSubtitleDisplay,
-              periodTimeDisplay,
-              periodStatusDisplay,
-              lunchClubHeadingDisplay
-            }
-          }
-          const {
-            wrapper: periodDisplay,
-            periodNameDisplay,
-            periodNameLabelDisplay,
-            addAsgnBtnDisplay,
-            periodLinkDisplay,
-            gtBadgeDisplay,
-            gtSubtitleDisplay,
-            periodTimeDisplay,
-            periodStatusDisplay,
-            lunchClubHeadingDisplay
-          } = periodDisplays[i]
-          i++
-          periodDisplay.ensureShown()
-          const periodName = getPeriod(
-            period.name === 'Flex' && isSELF ? 'SELF' : period.name
-          )
-          periodDisplay.node.className = ''
-          periodDisplay.node.style = null
-          periodDisplay
-            .classList([
-              'schedule-period',
-              period.name === 'GT' && 'gunn-together',
-              isLight(periodName.colour) ? 'light' : 'dark'
-            ])
-            .style(
-              getCSS(
-                periodName.colour,
-                period.name
-              )
-            )
-          periodNameDisplay.ensureShownIf(period.name !== 'GT')
-          if (period.name !== 'GT') {
-            periodNameLabelDisplay.node.nodeValue = periodName.label
-            addAsgnBtnDisplay.ensureShownIf(options.displayAddAsgn)
-            periodLinkDisplay.ensureShownIf(periodName.link)
-            periodLinkDisplay.node.href = periodName.link
-          }
-          gtBadgeDisplay.ensureShownIf(
-            period.gunnTogether || period.name === 'GT'
-          )
-          gtSubtitleDisplay.ensureShownIf(period.name === 'GT')
-          periodTimeDisplay.node.textContent = `${getHumanTime(
-            ('0' + period.start.hour).slice(-2) +
-              ('0' + period.start.minute).slice(-2)
-          )} – ${getHumanTime(
-            ('0' + period.end.hour).slice(-2) +
-              ('0' + period.end.minute).slice(-2)
-          )} · ${localizeWith('long', 'times', {
-            T: getUsefulTimePhrase(
-              period.end.totalminutes - period.start.totalminutes
-            )
-          })}`
-          periodStatusDisplay.ensureShownIf(checkfuture)
-          if (checkfuture) {
-            if (totalminute >= period.end.totalminutes) {
-              periodStatusDisplay.applyL10n(localize('self-ended', 'times'), {
-                T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
-              })
-            } else if (totalminute < period.start.totalminutes) {
-              periodStatusDisplay.applyL10n(localize('self-starting', 'times'), {
-                T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
-              })
-            } else {
-              periodStatusDisplay.applyL10n(localize('self-ending', 'times'), {
-                T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
-                T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
-              })
-            }
-          }
-          if (assignments[period.name]) {
-            // TODO
-            innerHTML += assignments[period.name]
-          }
-          lunchClubHeadingDisplay.ensureHidden()
-          for (const clubDisplay of periodDisplay.node.querySelectorAll('.club-links')) {
-            periodDisplay.node.removeChild(clubDisplay)
-          }
-          if (period.name === 'Lunch' && dayToPrime[weekday]) {
-            const clubs = []
-            Object.keys(savedClubs).forEach(clubName => {
-              if (savedClubs[clubName] % dayToPrime[weekday] === 0) {
-                clubs.push(clubName)
-              }
-            })
-            if (clubs.length) {
-              lunchClubHeadingDisplay.ensureShown()
-              periodDisplay
-                .children(
-                  clubs.map(club => {
-                    const clubData = getClubByName && getClubByName(club)
-                    return span({ className: 'club-links' }).children([
-                      elem('a', { href: '#', textContent: club }).dataset({
-                        club
-                      }),
-                      clubData && clubData.link && ' (',
-                      clubData &&
-                        clubData.link &&
-                        elem('a', {
-                          href: clubData.link,
-                          target: '_blank',
-                          rel: 'noopener noreferrer',
-                          className: 'join-club-link',
-                          textContent: localize('join')
-                        }),
-                      clubData && clubData.time && ' · ' + clubData.time,
-                      clubData && clubData.link && ')'
-                    ])
-                  })
-                )
-            }
-          }
-        }
-      }
-    }
-    return {
-      wrapper,
-      setDay
-    }
-  }
   if (!options.offset) options.offset = 0
-  const { wrapper, setDay } = generateWrapper()
-  wrap(container).add(wrapper)
+  const wrapper = document.createElement('div')
+  wrapper.className = 'schedule-container'
+  const setState = createReactive(wrapper)
+  container.appendChild(wrapper)
   /**
    * onBlur runs once when the tab loses focus. This is to prevent Google from
    * using the current time in the tab title for the site name in Google Search
@@ -1025,7 +558,7 @@ export function scheduleApp (options = {}) {
     element,
     container,
     render () {
-      setDay(options.offset)
+      setState(getRenderedScheduleForDay((options.offset)))
     },
     update () {
       options.update = true
@@ -1160,6 +693,6 @@ export function scheduleApp (options = {}) {
     // generateHtmlForOffset: generateDay
   }
   element.appendChild(container)
-  setDay(options.offset) // Calculate endOfDay, but don't render the HTML yet
+  // setDay(options.offset) // Calculate endOfDay, but don't render the HTML yet
   return returnval
 }
