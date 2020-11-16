@@ -198,10 +198,21 @@ export function scheduleApp (options = {}) {
   }
   function getPeriodSpan (period) {
     if (period === 'GT') {
+      return [
+        'span.schedule-endinginperiod.gt-confuse',
+        localize('gunn-together/name')
+      ]
       return `<span class="schedule-endinginperiod gt-confuse">${localize(
         'gunn-together/name'
       )}</span>`
     }
+    return [
+      {
+        type: 'span.schedule-endinginperiod',
+        style: getCSS(getPeriod(period).colour, period)
+      },
+      getPeriod(period).label
+    ]
     return `<span style="${getCSS(
       getPeriod(period).colour,
       period
@@ -237,14 +248,6 @@ export function scheduleApp (options = {}) {
     const gtWeek = Math.floor(
       (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
     )
-    // Don't touch this function because it's reimplemented under getWeek and
-    // maybe elsewhere for some reason >_<
-    function getPeriodName (index) {
-      if (periods[index].name === 'Flex' && isSELF) {
-        return 'SELF'
-      }
-      return periods[index].name
-    }
     if (options.customSchedule) {
       periods = options.customSchedule(d, ano, mez, dia, weekday)
       if (periods && periods.alternate) {
@@ -329,7 +332,6 @@ export function scheduleApp (options = {}) {
       periods,
       alternate,
       summer,
-      getPeriodName,
       isSELF,
       date: { ano, mez, dia, weekday }
     }
@@ -339,6 +341,245 @@ export function scheduleApp (options = {}) {
   }
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
+  }
+  function renderScheduleForDay (offset = 0) {
+    let d = now()
+    let isToday = true
+    const totalminute = getTotalMinutes(d)
+    if (offset !== 0) {
+      d = offsetToDate(offset, d)
+      isToday = false
+    }
+    const {
+      periods,
+      alternate,
+      summer,
+      isSELF,
+      date: { ano, mez, dia, weekday }
+    } = getSchedule(d)
+    const day = days[weekday]
+    const isSchool = !summer && periods.length
+    const noSchool = !summer && !periods.length
+
+    // TODO: DeHTMLify
+    // const assignments = options.getAssignments(d)
+    // if (assignments.noPeriod) {
+    //   innerHTML += assignments.noPeriod
+    // }
+
+    const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
+    let schedule = []
+    if (isSchool) {
+      schedule = ['span.schedule-end']
+
+      const [lastRequiredPeriod] = periods
+        .filter(({ name }) => !optionalPeriods.includes(name))
+        .slice(-1)
+      if (lastRequiredPeriod) {
+        schedule.push(applyL10n(localize('end-time', 'times'), {
+          T: getHumanTime(
+            ('0' + lastRequiredPeriod.end.hour).slice(-2) +
+              ('0' + lastRequiredPeriod.end.minute).slice(-2)
+          )
+        }))
+      }
+
+      if (isToday) {
+        let currPd // current period
+        for (currPd = 0; currPd < periods.length; currPd++) {
+          if (totalminute < periods[currPd].end.totalminutes) {
+            break
+          }
+        }
+        const period = periods[Math.min(i, periods.length - 1)]
+        if (i >= periods.length) {
+          // after school
+          schedule.push([
+            'p.schedule-endingin',
+            applyL10n(localize('ended', 'times'), {
+              P: getPeriodSpan(period),
+              T: getUsefulTimePhrase(
+                totalminute - period.end.totalminutes
+              )
+            })
+          ])
+        } else if (totalminute >= period.start.totalminutes) {
+          // during a period
+          const progress = ((totalminute - period.start.totalminutes) /
+            (period.end.totalminutes - period.start.totalminutes)) *
+            100
+          schedule.push([
+            'div.schedule-periodprogress',
+            [{ type: 'div', style: { width: progress + '%' } }]
+          ], [
+            'p.schedule-endingin',
+            applyL10n(localize('ending', 'times'), {
+              P: getPeriodSpan(period), // TODO: get period span?
+              T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+            })
+          ])
+        } else {
+          // passing period or before school
+          schedule.push([
+            'p.schedule-endingin',
+            applyL10n(localize('ending', 'times'), {
+              P: period, // TODO: get period span?
+              T: getUsefulTimePhrase(periods[i].start.totalminutes - totalminute)
+            })
+          ])
+        }
+      }
+
+      for (const period of periods) {
+        const periodStyle = getPeriod(period.name)
+        let periodTimeLeft = null
+        if (totalminute >= period.end.totalminutes) {
+          periodTimeLeft = applyL10n(localize('self-ended', 'times'), {
+            T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
+          })
+        } else if (totalminute < period.start.totalminutes) {
+          periodTimeLeft = applyL10n(localize('self-starting', 'times'), {
+            T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+          })
+        } else {
+          periodTimeLeft = applyL10n(localize('self-ending', 'times'), {
+            T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
+            T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
+          })
+        }
+        // if (assignments[period.name]) {
+        //   // TODO
+        //   innerHTML += assignments[period.name]
+        // }
+        let clubItems = []
+        if (period.name === 'Lunch' && dayToPrime[weekday]) {
+          const clubs = []
+          Object.keys(savedClubs).forEach(clubName => {
+            if (savedClubs[clubName] % dayToPrime[weekday] === 0) {
+              clubs.push(clubName)
+            }
+          })
+          if (clubs.length) {
+            clubItems = [
+              ['span.small-heading', localize('lunch-clubs')],
+              ...clubs.map(club => {
+                const clubData = getClubByName && getClubByName(club)
+                const extraData =
+                  clubData &&
+                  [
+                    clubData.link && [
+                      {
+                        type: 'ext-link.join-club-link',
+                        properties: { href: clubData.link }
+                      }
+                    ],
+                    clubData.time
+                  ]
+                    .filter(identity)
+                    .map(datum => [datum, ' · '])
+                return [
+                  'span.club-links',
+                  [
+                    { type: 'a', properties: { href: '#' }, dataset: { club } },
+                    club
+                  ],
+                  ...(extraData.length ? [
+                    ' (',
+                    ...[].concat(...extraData).slice(1),
+                    ')'
+                  ] : [])
+                ]
+              })
+            ]
+          }
+        }
+        schedule.push([
+          {
+            type: 'div.schedule-period',
+            classes: [
+              period.name === 'GT' && 'gunn-together',
+              isLight(periodStyle.colour) ? 'light' : 'dark'
+            ],
+            style: getCSS(periodName.colour, period.name)
+          },
+          period.name !== 'GT' && [
+            'span.schedule-periodname',
+            periodName.label,
+            [
+              'span.pd-btns',
+              options.displayAddAsgn && [
+                {
+                  type: 'button.material.icon.pd-btn.add-asgn',
+                  // dataset: { pd:  },
+                  ripple: true
+                },
+                ['i.material-icons', 'add_task']
+              ]
+              periodName.link && [
+                {
+                  type: 'ext-link.material.icon.pd-btn',
+                  properties: { href: periodName.link },
+                  ripple: true
+                },
+                ['i.material-icons', '\ue89e']
+              ]
+            ],
+            period.gunnTogether || period.name === 'GT' && [
+              'div.gunn-together-badge',
+              localize('gunn-together/name')
+            ],
+            period.name === 'GT' && [
+              'span',
+              localize('gunn-together/subtitle')
+            ],
+            [
+              'span',
+              // TODO: make this a localized thing as well!
+              `${getHumanTime(
+               ('0' + period.start.hour).slice(-2) +
+                 ('0' + period.start.minute).slice(-2)
+             )} – ${getHumanTime(
+               ('0' + period.end.hour).slice(-2) +
+                 ('0' + period.end.minute).slice(-2)
+             )} · ${localizeWith('long', 'times', {
+               T: getUsefulTimePhrase(
+                 period.end.totalminutes - period.start.totalminutes
+               )
+             })}`
+           ],
+           ...clubItems
+          ]
+        ])
+      }
+    } else if (noSchool) {
+      schedule = ['schedule-noschool', getPeriod('NO_SCHOOL').label]
+    }
+
+    return [
+      'div.schedule-container',
+      ['h2.schedule-dayname', day],
+      [
+        'h3.schedule-date',
+        [
+          {
+            type: 'a.totally-not-a-link',
+            properties: { href: `?date=${ano}-${mez + 1}-${dia}` }
+          },
+          localizeWith('date', 'times', {
+            M: months[mez],
+            D: dia
+          })
+        ]
+      ],
+      noSchool && ['span.schedule-noschool', localize('summer')],
+      !summer && alternate && [
+        'span.schedule-alternatemsg',
+        applyL10n(localize('alt-msg'), {
+          D: alternate.description
+        })
+      ],
+      ...schedule
+    ]
   }
   function generateWrapper () {
     const wrapper = div()
@@ -394,7 +635,6 @@ export function scheduleApp (options = {}) {
         periods,
         alternate,
         summer,
-        getPeriodName,
         isSELF,
         date: { ano, mez, dia, weekday }
       } = getSchedule(d)
