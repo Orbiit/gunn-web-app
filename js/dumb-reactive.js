@@ -29,105 +29,233 @@ export function createL10nApplier (l10n, l10nArgs) {
     })
 }
 
+function diffArray (oldArr, newArr) {
+  return {
+    removed: oldArr.filter(item => !newArr.includes(item)),
+    added: newArr.filter(item => !oldArr.includes(item))
+  }
+}
+function diffObject (oldObj, newObj) {
+  return {
+    removed: Object.keys(oldObj).filter(key => !newObj[key]),
+    changed: Object.entries(newObj).filter(
+      ([key, value]) => oldObj[key] !== value
+    )
+  }
+}
+window.diffObject = diffObject
+
+function processStateArray (states) {
+  // Merge adjacent strings
+  const processed = []
+  for (let i = 0; i < states.length; i++) {
+    const state = states[i]
+    if (!state) continue
+    if (typeof state === 'string') {
+      if (i > 0 && typeof processed[processed.length - 1] === 'string') {
+        processed[processed.length - 1] += state
+      } else {
+        processed.push(state)
+      }
+    } else if (Array.isArray(state)) {
+      const processedChild = processState(state)
+      if (processedChild.tag === 'fragment') {
+        processed.push(...processedChild.children)
+      } else {
+        processed.push(processedChild)
+      }
+    } else {
+      console.error(state)
+      throw new Error('State is neither a string nor an array')
+    }
+  }
+  return processed
+}
 function processState ([type, ...children]) {
   if (typeof type === 'string') {
     type = { type }
   }
-  const [tag, classes] = type.type
+  const [tag, ...classes] = type.type.split('.')
   const elem = {
     tag,
     classes,
     properties: {},
+    style: {},
     dataset: {},
-    children: children.filter(identity).map(child => {
-      if (typeof child === 'string') {
-        return [child]
-      } else {
-        const processed = processState(child)
-        return processed.tag === 'fragment'
-          ? processed // Merge children of fragment
-          : [processed]
-      }
-    })
+    options: {}, // For custom elements
+    children: processStateArray(children)
   }
   if (type.classes) elem.classes.push(...type.classes.filter(identity))
   if (type.properties) Object.assign(elem.properties, type.properties)
+  if (type.style) Object.assign(elem.style, type.style)
   if (type.dataset) Object.assign(elem.dataset, type.dataset)
-  // Merge adjacent strings
-  for (let i = 1; i < elem.children.length; i++) {
-    if (
-      typeof elem.children[i] === 'string' &&
-      typeof elem.children[i - 1] === 'string'
-    ) {
-      elem.children[i - 1] += elem.children[i]
-      elem.children.splice(i, 1)
-      i--
-    }
-  }
+  if (type.options) Object.assign(elem.options, type.options)
   return elem
 }
 
-function updateRecordFromState (record, newState) {
+function updateRecordFromState (settings, record, newState) {
   if (typeof newState === 'string') {
     if (record.state !== newState) {
       record.node.nodeValue = newState
     }
   } else {
-    // TODO: diff properties, etc
-    applyChildChanges(
-      record.node,
-      record.state ? record.state.children : [],
-      newState.children
+    const oldState = record.state || {
+      classes: [],
+      dataset: {},
+      properties: {},
+      style: {}
+    }
+    // TODO: properties, dataset, etc
+    const { removed: removedClasses, added: addedClasses } = diffArray(
+      oldState.classes,
+      newState.classes
     )
+    if (removedClasses.length) {
+      record.node.classList.remove(...removedClasses)
+    }
+    if (addedClasses.length) {
+      record.node.classList.add(...addedClasses)
+    }
+
+    const {
+      removed: removedProperties,
+      changed: changedProperties
+    } = diffObject(oldState.properties, newState.properties)
+    for (const key of removedProperties) {
+      delete record.node[key]
+    }
+    for (const [key, value] of changedProperties) {
+      record.node[key] = value
+    }
+
+    const { removed: removedStyles, changed: changedStyles } = diffObject(
+      oldState.style,
+      newState.style
+    )
+    for (const property of removedStyles) {
+      if (property.includes('-')) {
+        record.node.style.removeProperty(property)
+      } else {
+        record.node.style[property] = null
+      }
+    }
+    for (const [property, value] of changedStyles) {
+      if (property.includes('-')) {
+        record.node.style.setProperty(property, value)
+      } else {
+        record.node.style[property] = value
+      }
+    }
+
+    const { removed: removedDataset, changed: changedDataset } = diffObject(
+      oldState.dataset,
+      newState.dataset
+    )
+    for (const key of removedDataset) {
+      delete record.node.dataset[key]
+    }
+    for (const [key, value] of changedDataset) {
+      record.node.dataset[key] = value
+    }
+
+    applyChildChanges(settings, record.node, record.records, newState.children)
   }
   record.state = newState
 }
 
-function newRecordFromState (parentNode, fromState, recordTarget = {}) {
+function newRecordFromState (
+  settings,
+  parentNode,
+  fromState,
+  recordTarget = { records: [] },
+  replaceNode = null
+) {
   if (typeof fromState === 'string') {
     recordTarget.node = document.createTextNode(fromState)
+  } else if (settings.customElems[fromState.tag]) {
+    recordTarget.node = settings.customElems[fromState.tag](fromState)
   } else {
     recordTarget.node = document.createElement(fromState.tag)
   }
-  updateRecordFromState(recordTarget, fromState)
+  if (replaceNode) {
+    if (replaceNode.parentNode) {
+      replaceNode.parentNode.replaceChild(recordTarget.node, replaceNode)
+    } else {
+      console.warn(
+        new Error('Weird, no parent node to replace in?'),
+        replaceNode
+      )
+    }
+  } else {
+    parentNode.appendChild(recordTarget.node)
+  }
+  updateRecordFromState(settings, recordTarget, fromState)
   recordTarget.state = fromState
   return recordTarget
 }
 
-function deleteRecord (parentNode, oldChildRecord) {
-  parentNode.removeChild(oldChildRecord.node)
-  oldChildRecord.node = null
+function deleteRecord (oldChildRecord, willReplace = false) {
+  if (!willReplace) {
+    if (oldChildRecord.node.parentNode) {
+      oldChildRecord.node.parentNode.removeChild(oldChildRecord.node)
+    } else {
+      console.warn(
+        new Error('Weird, no parent node to remove from?'),
+        oldChildRecord.node
+      )
+    }
+    oldChildRecord.node = null
+  }
   oldChildRecord.state = null
+  oldChildRecord.records.splice(0, oldChildRecord.records.length)
 }
 
-function applyChildChanges (parentNode, records, newState) {
+function applyChildChanges (settings, parentNode, records, newState) {
   for (let i = 0; i < newState.length; i++) {
     const newChildState = newState[i]
-    // If the state changed between text/element node or the tag changed, delete
-    // and recreate
-    if (
-      typeof records[i] !== typeof newChildState ||
-      (typeof newChildState !== 'string' &&
-        records[i].state.tag !== newChildState.tag)
-    ) {
-      deleteRecord(records[i])
-    }
-    if (!records[i]) {
-      records[i] = {}
-    }
     if (records[i]) {
-      updateRecordFromState(records[i], newChildState)
+      // If the state changed between text/element node or the tag changed, delete
+      // and recreate
+      if (
+        typeof records[i].state !== typeof newChildState ||
+        (typeof newChildState !== 'string' &&
+          records[i].state.tag !== newChildState.tag)
+      ) {
+        deleteRecord(records[i], true)
+      }
     } else {
-      newRecordFromState(parentNode, newChildState, records[i])
+      records[i] = { records: [] }
+    }
+    if (records[i].state) {
+      updateRecordFromState(settings, records[i], newChildState)
+    } else {
+      newRecordFromState(
+        settings,
+        parentNode,
+        newChildState,
+        records[i],
+        records[i].node
+      )
+    }
+  }
+  if (newState.length < records.length) {
+    const removed = records.splice(
+      newState.length,
+      records.length - newState.length
+    )
+    for (const record of removed) {
+      deleteRecord(record)
     }
   }
   // TODO: remove extra records
 }
 
-export function createReactive (wrapper) {
+export function createReactive (wrapper, { customElems = {} } = {}) {
   const records = []
   return newStateUnprocessed => {
-    const newState = processState(newStateUnprocessed)
-    applyChildChanges(wrapper, records, newState)
+    console.time('set state')
+    const newState = processStateArray(newStateUnprocessed)
+    applyChildChanges({ customElems }, wrapper, records, newState)
+    console.timeEnd('set state')
   }
 }

@@ -30,11 +30,11 @@ const applyPdEndedAgo = createL10nApplier(localize('self-ended', 'times'), {
   T: 'strong'
 })
 const applyPdEndingIn = createL10nApplier(localize('self-ending', 'times'), {
-  T: 'strong'
-})
-const applyPdStarting = createL10nApplier(localize('self-starting', 'times'), {
   T1: 'strong',
   T2: null
+})
+const applyPdStarting = createL10nApplier(localize('self-starting', 'times'), {
+  T: 'strong'
 })
 const applyAltSchedMsg = createL10nApplier(localize('alt-msg'), {
   D: 'strong'
@@ -265,20 +265,21 @@ export function scheduleApp (options = {}) {
     const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
     let schedule = []
     if (isSchool) {
-      schedule = ['span.schedule-end']
+      schedule = []
 
       const [lastRequiredPeriod] = periods
         .filter(({ name }) => !optionalPeriods.includes(name))
         .slice(-1)
       if (lastRequiredPeriod) {
-        schedule.push(
+        schedule.push([
+          'span.schedule-end',
           applyEndTime({
             T: getHumanTime(
               ('0' + lastRequiredPeriod.end.hour).slice(-2) +
                 ('0' + lastRequiredPeriod.end.minute).slice(-2)
             )
           })
-        )
+        ])
       }
 
       if (isToday) {
@@ -294,7 +295,7 @@ export function scheduleApp (options = {}) {
           schedule.push([
             'p.schedule-endingin',
             applyEndedAgo({
-              P: getPeriodSpan(period),
+              P: getPeriodSpan(period.name),
               T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
             })
           ])
@@ -312,7 +313,7 @@ export function scheduleApp (options = {}) {
             [
               'p.schedule-endingin',
               applyEndingIn({
-                P: getPeriodSpan(period),
+                P: getPeriodSpan(period.name),
                 T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
               })
             ]
@@ -322,7 +323,7 @@ export function scheduleApp (options = {}) {
           schedule.push([
             'p.schedule-endingin',
             applyStartingIn({
-              P: getPeriodSpan(period),
+              P: getPeriodSpan(period.name),
               T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
             })
           ])
@@ -338,11 +339,11 @@ export function scheduleApp (options = {}) {
               T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
             })
           } else if (totalminute < period.start.totalminutes) {
-            periodTimeLeft = applyPdEndingIn({
+            periodTimeLeft = applyPdStarting({
               T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
             })
           } else {
-            periodTimeLeft = applyPdStarting({
+            periodTimeLeft = applyPdEndingIn({
               T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
               T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
             })
@@ -365,19 +366,20 @@ export function scheduleApp (options = {}) {
               ['span.small-heading', localize('lunch-clubs')],
               ...clubs.map(club => {
                 const clubData = getClubByName && getClubByName(club)
-                const extraData =
-                  clubData &&
-                  [
-                    clubData.link && [
-                      {
-                        type: 'ext-link.join-club-link',
-                        properties: { href: clubData.link }
-                      }
-                    ],
-                    clubData.time
-                  ]
-                    .filter(identity)
-                    .map(datum => [datum, ' · '])
+                const extraData = clubData
+                  ? [
+                      clubData.link && [
+                        {
+                          type: 'ext-link.join-club-link',
+                          properties: { href: clubData.link }
+                        },
+                        localize('join')
+                      ],
+                      clubData.time
+                    ]
+                      .filter(identity)
+                      .map(datum => [' · ', datum])
+                  : []
                 return [
                   'span.club-links',
                   [
@@ -417,42 +419,38 @@ export function scheduleApp (options = {}) {
                 {
                   type: 'ext-link.material.icon.pd-btn',
                   properties: { href: periodStyle.link },
-                  ripple: true
+                  options: { ripple: true }
                 },
                 ['i.material-icons', '\ue89e']
               ]
-            ],
-            period.gunnTogether ||
-              (period.name === 'GT' && [
-                'div.gunn-together-badge',
-                localize('gunn-together/name')
-              ]),
-            period.name === 'GT' && [
-              'span',
-              localize('gunn-together/subtitle')
-            ],
-            [
-              'span',
-              // TODO: make this a localized thing as well!
-              `${getHumanTime(
-                ('0' + period.start.hour).slice(-2) +
-                  ('0' + period.start.minute).slice(-2)
-              )} – ${getHumanTime(
-                ('0' + period.end.hour).slice(-2) +
-                  ('0' + period.end.minute).slice(-2)
-              )} · ${localizeWith('long', 'times', {
-                T: getUsefulTimePhrase(
-                  period.end.totalminutes - period.start.totalminutes
-                )
-              })}`
-            ],
-            periodTimeLeft,
-            ...clubItems
-          ]
+            ]
+          ],
+          (period.gunnTogether || period.name === 'GT') && [
+            'div.gunn-together-badge',
+            localize('gunn-together/name')
+          ],
+          period.name === 'GT' && ['span', localize('gunn-together/subtitle')],
+          [
+            'span',
+            // TODO: make this a localized thing as well!
+            `${getHumanTime(
+              ('0' + period.start.hour).slice(-2) +
+                ('0' + period.start.minute).slice(-2)
+            )} – ${getHumanTime(
+              ('0' + period.end.hour).slice(-2) +
+                ('0' + period.end.minute).slice(-2)
+            )} · ${localizeWith('long', 'times', {
+              T: getUsefulTimePhrase(
+                period.end.totalminutes - period.start.totalminutes
+              )
+            })}`
+          ],
+          ['span', periodTimeLeft],
+          ...clubItems
         ])
       }
     } else if (noSchool) {
-      schedule = ['schedule-noschool', getPeriod('NO_SCHOOL').label]
+      schedule = [['span.schedule-noschool', getPeriod('NO_SCHOOL').label]]
     }
 
     return [
@@ -470,7 +468,7 @@ export function scheduleApp (options = {}) {
           })
         ]
       ],
-      noSchool && ['span.schedule-noschool', localize('summer')],
+      summer && ['span.schedule-noschool', localize('summer')],
       !summer &&
         alternate && [
           'span.schedule-alternatemsg',
@@ -480,10 +478,22 @@ export function scheduleApp (options = {}) {
     ]
   }
   if (!options.offset) options.offset = 0
-  const wrapper = document.createElement('div')
-  wrapper.className = 'schedule-container'
-  const setState = createReactive(wrapper)
-  container.appendChild(wrapper)
+  const setState = createReactive(container, {
+    customElems: {
+      'ext-link': ({ options: { ripple: rippleEffect } }) => {
+        const link = document.createElement('a')
+        link.target = '_blank'
+        link.rel = 'noopener noreferrer'
+        if (rippleEffect) ripple(link)
+        return link
+      },
+      'ripple-btn': () => {
+        const button = document.createElement('button')
+        ripple(button)
+        return button
+      }
+    }
+  })
   /**
    * onBlur runs once when the tab loses focus. This is to prevent Google from
    * using the current time in the tab title for the site name in Google Search
@@ -569,7 +579,9 @@ export function scheduleApp (options = {}) {
     element,
     container,
     render () {
+      console.time('total render')
       setState(getRenderedScheduleForDay(options.offset))
+      console.timeEnd('total render')
     },
     update () {
       options.update = true

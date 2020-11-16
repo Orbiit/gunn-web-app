@@ -1233,18 +1233,12 @@ export function initSchedule (manualAltSchedulesProm) {
       (next, { getDate, getSchedule, getUsefulTimePhrase }) => {
         const today = getDate(now())
         const currentMinute = (currentTime() - today.getTime()) / 1000 / 60
-        // Apparently getPeriodName gets the period type even though it's
-        // already in `periods[index].name` in order to deal with SELF
-        // becoming flex even though this could've been dealt with in
-        // getSchedule before returning the schedule??
-        const { periods, getPeriodName } = getSchedule(today)
+        const { periods } = getSchedule(today)
         const currentPeriod = periods.findIndex(
           period => currentMinute < period.end.totalminutes
         )
         const { label, link } =
-          (currentPeriod !== -1 &&
-            periodstyles[getPeriodName(currentPeriod)]) ||
-          {}
+          currentPeriod !== -1 ? periodstyles[periods[currentPeriod].name] : {}
         const text =
           currentPeriod === -1
             ? localize('over', 'times')
@@ -1268,7 +1262,7 @@ export function initSchedule (manualAltSchedulesProm) {
         const openLink = next.link && link
         const notification = new Notification(text, {
           icon:
-            currentPeriod === -1 ? null : getIcon(getPeriodName(currentPeriod)),
+            currentPeriod === -1 ? null : getIcon(periods[currentPeriod].name),
           body: openLink ? localize('notif-click-desc') : ''
         })
         notification.addEventListener('click', e => {
@@ -1514,9 +1508,10 @@ export function initSchedule (manualAltSchedulesProm) {
         const offset = e.clientX > swiping.startX ? -1 : 1
         if (offset !== swiping.swipingOffset) {
           swiping.swipingOffset = offset
-          swipePreview.innerHTML = scheduleapp.generateHtmlForOffset(
-            scheduleapp.offset + offset
-          )
+          // TODO: Swipe
+          // swipePreview.innerHTML = scheduleapp.generateHtmlForOffset(
+          //   scheduleapp.offset + offset
+          // )
           swipePreview.style.transform =
             offset === -1 ? 'translate(-100%)' : 'translate(100%)'
         }
