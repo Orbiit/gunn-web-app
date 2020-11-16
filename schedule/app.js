@@ -1,15 +1,45 @@
-import { applyL10n, createReactive } from '../js/dumb-reactive.js'
+import { createL10nApplier, createReactive } from '../js/dumb-reactive.js'
 import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { currentTime, escapeHTML, now } from '../js/utils.js'
+import { currentTime, identity, now } from '../js/utils.js'
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
 }
+
+const applyEndTime = createL10nApplier(localize('end-time', 'times'), {
+  T: 'strong'
+})
+const applyEndedAgo = createL10nApplier(localize('ended', 'times'), {
+  P: null,
+  T: 'strong'
+})
+const applyEndingIn = createL10nApplier(localize('ending', 'times'), {
+  P: null,
+  T: 'strong'
+})
+const applyStartingIn = createL10nApplier(localize('starting', 'times'), {
+  P: null,
+  T: 'strong'
+})
+const applyPdEndedAgo = createL10nApplier(localize('self-ended', 'times'), {
+  T: 'strong'
+})
+const applyPdEndingIn = createL10nApplier(localize('self-ending', 'times'), {
+  T: 'strong'
+})
+const applyPdStarting = createL10nApplier(localize('self-starting', 'times'), {
+  T1: 'strong',
+  T2: null
+})
+const applyAltSchedMsg = createL10nApplier(localize('alt-msg'), {
+  D: 'strong'
+})
+
 function getDateId (d = now()) {
   // toISOString uses UTC D:
   // Just returns a unique ID per day, so no leading zeroes needed
@@ -91,9 +121,6 @@ export function scheduleApp (options = {}) {
         'span.schedule-endinginperiod.gt-confuse',
         localize('gunn-together/name')
       ]
-      return `<span class="schedule-endinginperiod gt-confuse">${localize(
-        'gunn-together/name'
-      )}</span>`
     }
     return [
       {
@@ -102,24 +129,6 @@ export function scheduleApp (options = {}) {
       },
       getPeriod(period).label
     ]
-    return `<span style="${getCSS(
-      getPeriod(period).colour,
-      period
-    )}" class="schedule-endinginperiod">${escapeHTML(
-      getPeriod(period).label
-    )}</span>`
-  }
-  // function isSELFDay (month, date) {
-  //   return (
-  //     options.self &&
-  //     options.selfDays.includes(
-  //       ('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2)
-  //     )
-  //   )
-  // }
-  function isSELFDay () {
-    // Hacky solution to turn off the old behaviour of replacing flex with SELF
-    return false
   }
   getFontColour('rgba(0,0,0,0.2)')
   let setTitle = false
@@ -131,7 +140,6 @@ export function scheduleApp (options = {}) {
     const weekday = d.getDay()
     let alternate = false
     let summer = false
-    const isSELF = isSELFDay(mez, dia)
     let periods
     // For Gunn Together period resolution (see below)
     const gtWeek = Math.floor(
@@ -221,7 +229,6 @@ export function scheduleApp (options = {}) {
       periods,
       alternate,
       summer,
-      isSELF,
       date: { ano, mez, dia, weekday }
     }
   }
@@ -243,7 +250,6 @@ export function scheduleApp (options = {}) {
       periods,
       alternate,
       summer,
-      isSELF,
       date: { ano, mez, dia, weekday }
     } = getSchedule(d)
     const day = days[weekday]
@@ -265,12 +271,14 @@ export function scheduleApp (options = {}) {
         .filter(({ name }) => !optionalPeriods.includes(name))
         .slice(-1)
       if (lastRequiredPeriod) {
-        schedule.push(applyL10n(localize('end-time', 'times'), {
-          T: getHumanTime(
-            ('0' + lastRequiredPeriod.end.hour).slice(-2) +
-              ('0' + lastRequiredPeriod.end.minute).slice(-2)
-          )
-        }))
+        schedule.push(
+          applyEndTime({
+            T: getHumanTime(
+              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
+                ('0' + lastRequiredPeriod.end.minute).slice(-2)
+            )
+          })
+        )
       }
 
       if (isToday) {
@@ -280,40 +288,42 @@ export function scheduleApp (options = {}) {
             break
           }
         }
-        const period = periods[Math.min(i, periods.length - 1)]
-        if (i >= periods.length) {
+        const period = periods[Math.min(currPd, periods.length - 1)]
+        if (currPd >= periods.length) {
           // after school
           schedule.push([
             'p.schedule-endingin',
-            applyL10n(localize('ended', 'times'), {
+            applyEndedAgo({
               P: getPeriodSpan(period),
-              T: getUsefulTimePhrase(
-                totalminute - period.end.totalminutes
-              )
+              T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
             })
           ])
         } else if (totalminute >= period.start.totalminutes) {
           // during a period
-          const progress = ((totalminute - period.start.totalminutes) /
-            (period.end.totalminutes - period.start.totalminutes)) *
+          const progress =
+            ((totalminute - period.start.totalminutes) /
+              (period.end.totalminutes - period.start.totalminutes)) *
             100
-          schedule.push([
-            'div.schedule-periodprogress',
-            [{ type: 'div', style: { width: progress + '%' } }]
-          ], [
-            'p.schedule-endingin',
-            applyL10n(localize('ending', 'times'), {
-              P: getPeriodSpan(period), // TODO: get period span?
-              T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
-            })
-          ])
+          schedule.push(
+            [
+              'div.schedule-periodprogress',
+              [{ type: 'div', style: { width: progress + '%' } }]
+            ],
+            [
+              'p.schedule-endingin',
+              applyEndingIn({
+                P: getPeriodSpan(period),
+                T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+              })
+            ]
+          )
         } else {
           // passing period or before school
           schedule.push([
             'p.schedule-endingin',
-            applyL10n(localize('ending', 'times'), {
-              P: period, // TODO: get period span?
-              T: getUsefulTimePhrase(periods[i].start.totalminutes - totalminute)
+            applyStartingIn({
+              P: getPeriodSpan(period),
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
             })
           ])
         }
@@ -322,19 +332,21 @@ export function scheduleApp (options = {}) {
       for (const period of periods) {
         const periodStyle = getPeriod(period.name)
         let periodTimeLeft = null
-        if (totalminute >= period.end.totalminutes) {
-          periodTimeLeft = applyL10n(localize('self-ended', 'times'), {
-            T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
-          })
-        } else if (totalminute < period.start.totalminutes) {
-          periodTimeLeft = applyL10n(localize('self-starting', 'times'), {
-            T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
-          })
-        } else {
-          periodTimeLeft = applyL10n(localize('self-ending', 'times'), {
-            T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
-            T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
-          })
+        if (isToday) {
+          if (totalminute >= period.end.totalminutes) {
+            periodTimeLeft = applyPdEndedAgo({
+              T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
+            })
+          } else if (totalminute < period.start.totalminutes) {
+            periodTimeLeft = applyPdEndingIn({
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+            })
+          } else {
+            periodTimeLeft = applyPdStarting({
+              T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
+              T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
+            })
+          }
         }
         // if (assignments[period.name]) {
         //   // TODO
@@ -372,11 +384,9 @@ export function scheduleApp (options = {}) {
                     { type: 'a', properties: { href: '#' }, dataset: { club } },
                     club
                   ],
-                  ...(extraData.length ? [
-                    ' (',
-                    ...[].concat(...extraData).slice(1),
-                    ')'
-                  ] : [])
+                  ...(extraData.length
+                    ? [' (', ...[].concat(...extraData).slice(1), ')']
+                    : [])
                 ]
               })
             ]
@@ -389,11 +399,11 @@ export function scheduleApp (options = {}) {
               period.name === 'GT' && 'gunn-together',
               isLight(periodStyle.colour) ? 'light' : 'dark'
             ],
-            style: getCSS(periodName.colour, period.name)
+            style: getCSS(periodStyle.colour, period.name)
           },
           period.name !== 'GT' && [
             'span.schedule-periodname',
-            periodName.label,
+            periodStyle.label,
             [
               'span.pd-btns',
               options.displayAddAsgn && [
@@ -402,20 +412,21 @@ export function scheduleApp (options = {}) {
                   dataset: { pd: period.name }
                 },
                 ['i.material-icons', 'add_task']
-              ]
-              periodName.link && [
+              ],
+              periodStyle.link && [
                 {
                   type: 'ext-link.material.icon.pd-btn',
-                  properties: { href: periodName.link },
+                  properties: { href: periodStyle.link },
                   ripple: true
                 },
                 ['i.material-icons', '\ue89e']
               ]
             ],
-            period.gunnTogether || period.name === 'GT' && [
-              'div.gunn-together-badge',
-              localize('gunn-together/name')
-            ],
+            period.gunnTogether ||
+              (period.name === 'GT' && [
+                'div.gunn-together-badge',
+                localize('gunn-together/name')
+              ]),
             period.name === 'GT' && [
               'span',
               localize('gunn-together/subtitle')
@@ -424,18 +435,19 @@ export function scheduleApp (options = {}) {
               'span',
               // TODO: make this a localized thing as well!
               `${getHumanTime(
-               ('0' + period.start.hour).slice(-2) +
-                 ('0' + period.start.minute).slice(-2)
-             )} – ${getHumanTime(
-               ('0' + period.end.hour).slice(-2) +
-                 ('0' + period.end.minute).slice(-2)
-             )} · ${localizeWith('long', 'times', {
-               T: getUsefulTimePhrase(
-                 period.end.totalminutes - period.start.totalminutes
-               )
-             })}`
-           ],
-           ...clubItems
+                ('0' + period.start.hour).slice(-2) +
+                  ('0' + period.start.minute).slice(-2)
+              )} – ${getHumanTime(
+                ('0' + period.end.hour).slice(-2) +
+                  ('0' + period.end.minute).slice(-2)
+              )} · ${localizeWith('long', 'times', {
+                T: getUsefulTimePhrase(
+                  period.end.totalminutes - period.start.totalminutes
+                )
+              })}`
+            ],
+            periodTimeLeft,
+            ...clubItems
           ]
         ])
       }
@@ -459,12 +471,11 @@ export function scheduleApp (options = {}) {
         ]
       ],
       noSchool && ['span.schedule-noschool', localize('summer')],
-      !summer && alternate && [
-        'span.schedule-alternatemsg',
-        applyL10n(localize('alt-msg'), {
-          D: alternate.description
-        })
-      ],
+      !summer &&
+        alternate && [
+          'span.schedule-alternatemsg',
+          applyAltSchedMsg({ D: alternate.description })
+        ],
       ...schedule
     ]
   }
@@ -482,7 +493,7 @@ export function scheduleApp (options = {}) {
   function onBlur () {
     setTitle = true
     // Recalculate the schedule to update the title.
-    setDay(options.offset)
+    // setDay(options.offset)
     window.removeEventListener('blur', onBlur, false)
   }
   window.addEventListener('blur', onBlur, false)
@@ -558,7 +569,7 @@ export function scheduleApp (options = {}) {
     element,
     container,
     render () {
-      setState(getRenderedScheduleForDay((options.offset)))
+      setState(getRenderedScheduleForDay(options.offset))
     },
     update () {
       options.update = true
@@ -612,17 +623,12 @@ export function scheduleApp (options = {}) {
           today.getDate() - today.getDay() + i
         )
         const day = []
-        const isSELF = isSELFDay(d.getMonth(), d.getDate())
         const sched = getSchedule(d).periods
         if (sched.length)
           for (const period of sched) {
-            // q stands for 'quick' because I'm too lazy to make a variable name
-            // but I am not lazy enough to make a comment explaining it
-            const q = getPeriod(
-              period.name === 'Flex' && isSELF ? 'SELF' : period.name
-            )
-            q.id = period.name
-            day.push(q)
+            const style = getPeriod(period.name)
+            style.id = period.name
+            day.push(style)
           }
         if (today.getDay() === i) day.today = true
         day.date = d
@@ -689,7 +695,7 @@ export function scheduleApp (options = {}) {
     },
     getTotalMinutes,
     getPeriodSpan,
-    getSchedule,
+    getSchedule
     // generateHtmlForOffset: generateDay
   }
   element.appendChild(container)

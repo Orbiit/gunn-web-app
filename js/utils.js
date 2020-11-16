@@ -12,6 +12,7 @@ export const googleCalendarId = encodeURIComponent(
 )
 
 export const NADA = () => null
+export const identity = value => value
 
 export function shuffleInPlace (arr) {
   for (let i = arr.length; i--; ) {
