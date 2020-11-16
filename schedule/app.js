@@ -177,9 +177,9 @@ export function scheduleApp (options = {}) {
     periods = periods.map(period => {
       if (period.name === 'GT') {
         // So far:
-        // GTPD 55 643217674
+        // GTPD 55 643217674ss ??
         // Week 0         1
-        //      012345678901
+        //      012345678901234567
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
@@ -187,6 +187,8 @@ export function scheduleApp (options = {}) {
         else if (gtWeek >= 8 && gtWeek <= 9) name = ' ABCDEFG'[15 - gtWeek]
         else if (gtWeek === 10) name = 'G'
         else if (gtWeek === 11) name = 'D'
+        // Week 12 was an alternate schedule and already listed SELF
+        else if (gtWeek === 12 || gtWeek === 13) name = 'SELF'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
