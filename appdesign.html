@@ -9,7 +9,7 @@
       window.logError = function (errorText) {
         if (!window.errors) {
           window.errors =
-            '[!] If this covers your screen, then UGWA has crashed! Please send a screenshot or copy and paste this error to seanthesheep22@outlook.com\n'
+            '[!] If this covers your screen, then UGWA has crashed! Please send a screenshot or copy and paste this error to seanthesheep22+gwa@outlook.com\n'
         }
         window.errors += '\n' + errorText
         if (window.errorLogger) window.errorLogger.value = window.errors
@@ -151,9 +151,9 @@
 
       /*
       const start = Date.now()
-      const baseTime = new Date(2020, 8, 23, 11, 39, 50).getTime()
+      const baseTime = new Date(2020, 9, 27, 23, 50, 50).getTime()
       // const baseTime = new Date().getTime()
-      const speed = 1
+      const speed = 60
       setCurrentTime(() => {
         return (Date.now() - start) * speed + baseTime
       })
@@ -237,8 +237,9 @@
 
       <h1>
         <span data-l10n="support"></span>
-        <button class="material icon to-right">
-          <i class="material-icons" id="hide-support">expand_less</i>
+        <span class="flex"></span>
+        <button class="material icon">
+          <i class="material-icons" id="hide-support">&#xe5ce;</i>
         </button>
       </h1>
       <p class="secondary" data-l10n="sponsor"></p>
@@ -310,6 +311,7 @@
       <div style="display: none;">
         <h1>
           <span data-l10n="comm"></span>
+          <span class="flex"></span>
           <a
             href="./prev-chats.html"
             target="_blank"
@@ -468,6 +470,14 @@
         <button class="material icon" id="next-psa" disabled>
           <i class="material-icons">&#xE5CC;</i>
         </button>
+        <button
+          class="material"
+          id="all-unread"
+          data-l10n="mark-psas-read"
+          style="display: none;"
+        >
+          <i class="material-icons" data-l10n-arg="icon">&#xe5dd;</i>
+        </button>
         <span id="new-psa" data-l10n="new"></span>
       </h1>
       <div
@@ -593,7 +603,7 @@
           <span data-l10n="show-h"></span>
         </label>
       </p>
-      <!-- <button class="material raised" id="edit-h" data-l10n="edit-h"></button> -->
+      <button class="material raised" id="edit-h" data-l10n="edit-h"></button>
       <p data-l10n="open-link-before">
         <span
           class="material-dropdown"
@@ -804,7 +814,7 @@
             data-l10n-arg="gh"
           ></a>
           <a
-            href="mailto:seanthesheep22@outlook.com"
+            href="mailto:seanthesheep22+gwa@outlook.com"
             target="_blank"
             rel="noopener noreferrer"
             data-l10n-arg="email"

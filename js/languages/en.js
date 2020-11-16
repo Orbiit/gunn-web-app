@@ -58,7 +58,7 @@ export default {
       '{name|Other browsers}—click the star button in the address bar or right click the tab and select "Pin tab"',
     'disable-lists': 'Disable club/staff lists',
     'edit-asgn': 'Assignment properties',
-    // 'edit-h': 'Set period 8 times',
+    'edit-h': 'Set period 8 times',
     errors: 'Runtime error log',
     'export-copy': 'copy export code',
     'export-file': 'download export code',
@@ -88,6 +88,7 @@ export default {
     lonely:
       "UGWA will graduate this school year. You should try making your own Gunn schedule app, so it can be advertised by UGWA for next year's students!",
     map: 'Map',
+    'mark-psas-read': '{icon} Mark all as read',
     'martin-ad': "{ad|Compelling utility} Martin's GPA Calculation Website",
     material:
       "Design based on {link|Material Design}'s icons, colours, and specifications.",
@@ -121,7 +122,7 @@ export default {
     'prev-chats': 'Previous chats',
     reload: 'Restart UGWA',
     'report-bugs':
-      'You can {gh|make a new issue on GitHub} or email {email|seanthesheep22@outlook.com} to make a feature request or bug report.',
+      'You can {gh|make a new issue on GitHub} or email {email|seanthesheep22+gwa@outlook.com} to make a feature request or bug report.',
     s1a: 'Crisis Text Line',
     s1b: '741-741',
     s1c:

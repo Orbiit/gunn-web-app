@@ -65,8 +65,11 @@ label {
 .right {
   text-align: right;
 }
+.flex {
+  flex: auto;
+}
 a {
-  color: #ff594c;
+  color: var(--theme);
   text-decoration: none;
 }
 a:hover,
@@ -127,6 +130,8 @@ input[type='number']::-webkit-outer-spin-button {
 .section h1 {
   font-size: 20px;
   font-weight: normal;
+  display: flex;
+  align-items: center;
 }
 .section h2 {
   font-size: 16px;
@@ -190,7 +195,7 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: var(--focus);
 }
 body #footer .footer-item.active {
-  color: #ff594c;
+  color: var(--theme);
   padding-top: 6px;
 }
 #footer .footer-item i {
@@ -234,6 +239,7 @@ body #footer .footer-item.active {
   margin: 0;
   opacity: 0.5;
   line-height: 1;
+  justify-content: center;
 }
 #weekwrapper div.today h1 {
   font-weight: bold;
@@ -541,7 +547,6 @@ body.light .percent-wrapper {
 }
 
 .chat-history {
-  float: right;
   margin-top: -6px;
 }
 .textarea {
@@ -601,7 +606,7 @@ body.light .percent-wrapper {
   white-space: pre-wrap;
 }
 .strikethrough {
-  color: #ff594c;
+  color: var(--theme);
   text-decoration: line-through;
 }
 .chat-input-length {
@@ -782,9 +787,11 @@ body.light .percent-wrapper {
 }
 .h-day {
   display: flex;
+  align-items: center;
 }
 .h-day .material-switch {
   vertical-align: middle;
+  margin-left: 20px;
 }
 .h-day .material-range {
   width: 100%;
@@ -887,10 +894,6 @@ body.light .percent-wrapper {
 p.secondary {
   color: var(--secondary);
   font-size: 14px;
-}
-.to-right {
-  float: right;
-  margin-bottom: -6px;
 }
 .collapsible {
   overflow: hidden;

@@ -137,6 +137,9 @@ export const isAppDesign = window.location.pathname.endsWith('appdesign.html')
   ? '?for=appdesign'
   : ''
 
+// Should be in hexadecimal for the colour picker
+export const THEME_COLOUR = '#ff594c'
+
 const scrim = document.createElement('div')
 scrim.className = 'scrim'
 let openDialog = null

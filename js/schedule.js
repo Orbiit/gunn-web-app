@@ -32,6 +32,7 @@ import {
   now,
   schoolTimeZone,
   showDialog,
+  THEME_COLOUR,
   toEach
 } from './utils.js'
 
@@ -301,7 +302,8 @@ export function initSchedule (manualAltSchedulesProm) {
         id: 'show-h',
         on: 'yes-h-period2',
         off: 'no-h-period',
-        onChange: () => {
+        onChange: checked => {
+          hEditBtn.disabled = !checked
           scheduleapp.render()
           makeWeekHappen()
         }
@@ -410,11 +412,11 @@ export function initSchedule (manualAltSchedulesProm) {
   const hideSupportIcon = document.getElementById('hide-support')
   const supportList = document.getElementById('support-list')
   if (formatOptions.showRock === 'hide') {
-    hideSupportIcon.textContent = 'expand_more'
+    hideSupportIcon.textContent = '\ue5cf'
     supportList.style.height = 0
   }
   hideSupportIcon.parentNode.addEventListener('click', e => {
-    const nowHidden = hideSupportIcon.textContent === 'expand_less'
+    const nowHidden = hideSupportIcon.textContent === '\ue5ce'
     if (supportList.style.height) {
       supportList.style.height = nowHidden ? 0 : supportList.scrollHeight + 'px'
     } else {
@@ -425,18 +427,10 @@ export function initSchedule (manualAltSchedulesProm) {
           : supportList.scrollHeight + 'px'
       })
     }
-    hideSupportIcon.textContent = nowHidden ? 'expand_more' : 'expand_less'
+    hideSupportIcon.textContent = nowHidden ? '\ue5cf' : '\ue5ce'
     formatOptions.showRock = nowHidden ? 'hide' : 'show'
     saveFormatOptions()
   })
-
-  // function getHumanTime (minutes) {
-  //   if (formatOptions.hourCycle === '0') return minutes % 60
-  //   const h = Math.floor(minutes / 60)
-  //   const m = ('0' + (minutes % 60)).slice(-2)
-  //   if (formatOptions.hourCycle === '24') return `${h}:${m}`
-  //   else return `${((h - 1) % 12) + 1}:${m}${h < 12 ? 'a' : 'p'}m`
-  // }
 
   function getPeriodSpan (pd) {
     // yay hoisting (see three lines above)
@@ -1138,8 +1132,17 @@ export function initSchedule (manualAltSchedulesProm) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
   }
-  // const hPeriods =
-  //   JSON.parse(cookie.getItem('[gunn-web-app] scheduleapp.h')) || []
+  const hPeriods = JSON.parse(
+    cookie.getItem('[gunn-web-app] scheduleapp.h')
+  ) || [
+    null,
+    [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    null,
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    null,
+    null
+  ]
   const scheduleAppWrapper = document.querySelector('#schedulewrapper')
   let manualAltSchedules = {}
   manualAltSchedulesProm.then(schedules => {
@@ -1154,16 +1157,7 @@ export function initSchedule (manualAltSchedulesProm) {
     alternates: alternates,
     selfDays: selfDays,
     get hPeriods () {
-      return formatOptions.showH === 'yes-h-period2'
-        ? [
-            null,
-            [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
-            [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-            null,
-            [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-            null
-          ]
-        : []
+      return formatOptions.showH === 'yes-h-period2' ? hPeriods : []
     },
     offset: 0,
     update: true,
@@ -1299,7 +1293,9 @@ export function initSchedule (manualAltSchedulesProm) {
           const openLinkBefore = +formatOptions.timeBeforeAutoLink
           const next = getNext(
             (pdTime, nowTime, pdName) =>
-              periodstyles[pdName].link && pdTime - openLinkBefore > nowTime,
+              periodstyles[pdName] &&
+              periodstyles[pdName].link &&
+              pdTime - openLinkBefore > nowTime,
             { end: false }
           )
           if (next) {
@@ -1577,9 +1573,11 @@ export function initSchedule (manualAltSchedulesProm) {
   )
   function addPeriodCustomisers (elem) {
     function period (name, id) {
-      const { label: val = '', colour = '#FF594C', link = '' } = periodstyles[
-        id
-      ]
+      const {
+        label: val = '',
+        colour = THEME_COLOUR,
+        link = ''
+      } = periodstyles[id]
       let isImage = colour[0] !== '#'
       let init = true
       const div = document.createElement('div')
@@ -1611,7 +1609,8 @@ export function initSchedule (manualAltSchedulesProm) {
       pickertrigger.classList.add('customiser-colour')
       if (isImage) {
         pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
-        if (periodstyles[id].update) periodstyles[id].update() // colour input already triggers this, so we only need to update image
+        // colour input already triggers this, so we only need to update image
+        if (periodstyles[id].update) periodstyles[id].update()
       }
       pickertrigger.addEventListener(
         'click',
@@ -1620,7 +1619,7 @@ export function initSchedule (manualAltSchedulesProm) {
         },
         false
       )
-      picker.colour = isImage ? '#FF594C' : colour
+      picker.colour = isImage ? THEME_COLOUR : colour
       div.appendChild(pickertrigger)
       const inputWrapper = document.createElement('div')
       inputWrapper.className = 'inputs-wrapper'
@@ -1784,11 +1783,8 @@ export function initSchedule (manualAltSchedulesProm) {
   addCustomiser(localizeWith('periodx', 'other', { X: '5' }), 'E')
   addCustomiser(localizeWith('periodx', 'other', { X: '6' }), 'F')
   addCustomiser(localizeWith('periodx', 'other', { X: '7' }), 'G')
-  // Always show the H period customisation because period customisers can't be
-  // (easily) added in dynamically, and the show H period option doesn't reload.
-  // if (formatOptions.showH === 'yes-h-period2') {
+  // Always showing because why not (it's hard to dynamically show/hide this)
   addCustomiser(localizeWith('periodx', 'other', { X: '8' }), 'H')
-  // }
   addCustomiser(localize('flex'), 'Flex')
   // if (+formatOptions.showSelf)
   addCustomiser(localize('self'), 'SELF')
@@ -1837,90 +1833,124 @@ export function initSchedule (manualAltSchedulesProm) {
     showDialog(iframeDialog)
   }
 
-  // TEMP: H period editor not needed this year?
-  // const MIN_TIME = 15 * 60
-  // const MAX_TIME = 21 * 60
-  // const MIN_LENGTH = 10
-  // const STEP = 5
-  // const hEditor = document.getElementById('h-editor')
-  // document.getElementById('edit-h').addEventListener('click', e => {
-  //   showDialog(hEditor)
-  // })
-  // const hDays = document.createDocumentFragment()
-  // for (let day = 1; day <= 5; day++) {
-  //   const wrapper = document.createElement('div')
-  //   wrapper.classList.add('h-day')
-  //   hDays.appendChild(wrapper)
-  //
-  //   const checkbox = document.createElement('div')
-  //   checkbox.classList.add('material-switch')
-  //   checkbox.tabIndex = 0
-  //   if (hPeriods[day]) checkbox.classList.add('checked')
-  //   checkbox.addEventListener('click', e => {
-  //     // checkbox class checked not yet toggled because the listener that does that is added later
-  //     checkbox.classList.toggle('checked')
-  //     if (checkbox.classList.contains('checked')) {
-  //       range.elem.classList.remove('disabled')
-  //       hPeriods[day] = range.range.map(n =>
-  //         Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
-  //       )
-  //       label.textContent =
-  //         days[day] +
-  //         ' ' +
-  //         getHumanTime(hPeriods[day][0]) +
-  //         '–' +
-  //         getHumanTime(hPeriods[day][1])
-  //     } else {
-  //       range.elem.classList.add('disabled')
-  //       hPeriods[day] = null
-  //       label.textContent = days[day]
-  //     }
-  //     scheduleapp.render()
-  //     cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
-  //   })
-  //   wrapper.appendChild(checkbox)
-  //
-  //   const sliderWrapper = document.createElement('div')
-  //   sliderWrapper.classList.add('slider-wrapper')
-  //   wrapper.appendChild(sliderWrapper)
-  //
-  //   const label = document.createElement('span')
-  //   label.classList.add('label')
-  //   label.textContent =
-  //     days[day] +
-  //     ' ' +
-  //     (hPeriods[day]
-  //       ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1])
-  //       : '')
-  //   sliderWrapper.appendChild(label)
-  //
-  //  const range = createRange({
-  //    minRange: MIN_LENGTH / (MAX_TIME - MIN_TIME),
-  //    onchange: r => {
-  //      range.range = r.map(
-  //        n =>
-  //          (Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP) /
-  //          (MAX_TIME - MIN_TIME)
-  //      )
-  //      hPeriods[day] = range.range.map(n =>
-  //        Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
-  //      )
-  //      scheduleapp.render()
-  //      cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
-  //    },
-  //    oninput: r => {
-  //      r = r.map(
-  //        n => Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP + MIN_TIME
-  //      )
-  //      label.textContent =
-  //        days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
-  //    }
-  //  })
-  //   range.range = (hPeriods[day] || [17 * 60, 18 * 60]).map(
-  //     m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME)
-  //   )
-  //   if (!hPeriods[day]) range.elem.classList.add('disabled')
-  //   sliderWrapper.appendChild(range.elem)
-  // }
-  // document.getElementById('h-days').appendChild(hDays)
+  const hEditBtn = document.getElementById('edit-h')
+  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen, hEditBtn)
+}
+
+function initHEditor (
+  hPeriods,
+  scheduleapp,
+  formatOptions,
+  makeWeekHappen,
+  hEditBtn
+) {
+  function getHumanTime (minutes) {
+    if (formatOptions.hourCycle === '0') return minutes % 60
+    const h = Math.floor(minutes / 60)
+    const m = ('0' + (minutes % 60)).slice(-2)
+    if (formatOptions.hourCycle === '24') return `${h}:${m}`
+    else return `${((h - 1) % 12) + 1}:${m}${h < 12 ? 'a' : 'p'}m`
+  }
+
+  const defaultHPeriods = [
+    null,
+    [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+    null
+  ]
+
+  const days = localize('days').split('  ')
+  const MIN_TIME = 15 * 60
+  const MAX_TIME = 21 * 60
+  const MIN_LENGTH = 10
+  const STEP = 5
+  const hEditor = document.getElementById('h-editor')
+  hEditBtn.addEventListener('click', e => {
+    showDialog(hEditor)
+  })
+  hEditBtn.disabled = formatOptions.showH !== 'yes-h-period2'
+  const hDays = document.createDocumentFragment()
+  for (let day = 1; day <= 5; day++) {
+    const wrapper = document.createElement('div')
+    wrapper.classList.add('h-day')
+    hDays.appendChild(wrapper)
+
+    const checkbox = document.createElement('div')
+    checkbox.classList.add('material-switch')
+    checkbox.tabIndex = 0
+    if (hPeriods[day]) checkbox.classList.add('checked')
+    checkbox.addEventListener('click', e => {
+      // checkbox class checked not yet toggled because the listener that does that is added later
+      checkbox.classList.toggle('checked')
+      if (checkbox.classList.contains('checked')) {
+        range.elem.classList.remove('disabled')
+        hPeriods[day] = range.range.map(n =>
+          Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
+        )
+        label.textContent =
+          days[day] +
+          ' ' +
+          getHumanTime(hPeriods[day][0]) +
+          '–' +
+          getHumanTime(hPeriods[day][1])
+      } else {
+        range.elem.classList.add('disabled')
+        hPeriods[day] = null
+        label.textContent = days[day]
+      }
+      scheduleapp.render()
+      makeWeekHappen()
+      cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
+    })
+    wrapper.appendChild(checkbox)
+
+    const sliderWrapper = document.createElement('div')
+    sliderWrapper.classList.add('slider-wrapper')
+    wrapper.appendChild(sliderWrapper)
+
+    const label = document.createElement('span')
+    label.classList.add('label')
+    label.textContent =
+      days[day] +
+      ' ' +
+      (hPeriods[day]
+        ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1])
+        : '')
+    sliderWrapper.appendChild(label)
+
+    const range = createRange({
+      minRange: MIN_LENGTH / (MAX_TIME - MIN_TIME),
+      onchange: r => {
+        range.range = r.map(
+          n =>
+            (Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP) /
+            (MAX_TIME - MIN_TIME)
+        )
+        hPeriods[day] = range.range.map(n =>
+          Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
+        )
+        // Apparently there's this `autorender` option that I should be
+        // checking? but meh
+        scheduleapp.render()
+        makeWeekHappen()
+        cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
+      },
+      oninput: r => {
+        r = r.map(
+          n => Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP + MIN_TIME
+        )
+        label.textContent =
+          days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
+      }
+    })
+    range.range = (hPeriods[day] || defaultHPeriods[day]).map(
+      m => (m - MIN_TIME) / (MAX_TIME - MIN_TIME)
+    )
+    if (!hPeriods[day]) range.elem.classList.add('disabled')
+    sliderWrapper.appendChild(range.elem)
+  }
+  document.getElementById('h-days').appendChild(hDays)
 }

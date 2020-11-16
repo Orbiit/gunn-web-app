@@ -121,6 +121,12 @@ export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
 }
+function getDateId (d = now()) {
+  // toISOString uses UTC D:
+  // Just returns a unique ID per day, so no leading zeroes needed
+  // Adding 1 to month to make it human readable, though
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+}
 const colourtoy = document.createElement('div')
 function isLight (colour) {
   colourtoy.style.backgroundColor = colour
@@ -203,13 +209,17 @@ export function scheduleApp (options = {}) {
       getPeriod(period).label
     )}</span>`
   }
-  function isSELFDay (month, date) {
-    return (
-      options.self &&
-      options.selfDays.includes(
-        ('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2)
-      )
-    )
+  // function isSELFDay (month, date) {
+  //   return (
+  //     options.self &&
+  //     options.selfDays.includes(
+  //       ('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2)
+  //     )
+  //   )
+  // }
+  function isSELFDay () {
+    // Hacky solution to turn off the old behaviour of replacing flex with SELF
+    return false
   }
   getFontColour('rgba(0,0,0,0.2)')
   let setTitle = false
@@ -286,12 +296,19 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
-        // So far: 55 64321
-        //         012345678
+        // So far:
+        // GTPD 55 643217674ss ??
+        // Week 0         1
+        //      012345678901234567
         let name
         if (gtWeek >= 0 && gtWeek < 2) name = 'E'
         else if (gtWeek === 3) name = 'F'
         else if (gtWeek < 8) name = 'ABCDEFG'[7 - gtWeek]
+        else if (gtWeek >= 8 && gtWeek <= 9) name = ' ABCDEFG'[15 - gtWeek]
+        else if (gtWeek === 10) name = 'G'
+        else if (gtWeek === 11) name = 'D'
+        // Week 12 was an alternate schedule and already listed SELF
+        else if (gtWeek === 12 || gtWeek === 13) name = 'SELF'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
@@ -316,6 +333,12 @@ export function scheduleApp (options = {}) {
       isSELF,
       date: { ano, mez, dia, weekday }
     }
+  }
+  function offsetToDate (offset, d = now()) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
+  }
+  function getTotalMinutes (d = now()) {
+    return d.getMinutes() + d.getHours() * 60
   }
   function generateWrapper () {
     const wrapper = div()
@@ -362,9 +385,9 @@ export function scheduleApp (options = {}) {
     function setDay (offset = 0) {
       let d = now()
       let checkfuture = true
-      const totalminute = d.getMinutes() + d.getHours() * 60
+      const totalminute = getTotalMinutes(d)
       if (offset !== 0) {
-        d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
+        d = offsetToDate(offset, d)
         checkfuture = false
       }
       const {
@@ -717,6 +740,10 @@ export function scheduleApp (options = {}) {
     return null
   }
   const timers = []
+  const onNewDays = []
+  const onViewingDayChanges = []
+  const onMinutes = []
+  let lastToday = getDateId()
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID, animationID
   function checkMinute () {
@@ -733,6 +760,9 @@ export function scheduleApp (options = {}) {
           update()
         }
       }
+      for (const trigger of onMinutes) {
+        trigger()
+      }
     }
     if (options.update) {
       timeoutID = setTimeout(checkMinute, checkSpeed)
@@ -744,6 +774,10 @@ export function scheduleApp (options = {}) {
         onNext()
         update()
       }
+    }
+    if (getDateId() !== lastToday) {
+      lastToday = getDateId()
+      for (const onNewDay of onNewDays) onNewDay()
     }
   }
   const returnval = {
@@ -771,8 +805,16 @@ export function scheduleApp (options = {}) {
       return options.offset
     },
     set offset (o) {
+      const oldOffset = options.offset
       options.offset = o
       if (options.autorender) returnval.render()
+      for (const listener of onViewingDayChanges) {
+        listener({
+          offset: options.offset,
+          date: offsetToDate(options.offset),
+          change: oldOffset !== o
+        })
+      }
     },
     setPeriod (id, { name, colour, link }, update) {
       if (name !== undefined) options.periods[id].label = name
@@ -815,6 +857,7 @@ export function scheduleApp (options = {}) {
       }
       return week
     },
+    // Runs the given callback some amount of time before a period starts/ends
     addTimer (getNextFn, onNext, timer = { enabled: true }) {
       timer.update = () => {
         entry.next = timer.enabled ? getNextFn(getNext) : null
@@ -831,6 +874,47 @@ export function scheduleApp (options = {}) {
       timers.push(entry)
       return timer
     },
+    // Runs the given callback when a new day starts
+    onNewDay (listener, callImmediately = false) {
+      onNewDays.push(listener)
+      if (callImmediately) listener()
+    },
+    // Runs the given callback when the user views a different day
+    onViewingDayChange (
+      listener,
+      { onNewDay = false, callImmediately = false } = {}
+    ) {
+      onViewingDayChanges.push(listener)
+      if (onNewDay) {
+        onNewDays.push(() => {
+          listener({
+            offset: options.offset,
+            date: offsetToDate(options.offset),
+            change: 'new day'
+          })
+        })
+      }
+      if (callImmediately) {
+        listener({
+          offset: options.offset,
+          date: offsetToDate(options.offset),
+          change: 'init'
+        })
+      }
+    },
+    // Runs the given callback when the minute changes
+    onMinute (listener, callImmediately = false) {
+      const trigger = () => {
+        listener({
+          getUsefulTimePhrase,
+          totalMinutes: getTotalMinutes()
+        })
+      }
+      onMinutes.push(trigger)
+      if (callImmediately) trigger()
+      return trigger
+    },
+    getTotalMinutes,
     getPeriodSpan,
     getSchedule,
     // generateHtmlForOffset: generateDay
