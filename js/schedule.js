@@ -13,6 +13,8 @@ import {
 } from './assignments.js'
 import { ColourPicker } from './colour.js'
 import { DatePicker } from './date.js'
+import { createReactive } from './dumb-reactive.js'
+import { onSection } from './footer.js'
 import { localize, localizeWith } from './l10n.js'
 import { onClubsLoaded } from '../js/lists.js'
 import { createRange, makeDropdown, materialInput, ripple } from './material.js'
@@ -185,186 +187,174 @@ export function cacheBackground (url, pd) {
     fetch(url, { mode: 'no-cors', cache: 'no-cache' })
   ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
 }
-export function initSchedule (manualAltSchedulesProm) {
-  function getDefaultPeriodName (periodName) {
-    return localizeWith('periodx', 'other', { X: periodName })
-  }
-  const periodstyles = {
-    NO_SCHOOL: { label: localize('no-school') },
-    // Default period names and styles
-    Brunch: { label: localize('brunch'), colour: '#9E9E9E' },
-    Lunch: { label: localize('lunch'), colour: '#9E9E9E' },
-    Flex: { label: localize('flex'), colour: '#607D8B' },
-    SELF: { label: localize('self'), colour: '#455a64' },
-    A: { label: getDefaultPeriodName('1'), colour: '#f44336' },
-    B: { label: getDefaultPeriodName('2'), colour: '#2196F3' },
-    C: { label: getDefaultPeriodName('3'), colour: '#FFEB3B' },
-    D: { label: getDefaultPeriodName('4'), colour: '#795548' },
-    E: { label: getDefaultPeriodName('5'), colour: '#FF9800' },
-    F: { label: getDefaultPeriodName('6'), colour: '#9C27B0' },
-    G: { label: getDefaultPeriodName('7'), colour: '#4CAF50' },
-    H: { label: getDefaultPeriodName('8'), colour: '#673AB7' },
-    '0': { label: localize('p0'), colour: '#009688' }
-  }
-  const periodStyleCookie = cookie.getItem('[gunn-web-app] scheduleapp.options')
-  let options = []
-  if (periodStyleCookie) {
-    options = JSON.parse(periodStyleCookie)
-    if (!(options[0] <= VERSION)) {
-      console.warn(
-        'Period styles seem to be from the future? Was expecting version',
-        VERSION,
-        'but got',
-        options
-      )
-    }
-  }
+
+function getDefaultPeriodName (periodName) {
+  return localizeWith('periodx', 'other', { X: periodName })
+}
+let periodstyles
+function savePeriodStyles () {
+  const options = new Array(letras.length)
+  options[0] = VERSION
   for (let i = 1; i < letras.length; i++) {
-    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
-    if (options[i]) {
-      const [label, colour, link] = options[i]
-      Object.assign(periodstyles[letras[i]], { label, colour, link })
-    }
+    const { label, colour, link } = periodstyles[letras[i]]
+    options[i] = [label, colour, link]
   }
-  function savePeriodStyles () {
-    const options = new Array(letras.length)
-    options[0] = VERSION
-    for (let i = 1; i < letras.length; i++) {
-      const { label, colour, link } = periodstyles[letras[i]]
-      options[i] = [label, colour, link]
-    }
-    cookie.setItem(
-      '[gunn-web-app] scheduleapp.options',
-      JSON.stringify(options)
-    )
-  }
-  /* SCHEDULE APP */
-  // FORBIDDEN CHARACTERS: " (used for radio CSS selector) and . (used for
-  // storing in localStorage)
-  const formatOptionInfo = {
-    // 0
-    _: { default: FORMATTING_VERSION },
-    // 1
-    hourCycle: { default: '12', radio: { name: 'hour' } },
-    // 2
-    timeLength: { default: 'full', radio: { name: 'format' } },
-    // 3
-    showSelf: {
-      default: '0'
-      // toggle: {
-      //   id: 'self',
-      //   on: '1',
-      //   off: '0'
-      // }
-    },
-    // 4
-    asgnPos: {
-      default: 'after',
-      radio: {
-        name: 'asgn-display',
-        onChange: value => asgnThing.displaySection(value)
-      }
-    },
-    // 5
-    asgnSort: {
-      default: 'chrono-primero',
-      radio: {
-        name: 'asgn-sort',
-        onChange: value => asgnThing.todayIs(getPeriodSpan, now(), value)
-      }
-    },
-    // 6
-    showAddAsgn: {
-      default: 'yes',
-      toggle: {
-        id: 'toggle-pd-add-asgn',
-        on: 'yes',
-        off: 'no',
-        onChange: checked => {
-          scheduleapp.options.displayAddAsgn = checked
-          scheduleapp.render()
-        }
-      }
-    },
-    // 7
-    showRock: { default: 'show' },
-    // 8
-    showZero: { default: 'no', toggle: { id: 'show0', on: 'yes', off: 'no' } },
-    // 9
-    hidePreps: {
-      default: 'preps',
-      toggle: { id: 'hide-preps', on: 'prepnt', off: 'prep' }
-    },
-    // 10
-    showH: {
-      default: 'unset',
-      toggle: {
-        id: 'show-h',
-        on: 'yes-h-period2',
-        off: 'no-h-period',
-        onChange: checked => {
-          hEditBtn.disabled = !checked
-          scheduleapp.render()
-          makeWeekHappen()
-        }
-      }
-    },
-    // 11
-    timeBeforeNotif: { default: 'off' },
-    // 12
-    allowSwipe: {
-      default: 'swipe',
-      toggle: {
-        id: 'allow-swipe',
-        on: 'swipe',
-        off: 'both',
-        onChange: 'no-reload'
-      }
-    },
-    // 13
-    timeBeforeAutoLink: { default: 'off' },
-    // 14
-    openNewTab: {
-      default: '',
-      toggle: {
-        id: 'use-iframe',
-        on: '',
-        off: 'yes',
-        onChange: checked => {
-          // Set it to `setIframe` only if checked
-          openLinkInIframe = checked && setIframe
-        }
-      }
-    },
-    // 15
-    bellVolume: { default: '' },
-    // 16
-    _reserved: { default: '' }
-  }
-  const formatOptionsCookie = cookie.getItem(
-    '[gunn-web-app] scheduleapp.formatOptions'
+  cookie.setItem(
+    '[gunn-web-app] scheduleapp.options',
+    JSON.stringify(options)
   )
-  const formatOptions = {}
-  if (formatOptionsCookie) {
-    const values = formatOptionsCookie.split('.')
-    values[0] = FORMATTING_VERSION
-    const keys = Object.keys(formatOptionInfo)
-    for (let i = 0; i < keys.length; i++) {
-      formatOptions[keys[i]] = values[i] || formatOptionInfo[keys[i]].default
+}
+/* SCHEDULE APP */
+// FORBIDDEN CHARACTERS: " (used for radio CSS selector) and . (used for
+// storing in localStorage)
+const formatOptionInfo = {
+  // 0
+  _: { default: FORMATTING_VERSION },
+  // 1
+  hourCycle: { default: '12', radio: { name: 'hour' } },
+  // 2
+  timeLength: { default: 'full', radio: { name: 'format' } },
+  // 3
+  showSelf: {
+    default: '0'
+    // toggle: {
+    //   id: 'self',
+    //   on: '1',
+    //   off: '0'
+    // }
+  },
+  // 4
+  asgnPos: {
+    default: 'after',
+    radio: {
+      name: 'asgn-display',
+      onChange: value => asgnThing.displaySection(value)
     }
+  },
+  // 5
+  asgnSort: {
+    default: 'chrono-primero',
+    radio: {
+      name: 'asgn-sort',
+      onChange: value => asgnThing.todayIs(getPeriodSpan, now(), value)
+    }
+  },
+  // 6
+  showAddAsgn: {
+    default: 'yes',
+    toggle: {
+      id: 'toggle-pd-add-asgn',
+      on: 'yes',
+      off: 'no',
+      onChange: checked => {
+        scheduleapp.options.displayAddAsgn = checked
+        scheduleapp.render()
+      }
+    }
+  },
+  // 7
+  showRock: { default: 'show' },
+  // 8
+  showZero: { default: 'no', toggle: { id: 'show0', on: 'yes', off: 'no' } },
+  // 9
+  hidePreps: {
+    default: 'preps',
+    toggle: { id: 'hide-preps', on: 'prepnt', off: 'prep' }
+  },
+  // 10
+  showH: {
+    default: 'unset',
+    toggle: {
+      id: 'show-h',
+      on: 'yes-h-period2',
+      off: 'no-h-period',
+      onChange: checked => {
+        hEditBtn.disabled = !checked
+        scheduleapp.render()
+        makeWeekHappen()
+      }
+    }
+  },
+  // 11
+  timeBeforeNotif: { default: 'off' },
+  // 12
+  allowSwipe: {
+    default: 'swipe',
+    toggle: {
+      id: 'allow-swipe',
+      on: 'swipe',
+      off: 'both',
+      onChange: 'no-reload'
+    }
+  },
+  // 13
+  timeBeforeAutoLink: { default: 'off' },
+  // 14
+  openNewTab: {
+    default: '',
+    toggle: {
+      id: 'use-iframe',
+      on: '',
+      off: 'yes',
+      onChange: checked => {
+        // Set it to `setIframe` only if checked
+        openLinkInIframe = checked && setIframe
+      }
+    }
+  },
+  // 15
+  bellVolume: { default: '' },
+  // 16
+  _reserved: { default: '' }
+}
+const formatOptionsCookie = cookie.getItem(
+  '[gunn-web-app] scheduleapp.formatOptions'
+)
+const formatOptions = {}
+if (formatOptionsCookie) {
+  const values = formatOptionsCookie.split('.')
+  values[0] = FORMATTING_VERSION
+  const keys = Object.keys(formatOptionInfo)
+  for (let i = 0; i < keys.length; i++) {
+    formatOptions[keys[i]] = values[i] || formatOptionInfo[keys[i]].default
+  }
+} else {
+  for (const key of Object.keys(formatOptionInfo)) {
+    formatOptions[key] = formatOptionInfo[key].default
+  }
+}
+function saveFormatOptions () {
+  cookie.setItem(
+    '[gunn-web-app] scheduleapp.formatOptions',
+    Object.keys(formatOptionInfo)
+      .map(key => formatOptions[key])
+      .join('.')
+  )
+}
+
+function getPeriodSpan (pd) {
+  // yay hoisting (see three lines above)
+  if (!periodstyles[pd]) return '???' // just in case
+  let css
+  const colour = periodstyles[pd].colour
+  if (colour[0] === '#') {
+    css = `background-color:${colour};color:${getFontColour(colour)};`
   } else {
-    for (const key of Object.keys(formatOptionInfo)) {
-      formatOptions[key] = formatOptionInfo[key].default
-    }
+    css = `background-image: url('./.period-images/${pd}?${encodeURIComponent(
+      colour
+    )}'); color: white; text-shadow: 0 0 10px black;`
   }
-  function saveFormatOptions () {
-    cookie.setItem(
-      '[gunn-web-app] scheduleapp.formatOptions',
-      Object.keys(formatOptionInfo)
-        .map(key => formatOptions[key])
-        .join('.')
-    )
-  }
+  return `<span style="${css}" class="schedule-endinginperiod">${escapeHTML(
+    periodstyles[pd].label
+  )}</span>`
+}
+
+let scheduleapp
+function isSchoolDay (d) {
+  return scheduleapp.getSchedule(d).periods.length
+}
+
+function initFormatSwitches () {
   for (const [key, { radio, toggle }] of Object.entries(formatOptionInfo)) {
     const startValue = formatOptions[key]
     if (radio) {
@@ -409,6 +399,9 @@ export function initSchedule (manualAltSchedulesProm) {
       })
     }
   }
+}
+
+function initSupport () {
   const hideSupportIcon = document.getElementById('hide-support')
   const supportList = document.getElementById('support-list')
   if (formatOptions.showRock === 'hide') {
@@ -431,23 +424,10 @@ export function initSchedule (manualAltSchedulesProm) {
     formatOptions.showRock = nowHidden ? 'hide' : 'show'
     saveFormatOptions()
   })
+}
 
-  function getPeriodSpan (pd) {
-    // yay hoisting (see three lines above)
-    if (!periodstyles[pd]) return '???' // just in case
-    let css
-    const colour = periodstyles[pd].colour
-    if (colour[0] === '#') {
-      css = `background-color:${colour};color:${getFontColour(colour)};`
-    } else {
-      css = `background-image: url('./.period-images/${pd}?${encodeURIComponent(
-        colour
-      )}'); color: white; text-shadow: 0 0 10px black;`
-    }
-    return `<span style="${css}" class="schedule-endinginperiod">${escapeHTML(
-      periodstyles[pd].label
-    )}</span>`
-  }
+let asgnThing
+function initAssignmentEditing () {
   const contentInput = document.getElementById('asgn-content')
   contentInput.addEventListener('keydown', e => {
     if (e.keyCode === 13) {
@@ -659,7 +639,7 @@ export function initSchedule (manualAltSchedulesProm) {
     refresh.style.display = 'none'
   })
 
-  const asgnThing = initAssignments({
+  asgnThing = initAssignments({
     editor: asgnEditor,
     save () {
       cookie.setItem('[gunn-web-app] assignments', asgnThing.getSaveable())
@@ -680,7 +660,9 @@ export function initSchedule (manualAltSchedulesProm) {
   if (assyncID) {
     refresh.click()
   }
+}
 
+function initNotifications () {
   const periodSymbols = {
     Brunch: localize('symbols/brunch'),
     Lunch: localize('symbols/lunch'),
@@ -777,6 +759,10 @@ export function initSchedule (manualAltSchedulesProm) {
       notifDropdownWrapper.parentNode
     )
   }
+  return { notifSettings }
+}
+
+function initBell () {
   let stopBell = null
   let updateVolume = null
   function playBell () {
@@ -838,65 +824,337 @@ export function initSchedule (manualAltSchedulesProm) {
       { once: true }
     )
   }
-  const weekwrapper = document.querySelector('#weekwrapper')
-  let lastWeek = null
-  function makeWeekHappen () {
-    const week = scheduleapp.getWeek()
-    const serialized = JSON.stringify(week)
-    if (lastWeek !== serialized) {
-      // Only regenerate the weekwrapper if the week changed
-      lastWeek = serialized
-      weekwrapper.innerHTML = ''
-      const days = localize('ds').split('  ')
-      for (let i = 0; i < week.length; i++) {
-        const day = week[i]
-        const div = Object.assign(document.createElement('div'), {
-          className: day.today ? 'today' : ''
+}
+
+/* CUSTOMISE PERIODS */
+const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
+  ' '
+)
+function period (elem, name, id) {
+  const {
+    label: val = '',
+    colour = THEME_COLOUR,
+    link = ''
+  } = periodstyles[id]
+  let isImage = colour[0] !== '#'
+  let init = true
+  const div = document.createElement('div')
+  div.classList.add('customiser-wrapper')
+  const pickertrigger = document.createElement('button')
+  const picker = new ColourPicker(e => {
+    if (isImage) return
+    pickertrigger.style.backgroundColor = e
+    // Changes made by .setPeriod are also reflected in periodstyles by
+    // reference
+    if (scheduleapp) scheduleapp.setPeriod(id, { colour: e }, !init)
+    makeWeekHappen()
+    if (init) {
+      init = false
+    } else {
+      if (periodstyles[id].update) periodstyles[id].update()
+      savePeriodStyles()
+    }
+    if (picker.darkness() > 125) {
+      pickertrigger.classList.add('ripple-dark')
+      pickertrigger.classList.remove('ripple-light')
+    } else {
+      pickertrigger.classList.add('ripple-light')
+      pickertrigger.classList.remove('ripple-dark')
+    }
+  })
+  ripple(pickertrigger)
+  pickertrigger.classList.add('material')
+  pickertrigger.classList.add('customiser-colour')
+  if (isImage) {
+    pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
+    // colour input already triggers this, so we only need to update image
+    if (periodstyles[id].update) periodstyles[id].update()
+  }
+  pickertrigger.addEventListener(
+    'click',
+    e => {
+      picker.trigger(pickertrigger)
+    },
+    false
+  )
+  picker.colour = isImage ? THEME_COLOUR : colour
+  div.appendChild(pickertrigger)
+  const inputWrapper = document.createElement('div')
+  inputWrapper.className = 'inputs-wrapper'
+  const input = materialInput(
+    name,
+    'text',
+    localizeWith('period-name-label', 'other', { P: name })
+  )
+  if (val) {
+    input.input.value = val
+    input.wrapper.classList.add('filled')
+  }
+  input.input.addEventListener(
+    'change',
+    e => {
+      if (scheduleapp) {
+        scheduleapp.setPeriod(id, { name: input.input.value }, true)
+      }
+      makeWeekHappen()
+      if (periodstyles[id].update) periodstyles[id].update()
+      savePeriodStyles()
+    },
+    false
+  )
+  inputWrapper.appendChild(input.wrapper)
+  const linkInput = materialInput(
+    localizeWith('period-link', 'other', { P: name }),
+    'url',
+    localizeWith('period-set-link', 'other', { P: name })
+  )
+  if (link) {
+    linkInput.input.value = link
+    linkInput.wrapper.classList.add('filled')
+  }
+  linkInput.input.addEventListener(
+    'change',
+    e => {
+      if (scheduleapp) {
+        scheduleapp.setPeriod(id, { link: linkInput.input.value }, true)
+      }
+      makeWeekHappen()
+      // No need to call .update() on periodstyles because the link is not
+      // relevant to rendering the period dropdowns
+      savePeriodStyles()
+    },
+    false
+  )
+  inputWrapper.appendChild(linkInput.wrapper)
+  div.appendChild(inputWrapper)
+  elem.appendChild(div)
+  const t = document.createElement('div')
+  t.classList.add('customiser-colourwrapper')
+  for (
+    let i = 0, arr = materialcolours, len = arr.length, c = arr[i];
+    i < len;
+    i++, c = arr[i]
+  )
+    (c => {
+      const s = document.createElement('span')
+      s.classList.add('customiser-materialcolour')
+      s.addEventListener(
+        'click',
+        e => {
+          picker.colour = c
+        },
+        false
+      )
+      s.style.backgroundColor = c
+      t.appendChild(s)
+    })('#' + c)
+  const s = document.createElement('span')
+  s.classList.add('customiser-materialcolour')
+  s.classList.add('customiser-blackwhite')
+  s.addEventListener(
+    'click',
+    e => {
+      picker.colour = document.body.classList.contains('light')
+        ? '#000000'
+        : '#ffffff'
+    },
+    false
+  )
+  t.appendChild(s)
+  picker.window.appendChild(t)
+  const imageInput = materialInput(localize('image-url'), 'url')
+  imageInput.wrapper.classList.add('customiser-image')
+  if (isImage) {
+    imageInput.input.value = colour
+    imageInput.wrapper.classList.add('filled')
+  }
+  imageInput.input.addEventListener('change', e => {
+    imageInput.disabled = true
+    if (imageInput.input.value) {
+      cacheBackground(imageInput.input.value, id)
+        .then(() => {
+          imageInput.disabled = false
+          isImage = true
+          // intentionally not resetting backgroundColor because transparency meh
+          pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
+          if (scheduleapp) {
+            scheduleapp.setPeriod(
+              id,
+              { colour: imageInput.input.value },
+              true
+            )
+          }
+          makeWeekHappen()
+          if (periodstyles[id].update) periodstyles[id].update()
+          savePeriodStyles()
+          pickertrigger.classList.add('ripple-dark')
+          pickertrigger.classList.remove('ripple-light')
         })
+        .catch(err => {
+          imageInput.disabled = false
+          logError(err)
+          alert(localize('cannot'))
+        })
+    } else {
+      caches
+        .open(IMAGE_CACHE)
+        .then(cache => {
+          imageInput.disabled = false
+          cache.delete(`./.period-images/${id}`)
+          isImage = false
+          pickertrigger.style.backgroundColor = picker.colour
+          pickertrigger.style.backgroundImage = null
+          if (scheduleapp) {
+            scheduleapp.setPeriod(id, { colour: picker.colour }, true)
+          }
+          makeWeekHappen()
+          if (periodstyles[id].update) periodstyles[id].update()
+          savePeriodStyles()
+          if (picker.darkness() > 125) {
+            pickertrigger.classList.add('ripple-dark')
+            pickertrigger.classList.remove('ripple-light')
+          } else {
+            pickertrigger.classList.add('ripple-light')
+            pickertrigger.classList.remove('ripple-dark')
+          }
+        })
+        .catch(err => {
+          imageInput.disabled = false
+          logError(err)
+        })
+    }
+  })
+  picker.window.appendChild(imageInput.wrapper)
+  return period
+}
+function initPeriodCustomisers () {
+  const f = document.createDocumentFragment()
+  if (formatOptions.showZero === 'yes') {
+    addCustomiser(localize('p0'), '0')
+  }
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '1' }), 'A')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '2' }), 'B')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '3' }), 'C')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '4' }), 'D')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '5' }), 'E')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '6' }), 'F')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '7' }), 'G')
+  // Always showing because why not (it's hard to dynamically show/hide this)
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '8' }), 'H')
+  addCustomiser(f, localize('flex'), 'Flex')
+  // if (+formatOptions.showSelf)
+  addCustomiser(f, localize('self'), 'SELF')
+  // TEMP: Brunch is not on the schedule
+  // addCustomiser(localize('brunch'), 'Brunch')
+  addCustomiser(f, localize('lunch'), 'Lunch')
+  document
+    .querySelector('.section.options')
+    .insertBefore(
+      periodCustomisers,
+      document.querySelector('#periodcustomisermarker')
+    )
+}
+
+let months, daynames, days
+export function initSchedule (manualAltSchedulesProm) {
+  months = localize('months').split('  ')
+  daynames = localize('days').split('  ')
+  days = localize('ds').split('  ')
+
+  // Default period names and styles
+  periodstyles = {
+    Brunch: { label: localize('brunch'), colour: '#9E9E9E' },
+    Lunch: { label: localize('lunch'), colour: '#9E9E9E' },
+    Flex: { label: localize('flex'), colour: '#607D8B' },
+    SELF: { label: localize('self'), colour: '#455a64' },
+    A: { label: getDefaultPeriodName('1'), colour: '#f44336' },
+    B: { label: getDefaultPeriodName('2'), colour: '#2196F3' },
+    C: { label: getDefaultPeriodName('3'), colour: '#FFEB3B' },
+    D: { label: getDefaultPeriodName('4'), colour: '#795548' },
+    E: { label: getDefaultPeriodName('5'), colour: '#FF9800' },
+    F: { label: getDefaultPeriodName('6'), colour: '#9C27B0' },
+    G: { label: getDefaultPeriodName('7'), colour: '#4CAF50' },
+    H: { label: getDefaultPeriodName('8'), colour: '#673AB7' },
+    '0': { label: localize('p0'), colour: '#009688' }
+  }
+  const periodStyleCookie = cookie.getItem('[gunn-web-app] scheduleapp.options')
+  let options = []
+  if (periodStyleCookie) {
+    options = JSON.parse(periodStyleCookie)
+    if (!(options[0] <= VERSION)) {
+      console.warn(
+        'Period styles seem to be from the future? Was expecting version',
+        VERSION,
+        'but got',
+        options
+      )
+    }
+  }
+  for (let i = 1; i < letras.length; i++) {
+    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
+    if (options[i]) {
+      const [label, colour, link] = options[i]
+      Object.assign(periodstyles[letras[i]], { label, colour, link })
+    }
+  }
+
+  onSection.options.then(initFormatSwitches)
+  onSection.utilities.then(initSupport)
+  initAssignmentEditing()
+  const { notifSettings } = initNotifications()
+  initBell()
+  onSection.options.then(initPeriodCustomisers)
+
+  const setState = createReactive(document.querySelector('#weekwrapper'), {
+    customElems: {
+      'week-day': (_, recordRef) => {
+        const div = document.createElement('div')
         ripple(div)
         div.addEventListener('click', e => {
-          const d = day.date
+          const { d } = recordRef.state.options
           datepicker.day = {
             d: d.getDate(),
             m: d.getMonth(),
             y: d.getFullYear()
           }
         })
-        div.appendChild(
-          Object.assign(document.createElement('h1'), {
-            textContent: days[i]
-          })
-        )
-        for (const period of day) {
-          const span = Object.assign(document.createElement('span'), {
-            title: period.label
-          })
-          if (period.colour[0] === '#') {
-            span.style.backgroundColor = period.colour
-          } else {
-            span.style.backgroundImage = `url(./.period-images/${
-              period.id
-            }?${encodeURIComponent(period.colour)})`
-          }
-          if (period.id === 'GT') {
-            span.title = localize('gunn-together/name')
-            span.classList.add('gt-confuse')
-          }
-          div.appendChild(span)
-        }
-        weekwrapper.appendChild(div)
+        return div
       }
     }
-    for (let i = 0; i < weekwrapper.children.length; i++) {
-      const day = week[i]
-      const div = weekwrapper.children[i]
-      div.className = day.today ? 'today' : ''
-    }
+  })
+  function makeWeekHappen () {
+    const week = scheduleapp.getWeek()
+    setState(week.map((day, i) => {
+      return [
+        {
+          type: 'week-day',
+          classes: [day.today && 'today'],
+          options: { d: day.date }
+        },
+        ['h1', days[i]],
+        ...day.map(period => {
+          const style = period.colour[0] === '#'
+            ? { backgroundColor: period.colour }
+            : { backgroundImage: `url(./.period-images/${
+              period.id
+            }?${encodeURIComponent(period.colour)})` }
+          return [
+            {
+              type: 'span',
+              properties: {
+                title: period.id === 'GT' ? localize('gunn-together/name') : period.label
+              },
+              style,
+              classes: [period.id === 'GT' && 'gt-confuse']
+            }
+          ]
+        })
+      ]
+    }))
     renderEvents()
   }
   const eventsul = document.querySelector('#events')
   const events = {}
-  const months = localize('months').split('  ')
   const eventsHeading = document.createElement('h1')
   eventsHeading.textContent = localize('events')
   eventsul.parentNode.insertBefore(eventsHeading, eventsul)
@@ -1074,7 +1332,6 @@ export function initSchedule (manualAltSchedulesProm) {
     else if (~name.indexOf('together')) return 'GT'
     else return name
   }
-  const daynames = localize('days').split('  ')
   function toTraditionalUGWATime (minutes) {
     return {
       totalminutes: minutes,
@@ -1150,7 +1407,7 @@ export function initSchedule (manualAltSchedulesProm) {
     scheduleapp.render()
     makeWeekHappen()
   })
-  const scheduleapp = scheduleApp({
+  scheduleapp = scheduleApp({
     element: scheduleAppWrapper,
     periods: periodstyles,
     normal: normalschedule,
@@ -1335,9 +1592,6 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
-  function isSchoolDay (d) {
-    return scheduleapp.getSchedule(d).periods.length
-  }
   datepicker.isSchoolDay = isSchoolDay
   // skip to next school day
   let previewingFuture = false
@@ -1562,237 +1816,6 @@ export function initSchedule (manualAltSchedulesProm) {
   scheduleAppWrapper.addEventListener('pointerup', swipeEnd)
   scheduleAppWrapper.addEventListener('pointercancel', swipeEnd)
 
-  /* CUSTOMISE PERIODS */
-  const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
-    ' '
-  )
-  function addPeriodCustomisers (elem) {
-    function period (name, id) {
-      const {
-        label: val = '',
-        colour = THEME_COLOUR,
-        link = ''
-      } = periodstyles[id]
-      let isImage = colour[0] !== '#'
-      let init = true
-      const div = document.createElement('div')
-      div.classList.add('customiser-wrapper')
-      const pickertrigger = document.createElement('button')
-      const picker = new ColourPicker(e => {
-        if (isImage) return
-        pickertrigger.style.backgroundColor = e
-        // Changes made by .setPeriod are also reflected in periodstyles by
-        // reference
-        if (scheduleapp) scheduleapp.setPeriod(id, { colour: e }, !init)
-        makeWeekHappen()
-        if (init) {
-          init = false
-        } else {
-          if (periodstyles[id].update) periodstyles[id].update()
-          savePeriodStyles()
-        }
-        if (picker.darkness() > 125) {
-          pickertrigger.classList.add('ripple-dark')
-          pickertrigger.classList.remove('ripple-light')
-        } else {
-          pickertrigger.classList.add('ripple-light')
-          pickertrigger.classList.remove('ripple-dark')
-        }
-      })
-      ripple(pickertrigger)
-      pickertrigger.classList.add('material')
-      pickertrigger.classList.add('customiser-colour')
-      if (isImage) {
-        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
-        // colour input already triggers this, so we only need to update image
-        if (periodstyles[id].update) periodstyles[id].update()
-      }
-      pickertrigger.addEventListener(
-        'click',
-        e => {
-          picker.trigger(pickertrigger)
-        },
-        false
-      )
-      picker.colour = isImage ? THEME_COLOUR : colour
-      div.appendChild(pickertrigger)
-      const inputWrapper = document.createElement('div')
-      inputWrapper.className = 'inputs-wrapper'
-      const input = materialInput(
-        name,
-        'text',
-        localizeWith('period-name-label', 'other', { P: name })
-      )
-      if (val) {
-        input.input.value = val
-        input.wrapper.classList.add('filled')
-      }
-      input.input.addEventListener(
-        'change',
-        e => {
-          if (scheduleapp) {
-            scheduleapp.setPeriod(id, { name: input.input.value }, true)
-          }
-          makeWeekHappen()
-          if (periodstyles[id].update) periodstyles[id].update()
-          savePeriodStyles()
-        },
-        false
-      )
-      inputWrapper.appendChild(input.wrapper)
-      const linkInput = materialInput(
-        localizeWith('period-link', 'other', { P: name }),
-        'url',
-        localizeWith('period-set-link', 'other', { P: name })
-      )
-      if (link) {
-        linkInput.input.value = link
-        linkInput.wrapper.classList.add('filled')
-      }
-      linkInput.input.addEventListener(
-        'change',
-        e => {
-          if (scheduleapp) {
-            scheduleapp.setPeriod(id, { link: linkInput.input.value }, true)
-          }
-          makeWeekHappen()
-          // No need to call .update() on periodstyles because the link is not
-          // relevant to rendering the period dropdowns
-          savePeriodStyles()
-        },
-        false
-      )
-      inputWrapper.appendChild(linkInput.wrapper)
-      div.appendChild(inputWrapper)
-      elem.appendChild(div)
-      const t = document.createElement('div')
-      t.classList.add('customiser-colourwrapper')
-      for (
-        let i = 0, arr = materialcolours, len = arr.length, c = arr[i];
-        i < len;
-        i++, c = arr[i]
-      )
-        (c => {
-          const s = document.createElement('span')
-          s.classList.add('customiser-materialcolour')
-          s.addEventListener(
-            'click',
-            e => {
-              picker.colour = c
-            },
-            false
-          )
-          s.style.backgroundColor = c
-          t.appendChild(s)
-        })('#' + c)
-      const s = document.createElement('span')
-      s.classList.add('customiser-materialcolour')
-      s.classList.add('customiser-blackwhite')
-      s.addEventListener(
-        'click',
-        e => {
-          picker.colour = document.body.classList.contains('light')
-            ? '#000000'
-            : '#ffffff'
-        },
-        false
-      )
-      t.appendChild(s)
-      picker.window.appendChild(t)
-      const imageInput = materialInput(localize('image-url'), 'url')
-      imageInput.wrapper.classList.add('customiser-image')
-      if (isImage) {
-        imageInput.input.value = colour
-        imageInput.wrapper.classList.add('filled')
-      }
-      imageInput.input.addEventListener('change', e => {
-        imageInput.disabled = true
-        if (imageInput.input.value) {
-          cacheBackground(imageInput.input.value, id)
-            .then(() => {
-              imageInput.disabled = false
-              isImage = true
-              // intentionally not resetting backgroundColor because transparency meh
-              pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
-              if (scheduleapp) {
-                scheduleapp.setPeriod(
-                  id,
-                  { colour: imageInput.input.value },
-                  true
-                )
-              }
-              makeWeekHappen()
-              if (periodstyles[id].update) periodstyles[id].update()
-              savePeriodStyles()
-              pickertrigger.classList.add('ripple-dark')
-              pickertrigger.classList.remove('ripple-light')
-            })
-            .catch(err => {
-              imageInput.disabled = false
-              logError(err)
-              alert(localize('cannot'))
-            })
-        } else {
-          caches
-            .open(IMAGE_CACHE)
-            .then(cache => {
-              imageInput.disabled = false
-              cache.delete(`./.period-images/${id}`)
-              isImage = false
-              pickertrigger.style.backgroundColor = picker.colour
-              pickertrigger.style.backgroundImage = null
-              if (scheduleapp) {
-                scheduleapp.setPeriod(id, { colour: picker.colour }, true)
-              }
-              makeWeekHappen()
-              if (periodstyles[id].update) periodstyles[id].update()
-              savePeriodStyles()
-              if (picker.darkness() > 125) {
-                pickertrigger.classList.add('ripple-dark')
-                pickertrigger.classList.remove('ripple-light')
-              } else {
-                pickertrigger.classList.add('ripple-light')
-                pickertrigger.classList.remove('ripple-dark')
-              }
-            })
-            .catch(err => {
-              imageInput.disabled = false
-              logError(err)
-            })
-        }
-      })
-      picker.window.appendChild(imageInput.wrapper)
-      return period
-    }
-    return period
-  }
-  const periodCustomisers = document.createDocumentFragment()
-  const addCustomiser = addPeriodCustomisers(periodCustomisers)
-  if (formatOptions.showZero === 'yes') {
-    addCustomiser(localize('p0'), '0')
-  }
-  addCustomiser(localizeWith('periodx', 'other', { X: '1' }), 'A')
-  addCustomiser(localizeWith('periodx', 'other', { X: '2' }), 'B')
-  addCustomiser(localizeWith('periodx', 'other', { X: '3' }), 'C')
-  addCustomiser(localizeWith('periodx', 'other', { X: '4' }), 'D')
-  addCustomiser(localizeWith('periodx', 'other', { X: '5' }), 'E')
-  addCustomiser(localizeWith('periodx', 'other', { X: '6' }), 'F')
-  addCustomiser(localizeWith('periodx', 'other', { X: '7' }), 'G')
-  // Always showing because why not (it's hard to dynamically show/hide this)
-  addCustomiser(localizeWith('periodx', 'other', { X: '8' }), 'H')
-  addCustomiser(localize('flex'), 'Flex')
-  // if (+formatOptions.showSelf)
-  addCustomiser(localize('self'), 'SELF')
-  // TEMP: Brunch is not on the schedule
-  // addCustomiser(localize('brunch'), 'Brunch')
-  addCustomiser(localize('lunch'), 'Lunch')
-  document
-    .querySelector('.section.options')
-    .insertBefore(
-      periodCustomisers,
-      document.querySelector('#periodcustomisermarker')
-    )
-
   const openLinkBefore =
     formatOptions.timeBeforeAutoLink === 'off'
       ? null
@@ -1828,17 +1851,17 @@ export function initSchedule (manualAltSchedulesProm) {
     showDialog(iframeDialog)
   }
 
-  const hEditBtn = document.getElementById('edit-h')
-  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen, hEditBtn)
+  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen)
 }
 
 function initHEditor (
   hPeriods,
   scheduleapp,
   formatOptions,
-  makeWeekHappen,
-  hEditBtn
+  makeWeekHappen
 ) {
+  const hEditBtn = document.getElementById('edit-h')
+
   function getHumanTime (minutes) {
     if (formatOptions.hourCycle === '0') return minutes % 60
     const h = Math.floor(minutes / 60)
@@ -1857,7 +1880,6 @@ function initHEditor (
     null
   ]
 
-  const days = localize('days').split('  ')
   const MIN_TIME = 15 * 60
   const MAX_TIME = 21 * 60
   const MIN_LENGTH = 10
@@ -1886,7 +1908,7 @@ function initHEditor (
           Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
         )
         label.textContent =
-          days[day] +
+          daynames[day] +
           ' ' +
           getHumanTime(hPeriods[day][0]) +
           '–' +
@@ -1894,7 +1916,7 @@ function initHEditor (
       } else {
         range.elem.classList.add('disabled')
         hPeriods[day] = null
-        label.textContent = days[day]
+        label.textContent = daynames[day]
       }
       scheduleapp.render()
       makeWeekHappen()
@@ -1909,7 +1931,7 @@ function initHEditor (
     const label = document.createElement('span')
     label.classList.add('label')
     label.textContent =
-      days[day] +
+      daynames[day] +
       ' ' +
       (hPeriods[day]
         ? getHumanTime(hPeriods[day][0]) + '–' + getHumanTime(hPeriods[day][1])
@@ -1938,7 +1960,7 @@ function initHEditor (
           n => Math.round((n * (MAX_TIME - MIN_TIME)) / STEP) * STEP + MIN_TIME
         )
         label.textContent =
-          days[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
+          daynames[day] + ' ' + (getHumanTime(r[0]) + '–' + getHumanTime(r[1]))
       }
     })
     range.range = (hPeriods[day] || defaultHPeriods[day]).map(

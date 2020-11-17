@@ -174,16 +174,16 @@ function main () {
       attemptFns([
         initPSA,
         initControlCentre,
-        initBarcodes,
         initLists,
         makeNavBarRipple,
-        initTabfocus,
-        initSecondsCounter,
-        initGradeCalc,
-        initSaveCodeManager,
-        initMaps,
-        initChat
+        initTabfocus
       ])
+      onSection.utilities.then(initBarcodes)
+      onSection.schedule.then(initSecondsCounter)
+      onSection.utilities.then(initGradeCalc)
+      onSection.options.then(initSaveCodeManager)
+      onSection.utilities.then(initMaps)
+      onSection.utilities.then(initChat)
       try {
         initScheduleWhenReady()
       } catch (err) {

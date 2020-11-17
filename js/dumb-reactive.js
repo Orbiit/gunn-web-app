@@ -173,7 +173,7 @@ function newRecordFromState (
   if (typeof fromState === 'string') {
     recordTarget.node = document.createTextNode(fromState)
   } else if (settings.customElems[fromState.tag]) {
-    recordTarget.node = settings.customElems[fromState.tag](fromState)
+    recordTarget.node = settings.customElems[fromState.tag](fromState, recordTarget)
   } else {
     recordTarget.node = document.createElement(fromState.tag)
   }
@@ -253,9 +253,7 @@ function applyChildChanges (settings, parentNode, records, newState) {
 export function createReactive (wrapper, { customElems = {} } = {}) {
   const records = []
   return newStateUnprocessed => {
-    console.time('set state')
     const newState = processStateArray(newStateUnprocessed)
     applyChildChanges({ customElems }, wrapper, records, newState)
-    console.timeEnd('set state')
   }
 }

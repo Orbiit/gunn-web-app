@@ -450,7 +450,7 @@ export function scheduleApp (options = {}) {
         ])
       }
     } else if (noSchool) {
-      schedule = [['span.schedule-noschool', getPeriod('NO_SCHOOL').label]]
+      schedule = [['span.schedule-noschool', localize('no-school')]]
     }
 
     return [
@@ -579,9 +579,7 @@ export function scheduleApp (options = {}) {
     element,
     container,
     render () {
-      console.time('total render')
       setState(getRenderedScheduleForDay(options.offset))
-      console.timeEnd('total render')
     },
     update () {
       options.update = true
