@@ -1052,13 +1052,13 @@ export function initSchedule (manualAltSchedulesProm) {
     name = name.toLowerCase()
     if (~name.indexOf('period')) {
       // Detect PeriodE/PeriodG (2020-03-31)
-      const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
+      const letter = /(?:\b|period)([a-h1-8])\b/i.exec(name)
       if (letter) {
         return isNaN(+letter[1])
           ? // Letter period
             letter[1].toUpperCase()
           : // Number period
-            ' ABCDEFG'[letter[1]]
+            ' ABCDEFGH'[letter[1]]
       }
     }
     if (~name.indexOf('self')) return 'SELF'
@@ -1066,6 +1066,7 @@ export function initSchedule (manualAltSchedulesProm) {
       ~name.indexOf('flex') ||
       ~name.indexOf('assembl') ||
       ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
+      ~name.indexOf('office') || // Office hours (2020-12-15 to 17, distance learning finals)
       ~name.indexOf('tutorial')
     )
       return 'Flex'
