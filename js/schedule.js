@@ -30,6 +30,7 @@ import {
   getAudioContext,
   googleCalendarId,
   isAppDesign,
+  loadJsonStorage,
   logError,
   now,
   schoolTimeZone,
@@ -759,7 +760,7 @@ function initNotifications () {
       notifDropdownWrapper.parentNode
     )
   }
-  return { notifSettings }
+  return { notifSettings, getIcon }
 }
 
 function initBell () {
@@ -830,7 +831,7 @@ function initBell () {
 const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
   ' '
 )
-function period (elem, name, id) {
+function addCustomiser (parent, name, id) {
   const {
     label: val = '',
     colour = THEME_COLOUR,
@@ -927,7 +928,7 @@ function period (elem, name, id) {
   )
   inputWrapper.appendChild(linkInput.wrapper)
   div.appendChild(inputWrapper)
-  elem.appendChild(div)
+  parent.appendChild(div)
   const t = document.createElement('div')
   t.classList.add('customiser-colourwrapper')
   for (
@@ -1025,12 +1026,12 @@ function period (elem, name, id) {
     }
   })
   picker.window.appendChild(imageInput.wrapper)
-  return period
+  return div
 }
 function initPeriodCustomisers () {
   const f = document.createDocumentFragment()
   if (formatOptions.showZero === 'yes') {
-    addCustomiser(localize('p0'), '0')
+    addCustomiser(f, localize('p0'), '0')
   }
   addCustomiser(f, localizeWith('periodx', 'other', { X: '1' }), 'A')
   addCustomiser(f, localizeWith('periodx', 'other', { X: '2' }), 'B')
@@ -1055,6 +1056,295 @@ function initPeriodCustomisers () {
     )
 }
 
+const setState = createReactive(document.querySelector('#weekwrapper'), {
+  customElems: {
+    'week-day': (_, recordRef) => {
+      const div = document.createElement('div')
+      ripple(div)
+      div.addEventListener('click', e => {
+        const { d } = recordRef.state.options
+        datepicker.day = {
+          d: d.getDate(),
+          m: d.getMonth(),
+          y: d.getFullYear()
+        }
+      })
+      return div
+    }
+  }
+})
+function makeWeekHappen () {
+  const week = scheduleapp.getWeek()
+  setState(week.map((day, i) => {
+    return [
+      {
+        type: 'week-day',
+        classes: [day.today && 'today'],
+        options: { d: day.date }
+      },
+      ['h1', days[i]],
+      ...day.map(period => {
+        const style = period.colour[0] === '#'
+          ? { backgroundColor: period.colour }
+          : { backgroundImage: `url(./.period-images/${
+            period.id
+          }?${encodeURIComponent(period.colour)})` }
+        return [
+          {
+            type: 'span',
+            properties: {
+              title: period.id === 'GT' ? localize('gunn-together/name') : period.label
+            },
+            style,
+            classes: [period.id === 'GT' && 'gt-confuse']
+          }
+        ]
+      })
+    ]
+  }))
+  renderEvents()
+}
+
+let eventsul
+const events = {}
+function renderEvents () {
+  const offset = scheduleapp.offset
+  const d = now()
+  eventsul.innerHTML = `<li><span class="secondary center">${localize(
+    'loading'
+  )}</span></li>`
+  function actuallyRenderEvents (items) {
+    let innerHTML = ``
+    if (items.length) {
+      for (let i = 0; i < items.length; i++) {
+        let timerange = ''
+        if (items[i].start) {
+          const start = new Date(items[i].start)
+          const end = new Date(items[i].end)
+          if (formatOptions.hourCycle === '0')
+            timerange = `${start.getMinutes()} &ndash; ${end.getMinutes()}`
+          else if (formatOptions.hourCycle === '24')
+            timerange = `${start.getHours()}:${(
+              '0' + start.getMinutes()
+            ).slice(-2)} &ndash; ${end.getHours()}:${(
+              '0' + end.getMinutes()
+            ).slice(-2)}`
+          else
+            timerange = `${((start.getHours() - 1) % 12) + 1}:${(
+              '0' + start.getMinutes()
+            ).slice(-2)}${
+              start.getHours() < 12 ? 'a' : 'p'
+            }m &ndash; ${((end.getHours() - 1) % 12) + 1}:${(
+              '0' + end.getMinutes()
+            ).slice(-2)}${end.getHours() < 12 ? 'a' : 'p'}m`
+        }
+        if (items[i].loc) {
+          if (timerange) timerange += ' &mdash; '
+          timerange += items[i].loc
+        }
+        if (timerange)
+          timerange = `<span class="secondary">${timerange}</span>`
+        innerHTML += `<li><span class="primary">${
+          items[i].name
+        }</span><span class="secondary${
+          items[i].error ? ' get-error' : ''
+        }">${items[i].desc || ''}</span>${timerange}</li>`
+      }
+    } else {
+      innerHTML = `<li><span class="secondary center">${localize(
+        'no-events'
+      )}</span></li>`
+    }
+    eventsul.innerHTML = innerHTML
+  }
+  if (events[offset]) {
+    if (events[offset] !== 'loading') {
+      actuallyRenderEvents(events[offset])
+    }
+  } else {
+    const dateDate = new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate() + offset
+    ).toISOString()
+    const end = new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate() + offset + 1
+    )
+    end.setMilliseconds(-1) // Do not include the first millisecond of the next day
+    events[offset] = 'loading'
+    ajax(
+      // timeZone=America/Los_Angeles because the calendar is in UTC so
+      // full-day events from the next day would otherwise be included
+      `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=${apiKey}&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
+      json => {
+        json = JSON.parse(json).items
+        const e = []
+        for (let i = 0; i < json.length; i++) {
+          e[i] = {
+            start: json[i].start.dateTime,
+            end: json[i].end.dateTime,
+            name: json[i].summary,
+            desc: json[i].description,
+            loc: json[i].location
+          }
+        }
+        events[offset] = e
+        if (scheduleapp.offset === offset)
+          actuallyRenderEvents(events[offset])
+
+        const date = dateDate.slice(5, 10)
+        const alternateJSON = json.filter(
+          ev =>
+            altScheduleRegex.test(ev.summary) ||
+            noSchoolRegex.test(ev.summary)
+        )
+        const altSched = toAlternateSchedules(alternateJSON)
+        let ugwitaAltObj = loadJsonStorage(ALT_KEY, {})
+        let change = false
+        const selfDay = json.find(ev => ev.summary.includes('SELF'))
+        if (selfDay) {
+          if (!selfDays.includes(date)) {
+            selfDays.push(date)
+            change = true
+            ugwitaAltObj.self = selfDays
+          }
+        } else {
+          const index = selfDays.indexOf(date)
+          if (~index) {
+            selfDays.splice(index, 1)
+            change = true
+            ugwitaAltObj.self = selfDays
+          }
+        }
+        if (altSched[date] !== undefined) {
+          ugwitaAltObj[date] = altSched[date]
+          ugwaifyAlternates(
+            alternates,
+            date,
+            altSched[date],
+            alternateJSON[0].summary
+          )
+          change = true
+        } else if (ugwitaAltObj[date] !== undefined) {
+          delete ugwitaAltObj[date]
+          delete alternates[
+            date
+              .split('-')
+              .map(Number)
+              .join('-')
+          ]
+          change = true
+        }
+        if (change) {
+          cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
+          if (scheduleapp.options.autorender) scheduleapp.render()
+          makeWeekHappen()
+        }
+      },
+      e => {
+        events[offset] = [
+          { name: '', desc: `${e}${localize('events-error')}`, error: true }
+        ]
+        if (scheduleapp.offset === offset)
+          actuallyRenderEvents(events[offset])
+      }
+    )
+  }
+}
+
+function identifyPeriod (name) {
+  name = name.toLowerCase()
+  if (~name.indexOf('period')) {
+    // Detect PeriodE/PeriodG (2020-03-31)
+    const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
+    if (letter) {
+      return isNaN(+letter[1])
+        ? // Letter period
+          letter[1].toUpperCase()
+        : // Number period
+          ' ABCDEFG'[letter[1]]
+    }
+  }
+  if (~name.indexOf('self')) return 'SELF'
+  else if (
+    ~name.indexOf('flex') ||
+    ~name.indexOf('assembl') ||
+    ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
+    ~name.indexOf('tutorial')
+  )
+    return 'Flex'
+  else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
+  else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
+  else if (~name.indexOf('together')) return 'GT'
+  else return name
+}
+function toTraditionalUGWATime (minutes) {
+  return {
+    totalminutes: minutes,
+    hour: Math.floor(minutes / 60),
+    minute: minutes % 60
+  }
+}
+function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
+  if (ugwitaData === undefined) return true
+  const [month, day] = dayString.split('-').map(Number)
+  let date
+  if (month > 6) date = new Date(2020, month - 1, day)
+  else date = new Date(2021, month - 1, day)
+  const periods = []
+  if (ugwitaData !== null) {
+    ugwitaData.forEach(p => {
+      if (!/collaboration|meeting/i.test(p.name)) {
+        const pd = identifyPeriod(p.name)
+        periods.push({
+          name: pd,
+          start: p.start,
+          end: p.end
+        })
+      }
+    })
+    for (let i = 0; i < periods.length; i++) {
+      const period = periods[i]
+      if (period.name === 'Brunch' || period.name === 'Lunch') {
+        if (i === 0) periods.splice(i--, 1)
+        else if (i === periods.length - 1) periods.splice(i--, 1)
+        else {
+          period.end = periods[i + 1].start - 10
+        }
+      }
+      period.start = toTraditionalUGWATime(period.start)
+      period.end = toTraditionalUGWATime(period.end)
+    }
+  }
+  alternates[`${month}-${day}`] = {
+    dayname: daynames[date.getDay()],
+    day: date.getDay(),
+    monthname: months[month],
+    month: month,
+    date: day,
+    description: desc || localize('default-alt-msg'),
+    periods: periods
+  }
+  return true
+}
+
+let alternates = loadJsonStorage(ALT_KEY, {})
+let manualAltSchedules = {}
+
+const selfDays = alternates.self || []
+
+const hPeriods = loadJsonStorage('[gunn-web-app] scheduleapp.h', [
+  null,
+  [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
+  [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+  null,
+  [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+  null,
+  null
+])
+
 let months, daynames, days
 export function initSchedule (manualAltSchedulesProm) {
   months = localize('months').split('  ')
@@ -1077,18 +1367,15 @@ export function initSchedule (manualAltSchedulesProm) {
     H: { label: getDefaultPeriodName('8'), colour: '#673AB7' },
     '0': { label: localize('p0'), colour: '#009688' }
   }
-  const periodStyleCookie = cookie.getItem('[gunn-web-app] scheduleapp.options')
-  let options = []
-  if (periodStyleCookie) {
-    options = JSON.parse(periodStyleCookie)
-    if (!(options[0] <= VERSION)) {
-      console.warn(
-        'Period styles seem to be from the future? Was expecting version',
-        VERSION,
-        'but got',
-        options
-      )
-    }
+  const options = loadJsonStorage('[gunn-web-app] scheduleapp.options', [], Array.isArray)
+  // Using !<= in case options[0] isn't a number
+  if (!(options[0] <= VERSION)) {
+    console.warn(
+      'Period styles seem to be from the future? Was expecting version',
+      VERSION,
+      'but got',
+      options
+    )
   }
   for (let i = 1; i < letras.length; i++) {
     if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
@@ -1098,310 +1385,21 @@ export function initSchedule (manualAltSchedulesProm) {
     }
   }
 
-  onSection.options.then(initFormatSwitches)
-  onSection.utilities.then(initSupport)
-  initAssignmentEditing()
-  const { notifSettings } = initNotifications()
-  initBell()
-  onSection.options.then(initPeriodCustomisers)
+  eventsul = document.querySelector('#events')
 
-  const setState = createReactive(document.querySelector('#weekwrapper'), {
-    customElems: {
-      'week-day': (_, recordRef) => {
-        const div = document.createElement('div')
-        ripple(div)
-        div.addEventListener('click', e => {
-          const { d } = recordRef.state.options
-          datepicker.day = {
-            d: d.getDate(),
-            m: d.getMonth(),
-            y: d.getFullYear()
-          }
-        })
-        return div
-      }
-    }
-  })
-  function makeWeekHappen () {
-    const week = scheduleapp.getWeek()
-    setState(week.map((day, i) => {
-      return [
-        {
-          type: 'week-day',
-          classes: [day.today && 'today'],
-          options: { d: day.date }
-        },
-        ['h1', days[i]],
-        ...day.map(period => {
-          const style = period.colour[0] === '#'
-            ? { backgroundColor: period.colour }
-            : { backgroundImage: `url(./.period-images/${
-              period.id
-            }?${encodeURIComponent(period.colour)})` }
-          return [
-            {
-              type: 'span',
-              properties: {
-                title: period.id === 'GT' ? localize('gunn-together/name') : period.label
-              },
-              style,
-              classes: [period.id === 'GT' && 'gt-confuse']
-            }
-          ]
-        })
-      ]
-    }))
-    renderEvents()
-  }
-  const eventsul = document.querySelector('#events')
-  const events = {}
-  const eventsHeading = document.createElement('h1')
-  eventsHeading.textContent = localize('events')
-  eventsul.parentNode.insertBefore(eventsHeading, eventsul)
-  function renderEvents () {
-    const offset = scheduleapp.offset
-    const d = now()
-    eventsul.innerHTML = `<li><span class="secondary center">${localize(
-      'loading'
-    )}</span></li>`
-    function actuallyRenderEvents (items) {
-      let innerHTML = ``
-      if (items.length) {
-        for (let i = 0; i < items.length; i++) {
-          let timerange = ''
-          if (items[i].start) {
-            const start = new Date(items[i].start)
-            const end = new Date(items[i].end)
-            if (formatOptions.hourCycle === '0')
-              timerange = `${start.getMinutes()} &ndash; ${end.getMinutes()}`
-            else if (formatOptions.hourCycle === '24')
-              timerange = `${start.getHours()}:${(
-                '0' + start.getMinutes()
-              ).slice(-2)} &ndash; ${end.getHours()}:${(
-                '0' + end.getMinutes()
-              ).slice(-2)}`
-            else
-              timerange = `${((start.getHours() - 1) % 12) + 1}:${(
-                '0' + start.getMinutes()
-              ).slice(-2)}${
-                start.getHours() < 12 ? 'a' : 'p'
-              }m &ndash; ${((end.getHours() - 1) % 12) + 1}:${(
-                '0' + end.getMinutes()
-              ).slice(-2)}${end.getHours() < 12 ? 'a' : 'p'}m`
-          }
-          if (items[i].loc) {
-            if (timerange) timerange += ' &mdash; '
-            timerange += items[i].loc
-          }
-          if (timerange)
-            timerange = `<span class="secondary">${timerange}</span>`
-          innerHTML += `<li><span class="primary">${
-            items[i].name
-          }</span><span class="secondary${
-            items[i].error ? ' get-error' : ''
-          }">${items[i].desc || ''}</span>${timerange}</li>`
-        }
-      } else {
-        innerHTML = `<li><span class="secondary center">${localize(
-          'no-events'
-        )}</span></li>`
-      }
-      eventsul.innerHTML = innerHTML
-    }
-    if (events[offset]) {
-      if (events[offset] !== 'loading') {
-        actuallyRenderEvents(events[offset])
-      }
-    } else {
-      const dateDate = new Date(
-        d.getFullYear(),
-        d.getMonth(),
-        d.getDate() + offset
-      ).toISOString()
-      const end = new Date(
-        d.getFullYear(),
-        d.getMonth(),
-        d.getDate() + offset + 1
-      )
-      end.setMilliseconds(-1) // Do not include the first millisecond of the next day
-      events[offset] = 'loading'
-      ajax(
-        // timeZone=America/Los_Angeles because the calendar is in UTC so
-        // full-day events from the next day would otherwise be included
-        `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=${apiKey}&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
-        json => {
-          json = JSON.parse(json).items
-          const e = []
-          for (let i = 0; i < json.length; i++) {
-            e[i] = {
-              start: json[i].start.dateTime,
-              end: json[i].end.dateTime,
-              name: json[i].summary,
-              desc: json[i].description,
-              loc: json[i].location
-            }
-          }
-          events[offset] = e
-          if (scheduleapp.offset === offset)
-            actuallyRenderEvents(events[offset])
-
-          const date = dateDate.slice(5, 10)
-          const alternateJSON = json.filter(
-            ev =>
-              altScheduleRegex.test(ev.summary) ||
-              noSchoolRegex.test(ev.summary)
-          )
-          const altSched = toAlternateSchedules(alternateJSON)
-          let ugwitaAltObj = {}
-          let change = false
-          if (cookie.getItem(ALT_KEY))
-            ugwitaAltObj = JSON.parse(cookie.getItem(ALT_KEY))
-          const selfDay = json.find(ev => ev.summary.includes('SELF'))
-          if (selfDay) {
-            if (!selfDays.includes(date)) {
-              selfDays.push(date)
-              change = true
-              ugwitaAltObj.self = selfDays
-            }
-          } else {
-            const index = selfDays.indexOf(date)
-            if (~index) {
-              selfDays.splice(index, 1)
-              change = true
-              ugwitaAltObj.self = selfDays
-            }
-          }
-          if (altSched[date] !== undefined) {
-            ugwitaAltObj[date] = altSched[date]
-            ugwaifyAlternates(
-              alternates,
-              date,
-              altSched[date],
-              alternateJSON[0].summary
-            )
-            change = true
-          } else if (ugwitaAltObj[date] !== undefined) {
-            delete ugwitaAltObj[date]
-            delete alternates[
-              date
-                .split('-')
-                .map(Number)
-                .join('-')
-            ]
-            change = true
-          }
-          if (change) {
-            cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
-            if (scheduleapp.options.autorender) scheduleapp.render()
-            makeWeekHappen()
-          }
-        },
-        e => {
-          events[offset] = [
-            { name: '', desc: `${e}${localize('events-error')}`, error: true }
-          ]
-          if (scheduleapp.offset === offset)
-            actuallyRenderEvents(events[offset])
-        }
-      )
-    }
-  }
-  function identifyPeriod (name) {
-    name = name.toLowerCase()
-    if (~name.indexOf('period')) {
-      // Detect PeriodE/PeriodG (2020-03-31)
-      const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
-      if (letter) {
-        return isNaN(+letter[1])
-          ? // Letter period
-            letter[1].toUpperCase()
-          : // Number period
-            ' ABCDEFG'[letter[1]]
-      }
-    }
-    if (~name.indexOf('self')) return 'SELF'
-    else if (
-      ~name.indexOf('flex') ||
-      ~name.indexOf('assembl') ||
-      ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
-      ~name.indexOf('tutorial')
-    )
-      return 'Flex'
-    else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
-    else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
-    else if (~name.indexOf('together')) return 'GT'
-    else return name
-  }
-  function toTraditionalUGWATime (minutes) {
-    return {
-      totalminutes: minutes,
-      hour: Math.floor(minutes / 60),
-      minute: minutes % 60
-    }
-  }
-  function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
-    if (ugwitaData === undefined) return true
-    const [month, day] = dayString.split('-').map(Number)
-    let date
-    if (month > 6) date = new Date(2020, month - 1, day)
-    else date = new Date(2021, month - 1, day)
-    const periods = []
-    if (ugwitaData !== null) {
-      ugwitaData.forEach(p => {
-        if (!/collaboration|meeting/i.test(p.name)) {
-          const pd = identifyPeriod(p.name)
-          periods.push({
-            name: pd,
-            start: p.start,
-            end: p.end
-          })
-        }
-      })
-      for (let i = 0; i < periods.length; i++) {
-        const period = periods[i]
-        if (period.name === 'Brunch' || period.name === 'Lunch') {
-          if (i === 0) periods.splice(i--, 1)
-          else if (i === periods.length - 1) periods.splice(i--, 1)
-          else {
-            period.end = periods[i + 1].start - 10
-          }
-        }
-        period.start = toTraditionalUGWATime(period.start)
-        period.end = toTraditionalUGWATime(period.end)
-      }
-    }
-    alternates[`${month}-${day}`] = {
-      dayname: daynames[date.getDay()],
-      day: date.getDay(),
-      monthname: months[month],
-      month: month,
-      date: day,
-      description: desc || localize('default-alt-msg'),
-      periods: periods
-    }
-    return true
-  }
-  let alternates
-  if (cookie.getItem(ALT_KEY)) alternates = JSON.parse(cookie.getItem(ALT_KEY))
-  else alternates = {}
-  const selfDays = alternates.self || []
   for (const dayString in alternates) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
   }
-  const hPeriods = JSON.parse(
-    cookie.getItem('[gunn-web-app] scheduleapp.h')
-  ) || [
-    null,
-    [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
-    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-    null,
-    [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-    null,
-    null
-  ]
+
+  onSection.options.then(initFormatSwitches)
+  onSection.utilities.then(initSupport)
+  initAssignmentEditing()
+  const { notifSettings, getIcon } = initNotifications()
+  initBell()
+  onSection.options.then(initPeriodCustomisers)
+
   const scheduleAppWrapper = document.querySelector('#schedulewrapper')
-  let manualAltSchedules = {}
   manualAltSchedulesProm.then(schedules => {
     manualAltSchedules = schedules
     scheduleapp.render()
@@ -1446,6 +1444,8 @@ export function initSchedule (manualAltSchedulesProm) {
         alternate: { description }
       }
     },
+    favicon: document.getElementById('favicon'),
+    defaultFavicon: 'favicon/favicon.ico',
     autorender: false
   })
   setOnSavedClubsUpdate(scheduleapp.render)
@@ -1595,7 +1595,7 @@ export function initSchedule (manualAltSchedulesProm) {
   datepicker.isSchoolDay = isSchoolDay
   // skip to next school day
   let previewingFuture = false
-  if (scheduleapp.endOfDay) {
+  if (scheduleapp.isEndOfDay()) {
     d.setDate(d.getDate() + 1)
     previewingFuture = true
   }

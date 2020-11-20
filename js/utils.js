@@ -48,6 +48,24 @@ export const cookie = (() => {
     }
   }
 })()
+export function loadJsonWithDefault (json, defaultVal = {}, validate = value => typeof value === 'object') {
+  try {
+    const parsed = JSON.parse(json)
+    if (validate(parsed)) {
+      return parsed
+    } else {
+      return defaultVal
+    }
+  } catch (err) {
+    logError(err)
+    return defaultVal
+  }
+}
+export function loadJsonStorage (key, defaultVal = {}, { validate } = {}) {
+  const value = cookie.getItem(key)
+  if (!value) return defaultVal
+  return loadJsonWithDefault(value, defaultVal, validate)
+}
 
 // Current time getters are centralized here so it is easier to simulate a
 // different time

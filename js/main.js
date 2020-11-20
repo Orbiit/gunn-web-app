@@ -46,6 +46,8 @@ import {
   googleCalendarId,
   LAST_YEARS_ALT_KEY,
   lastDay,
+  loadJsonStorage,
+  loadJsonWithDefault,
   logError,
   now,
   showDialog,
@@ -514,16 +516,14 @@ function initSaveCodeManager () {
   function importCode (code) {
     if (!confirm(localize('import-warning'))) return
     try {
-      const values = JSON.parse(code)
+      const values = loadJsonWithDefault(code, {})
       Object.keys(values).forEach(key => {
         cookie.setItem(
           key === EXCEPT ? key : UGWA_COOKIE_PREFIX + key,
           values[key]
         )
       })
-      const periodCustomizations = JSON.parse(
-        cookie.getItem('[gunn-web-app] scheduleapp.options')
-      )
+      const periodCustomizations = loadJsonStorage('[gunn-web-app] scheduleapp.options', [], Array.isArray)
       Promise.all(
         periodCustomizations.map((entry, i) => {
           if (i > 0 && entry[1][0] !== '#')

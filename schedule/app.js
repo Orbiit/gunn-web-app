@@ -3,7 +3,9 @@ import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { currentTime, identity, now } from '../js/utils.js'
+import { currentTime, identity, now, THEME_COLOUR } from '../js/utils.js'
+
+const FAVICON_SIZE = 32
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
@@ -85,13 +87,15 @@ export function scheduleApp (options = {}) {
   function getPeriod (name) {
     return options.periods[name] || { label: name, colour: '#000' }
   }
-  function getHumanTime (messytime) {
-    const hr = +messytime.slice(0, 2) % 24
-    if (options.h0Joke) return +messytime.slice(2) + ''
-    else if (options.h24) return `${hr}:${messytime.slice(2)}`
-    else
-      return `${((hr - 1) % 12) + 1}:${messytime.slice(2)}${
-        hr < 12 ? 'a' : 'p'
+  function getHumanTime ({ hour, minute }) {
+    if (options.h0Joke) {
+      return minute + ''
+    }
+    const minsLeadingZero = ('0' + minute).slice(-2)
+    return options.h24
+      ? `${hour}:${minsLeadingZero}`
+      : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${
+        hour < 12 ? 'a' : 'p'
       }m`
   }
   function getCSS (colour, id) {
@@ -238,6 +242,102 @@ export function scheduleApp (options = {}) {
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
   }
+  function getCurrentStatus () {
+    const d = now()
+    const totalminute = getTotalMinutes(d)
+    const { periods } = getSchedule(d)
+    if (!periods.length) {
+      return {
+        title: localize('appname'),
+        favicon: null
+      }
+    }
+    let currPd // current period
+    for (currPd = 0; currPd < periods.length; currPd++) {
+      if (totalminute < periods[currPd].end.totalminutes) {
+        break
+      }
+    }
+    const period = periods[Math.min(currPd, periods.length - 1)]
+    if (currPd >= periods.length) {
+      // after school
+      return {
+        title: localize('appname'),
+        favicon: null
+      }
+    } else if (totalminute >= period.start.totalminutes) {
+      // during a period
+      const { label, colour } = getPeriod(period.name)
+      return {
+        title: options.compact
+          ? localizeWith('ending-short', 'times', {
+            T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+          })
+          : localizeWith('ending', 'times', {
+            P: label,
+            T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+          }),
+        favicon: {
+          minutes: period.end.totalminutes - totalminute,
+          colour
+        }
+      }
+    } else {
+      // passing period or before school
+      const { label, colour } = getPeriod(period.name)
+      return {
+        title: options.compact
+          ? localizeWith('starting-short', 'times', {
+            P: label,
+            T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+          })
+          : localizeWith('starting', 'times', {
+            P: label,
+            T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+          }),
+        favicon: period.start.totalminutes - totalminute < 100
+          ? {
+            minutes: period.end.totalminutes - totalminute,
+            colour
+          }
+          : null
+      }
+    }
+  }
+  const borderRadius = FAVICON_SIZE * 0.15
+  const faviconCanvas = document.createElement('canvas')
+  faviconCanvas.width = FAVICON_SIZE
+  faviconCanvas.height = FAVICON_SIZE
+  const fc = faviconCanvas.getContext('2d')
+  fc.font = `bold ${FAVICON_SIZE * 0.8}px "Roboto", sans-serif`
+  fc.textAlign = 'center'
+  fc.textBaseline = 'middle'
+  function displayCurrentStatus () {
+    const { title, favicon } = getCurrentStatus()
+    document.title = title
+    if (favicon === null) {
+      options.favicon.href = options.defaultFavicon
+    } else {
+      const { minutes, colour } = favicon
+      const isColour = colour[0] === '#'
+      fc.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE)
+      fc.fillStyle = isColour ? colour : 'white'
+      fc.beginPath()
+      fc.moveTo(0, borderRadius)
+      fc.arc(borderRadius, borderRadius, borderRadius, Math.PI, Math.PI * 1.5)
+      fc.lineTo(FAVICON_SIZE - borderRadius, 0)
+      fc.arc(FAVICON_SIZE - borderRadius, borderRadius, borderRadius, -Math.PI / 2, 0)
+      fc.lineTo(FAVICON_SIZE, FAVICON_SIZE - borderRadius)
+      fc.arc(FAVICON_SIZE - borderRadius, FAVICON_SIZE - borderRadius, borderRadius, 0, Math.PI / 2)
+      fc.lineTo(borderRadius, FAVICON_SIZE)
+      fc.arc(borderRadius, FAVICON_SIZE - borderRadius, borderRadius, Math.PI / 2, Math.PI)
+      fc.closePath()
+      fc.fill()
+      fc.fillStyle = isColour ? (isLight(colour) ? 'black' : 'white') : THEME_COLOUR
+      fc.fillText(minutes, FAVICON_SIZE / 2, FAVICON_SIZE * 0.6)
+      options.favicon.href = faviconCanvas.toDataURL()
+    }
+  }
   function getRenderedScheduleForDay (offset = 0) {
     let d = now()
     let isToday = true
@@ -274,10 +374,7 @@ export function scheduleApp (options = {}) {
         schedule.push([
           'span.schedule-end',
           applyEndTime({
-            T: getHumanTime(
-              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
-                ('0' + lastRequiredPeriod.end.minute).slice(-2)
-            )
+            T: getHumanTime(lastRequiredPeriod.end)
           })
         ])
       }
@@ -432,18 +529,15 @@ export function scheduleApp (options = {}) {
           period.name === 'GT' && ['span', localize('gunn-together/subtitle')],
           [
             'span',
-            // TODO: make this a localized thing as well!
-            `${getHumanTime(
-              ('0' + period.start.hour).slice(-2) +
-                ('0' + period.start.minute).slice(-2)
-            )} – ${getHumanTime(
-              ('0' + period.end.hour).slice(-2) +
-                ('0' + period.end.minute).slice(-2)
-            )} · ${localizeWith('long', 'times', {
-              T: getUsefulTimePhrase(
-                period.end.totalminutes - period.start.totalminutes
-              )
-            })}`
+            localizeWith('range', 'times', {
+              T1: getHumanTime(period.start),
+              T2: getHumanTime(period.end),
+              D: localizeWith('long', 'times', {
+                T: getUsefulTimePhrase(
+                  period.end.totalminutes - period.start.totalminutes
+                )
+              })
+            })
           ],
           ['span', periodTimeLeft],
           ...clubItems
@@ -502,8 +596,7 @@ export function scheduleApp (options = {}) {
    */
   function onBlur () {
     setTitle = true
-    // Recalculate the schedule to update the title.
-    // setDay(options.offset)
+    displayCurrentStatus()
     window.removeEventListener('blur', onBlur, false)
   }
   window.addEventListener('blur', onBlur, false)
@@ -580,6 +673,7 @@ export function scheduleApp (options = {}) {
     container,
     render () {
       setState(getRenderedScheduleForDay(options.offset))
+      displayCurrentStatus()
     },
     update () {
       options.update = true
@@ -705,10 +799,16 @@ export function scheduleApp (options = {}) {
     },
     getTotalMinutes,
     getPeriodSpan,
-    getSchedule
+    getSchedule,
+    isEndOfDay: () => {
+      const d = now()
+      const totalminute = getTotalMinutes(d)
+      const { periods } = getSchedule(d)
+      // endOfDay is an hour after end of school
+      return totalminute - periods[periods.length - 1].end.totalminutes >= 60
+    }
     // generateHtmlForOffset: generateDay
   }
   element.appendChild(container)
-  // setDay(options.offset) // Calculate endOfDay, but don't render the HTML yet
   return returnval
 }
