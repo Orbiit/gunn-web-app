@@ -12,15 +12,16 @@ export function initBarcodes () {
   const barcodeelems = []
   const code = cookie.getItem('[gunn-web-app] barcode.ids')
   if (code) {
-    if (code[0] === 'A')
+    if (code[0] === 'A') {
       barcodes = loadJsonWithDefault(code.slice(1), [], Array.isArray)
-    else
+    } else {
       barcodes = code
         .split(',')
         .map((a, i) => [
           localize('barcode-legacy-default').replace('{N}', i),
           a
         ])
+    }
   }
   const showingBarcodeParam = /(?:\?|&)barcode=([^&]+)/.exec(
     window.location.search

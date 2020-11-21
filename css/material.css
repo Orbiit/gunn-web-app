@@ -80,12 +80,6 @@ a.material:hover,
 .tab-focus .material:focus {
   box-shadow: 0 0 0 5px var(--focus);
 }
-.schedule-container .material {
-  transition: background-color 0.2s;
-}
-.schedule-container .material:hover {
-  background-color: var(--ripple);
-}
 .material-switch-wrapper {
   display: inline-flex;
   align-items: center;

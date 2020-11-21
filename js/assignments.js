@@ -187,24 +187,48 @@ class Assignment {
   }
 
   // used with the periods
-  toHTML ({ today } = {}) {
-    return `<div class="asgn-line asgn-importance-${this.importance}${
-      this.done ? ' asgn-is-done' : ''
-    }" data-asgn-id="${
-      this.id
-    }"><button class="asgn-done-btn material icon" aria-label="${
-      this.done ? localize('undoneify') : localize('doneify')
-    }"><i class="material-icons">${
-      this.done ? '&#xe834;' : '&#xe835;'
-    }</i></button><span class="asgn-edit" tabindex="0" aria-label="${localize(
-      'asgn-edit-label'
-    )}"><span class="asgn-category asgn-category-${
-      this.category
-    }">${localizeCategory(
-      this.category
-    )}</span><span class="asgn-text">${escapeHTML(
-      this.text
-    )}</span></span></div>`
+  asPeriodInline ({ today } = {}) {
+    return [
+      {
+        type: 'div.asgn-line',
+        classes: [
+          `asgn-importance-${this.importance}`,
+          this.done && 'asgn-is-done'
+        ],
+        dataset: {
+          asgnId: this.id
+        }
+      },
+      [
+        {
+          type: 'ripple-btn.asgn-done-btn.material.icon',
+          properties: {
+            ariaLabel: this.done ? localize('undoneify') : localize('doneify')
+          }
+        },
+        [
+          'i.material-icons',
+          this.done ? '\ue834' : '\ue835'
+        ]
+      ],
+      [
+        {
+          type: 'span.asgn-edit',
+          properties: {
+            tabIndex: '0',
+            ariaLabel: localize('asgn-edit-label')
+          }
+        },
+        [
+          `span.asgn-category.asgn-category-${this.category}`,
+          localizeCategory(this.category)
+        ],
+        [
+          'span.asgn-text',
+          this.text
+        ]
+      ]
+    ]
   }
 
   // used in the upcoming assignments section
@@ -667,11 +691,11 @@ export function initAssignments ({
         .getAssignmentsFor(Assignment.dateObjToDayInt(date))
         .forEach(asgn => {
           if (!byPeriod[asgn.period || 'noPeriod']) {
-            byPeriod[asgn.period || 'noPeriod'] = ''
+            byPeriod[asgn.period || 'noPeriod'] = ['fragment']
           }
-          byPeriod[asgn.period || 'noPeriod'] += asgn.toHTML({
+          byPeriod[asgn.period || 'noPeriod'].push(asgn.asPeriodInline({
             today
-          })
+          }))
         })
       return byPeriod
     },

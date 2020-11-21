@@ -1356,7 +1356,8 @@ function actuallyRenderEvents (items) {
         'span.secondary',
         start &&
           getHumanTime(new Date(start)) + '–' + getHumanTime(new Date(end)),
-        loc && ' · ' + loc
+        start && loc && ' · ',
+        loc
       ]
     ])
   } else {
@@ -1993,10 +1994,9 @@ export function initSchedule (manualAltSchedulesProm) {
   setEvents = createReactive(document.querySelector('#events'))
 
   initScheduleApp()
-  const { yesterdayer, tomorrower } = initDatePicker()
-
   initAssignmentEditing()
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
+  const { yesterdayer, tomorrower } = initDatePicker()
 
   initLinkOpener()
   initNotifications()

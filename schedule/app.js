@@ -482,12 +482,7 @@ export function scheduleApp (options = {}) {
     const day = days[weekday]
     const isSchool = !summer && periods.length
     const noSchool = !summer && !periods.length
-
-    // TODO: DeHTMLify
-    // const assignments = options.getAssignments(d)
-    // if (assignments.noPeriod) {
-    //   innerHTML += assignments.noPeriod
-    // }
+    const assignments = options.getAssignments(d)
 
     const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
     let schedule = []
@@ -573,10 +568,6 @@ export function scheduleApp (options = {}) {
             })
           }
         }
-        // if (assignments[period.name]) {
-        //   // TODO
-        //   innerHTML += assignments[period.name]
-        // }
         let clubItems = []
         if (period.name === 'Lunch' && dayToPrime[weekday]) {
           const clubs = []
@@ -667,6 +658,7 @@ export function scheduleApp (options = {}) {
             })
           ],
           ['span', periodTimeLeft],
+          assignments[period.name],
           ...clubItems
         ])
       }
@@ -689,6 +681,7 @@ export function scheduleApp (options = {}) {
           })
         ]
       ],
+      assignments.noPeriod,
       summer && ['span.schedule-noschool', localize('summer')],
       !summer &&
         alternate && [
@@ -935,8 +928,8 @@ export function scheduleApp (options = {}) {
         periods.length &&
         totalminute - periods[periods.length - 1].end.totalminutes >= 60
       )
-    }
-    // generateHtmlForOffset: generateDay
+    },
+    getRenderedScheduleForDay
   }
   element.appendChild(container)
   return returnval

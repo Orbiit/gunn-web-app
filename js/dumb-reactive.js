@@ -43,7 +43,6 @@ function diffObject (oldObj, newObj) {
     )
   }
 }
-window.diffObject = diffObject
 
 function processStateArray (states) {
   // Merge adjacent strings
@@ -105,7 +104,6 @@ function updateRecordFromState (settings, record, newState) {
       properties: {},
       style: {}
     }
-    // TODO: properties, dataset, etc
     const { removed: removedClasses, added: addedClasses } = diffArray(
       oldState.classes,
       newState.classes
@@ -250,7 +248,6 @@ function applyChildChanges (settings, parentNode, records, newState) {
       deleteRecord(record)
     }
   }
-  // TODO: remove extra records
 }
 
 export function createReactive (wrapper, { customElems = {} } = {}) {
