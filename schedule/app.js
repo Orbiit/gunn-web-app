@@ -249,6 +249,7 @@ export function scheduleApp (options = {}) {
     if (!periods.length) {
       return {
         title: localize('appname'),
+        end: null,
         favicon: null
       }
     }
@@ -263,6 +264,7 @@ export function scheduleApp (options = {}) {
       // after school
       return {
         title: localize('appname'),
+        end: null,
         favicon: null
       }
     } else if (totalminute >= period.start.totalminutes) {
@@ -277,6 +279,7 @@ export function scheduleApp (options = {}) {
             P: label,
             T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
           }),
+        end: period.end.totalminutes,
         favicon: {
           minutes: period.end.totalminutes - totalminute,
           colour
@@ -295,6 +298,8 @@ export function scheduleApp (options = {}) {
             P: label,
             T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
           }),
+        end: period.start.totalminutes,
+        // Favicon can only show like 2 digits
         favicon: period.start.totalminutes - totalminute < 100
           ? {
             minutes: period.start.totalminutes - totalminute,
@@ -309,20 +314,82 @@ export function scheduleApp (options = {}) {
   faviconCanvas.width = FAVICON_SIZE
   faviconCanvas.height = FAVICON_SIZE
   const fc = faviconCanvas.getContext('2d')
-  fc.font = `bold ${FAVICON_SIZE * 0.8}px "Roboto", sans-serif`
   fc.textAlign = 'center'
   fc.textBaseline = 'middle'
+  fc.lineWidth = FAVICON_SIZE * 0.1
+  fc.lineJoin = 'round'
+  fc.lineCap = 'round'
+  const sRadius = FAVICON_SIZE * 0.45 // radius for last seconds
+  let lastMinuteData = null
+  function displayLastSeconds () {
+    const now = currentTime()
+    const seconds = (lastMinuteData.end - now) / 1000
+    if (seconds < 0) {
+      lastMinuteData = null
+      displayCurrentStatus()
+      return
+    }
+
+    const primaryColour = lastMinuteData.colour
+      ? (isLight(lastMinuteData.colour) ? 'black' : 'white')
+      : THEME_COLOUR
+    fc.fillStyle = lastMinuteData.colour || 'white'
+    fc.strokeStyle = primaryColour
+
+    fc.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE)
+
+    fc.beginPath()
+    fc.moveTo(FAVICON_SIZE / 2 + sRadius, FAVICON_SIZE / 2)
+    fc.arc(FAVICON_SIZE / 2, FAVICON_SIZE / 2, sRadius, 0, 2 * Math.PI)
+    fc.closePath()
+    fc.fill()
+
+    fc.beginPath()
+    fc.moveTo(FAVICON_SIZE / 2, FAVICON_SIZE / 2 - sRadius)
+    // Rounding seconds so when it shows 30 seconds always will show half-way,
+    // even if it's not exactly 30s
+    fc.arc(FAVICON_SIZE / 2, FAVICON_SIZE / 2, sRadius, Math.PI * 1.5, 2 * Math.PI * (1 - Math.round(seconds) / 60) - Math.PI / 2, true)
+    fc.stroke()
+
+    fc.fillStyle = primaryColour
+    fc.font = `bold ${FAVICON_SIZE * 0.6}px "Roboto", sans-serif`
+    fc.fillText(Math.round(seconds).toString().padStart(2, '0'), FAVICON_SIZE / 2, FAVICON_SIZE * 0.575)
+
+    options.favicon.href = faviconCanvas.toDataURL()
+
+    if (lastMinuteData) {
+      // requestAnimationFrame only works when viewing the tab
+      setTimeout(displayLastSeconds, 1000 / 15)
+    }
+  }
   function displayCurrentStatus () {
-    const { title, favicon } = getCurrentStatus()
+    if (lastMinuteData) return
+    const { title, favicon, end } = getCurrentStatus()
+    if (end !== null) {
+      const d = now()
+      const endDateTime = offsetToDate(0, d)
+      endDateTime.setMinutes(end)
+      if (endDateTime - d < 60000) {
+        lastMinuteData = {
+          end: endDateTime.getTime(),
+          colour: favicon && favicon.colour[0] === '#' ? favicon.colour : null
+        }
+        displayLastSeconds()
+        return
+      }
+    }
     document.title = title
     if (favicon === null) {
       options.favicon.href = options.defaultFavicon
     } else {
       const { minutes, colour } = favicon
       const isColour = colour[0] === '#'
+
       fc.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE)
+
       fc.fillStyle = isColour ? colour : 'white'
       fc.beginPath()
+      // Rounded square
       fc.moveTo(0, borderRadius)
       fc.arc(borderRadius, borderRadius, borderRadius, Math.PI, Math.PI * 1.5)
       fc.lineTo(FAVICON_SIZE - borderRadius, 0)
@@ -333,8 +400,11 @@ export function scheduleApp (options = {}) {
       fc.arc(borderRadius, FAVICON_SIZE - borderRadius, borderRadius, Math.PI / 2, Math.PI)
       fc.closePath()
       fc.fill()
+
       fc.fillStyle = isColour ? (isLight(colour) ? 'black' : 'white') : THEME_COLOUR
-      fc.fillText(minutes, FAVICON_SIZE / 2, FAVICON_SIZE * 0.6)
+      fc.font = `bold ${FAVICON_SIZE * 0.8}px "Roboto", sans-serif`
+      fc.fillText(minutes, FAVICON_SIZE / 2, FAVICON_SIZE * 0.575)
+
       options.favicon.href = faviconCanvas.toDataURL()
     }
   }

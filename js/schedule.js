@@ -1235,8 +1235,9 @@ function renderEvents () {
       },
       e => {
         events[offset] = { error: e + localize('events-error') }
-        if (scheduleapp.offset === offset)
-          actuallyRenderEvents(events[offset])
+        if (scheduleapp.offset === offset) {
+          setEvents(actuallyRenderEvents(events[offset]))
+        }
       }
     )
   }
