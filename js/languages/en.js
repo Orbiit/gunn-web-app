@@ -390,6 +390,7 @@ export default {
     long: '{T} long',
     over: "School's over!",
     range: '{T1}–{T2} · {D}',
+    seconds: '{T}s',
     'self-ended': 'Ended {T} ago.',
     'self-ending': 'Ending in {T1}; started {T2} ago.',
     'self-starting': 'Starting in {T}.',

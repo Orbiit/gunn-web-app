@@ -279,6 +279,7 @@ export function scheduleApp (options = {}) {
             P: label,
             T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
           }),
+        titleInfo: { type: 'ending', label },
         end: period.end.totalminutes,
         favicon: {
           minutes: period.end.totalminutes - totalminute,
@@ -298,6 +299,7 @@ export function scheduleApp (options = {}) {
             P: label,
             T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
           }),
+        titleInfo: { type: 'starting', label },
         end: period.start.totalminutes,
         // Favicon can only show like 2 digits
         favicon: period.start.totalminutes - totalminute < 100
@@ -328,6 +330,29 @@ export function scheduleApp (options = {}) {
       lastMinuteData = null
       displayCurrentStatus()
       return
+    }
+
+    if (lastMinuteData.titleInfo) {
+      const { type, label } = lastMinuteData.titleInfo
+      const secs = localizeWith('seconds', 'times', { T: seconds.toFixed(3) })
+      if (type === 'ending') {
+        document.title = options.compact
+          ? localizeWith('ending-short', 'times', { T: secs })
+          : localizeWith('ending', 'times', {
+            P: lastMinuteData.titleInfo.label,
+            T: secs
+          })
+      } else if (type === 'starting') {
+        document.title = options.compact
+          ? localizeWith('starting-short', 'times', {
+            P: lastMinuteData.titleInfo.label,
+            T: secs
+          })
+          : localizeWith('starting', 'times', {
+            P: lastMinuteData.titleInfo.label,
+            T: secs
+          })
+      }
     }
 
     const primaryColour = lastMinuteData.colour
@@ -364,7 +389,7 @@ export function scheduleApp (options = {}) {
   }
   function displayCurrentStatus () {
     if (lastMinuteData) return
-    const { title, favicon, end } = getCurrentStatus()
+    const { title, favicon, end, titleInfo } = getCurrentStatus()
     if (end !== null) {
       const d = now()
       const endDateTime = offsetToDate(0, d)
@@ -372,7 +397,8 @@ export function scheduleApp (options = {}) {
       if (endDateTime - d < 60000) {
         lastMinuteData = {
           end: endDateTime.getTime(),
-          colour: favicon && favicon.colour[0] === '#' ? favicon.colour : null
+          colour: favicon && favicon.colour[0] === '#' ? favicon.colour : null,
+          titleInfo
         }
         displayLastSeconds()
         return

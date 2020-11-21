@@ -1054,7 +1054,7 @@ function initPeriodCustomisers () {
   document
     .querySelector('.section.options')
     .insertBefore(
-      periodCustomisers,
+      f,
       document.querySelector('#periodcustomisermarker')
     )
 }
