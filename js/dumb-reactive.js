@@ -173,7 +173,10 @@ function newRecordFromState (
   if (typeof fromState === 'string') {
     recordTarget.node = document.createTextNode(fromState)
   } else if (settings.customElems[fromState.tag]) {
-    recordTarget.node = settings.customElems[fromState.tag](fromState, recordTarget)
+    recordTarget.node = settings.customElems[fromState.tag](
+      fromState,
+      recordTarget
+    )
   } else {
     recordTarget.node = document.createElement(fromState.tag)
   }

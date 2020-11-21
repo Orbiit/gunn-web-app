@@ -13,6 +13,10 @@ export function setDaysMonths (newDays, newMonths) {
   months = newMonths
 }
 
+const onBlur = new Promise(resolve => {
+  window.addEventListener('blur', resolve, { once: true })
+})
+
 const applyEndTime = createL10nApplier(localize('end-time', 'times'), {
   T: 'strong'
 })
@@ -94,9 +98,7 @@ export function scheduleApp (options = {}) {
     const minsLeadingZero = ('0' + minute).slice(-2)
     return options.h24
       ? `${hour}:${minsLeadingZero}`
-      : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${
-        hour < 12 ? 'a' : 'p'
-      }m`
+      : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${hour < 12 ? 'a' : 'p'}m`
   }
   function getCSS (colour, id) {
     if (colour[0] === '#') {
@@ -273,12 +275,12 @@ export function scheduleApp (options = {}) {
       return {
         title: options.compact
           ? localizeWith('ending-short', 'times', {
-            T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
-          })
+              T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+            })
           : localizeWith('ending', 'times', {
-            P: label,
-            T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
-          }),
+              P: label,
+              T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+            }),
         titleInfo: { type: 'ending', label },
         end: period.end.totalminutes,
         favicon: {
@@ -292,22 +294,23 @@ export function scheduleApp (options = {}) {
       return {
         title: options.compact
           ? localizeWith('starting-short', 'times', {
-            P: label,
-            T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
-          })
+              P: label,
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+            })
           : localizeWith('starting', 'times', {
-            P: label,
-            T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
-          }),
+              P: label,
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+            }),
         titleInfo: { type: 'starting', label },
         end: period.start.totalminutes,
         // Favicon can only show like 2 digits
-        favicon: period.start.totalminutes - totalminute < 100
-          ? {
-            minutes: period.start.totalminutes - totalminute,
-            colour
-          }
-          : null
+        favicon:
+          period.start.totalminutes - totalminute < 100
+            ? {
+                minutes: period.start.totalminutes - totalminute,
+                colour
+              }
+            : null
       }
     }
   }
@@ -338,25 +341,18 @@ export function scheduleApp (options = {}) {
       if (type === 'ending') {
         document.title = options.compact
           ? localizeWith('ending-short', 'times', { T: secs })
-          : localizeWith('ending', 'times', {
-            P: lastMinuteData.titleInfo.label,
-            T: secs
-          })
+          : localizeWith('ending', 'times', { P: label, T: secs })
       } else if (type === 'starting') {
         document.title = options.compact
-          ? localizeWith('starting-short', 'times', {
-            P: lastMinuteData.titleInfo.label,
-            T: secs
-          })
-          : localizeWith('starting', 'times', {
-            P: lastMinuteData.titleInfo.label,
-            T: secs
-          })
+          ? localizeWith('starting-short', 'times', { P: label, T: secs })
+          : localizeWith('starting', 'times', { P: label, T: secs })
       }
     }
 
     const primaryColour = lastMinuteData.colour
-      ? (isLight(lastMinuteData.colour) ? 'black' : 'white')
+      ? isLight(lastMinuteData.colour)
+        ? 'black'
+        : 'white'
       : THEME_COLOUR
     fc.fillStyle = lastMinuteData.colour || 'white'
     fc.strokeStyle = primaryColour
@@ -373,12 +369,25 @@ export function scheduleApp (options = {}) {
     fc.moveTo(FAVICON_SIZE / 2, FAVICON_SIZE / 2 - sRadius)
     // Rounding seconds so when it shows 30 seconds always will show half-way,
     // even if it's not exactly 30s
-    fc.arc(FAVICON_SIZE / 2, FAVICON_SIZE / 2, sRadius, Math.PI * 1.5, 2 * Math.PI * (1 - Math.round(seconds) / 60) - Math.PI / 2, true)
+    fc.arc(
+      FAVICON_SIZE / 2,
+      FAVICON_SIZE / 2,
+      sRadius,
+      Math.PI * 1.5,
+      2 * Math.PI * (1 - Math.round(seconds) / 60) - Math.PI / 2,
+      true
+    )
     fc.stroke()
 
     fc.fillStyle = primaryColour
     fc.font = `bold ${FAVICON_SIZE * 0.6}px "Roboto", sans-serif`
-    fc.fillText(Math.round(seconds).toString().padStart(2, '0'), FAVICON_SIZE / 2, FAVICON_SIZE * 0.575)
+    fc.fillText(
+      Math.round(seconds)
+        .toString()
+        .padStart(2, '0'),
+      FAVICON_SIZE / 2,
+      FAVICON_SIZE * 0.575
+    )
 
     options.favicon.href = faviconCanvas.toDataURL()
 
@@ -419,15 +428,37 @@ export function scheduleApp (options = {}) {
       fc.moveTo(0, borderRadius)
       fc.arc(borderRadius, borderRadius, borderRadius, Math.PI, Math.PI * 1.5)
       fc.lineTo(FAVICON_SIZE - borderRadius, 0)
-      fc.arc(FAVICON_SIZE - borderRadius, borderRadius, borderRadius, -Math.PI / 2, 0)
+      fc.arc(
+        FAVICON_SIZE - borderRadius,
+        borderRadius,
+        borderRadius,
+        -Math.PI / 2,
+        0
+      )
       fc.lineTo(FAVICON_SIZE, FAVICON_SIZE - borderRadius)
-      fc.arc(FAVICON_SIZE - borderRadius, FAVICON_SIZE - borderRadius, borderRadius, 0, Math.PI / 2)
+      fc.arc(
+        FAVICON_SIZE - borderRadius,
+        FAVICON_SIZE - borderRadius,
+        borderRadius,
+        0,
+        Math.PI / 2
+      )
       fc.lineTo(borderRadius, FAVICON_SIZE)
-      fc.arc(borderRadius, FAVICON_SIZE - borderRadius, borderRadius, Math.PI / 2, Math.PI)
+      fc.arc(
+        borderRadius,
+        FAVICON_SIZE - borderRadius,
+        borderRadius,
+        Math.PI / 2,
+        Math.PI
+      )
       fc.closePath()
       fc.fill()
 
-      fc.fillStyle = isColour ? (isLight(colour) ? 'black' : 'white') : THEME_COLOUR
+      fc.fillStyle = isColour
+        ? isLight(colour)
+          ? 'black'
+          : 'white'
+        : THEME_COLOUR
       fc.font = `bold ${FAVICON_SIZE * 0.8}px "Roboto", sans-serif`
       fc.fillText(minutes, FAVICON_SIZE / 2, FAVICON_SIZE * 0.575)
 
@@ -690,12 +721,10 @@ export function scheduleApp (options = {}) {
    * (see #82). I think this is fine because mobile devices won't need the tab
    * title, and those who do need the tab title probably fire blur reliably.
    */
-  function onBlur () {
+  onBlur.then(() => {
     setTitle = true
     displayCurrentStatus()
-    window.removeEventListener('blur', onBlur, false)
-  }
-  window.addEventListener('blur', onBlur, false)
+  })
   function getDate (date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
   }
@@ -769,7 +798,7 @@ export function scheduleApp (options = {}) {
     container,
     render () {
       setState(getRenderedScheduleForDay(options.offset))
-      displayCurrentStatus()
+      if (setTitle) displayCurrentStatus()
     },
     update () {
       options.update = true
@@ -902,7 +931,7 @@ export function scheduleApp (options = {}) {
       const totalminute = getTotalMinutes(d)
       const { periods } = getSchedule(d)
       // endOfDay is an hour after end of school
-      return totalminute - periods[periods.length - 1].end.totalminutes >= 60
+      return periods.length && totalminute - periods[periods.length - 1].end.totalminutes >= 60
     }
     // generateHtmlForOffset: generateDay
   }

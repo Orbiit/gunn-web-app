@@ -48,7 +48,11 @@ export const cookie = (() => {
     }
   }
 })()
-export function loadJsonWithDefault (json, defaultVal = {}, validate = value => typeof value === 'object') {
+export function loadJsonWithDefault (
+  json,
+  defaultVal = {},
+  validate = value => typeof value === 'object'
+) {
   try {
     const parsed = JSON.parse(json)
     if (validate(parsed)) {

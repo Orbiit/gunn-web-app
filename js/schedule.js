@@ -39,6 +39,29 @@ import {
   toEach
 } from './utils.js'
 
+/// TEMP: Homeless
+
+
+/// /Homeless
+
+
+/// Cache of period image backgrounds
+const IMAGE_CACHE = 'ugwa-img-cache-YEET'
+export function cacheBackground (url, pd) {
+  return Promise.all([
+    caches.open(IMAGE_CACHE),
+    fetch(url, { mode: 'no-cors', cache: 'no-cache' })
+  ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
+}
+
+/// Period customisation of names and colours
+/**
+ * Period customisation save format version
+ * WARNING: if you change this it'll change everyone's saves; it's best to add a
+ * way to convert the saves properly
+ */
+const VERSION = 5
+/** Ordering of period letters in period customisation data */
 export const letras = [
   null, // Placeholder because the version number is at index 0
   'A',
@@ -55,143 +78,7 @@ export const letras = [
   'H',
   '0'
 ]
-// period style save format version
-// WARNING: if you change this it'll change everyone's saves; it's best to add a way to convert the saves properly
-const VERSION = 5
-// radios save format version
-const FORMATTING_VERSION = '10'
-const normalschedule = [
-  null,
-  [
-    { name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30) },
-    { name: 'B', start: makeHMTM(10, 40), end: makeHMTM(11, 10) },
-    { name: 'C', start: makeHMTM(11, 20), end: makeHMTM(11, 50) },
-    { name: 'D', start: makeHMTM(12, 0), end: makeHMTM(12, 35) },
-    { name: 'Lunch', start: makeHMTM(12, 35), end: makeHMTM(13, 5) },
-    { name: 'E', start: makeHMTM(13, 15), end: makeHMTM(13, 45) },
-    { name: 'F', start: makeHMTM(13, 55), end: makeHMTM(14, 25) },
-    { name: 'G', start: makeHMTM(14, 35), end: makeHMTM(15, 5) }
-  ],
-  [
-    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
-    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
-    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
-  ],
-  [
-    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-    { name: 'GT', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
-    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
-  ],
-  [
-    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
-    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
-    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
-  ],
-  [
-    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-    { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) }
-  ],
-  null
-]
-function makeHMTM (hour, minute = 0) {
-  return { hour, minute, totalminutes: hour * 60 + minute }
-}
-
-const dateRegex = /^\d+-\d{2}-\d{2}$/
-const manualAltPeriodRegex = /^(1?\d):(\d{2}) (1?\d):(\d{2}) ([a-z]+)$/
-export function getManualAlternateSchedules () {
-  return fetch('./json/alt-schedules-2020.txt' + isAppDesign)
-    .then(r => r.text())
-    .then(text => {
-      const schedules = {}
-      const lines = text.split(/\r?\n/)
-      let currentDate = null
-      for (const line of lines) {
-        if (line[0] === '#') continue
-        if (currentDate) {
-          if (line[0] === '*') {
-            if (schedules[currentDate].description) {
-              schedules[currentDate].description += ' ' + line.slice(1).trim()
-            } else {
-              schedules[currentDate].description = line.slice(1).trim()
-            }
-          } else if (line) {
-            const match = line.match(manualAltPeriodRegex)
-            if (match) {
-              const [, startH, startM, endH, endM, periodLowercase] = match
-              const period =
-                periodLowercase === 'self'
-                  ? 'SELF'
-                  : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
-              if (letras.includes(period)) {
-                schedules[currentDate].periods.push({
-                  name: period,
-                  start: makeHMTM(+startH, +startM),
-                  end: makeHMTM(+endH, +endM)
-                })
-              } else {
-                console.warn(period, 'is not a valid period on', currentDate)
-              }
-            } else {
-              console.warn(
-                line,
-                'does not match the period regex on',
-                currentDate
-              )
-            }
-          } else {
-            currentDate = null
-          }
-        } else if (line) {
-          if (dateRegex.test(line)) {
-            currentDate = line
-              .split('-')
-              .map(Number)
-              .join('-')
-            if (schedules[currentDate]) {
-              console.warn(
-                'A schedule already exists on',
-                currentDate,
-                schedules[currentDate]
-              )
-            }
-            schedules[currentDate] = { periods: [] }
-          } else {
-            console.warn(line, 'is not a valid date.')
-          }
-        }
-      }
-      return schedules
-    })
-}
-
-const datePickerRange = [
-  { d: 17, m: 7, y: 2020 },
-  { d: 3, m: 5, y: 2021 }
-] // change for new school year, months are 0-indexed
-const IMAGE_CACHE = 'ugwa-img-cache-YEET'
-export function cacheBackground (url, pd) {
-  return Promise.all([
-    caches.open(IMAGE_CACHE),
-    fetch(url, { mode: 'no-cors', cache: 'no-cache' })
-  ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
-}
-
-function getDefaultPeriodName (periodName) {
-  return localizeWith('periodx', 'other', { X: periodName })
-}
+/** Period customisation values (names, colours, etc.) */
 let periodstyles
 function savePeriodStyles () {
   const options = new Array(letras.length)
@@ -200,14 +87,232 @@ function savePeriodStyles () {
     const { label, colour, link } = periodstyles[letras[i]]
     options[i] = [label, colour, link]
   }
-  cookie.setItem(
-    '[gunn-web-app] scheduleapp.options',
-    JSON.stringify(options)
-  )
+  cookie.setItem('[gunn-web-app] scheduleapp.options', JSON.stringify(options))
 }
-/* SCHEDULE APP */
-// FORBIDDEN CHARACTERS: " (used for radio CSS selector) and . (used for
-// storing in localStorage)
+const materialcolours = ['f44336', 'E91E63', '9C27B0', '673AB7', '3F51B5', '2196F3', '03A9F4', '00BCD4', '009688', '4CAF50', '8BC34A', 'CDDC39', 'FFEB3B', 'FFC107', 'FF9800', 'FF5722', '795548', '9E9E9E', '607D8B']
+function addCustomiser (parent, name, id) {
+  const { label: val = '', colour = THEME_COLOUR, link = '' } = periodstyles[id]
+  let isImage = colour[0] !== '#'
+  let init = true
+  const div = document.createElement('div')
+  div.classList.add('customiser-wrapper')
+  const pickertrigger = document.createElement('button')
+  const picker = new ColourPicker(e => {
+    if (isImage) return
+    pickertrigger.style.backgroundColor = e
+    // Changes made by .setPeriod are also reflected in periodstyles by
+    // reference
+    if (scheduleapp) scheduleapp.setPeriod(id, { colour: e }, !init)
+    makeWeekHappen()
+    if (init) {
+      init = false
+    } else {
+      if (periodstyles[id].update) periodstyles[id].update()
+      savePeriodStyles()
+    }
+    if (picker.darkness() > 125) {
+      pickertrigger.classList.add('ripple-dark')
+      pickertrigger.classList.remove('ripple-light')
+    } else {
+      pickertrigger.classList.add('ripple-light')
+      pickertrigger.classList.remove('ripple-dark')
+    }
+  })
+  ripple(pickertrigger)
+  pickertrigger.classList.add('material')
+  pickertrigger.classList.add('customiser-colour')
+  if (isImage) {
+    pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
+    // colour input already triggers this, so we only need to update image
+    if (periodstyles[id].update) periodstyles[id].update()
+  }
+  pickertrigger.addEventListener(
+    'click',
+    e => {
+      picker.trigger(pickertrigger)
+    },
+    false
+  )
+  picker.colour = isImage ? THEME_COLOUR : colour
+  div.appendChild(pickertrigger)
+  const inputWrapper = document.createElement('div')
+  inputWrapper.className = 'inputs-wrapper'
+  const input = materialInput(
+    name,
+    'text',
+    localizeWith('period-name-label', 'other', { P: name })
+  )
+  if (val) {
+    input.input.value = val
+    input.wrapper.classList.add('filled')
+  }
+  input.input.addEventListener(
+    'change',
+    e => {
+      if (scheduleapp) {
+        scheduleapp.setPeriod(id, { name: input.input.value }, true)
+      }
+      makeWeekHappen()
+      if (periodstyles[id].update) periodstyles[id].update()
+      savePeriodStyles()
+    },
+    false
+  )
+  inputWrapper.appendChild(input.wrapper)
+  const linkInput = materialInput(
+    localizeWith('period-link', 'other', { P: name }),
+    'url',
+    localizeWith('period-set-link', 'other', { P: name })
+  )
+  if (link) {
+    linkInput.input.value = link
+    linkInput.wrapper.classList.add('filled')
+  }
+  linkInput.input.addEventListener(
+    'change',
+    e => {
+      if (scheduleapp) {
+        scheduleapp.setPeriod(id, { link: linkInput.input.value }, true)
+      }
+      makeWeekHappen()
+      // No need to call .update() on periodstyles because the link is not
+      // relevant to rendering the period dropdowns
+      savePeriodStyles()
+    },
+    false
+  )
+  inputWrapper.appendChild(linkInput.wrapper)
+  div.appendChild(inputWrapper)
+  parent.appendChild(div)
+  const t = document.createElement('div')
+  t.classList.add('customiser-colourwrapper')
+  for (
+    let i = 0, arr = materialcolours, len = arr.length, c = arr[i];
+    i < len;
+    i++, c = arr[i]
+  )
+  (c => {
+    const s = document.createElement('span')
+    s.classList.add('customiser-materialcolour')
+    s.addEventListener(
+      'click',
+      e => {
+        picker.colour = c
+      },
+      false
+    )
+    s.style.backgroundColor = c
+    t.appendChild(s)
+  })('#' + c)
+  const s = document.createElement('span')
+  s.classList.add('customiser-materialcolour')
+  s.classList.add('customiser-blackwhite')
+  s.addEventListener(
+    'click',
+    e => {
+      picker.colour = document.body.classList.contains('light')
+      ? '#000000'
+      : '#ffffff'
+    },
+    false
+  )
+  t.appendChild(s)
+  picker.window.appendChild(t)
+  const imageInput = materialInput(localize('image-url'), 'url')
+  imageInput.wrapper.classList.add('customiser-image')
+  if (isImage) {
+    imageInput.input.value = colour
+    imageInput.wrapper.classList.add('filled')
+  }
+  imageInput.input.addEventListener('change', e => {
+    imageInput.disabled = true
+    if (imageInput.input.value) {
+      cacheBackground(imageInput.input.value, id)
+      .then(() => {
+        imageInput.disabled = false
+        isImage = true
+        // intentionally not resetting backgroundColor because transparency meh
+        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
+        if (scheduleapp) {
+          scheduleapp.setPeriod(id, { colour: imageInput.input.value }, true)
+        }
+        makeWeekHappen()
+        if (periodstyles[id].update) periodstyles[id].update()
+        savePeriodStyles()
+        pickertrigger.classList.add('ripple-dark')
+        pickertrigger.classList.remove('ripple-light')
+      })
+      .catch(err => {
+        imageInput.disabled = false
+        logError(err)
+        alert(localize('cannot'))
+      })
+    } else {
+      caches
+      .open(IMAGE_CACHE)
+      .then(cache => {
+        imageInput.disabled = false
+        cache.delete(`./.period-images/${id}`)
+        isImage = false
+        pickertrigger.style.backgroundColor = picker.colour
+        pickertrigger.style.backgroundImage = null
+        if (scheduleapp) {
+          scheduleapp.setPeriod(id, { colour: picker.colour }, true)
+        }
+        makeWeekHappen()
+        if (periodstyles[id].update) periodstyles[id].update()
+        savePeriodStyles()
+        if (picker.darkness() > 125) {
+          pickertrigger.classList.add('ripple-dark')
+          pickertrigger.classList.remove('ripple-light')
+        } else {
+          pickertrigger.classList.add('ripple-light')
+          pickertrigger.classList.remove('ripple-dark')
+        }
+      })
+      .catch(err => {
+        imageInput.disabled = false
+        logError(err)
+      })
+    }
+  })
+  picker.window.appendChild(imageInput.wrapper)
+  return div
+}
+function initPeriodCustomisers () {
+  const f = document.createDocumentFragment()
+  if (formatOptions.showZero === 'yes') {
+    addCustomiser(f, localize('p0'), '0')
+  }
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '1' }), 'A')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '2' }), 'B')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '3' }), 'C')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '4' }), 'D')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '5' }), 'E')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '6' }), 'F')
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '7' }), 'G')
+  // Always showing because why not (it's hard to dynamically show/hide this)
+  addCustomiser(f, localizeWith('periodx', 'other', { X: '8' }), 'H')
+  addCustomiser(f, localize('flex'), 'Flex')
+  // if (+formatOptions.showSelf)
+  addCustomiser(f, localize('self'), 'SELF')
+  // TEMP: Brunch is not on the schedule
+  // addCustomiser(localize('brunch'), 'Brunch')
+  addCustomiser(f, localize('lunch'), 'Lunch')
+  document
+  .querySelector('.section.options')
+  .insertBefore(f, document.querySelector('#periodcustomisermarker'))
+}
+
+/// Other customisation options (called "format options")
+/** Save format version for other customisation options (eg the radios) */
+const FORMATTING_VERSION = '10'
+let hEditBtn, setIframe, openLinkInIframe
+/**
+ * Definition of each "format option"
+ * FORBIDDEN CHARACTERS: " (used for radio CSS selector) and . (used for storing
+ * in localStorage)
+ */
 const formatOptionInfo = {
   // 0
   _: { default: FORMATTING_VERSION },
@@ -307,6 +412,7 @@ const formatOptionInfo = {
   // 16
   _reserved: { default: '' }
 }
+// Load format options from localStorage
 const formatOptionsCookie = cookie.getItem(
   '[gunn-web-app] scheduleapp.formatOptions'
 )
@@ -331,33 +437,6 @@ function saveFormatOptions () {
       .join('.')
   )
 }
-
-function getPeriodSpan (pd) {
-  // yay hoisting (see three lines above)
-  if (!periodstyles[pd]) return '???' // just in case
-  let css
-  const colour = periodstyles[pd].colour
-  if (colour[0] === '#') {
-    css = `background-color:${colour};color:${getFontColour(colour)};`
-  } else {
-    css = `background-image: url('./.period-images/${pd}?${encodeURIComponent(
-      colour
-    )}'); color: white; text-shadow: 0 0 10px black;`
-  }
-  return `<span style="${css}" class="schedule-endinginperiod">${escapeHTML(
-    periodstyles[pd].label
-  )}</span>`
-}
-
-let scheduleapp, datepicker
-function isSchoolDay (d) {
-  return scheduleapp.getSchedule(d).periods.length
-}
-function scheduleUpdated () {
-  if (scheduleapp.options.autorender) scheduleapp.render()
-  makeWeekHappen()
-}
-
 function initFormatSwitches () {
   for (const [key, { radio, toggle }] of Object.entries(formatOptionInfo)) {
     const startValue = formatOptions[key]
@@ -405,6 +484,10 @@ function initFormatSwitches () {
   }
 }
 
+/// Support (in the Utilities tab)
+// Literally has nothing to do with the schedule, but because its
+// collapse/reveal button is a toggle, it needs to be saved through the format
+// options :P
 function initSupport () {
   const hideSupportIcon = document.getElementById('hide-support')
   const supportList = document.getElementById('support-list')
@@ -430,7 +513,28 @@ function initSupport () {
   })
 }
 
+/// Assignments
 let asgnThing
+/**
+ * Get an inline element that respects the user's name and colour (for
+ * assignments only)
+ */
+function getPeriodSpan (pd) {
+  // yay hoisting (see three lines above)
+  if (!periodstyles[pd]) return '???' // just in case
+  let css
+  const colour = periodstyles[pd].colour
+  if (colour[0] === '#') {
+    css = `background-color:${colour};color:${getFontColour(colour)};`
+  } else {
+    css = `background-image: url('./.period-images/${pd}?${encodeURIComponent(
+      colour
+    )}'); color: white; text-shadow: 0 0 10px black;`
+  }
+  return `<span style="${css}" class="schedule-endinginperiod">${escapeHTML(
+    periodstyles[pd].label
+  )}</span>`
+}
 function initAssignmentEditing () {
   const contentInput = document.getElementById('asgn-content')
   contentInput.addEventListener('keydown', e => {
@@ -666,6 +770,7 @@ function initAssignmentEditing () {
   }
 }
 
+/// Period reminders (notifications, virtual bell, and automatic link opening)
 function initNotifications () {
   const periodSymbols = {
     Brunch: localize('symbols/brunch'),
@@ -763,706 +868,7 @@ function initNotifications () {
       notifDropdownWrapper.parentNode
     )
   }
-  return { notifSettings, getIcon }
-}
 
-function initBell () {
-  let stopBell = null
-  let updateVolume = null
-  function playBell () {
-    if (stopBell) stopBell()
-    const audioCtx = getAudioContext()
-    const oscillator = audioCtx.createOscillator()
-    oscillator.type = 'square'
-    // Thanks Matthew for the bell pitch
-    // https://en.wikipedia.org/wiki/E_(musical_note)#Designation_by_octave
-    oscillator.frequency.setValueAtTime(659.255, audioCtx.currentTime) // value in hertz
-    const gainNode = audioCtx.createGain()
-    gainNode.gain.setValueAtTime(
-      +formatOptions.bellVolume / 100,
-      audioCtx.currentTime
-    )
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime + 5)
-    updateVolume = (volume = +formatOptions.bellVolume / 100) => {
-      gainNode.gain.setValueAtTime(volume, audioCtx.currentTime)
-    }
-    oscillator.connect(gainNode)
-    gainNode.connect(audioCtx.destination)
-    oscillator.start()
-    stopBell = () => {
-      clearTimeout(timeoutId)
-      oscillator.stop()
-      stopBell = null
-      updateVolume = null
-    }
-    // Thanks Timothy for timing the bell!
-    const timeoutId = setTimeout(stopBell, 5000)
-  }
-  const volumeSliderMarker = document.getElementById('bell-volume-marker')
-  const volumeSlider = createRange({
-    showMin: false,
-    oninput: ([, volume]) => updateVolume && updateVolume(volume),
-    onchange: ([, volume]) => {
-      if (updateVolume) updateVolume(volume)
-      formatOptions.bellVolume = Math.round(volume * 100)
-      saveFormatOptions()
-    }
-  })
-  volumeSlider.range = [0, +formatOptions.bellVolume / 100]
-  volumeSliderMarker.parentNode.replaceChild(
-    volumeSlider.elem,
-    volumeSliderMarker
-  )
-  const playBellBtn = document.getElementById('play-bell')
-  playBellBtn.addEventListener('click', e => {
-    playBell()
-  })
-  if (+formatOptions.bellVolume !== 0) {
-    const noAudioWarning = document.getElementById('no-audio')
-    noAudioWarning.style.display = 'flex'
-    document.addEventListener(
-      'click',
-      e => {
-        noAudioWarning.style.display = null
-      },
-      { once: true }
-    )
-  }
-}
-
-/* CUSTOMISE PERIODS */
-const materialcolours = 'f44336 E91E63 9C27B0 673AB7 3F51B5 2196F3 03A9F4 00BCD4 009688 4CAF50 8BC34A CDDC39 FFEB3B FFC107 FF9800 FF5722 795548 9E9E9E 607D8B'.split(
-  ' '
-)
-function addCustomiser (parent, name, id) {
-  const {
-    label: val = '',
-    colour = THEME_COLOUR,
-    link = ''
-  } = periodstyles[id]
-  let isImage = colour[0] !== '#'
-  let init = true
-  const div = document.createElement('div')
-  div.classList.add('customiser-wrapper')
-  const pickertrigger = document.createElement('button')
-  const picker = new ColourPicker(e => {
-    if (isImage) return
-    pickertrigger.style.backgroundColor = e
-    // Changes made by .setPeriod are also reflected in periodstyles by
-    // reference
-    if (scheduleapp) scheduleapp.setPeriod(id, { colour: e }, !init)
-    makeWeekHappen()
-    if (init) {
-      init = false
-    } else {
-      if (periodstyles[id].update) periodstyles[id].update()
-      savePeriodStyles()
-    }
-    if (picker.darkness() > 125) {
-      pickertrigger.classList.add('ripple-dark')
-      pickertrigger.classList.remove('ripple-light')
-    } else {
-      pickertrigger.classList.add('ripple-light')
-      pickertrigger.classList.remove('ripple-dark')
-    }
-  })
-  ripple(pickertrigger)
-  pickertrigger.classList.add('material')
-  pickertrigger.classList.add('customiser-colour')
-  if (isImage) {
-    pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
-    // colour input already triggers this, so we only need to update image
-    if (periodstyles[id].update) periodstyles[id].update()
-  }
-  pickertrigger.addEventListener(
-    'click',
-    e => {
-      picker.trigger(pickertrigger)
-    },
-    false
-  )
-  picker.colour = isImage ? THEME_COLOUR : colour
-  div.appendChild(pickertrigger)
-  const inputWrapper = document.createElement('div')
-  inputWrapper.className = 'inputs-wrapper'
-  const input = materialInput(
-    name,
-    'text',
-    localizeWith('period-name-label', 'other', { P: name })
-  )
-  if (val) {
-    input.input.value = val
-    input.wrapper.classList.add('filled')
-  }
-  input.input.addEventListener(
-    'change',
-    e => {
-      if (scheduleapp) {
-        scheduleapp.setPeriod(id, { name: input.input.value }, true)
-      }
-      makeWeekHappen()
-      if (periodstyles[id].update) periodstyles[id].update()
-      savePeriodStyles()
-    },
-    false
-  )
-  inputWrapper.appendChild(input.wrapper)
-  const linkInput = materialInput(
-    localizeWith('period-link', 'other', { P: name }),
-    'url',
-    localizeWith('period-set-link', 'other', { P: name })
-  )
-  if (link) {
-    linkInput.input.value = link
-    linkInput.wrapper.classList.add('filled')
-  }
-  linkInput.input.addEventListener(
-    'change',
-    e => {
-      if (scheduleapp) {
-        scheduleapp.setPeriod(id, { link: linkInput.input.value }, true)
-      }
-      makeWeekHappen()
-      // No need to call .update() on periodstyles because the link is not
-      // relevant to rendering the period dropdowns
-      savePeriodStyles()
-    },
-    false
-  )
-  inputWrapper.appendChild(linkInput.wrapper)
-  div.appendChild(inputWrapper)
-  parent.appendChild(div)
-  const t = document.createElement('div')
-  t.classList.add('customiser-colourwrapper')
-  for (
-    let i = 0, arr = materialcolours, len = arr.length, c = arr[i];
-    i < len;
-    i++, c = arr[i]
-  )
-    (c => {
-      const s = document.createElement('span')
-      s.classList.add('customiser-materialcolour')
-      s.addEventListener(
-        'click',
-        e => {
-          picker.colour = c
-        },
-        false
-      )
-      s.style.backgroundColor = c
-      t.appendChild(s)
-    })('#' + c)
-  const s = document.createElement('span')
-  s.classList.add('customiser-materialcolour')
-  s.classList.add('customiser-blackwhite')
-  s.addEventListener(
-    'click',
-    e => {
-      picker.colour = document.body.classList.contains('light')
-        ? '#000000'
-        : '#ffffff'
-    },
-    false
-  )
-  t.appendChild(s)
-  picker.window.appendChild(t)
-  const imageInput = materialInput(localize('image-url'), 'url')
-  imageInput.wrapper.classList.add('customiser-image')
-  if (isImage) {
-    imageInput.input.value = colour
-    imageInput.wrapper.classList.add('filled')
-  }
-  imageInput.input.addEventListener('change', e => {
-    imageInput.disabled = true
-    if (imageInput.input.value) {
-      cacheBackground(imageInput.input.value, id)
-        .then(() => {
-          imageInput.disabled = false
-          isImage = true
-          // intentionally not resetting backgroundColor because transparency meh
-          pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
-          if (scheduleapp) {
-            scheduleapp.setPeriod(
-              id,
-              { colour: imageInput.input.value },
-              true
-            )
-          }
-          makeWeekHappen()
-          if (periodstyles[id].update) periodstyles[id].update()
-          savePeriodStyles()
-          pickertrigger.classList.add('ripple-dark')
-          pickertrigger.classList.remove('ripple-light')
-        })
-        .catch(err => {
-          imageInput.disabled = false
-          logError(err)
-          alert(localize('cannot'))
-        })
-    } else {
-      caches
-        .open(IMAGE_CACHE)
-        .then(cache => {
-          imageInput.disabled = false
-          cache.delete(`./.period-images/${id}`)
-          isImage = false
-          pickertrigger.style.backgroundColor = picker.colour
-          pickertrigger.style.backgroundImage = null
-          if (scheduleapp) {
-            scheduleapp.setPeriod(id, { colour: picker.colour }, true)
-          }
-          makeWeekHappen()
-          if (periodstyles[id].update) periodstyles[id].update()
-          savePeriodStyles()
-          if (picker.darkness() > 125) {
-            pickertrigger.classList.add('ripple-dark')
-            pickertrigger.classList.remove('ripple-light')
-          } else {
-            pickertrigger.classList.add('ripple-light')
-            pickertrigger.classList.remove('ripple-dark')
-          }
-        })
-        .catch(err => {
-          imageInput.disabled = false
-          logError(err)
-        })
-    }
-  })
-  picker.window.appendChild(imageInput.wrapper)
-  return div
-}
-function initPeriodCustomisers () {
-  const f = document.createDocumentFragment()
-  if (formatOptions.showZero === 'yes') {
-    addCustomiser(f, localize('p0'), '0')
-  }
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '1' }), 'A')
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '2' }), 'B')
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '3' }), 'C')
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '4' }), 'D')
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '5' }), 'E')
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '6' }), 'F')
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '7' }), 'G')
-  // Always showing because why not (it's hard to dynamically show/hide this)
-  addCustomiser(f, localizeWith('periodx', 'other', { X: '8' }), 'H')
-  addCustomiser(f, localize('flex'), 'Flex')
-  // if (+formatOptions.showSelf)
-  addCustomiser(f, localize('self'), 'SELF')
-  // TEMP: Brunch is not on the schedule
-  // addCustomiser(localize('brunch'), 'Brunch')
-  addCustomiser(f, localize('lunch'), 'Lunch')
-  document
-    .querySelector('.section.options')
-    .insertBefore(
-      f,
-      document.querySelector('#periodcustomisermarker')
-    )
-}
-
-const setState = createReactive(document.querySelector('#weekwrapper'), {
-  customElems: {
-    'week-day': (_, recordRef) => {
-      const div = document.createElement('div')
-      ripple(div)
-      div.addEventListener('click', e => {
-        const { d } = recordRef.state.options
-        datepicker.day = {
-          d: d.getDate(),
-          m: d.getMonth(),
-          y: d.getFullYear()
-        }
-      })
-      return div
-    }
-  }
-})
-function makeWeekHappen () {
-  const week = scheduleapp.getWeek()
-  setState(week.map((day, i) => {
-    return [
-      {
-        type: 'week-day',
-        classes: [day.today && 'today'],
-        options: { d: day.date }
-      },
-      ['h1', days[i]],
-      ...day.map(period => {
-        const style = period.colour[0] === '#'
-          ? { backgroundColor: period.colour }
-          : { backgroundImage: `url(./.period-images/${
-            period.id
-          }?${encodeURIComponent(period.colour)})` }
-        return [
-          {
-            type: 'span',
-            properties: {
-              title: period.id === 'GT' ? localize('gunn-together/name') : period.label
-            },
-            style,
-            classes: [period.id === 'GT' && 'gt-confuse']
-          }
-        ]
-      })
-    ]
-  }))
-  renderEvents()
-}
-
-let setEvents
-const events = {}
-function getHumanTime (date) {
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  if (formatOptions.hourCycle === '0') {
-    return minute + ''
-  }
-  const minsLeadingZero = ('0' + minute).slice(-2)
-  return formatOptions.hourCycle === '24'
-    ? `${hour}:${minsLeadingZero}`
-    : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${
-      hour < 12 ? 'a' : 'p'
-    }m`
-}
-function actuallyRenderEvents (items) {
-  if (items.error) {
-    return [[
-      'li',
-      ['span.secondary.get-error', items.error]
-    ]]
-  } else if (items.length) {
-    return items.map(({ start, end, loc, name, desc }) => [
-      'li',
-      ['span.primary', name],
-      ['span.secondary', desc],
-      [
-        'span.secondary',
-        start && getHumanTime(new Date(start)) + '–' + getHumanTime(new Date(end)),
-        loc && ' · ' + loc
-      ]
-    ])
-  } else {
-    return [[
-      'li',
-      ['span.secondary.center', localize('no-events')]
-    ]]
-  }
-}
-function updateScheduleFromEvents (dateDate, json) {
-  const date = dateDate.slice(5, 10)
-  const alternateJSON = json.filter(
-    ev =>
-      altScheduleRegex.test(ev.summary) ||
-      noSchoolRegex.test(ev.summary)
-  )
-  const altSched = toAlternateSchedules(alternateJSON)
-  let ugwitaAltObj = loadJsonStorage(ALT_KEY, {})
-  let change = false
-  const selfDay = json.find(ev => ev.summary.includes('SELF'))
-  if (selfDay) {
-    if (!selfDays.includes(date)) {
-      selfDays.push(date)
-      change = true
-      ugwitaAltObj.self = selfDays
-    }
-  } else {
-    const index = selfDays.indexOf(date)
-    if (~index) {
-      selfDays.splice(index, 1)
-      change = true
-      ugwitaAltObj.self = selfDays
-    }
-  }
-  if (altSched[date] !== undefined) {
-    ugwitaAltObj[date] = altSched[date]
-    ugwaifyAlternates(
-      alternates,
-      date,
-      altSched[date],
-      alternateJSON[0].summary
-    )
-    change = true
-  } else if (ugwitaAltObj[date] !== undefined) {
-    delete ugwitaAltObj[date]
-    delete alternates[
-      date
-        .split('-')
-        .map(Number)
-        .join('-')
-    ]
-    change = true
-  }
-  if (change) {
-    cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
-    scheduleUpdated()
-  }
-}
-function renderEvents () {
-  const offset = scheduleapp.offset
-  if (events[offset]) {
-    if (events[offset] !== 'loading') {
-      setEvents(actuallyRenderEvents(events[offset]))
-    }
-  } else {
-    events[offset] = 'loading'
-    setEvents([[
-      'li',
-      ['span.secondary.center', localize('loading')]
-    ]])
-
-    const d = now()
-    const dateDate = scheduleapp.offsetToDate(offset, d).toISOString()
-    const end = scheduleapp.offsetToDate(offset + 1, d)
-    end.setMilliseconds(-1) // Do not include the first millisecond of the next day
-    ajax(
-      // timeZone=America/Los_Angeles because the calendar is in UTC so
-      // full-day events from the next day would otherwise be included
-      `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=${apiKey}&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
-      json => {
-        json = JSON.parse(json).items
-        const e = json.map(event => ({
-          start: event.start.dateTime,
-          end: event.end.dateTime,
-          name: event.summary,
-          desc: event.description,
-          loc: event.location
-        }))
-        events[offset] = e
-        if (scheduleapp.offset === offset) {
-          setEvents(actuallyRenderEvents(events[offset]))
-        }
-
-        updateScheduleFromEvents(dateDate, json)
-      },
-      e => {
-        events[offset] = { error: e + localize('events-error') }
-        if (scheduleapp.offset === offset) {
-          setEvents(actuallyRenderEvents(events[offset]))
-        }
-      }
-    )
-  }
-}
-
-function identifyPeriod (name) {
-  name = name.toLowerCase()
-  if (~name.indexOf('period')) {
-    // Detect PeriodE/PeriodG (2020-03-31)
-    const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
-    if (letter) {
-      return isNaN(+letter[1])
-        ? // Letter period
-          letter[1].toUpperCase()
-        : // Number period
-          ' ABCDEFG'[letter[1]]
-    }
-  }
-  if (~name.indexOf('self')) return 'SELF'
-  else if (
-    ~name.indexOf('flex') ||
-    ~name.indexOf('assembl') ||
-    ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
-    ~name.indexOf('tutorial')
-  )
-    return 'Flex'
-  else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
-  else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
-  else if (~name.indexOf('together')) return 'GT'
-  else return name
-}
-function toTraditionalUGWATime (minutes) {
-  return {
-    totalminutes: minutes,
-    hour: Math.floor(minutes / 60),
-    minute: minutes % 60
-  }
-}
-function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
-  if (ugwitaData === undefined) return true
-  const [month, day] = dayString.split('-').map(Number)
-  let date
-  if (month > 6) date = new Date(2020, month - 1, day)
-  else date = new Date(2021, month - 1, day)
-  const periods = []
-  if (ugwitaData !== null) {
-    ugwitaData.forEach(p => {
-      if (!/collaboration|meeting/i.test(p.name)) {
-        const pd = identifyPeriod(p.name)
-        periods.push({
-          name: pd,
-          start: p.start,
-          end: p.end
-        })
-      }
-    })
-    for (let i = 0; i < periods.length; i++) {
-      const period = periods[i]
-      if (period.name === 'Brunch' || period.name === 'Lunch') {
-        if (i === 0) periods.splice(i--, 1)
-        else if (i === periods.length - 1) periods.splice(i--, 1)
-        else {
-          period.end = periods[i + 1].start - 10
-        }
-      }
-      period.start = toTraditionalUGWATime(period.start)
-      period.end = toTraditionalUGWATime(period.end)
-    }
-  }
-  alternates[`${month}-${day}`] = {
-    dayname: daynames[date.getDay()],
-    day: date.getDay(),
-    monthname: months[month],
-    month: month,
-    date: day,
-    description: desc || localize('default-alt-msg'),
-    periods: periods
-  }
-  return true
-}
-
-let alternates = loadJsonStorage(ALT_KEY, {})
-let manualAltSchedules = {}
-
-const selfDays = alternates.self || []
-
-const hPeriods = loadJsonStorage('[gunn-web-app] scheduleapp.h', [
-  null,
-  [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
-  [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-  null,
-  [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
-  null,
-  null
-])
-
-let months, daynames, days
-export function initSchedule (manualAltSchedulesProm) {
-  months = localize('months').split('  ')
-  daynames = localize('days').split('  ')
-  days = localize('ds').split('  ')
-
-  // Default period names and styles
-  periodstyles = {
-    Brunch: { label: localize('brunch'), colour: '#9E9E9E' },
-    Lunch: { label: localize('lunch'), colour: '#9E9E9E' },
-    Flex: { label: localize('flex'), colour: '#607D8B' },
-    SELF: { label: localize('self'), colour: '#455a64' },
-    A: { label: getDefaultPeriodName('1'), colour: '#f44336' },
-    B: { label: getDefaultPeriodName('2'), colour: '#2196F3' },
-    C: { label: getDefaultPeriodName('3'), colour: '#FFEB3B' },
-    D: { label: getDefaultPeriodName('4'), colour: '#795548' },
-    E: { label: getDefaultPeriodName('5'), colour: '#FF9800' },
-    F: { label: getDefaultPeriodName('6'), colour: '#9C27B0' },
-    G: { label: getDefaultPeriodName('7'), colour: '#4CAF50' },
-    H: { label: getDefaultPeriodName('8'), colour: '#673AB7' },
-    '0': { label: localize('p0'), colour: '#009688' }
-  }
-  const options = loadJsonStorage('[gunn-web-app] scheduleapp.options', [], Array.isArray)
-  // Using !<= in case options[0] isn't a number
-  if (!(options[0] <= VERSION)) {
-    console.warn(
-      'Period styles seem to be from the future? Was expecting version',
-      VERSION,
-      'but got',
-      options
-    )
-  }
-  for (let i = 1; i < letras.length; i++) {
-    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
-    if (options[i]) {
-      const [label, colour, link] = options[i]
-      Object.assign(periodstyles[letras[i]], { label, colour, link })
-    }
-  }
-
-  setEvents = createReactive(document.querySelector('#events'))
-
-  for (const dayString in alternates) {
-    if (!dayString.includes('-')) continue
-    ugwaifyAlternates(alternates, dayString, alternates[dayString])
-  }
-
-  onSection.options.then(initFormatSwitches)
-  onSection.utilities.then(initSupport)
-  initAssignmentEditing()
-  const { notifSettings, getIcon } = initNotifications()
-  initBell()
-  onSection.options.then(initPeriodCustomisers)
-
-  const scheduleAppWrapper = document.querySelector('#schedulewrapper')
-  manualAltSchedulesProm.then(schedules => {
-    manualAltSchedules = schedules
-    scheduleUpdated()
-  })
-  scheduleapp = scheduleApp({
-    element: scheduleAppWrapper,
-    periods: periodstyles,
-    normal: normalschedule,
-    alternates: alternates,
-    selfDays: selfDays,
-    get hPeriods () {
-      return formatOptions.showH === 'yes-h-period2' ? hPeriods : []
-    },
-    offset: 0,
-    update: true,
-    h24: formatOptions.hourCycle === '24',
-    h0Joke: formatOptions.hourCycle === '0',
-    compact: formatOptions.timeLength === 'compact',
-    // No longer relevant, for SELF has taken over the school :(
-    // self: +formatOptions.showSelf,
-    self: true,
-    displayAddAsgn: formatOptions.showAddAsgn === 'yes',
-    show0: formatOptions.showZero === 'yes' && {
-      name: '0',
-      start: { hour: 7, minute: 15, totalminutes: 435 },
-      end: { hour: 8, minute: 5, totalminutes: 485 }
-    },
-    hidePreps: formatOptions.hidePreps === 'prepnt',
-    getAssignments (date, getPeriodSpan) {
-      return asgnThing.getScheduleAsgns(date, getPeriodSpan)
-    },
-    customSchedule (date, y, m, d, wd) {
-      const schedule = manualAltSchedules[`${y}-${m + 1}-${d}`]
-      if (!schedule) return
-      const { periods, description = localize('default-alt-msg') } = schedule
-      return {
-        periods:
-          formatOptions.showH === 'yes-h-period2'
-            ? periods
-            : periods.filter(pd => pd.name !== 'H'),
-        alternate: { description }
-      }
-    },
-    favicon: document.getElementById('favicon'),
-    defaultFavicon: 'favicon/favicon.ico',
-    autorender: false
-  })
-  setOnSavedClubsUpdate(scheduleapp.render)
-  asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
-  const yesterdayer = document.querySelector('#plihieraux')
-  const tomorrower = document.querySelector('#plimorgaux')
-  datepicker = new DatePicker(...datePickerRange)
-  const d = now()
-  datepicker.onchange = e => {
-    if (scheduleapp.options.autorender) {
-      e.d--
-      yesterdayer.disabled = datepicker.compare(e, datepicker.start) < 0
-      e.d += 2
-      tomorrower.disabled = datepicker.compare(e, datepicker.end) > 0
-      e.d--
-      if (previewingFuture) {
-        previewingFuture.remove()
-        previewingFuture = null
-      }
-    }
-    if (e !== null) {
-      const d = new Date(e.y, e.m, e.d).getTime()
-      const today = currentTime()
-      scheduleapp.offset = Math.floor((d - today) / 86400000) + 1
-      if (scheduleapp.options.autorender) makeWeekHappen()
-    }
-  }
-  scheduleapp.options.isSummer = (y, m, d) =>
-    !datepicker.inrange({ y: y, m: m, d: d })
   const nextNotif = scheduleapp
     .addTimer(
       getNext => {
@@ -1525,6 +931,127 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
+}
+function initBell () {
+  let stopBell = null
+  let updateVolume = null
+  function playBell () {
+    if (stopBell) stopBell()
+    const audioCtx = getAudioContext()
+    const oscillator = audioCtx.createOscillator()
+    oscillator.type = 'square'
+    // Thanks Matthew for the bell pitch
+    // https://en.wikipedia.org/wiki/E_(musical_note)#Designation_by_octave
+    oscillator.frequency.setValueAtTime(659.255, audioCtx.currentTime) // value in hertz
+    const gainNode = audioCtx.createGain()
+    gainNode.gain.setValueAtTime(
+      +formatOptions.bellVolume / 100,
+      audioCtx.currentTime
+    )
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime + 5)
+    updateVolume = (volume = +formatOptions.bellVolume / 100) => {
+      gainNode.gain.setValueAtTime(volume, audioCtx.currentTime)
+    }
+    oscillator.connect(gainNode)
+    gainNode.connect(audioCtx.destination)
+    oscillator.start()
+    stopBell = () => {
+      clearTimeout(timeoutId)
+      oscillator.stop()
+      stopBell = null
+      updateVolume = null
+    }
+    // Thanks Timothy for timing the bell!
+    const timeoutId = setTimeout(stopBell, 5000)
+  }
+  const volumeSliderMarker = document.getElementById('bell-volume-marker')
+  const volumeSlider = createRange({
+    showMin: false,
+    oninput: ([, volume]) => updateVolume && updateVolume(volume),
+    onchange: ([, volume]) => {
+      if (updateVolume) updateVolume(volume)
+      formatOptions.bellVolume = Math.round(volume * 100)
+      saveFormatOptions()
+    }
+  })
+  volumeSlider.range = [0, +formatOptions.bellVolume / 100]
+  volumeSliderMarker.parentNode.replaceChild(
+    volumeSlider.elem,
+    volumeSliderMarker
+  )
+  const playBellBtn = document.getElementById('play-bell')
+  playBellBtn.addEventListener('click', e => {
+    playBell()
+  })
+  if (+formatOptions.bellVolume !== 0) {
+    const noAudioWarning = document.getElementById('no-audio')
+    noAudioWarning.style.display = 'flex'
+    document.addEventListener(
+      'click',
+      e => {
+        noAudioWarning.style.display = null
+      },
+      { once: true }
+    )
+  }
+
+  scheduleapp
+    .addTimer(
+      getNext => {
+        if (+formatOptions.bellVolume !== 0) {
+          // The five second bell ends when the period starts
+          const next = getNext((pdTime, nowTime) => pdTime - 5 > nowTime)
+          return next && { time: next.time - 5000 }
+        } else {
+          return null
+        }
+      },
+      next => {
+        playBell()
+      },
+      {
+        get enabled () {
+          return +formatOptions.bellVolume !== 0
+        }
+      }
+    )
+    .update()
+}
+function initLinkOpener () {
+  const openLinkDropdownWrapper = document.getElementById('link-time-before')
+  const openLinkDropdown = makeDropdown(openLinkDropdownWrapper, [
+    [60 * 60, localize('time-before/before-1-00-00')],
+    [30 * 60, localize('time-before/before-0-30-00')],
+    [15 * 60, localize('time-before/before-0-15-00')],
+    [10 * 60, localize('time-before/before-0-10-00')],
+    [5 * 60, localize('time-before/before-0-05-00')],
+    [2 * 60, localize('time-before/before-0-02-00')],
+    [1 * 60, localize('time-before/before-0-01-00')],
+    [0, localize('time-before/immediately')],
+    [null, localize('time-before/never')]
+  ]).set(
+    formatOptions.timeBeforeAutoLink === 'off'
+      ? null
+      : +formatOptions.timeBeforeAutoLink
+  )
+  openLinkDropdown.onChange(async time => {
+    formatOptions.timeBeforeAutoLink = time === null ? 'off' : time
+    nextLinkOpen.update()
+    saveFormatOptions()
+  })
+  openLinkInIframe = formatOptions.openNewTab !== 'yes' && setIframe
+  const iframeDialog = document.getElementById('iframe-window')
+  const iframe = document.getElementById('iframe')
+  const iframeTitleLink = document.getElementById('iframe-title')
+  const iframeTitle = document.createTextNode('')
+  iframeTitleLink.insertBefore(iframeTitle, iframeTitleLink.firstChild)
+  setIframe = function (url, name) {
+    iframe.src = url
+    iframeTitleLink.href = url
+    iframeTitle.nodeValue = name
+    showDialog(iframeDialog)
+  }
+
   const nextLinkOpen = scheduleapp
     .addTimer(
       getNext => {
@@ -1559,29 +1086,530 @@ export function initSchedule (manualAltSchedulesProm) {
       }
     )
     .update()
-  scheduleapp
-    .addTimer(
-      getNext => {
-        if (+formatOptions.bellVolume !== 0) {
-          // The five second bell ends when the period starts
-          const next = getNext((pdTime, nowTime) => pdTime - 5 > nowTime)
-          return next && { time: next.time - 5000 }
-        } else {
-          return null
+  }
+
+/// Normal and alternate schedules, and updating them from the events
+/** Helper function for legacy UGWA time format */
+function makeHMTM (hour, minute = 0) {
+  return { hour, minute, totalminutes: hour * 60 + minute }
+}
+const normalschedule = [
+  null,
+  [
+    { name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30) },
+    { name: 'B', start: makeHMTM(10, 40), end: makeHMTM(11, 10) },
+    { name: 'C', start: makeHMTM(11, 20), end: makeHMTM(11, 50) },
+    { name: 'D', start: makeHMTM(12, 0), end: makeHMTM(12, 35) },
+    { name: 'Lunch', start: makeHMTM(12, 35), end: makeHMTM(13, 5) },
+    { name: 'E', start: makeHMTM(13, 15), end: makeHMTM(13, 45) },
+    { name: 'F', start: makeHMTM(13, 55), end: makeHMTM(14, 25) },
+    { name: 'G', start: makeHMTM(14, 35), end: makeHMTM(15, 5) }
+  ],
+  [
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
+    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
+    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+  ],
+  [
+    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
+    { name: 'GT', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
+    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+  ],
+  [
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
+    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
+    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+  ],
+  [
+    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
+    { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
+    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
+    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
+    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) }
+  ],
+  null
+]
+const alternates = loadJsonStorage(ALT_KEY, {})
+const selfDays = alternates.self || []
+function identifyPeriod (name) {
+  name = name.toLowerCase()
+  if (~name.indexOf('period')) {
+    // Detect PeriodE/PeriodG (2020-03-31)
+    const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
+    if (letter) {
+      return isNaN(+letter[1])
+      ? // Letter period
+      letter[1].toUpperCase()
+      : // Number period
+      ' ABCDEFG'[letter[1]]
+    }
+  }
+  if (~name.indexOf('self')) return 'SELF'
+  else if (
+    ~name.indexOf('flex') ||
+    ~name.indexOf('assembl') ||
+    ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
+    ~name.indexOf('tutorial')
+  )
+  return 'Flex'
+  else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
+  else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
+  else if (~name.indexOf('together')) return 'GT'
+  else return name
+}
+function toTraditionalUGWATime (minutes) {
+  return {
+    totalminutes: minutes,
+    hour: Math.floor(minutes / 60),
+    minute: minutes % 60
+  }
+}
+function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
+  if (ugwitaData === undefined) return true
+  const [month, day] = dayString.split('-').map(Number)
+  let date
+  if (month > 6) date = new Date(2020, month - 1, day)
+  else date = new Date(2021, month - 1, day)
+  const periods = []
+  if (ugwitaData !== null) {
+    ugwitaData.forEach(p => {
+      if (!/collaboration|meeting/i.test(p.name)) {
+        const pd = identifyPeriod(p.name)
+        periods.push({
+          name: pd,
+          start: p.start,
+          end: p.end
+        })
+      }
+    })
+    for (let i = 0; i < periods.length; i++) {
+      const period = periods[i]
+      if (period.name === 'Brunch' || period.name === 'Lunch') {
+        if (i === 0) periods.splice(i--, 1)
+        else if (i === periods.length - 1) periods.splice(i--, 1)
+        else {
+          period.end = periods[i + 1].start - 10
         }
+      }
+      period.start = toTraditionalUGWATime(period.start)
+      period.end = toTraditionalUGWATime(period.end)
+    }
+  }
+  alternates[`${month}-${day}`] = {
+    dayname: daynames[date.getDay()],
+    day: date.getDay(),
+    monthname: months[month],
+    month: month,
+    date: day,
+    description: desc || localize('default-alt-msg'),
+    periods: periods
+  }
+  return true
+}
+
+/// Manually entered alternate schedules
+const dateRegex = /^\d+-\d{2}-\d{2}$/
+const manualAltPeriodRegex = /^(1?\d):(\d{2}) (1?\d):(\d{2}) ([a-z]+)$/
+export function getManualAlternateSchedules () {
+  return fetch('./json/alt-schedules-2020.txt' + isAppDesign)
+  .then(r => r.text())
+  .then(text => {
+    const schedules = {}
+    const lines = text.split(/\r?\n/)
+    let currentDate = null
+    for (const line of lines) {
+      if (line[0] === '#') continue
+      if (currentDate) {
+        if (line[0] === '*') {
+          if (schedules[currentDate].description) {
+            schedules[currentDate].description += ' ' + line.slice(1).trim()
+          } else {
+            schedules[currentDate].description = line.slice(1).trim()
+          }
+        } else if (line) {
+          const match = line.match(manualAltPeriodRegex)
+          if (match) {
+            const [, startH, startM, endH, endM, periodLowercase] = match
+            const period =
+            periodLowercase === 'self'
+            ? 'SELF'
+            : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
+            if (letras.includes(period)) {
+              schedules[currentDate].periods.push({
+                name: period,
+                start: makeHMTM(+startH, +startM),
+                end: makeHMTM(+endH, +endM)
+              })
+            } else {
+              console.warn(period, 'is not a valid period on', currentDate)
+            }
+          } else {
+            console.warn(
+              line,
+              'does not match the period regex on',
+              currentDate
+            )
+          }
+        } else {
+          currentDate = null
+        }
+      } else if (line) {
+        if (dateRegex.test(line)) {
+          currentDate = line
+          .split('-')
+          .map(Number)
+          .join('-')
+          if (schedules[currentDate]) {
+            console.warn(
+              'A schedule already exists on',
+              currentDate,
+              schedules[currentDate]
+            )
+          }
+          schedules[currentDate] = { periods: [] }
+        } else {
+          console.warn(line, 'is not a valid date.')
+        }
+      }
+    }
+    return schedules
+  })
+}
+let manualAltSchedules = {}
+getManualAlternateSchedules().then(schedules => {
+  manualAltSchedules = schedules
+  if (scheduleapp) scheduleUpdated()
+})
+
+/// Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
+let setEvents
+const events = {}
+function getHumanTime (date) {
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  if (formatOptions.hourCycle === '0') {
+    return minute + ''
+  }
+  const minsLeadingZero = ('0' + minute).slice(-2)
+  return formatOptions.hourCycle === '24'
+    ? `${hour}:${minsLeadingZero}`
+    : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${hour < 12 ? 'a' : 'p'}m`
+}
+function actuallyRenderEvents (items) {
+  if (items.error) {
+    return [['li', ['span.secondary.get-error', items.error]]]
+  } else if (items.length) {
+    return items.map(({ start, end, loc, name, desc }) => [
+      'li',
+      ['span.primary', name],
+      ['span.secondary', desc],
+      [
+        'span.secondary',
+        start &&
+          getHumanTime(new Date(start)) + '–' + getHumanTime(new Date(end)),
+        loc && ' · ' + loc
+      ]
+    ])
+  } else {
+    return [['li', ['span.secondary.center', localize('no-events')]]]
+  }
+}
+function updateScheduleFromEvents (dateDate, json) {
+  const date = dateDate.slice(5, 10)
+  const alternateJSON = json.filter(
+    ev => altScheduleRegex.test(ev.summary) || noSchoolRegex.test(ev.summary)
+  )
+  const altSched = toAlternateSchedules(alternateJSON)
+  const ugwitaAltObj = loadJsonStorage(ALT_KEY, {})
+  let change = false
+  const selfDay = json.find(ev => ev.summary.includes('SELF'))
+  if (selfDay) {
+    if (!selfDays.includes(date)) {
+      selfDays.push(date)
+      change = true
+      ugwitaAltObj.self = selfDays
+    }
+  } else {
+    const index = selfDays.indexOf(date)
+    if (~index) {
+      selfDays.splice(index, 1)
+      change = true
+      ugwitaAltObj.self = selfDays
+    }
+  }
+  if (altSched[date] !== undefined) {
+    ugwitaAltObj[date] = altSched[date]
+    ugwaifyAlternates(
+      alternates,
+      date,
+      altSched[date],
+      alternateJSON[0].summary
+    )
+    change = true
+  } else if (ugwitaAltObj[date] !== undefined) {
+    delete ugwitaAltObj[date]
+    delete alternates[
+      date
+        .split('-')
+        .map(Number)
+        .join('-')
+    ]
+    change = true
+  }
+  if (change) {
+    cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
+    scheduleUpdated()
+  }
+}
+function renderEvents () {
+  const offset = scheduleapp.offset
+  if (events[offset]) {
+    if (events[offset] !== 'loading') {
+      setEvents(actuallyRenderEvents(events[offset]))
+    }
+  } else {
+    events[offset] = 'loading'
+    setEvents([['li', ['span.secondary.center', localize('loading')]]])
+
+    const d = now()
+    const dateDate = scheduleapp.offsetToDate(offset, d).toISOString()
+    const end = scheduleapp.offsetToDate(offset + 1, d)
+    end.setMilliseconds(-1) // Do not include the first millisecond of the next day
+    ajax(
+      // timeZone=America/Los_Angeles because the calendar is in UTC so
+      // full-day events from the next day would otherwise be included
+      `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=${apiKey}&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
+      json => {
+        json = JSON.parse(json).items
+        const e = json.map(event => ({
+          start: event.start.dateTime,
+          end: event.end.dateTime,
+          name: event.summary,
+          desc: event.description,
+          loc: event.location
+        }))
+        events[offset] = e
+        if (scheduleapp.offset === offset) {
+          setEvents(actuallyRenderEvents(events[offset]))
+        }
+
+        updateScheduleFromEvents(dateDate, json)
       },
-      next => {
-        playBell()
-      },
-      {
-        get enabled () {
-          return +formatOptions.bellVolume !== 0
+      e => {
+        events[offset] = { error: e + localize('events-error') }
+        if (scheduleapp.offset === offset) {
+          setEvents(actuallyRenderEvents(events[offset]))
         }
       }
     )
-    .update()
+  }
+}
+
+/// Week preview
+let setWeekState
+const weekPreviewCustomElems = {
+  customElems: {
+    'week-day': (_, recordRef) => {
+      const div = document.createElement('div')
+      ripple(div)
+      div.addEventListener('click', e => {
+        const { d } = recordRef.state.options
+        datepicker.day = {
+          d: d.getDate(),
+          m: d.getMonth(),
+          y: d.getFullYear()
+        }
+      })
+      return div
+    }
+  }
+}
+function makeWeekHappen () {
+  const week = scheduleapp.getWeek()
+  setWeekState(
+    week.map((day, i) => {
+      return [
+        {
+          type: 'week-day',
+          classes: [day.today && 'today'],
+          options: { d: day.date }
+        },
+        ['h1', days[i]],
+        ...day.map(period => {
+          const style =
+            period.colour[0] === '#'
+              ? { backgroundColor: period.colour }
+              : {
+                  backgroundImage: `url(./.period-images/${
+                    period.id
+                  }?${encodeURIComponent(period.colour)})`
+                }
+          return [
+            {
+              type: 'span',
+              properties: {
+                title:
+                  period.id === 'GT'
+                    ? localize('gunn-together/name')
+                    : period.label
+              },
+              style,
+              classes: [period.id === 'GT' && 'gt-confuse']
+            }
+          ]
+        })
+      ]
+    })
+  )
+  renderEvents()
+}
+
+let scheduleapp, datepicker
+function initScheduleApp () {
+  scheduleapp = scheduleApp({
+    element: document.querySelector('#schedulewrapper'),
+    periods: periodstyles,
+    normal: normalschedule,
+    alternates,
+    selfDays,
+    get hPeriods () {
+      return formatOptions.showH === 'yes-h-period2' ? hPeriods : []
+    },
+    offset: 0,
+    update: true,
+    h24: formatOptions.hourCycle === '24',
+    h0Joke: formatOptions.hourCycle === '0',
+    compact: formatOptions.timeLength === 'compact',
+    // No longer relevant, for SELF has taken over the school :(
+    // self: +formatOptions.showSelf,
+    self: true,
+    displayAddAsgn: formatOptions.showAddAsgn === 'yes',
+    show0: formatOptions.showZero === 'yes' && {
+      name: '0',
+      start: { hour: 7, minute: 15, totalminutes: 435 },
+      end: { hour: 8, minute: 5, totalminutes: 485 }
+    },
+    hidePreps: formatOptions.hidePreps === 'prepnt',
+    getAssignments (date, getPeriodSpan) {
+      return asgnThing.getScheduleAsgns(date, getPeriodSpan)
+    },
+    customSchedule (date, y, m, d, wd) {
+      const schedule = manualAltSchedules[`${y}-${m + 1}-${d}`]
+      if (!schedule) return
+      const { periods, description = localize('default-alt-msg') } = schedule
+      return {
+        periods:
+          formatOptions.showH === 'yes-h-period2'
+            ? periods
+            : periods.filter(pd => pd.name !== 'H'),
+        alternate: { description }
+      }
+    },
+    isSummer: (y, m, d) => !datepicker.inrange({ y: y, m: m, d: d }),
+    favicon: document.getElementById('favicon'),
+    defaultFavicon: 'favicon/favicon.ico',
+    autorender: false
+  })
+}
+function isSchoolDay (d) {
+  return scheduleapp.getSchedule(d).periods.length
+}
+const datePickerRange = [
+  { d: 17, m: 7, y: 2020 },
+  { d: 3, m: 5, y: 2021 }
+] // change for new school year, months are 0-indexed
+function initDatePicker () {
+  datepicker = new DatePicker(...datePickerRange)
   datepicker.isSchoolDay = isSchoolDay
+  datepicker.onchange = e => {
+    if (scheduleapp.options.autorender) {
+      updateDisabled()
+      if (previewingFuture) {
+        previewingFuture.remove()
+        previewingFuture = null
+      }
+    }
+    if (e !== null) {
+      const d = new Date(e.y, e.m, e.d).getTime()
+      const today = currentTime()
+      scheduleapp.offset = Math.floor((d - today) / 86400000) + 1
+      if (scheduleapp.options.autorender) makeWeekHappen()
+    }
+  }
+
+  // Date control buttons
+  const yesterdayer = document.querySelector('#plihieraux')
+  const tomorrower = document.querySelector('#plimorgaux')
+  yesterdayer.addEventListener('click', e => {
+    const proposal = {
+      d: datepicker.day.d - 1,
+      m: datepicker.day.m,
+      y: datepicker.day.y
+    }
+    if (datepicker.compare(proposal, datepicker.start) >= 0) {
+      datepicker.day = proposal
+    }
+  })
+  tomorrower.addEventListener('click', e => {
+    const proposal = {
+      d: datepicker.day.d + 1,
+      m: datepicker.day.m,
+      y: datepicker.day.y
+    }
+    if (datepicker.compare(proposal, datepicker.end) <= 0) {
+      datepicker.day = proposal
+    }
+  })
+  document.addEventListener('keydown', e => {
+    const pressingArrows = (e.key === 'ArrowLeft' || e.key === 'ArrowRight') &&
+      !e.ctrlKey &&
+      !e.altKey &&
+      !e.shiftKey &&
+      !e.metaKey &&
+      document.body.classList.contains('footer-schedule') &&
+      e.target.tagName !== 'INPUT' &&
+      e.target.tagName !== 'TEXTAREA'
+    if (pressingArrows) {
+      if (e.key === 'ArrowLeft') {
+        yesterdayer.click()
+      } else {
+        tomorrower.click()
+      }
+    }
+  })
+  function updateDisabled () {
+    const selectedDay = datepicker.day
+    selectedDay.d--
+    yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0
+    selectedDay.d += 2
+    tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0
+    selectedDay.d--
+  }
+  document.querySelector('#datepicker').addEventListener('click', e => {
+    datepicker.open()
+  })
+
+  let previewingFuture = getSkipToFeature()
+
+  // Date setting is done, so we can now autorender
+  scheduleapp.options.autorender = true
+  // Begin to autoupdate
+  scheduleUpdated()
+  // Disable buttons accordingly
+  updateDisabled()
+}
+function getSkipToFeature () {
   // skip to next school day
+  const d = now()
   let previewingFuture = false
   if (scheduleapp.isEndOfDay()) {
     d.setDate(d.getDate() + 1)
@@ -1598,6 +1626,7 @@ export function initSchedule (manualAltSchedulesProm) {
     previewingFuture = true
   }
   datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
+
   // set from ?date= parameter in URL
   const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search)
   if (viewingDate) {
@@ -1608,6 +1637,7 @@ export function initSchedule (manualAltSchedulesProm) {
       previewingFuture = false
     }
   }
+
   if (previewingFuture) {
     previewingFuture = document.createElement('div')
     previewingFuture.className = 'previewing-future-notice-wrapper'
@@ -1644,80 +1674,14 @@ export function initSchedule (manualAltSchedulesProm) {
     parent.insertBefore(previewingFuture, parent.firstChild)
   }
   document.body.appendChild(datepicker.wrapper)
-
-  // Date setting is done, so we can now autorender
-  scheduleapp.options.autorender = true
-  // Begin to autoupdate
-  scheduleapp.update()
+  return previewingFuture
+}
+function scheduleUpdated () {
+  if (scheduleapp.options.autorender) scheduleapp.render()
   makeWeekHappen()
-  // Disable buttons accordingly
-  const selectedDay = datepicker.day
-  selectedDay.d--
-  yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0
-  selectedDay.d += 2
-  tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0
-  selectedDay.d--
-
-  onClubsLoaded.then(() => {
-    scheduleapp.render()
-  })
-
-  // Date control buttons
-  document.querySelector('#datepicker').addEventListener(
-    'click',
-    e => {
-      datepicker.open()
-    },
-    false
-  )
-  yesterdayer.addEventListener(
-    'click',
-    e => {
-      const proposal = {
-        d: datepicker.day.d - 1,
-        m: datepicker.day.m,
-        y: datepicker.day.y
-      }
-      if (datepicker.compare(proposal, datepicker.start) >= 0)
-        datepicker.day = proposal
-    },
-    false
-  )
-  tomorrower.addEventListener(
-    'click',
-    e => {
-      const proposal = {
-        d: datepicker.day.d + 1,
-        m: datepicker.day.m,
-        y: datepicker.day.y
-      }
-      if (datepicker.compare(proposal, datepicker.end) <= 0)
-        datepicker.day = proposal
-    },
-    false
-  )
-  document.addEventListener('keydown', e => {
-    if (
-      (e.key === 'ArrowLeft' || e.key === 'ArrowRight') &&
-      !e.ctrlKey &&
-      !e.altKey &&
-      !e.shiftKey &&
-      !e.metaKey
-    ) {
-      if (
-        document.body.classList.contains('footer-schedule') &&
-        e.target.tagName !== 'INPUT' &&
-        e.target.tagName !== 'TEXTAREA'
-      ) {
-        if (e.key === 'ArrowLeft') {
-          yesterdayer.click()
-        } else {
-          tomorrower.click()
-        }
-      }
-    }
-  })
-
+}
+function initSwiping () {
+  const scheduleAppWrapper = scheduleapp.element
   if (formatOptions.allowSwipe === 'swipe') {
     scheduleAppWrapper.classList.add('allowing-swipe')
   }
@@ -1803,52 +1767,19 @@ export function initSchedule (manualAltSchedulesProm) {
   }
   scheduleAppWrapper.addEventListener('pointerup', swipeEnd)
   scheduleAppWrapper.addEventListener('pointercancel', swipeEnd)
-
-  const openLinkBefore =
-    formatOptions.timeBeforeAutoLink === 'off'
-      ? null
-      : +formatOptions.timeBeforeAutoLink
-  let openLinkInIframe
-  const openLinkDropdownWrapper = document.getElementById('link-time-before')
-  const openLinkDropdown = makeDropdown(openLinkDropdownWrapper, [
-    [60 * 60, localize('time-before/before-1-00-00')],
-    [30 * 60, localize('time-before/before-0-30-00')],
-    [15 * 60, localize('time-before/before-0-15-00')],
-    [10 * 60, localize('time-before/before-0-10-00')],
-    [5 * 60, localize('time-before/before-0-05-00')],
-    [2 * 60, localize('time-before/before-0-02-00')],
-    [1 * 60, localize('time-before/before-0-01-00')],
-    [0, localize('time-before/immediately')],
-    [null, localize('time-before/never')]
-  ]).set(openLinkBefore)
-  openLinkDropdown.onChange(async time => {
-    formatOptions.timeBeforeAutoLink = time === null ? 'off' : time
-    nextLinkOpen.update()
-    saveFormatOptions()
-  })
-  openLinkInIframe = formatOptions.openNewTab !== 'yes' && setIframe
-  const iframeDialog = document.getElementById('iframe-window')
-  const iframe = document.getElementById('iframe')
-  const iframeTitleLink = document.getElementById('iframe-title')
-  const iframeTitle = document.createTextNode('')
-  iframeTitleLink.insertBefore(iframeTitle, iframeTitleLink.firstChild)
-  function setIframe (url, name) {
-    iframe.src = url
-    iframeTitleLink.href = url
-    iframeTitle.nodeValue = name
-    showDialog(iframeDialog)
-  }
-
-  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen)
 }
 
-function initHEditor (
-  hPeriods,
-  scheduleapp,
-  formatOptions,
-  makeWeekHappen
-) {
-  const hEditBtn = document.getElementById('edit-h')
+const hPeriods = loadJsonStorage('[gunn-web-app] scheduleapp.h', [
+  null,
+  [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
+  [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+  null,
+  [makeHMTM(15, 45).totalminutes, makeHMTM(17, 0).totalminutes],
+  null,
+  null
+])
+function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
+  hEditBtn = document.getElementById('edit-h')
 
   function getHumanTime (minutes) {
     if (formatOptions.hourCycle === '0') return minutes % 60
@@ -1954,4 +1885,78 @@ function initHEditor (
     sliderWrapper.appendChild(range.elem)
   }
   document.getElementById('h-days').appendChild(hDays)
+}
+
+/// initSchedule is called when `localize` is ready.
+let months, daynames, days
+function getDefaultPeriodName (periodName) {
+  return localizeWith('periodx', 'other', { X: periodName })
+}
+export function initSchedule (manualAltSchedulesProm) {
+  months = localize('months').split('  ')
+  daynames = localize('days').split('  ')
+  days = localize('ds').split('  ')
+
+  // Default period names and styles
+  periodstyles = {
+    Brunch: { label: localize('brunch'), colour: '#9E9E9E' },
+    Lunch: { label: localize('lunch'), colour: '#9E9E9E' },
+    Flex: { label: localize('flex'), colour: '#607D8B' },
+    SELF: { label: localize('self'), colour: '#455a64' },
+    A: { label: getDefaultPeriodName('1'), colour: '#f44336' },
+    B: { label: getDefaultPeriodName('2'), colour: '#2196F3' },
+    C: { label: getDefaultPeriodName('3'), colour: '#FFEB3B' },
+    D: { label: getDefaultPeriodName('4'), colour: '#795548' },
+    E: { label: getDefaultPeriodName('5'), colour: '#FF9800' },
+    F: { label: getDefaultPeriodName('6'), colour: '#9C27B0' },
+    G: { label: getDefaultPeriodName('7'), colour: '#4CAF50' },
+    H: { label: getDefaultPeriodName('8'), colour: '#673AB7' },
+    '0': { label: localize('p0'), colour: '#009688' }
+  }
+  const options = loadJsonStorage(
+    '[gunn-web-app] scheduleapp.options',
+    [],
+    Array.isArray
+  )
+  // Using !<= in case options[0] isn't a number
+  if (!(options[0] <= VERSION)) {
+    console.warn(
+      'Period styles seem to be from the future? Was expecting version',
+      VERSION,
+      'but got',
+      options
+    )
+  }
+  for (let i = 1; i < letras.length; i++) {
+    if (!periodstyles[letras[i]]) periodstyles[letras[i]] = {}
+    if (options[i]) {
+      const [label, colour, link] = options[i]
+      Object.assign(periodstyles[letras[i]], { label, colour, link })
+    }
+  }
+
+  // This is here because it has a dependency on `daynames` (which is localized)
+  for (const dayString in alternates) {
+    if (!dayString.includes('-')) continue
+    ugwaifyAlternates(alternates, dayString, alternates[dayString])
+  }
+
+  setWeekState = createReactive(document.querySelector('#weekwrapper'), weekPreviewCustomElems)
+  setEvents = createReactive(document.querySelector('#events'))
+
+  initScheduleApp()
+  initDatePicker()
+
+  initAssignmentEditing()
+  asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
+
+  initLinkOpener()
+  initNotifications()
+  initBell()
+  initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen)
+  onSection.options.then(initFormatSwitches)
+  onSection.utilities.then(initSupport)
+  onSection.options.then(initPeriodCustomisers)
+  onClubsLoaded.then(scheduleapp.render)
+  setOnSavedClubsUpdate(scheduleapp.render)
 }

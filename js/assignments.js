@@ -3,7 +3,15 @@
 import { months } from './app.js'
 import { localize, localizeWith } from './l10n.js'
 import { ripple } from './material.js'
-import { cookie, currentTime, escapeHTML, loadJsonStorage, loadJsonWithDefault, logError, NADA } from './utils.js'
+import {
+  cookie,
+  currentTime,
+  escapeHTML,
+  loadJsonStorage,
+  loadJsonWithDefault,
+  logError,
+  NADA
+} from './utils.js'
 
 // asgn = assignment
 
@@ -509,7 +517,9 @@ export function initAssignments ({
   loadJSON = loadJsonWithDefault(loadJSON, [], Array.isArray)
   const manager = new AssignmentsManager(loadJSON, assyncID)
   if (failQueueCookie) {
-    manager.failureQueue = loadJsonStorage(failQueueCookie, [], { validate: Array.isArray })
+    manager.failureQueue = loadJsonStorage(failQueueCookie, [], {
+      validate: Array.isArray
+    })
     manager.saveFailures = () => {
       cookie.setItem(failQueueCookie, JSON.stringify(manager.failureQueue))
     }

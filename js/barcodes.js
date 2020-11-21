@@ -12,7 +12,8 @@ export function initBarcodes () {
   const barcodeelems = []
   const code = cookie.getItem('[gunn-web-app] barcode.ids')
   if (code) {
-    if (code[0] === 'A') barcodes = loadJsonWithDefault(code.slice(1), [], Array.isArray)
+    if (code[0] === 'A')
+      barcodes = loadJsonWithDefault(code.slice(1), [], Array.isArray)
     else
       barcodes = code
         .split(',')

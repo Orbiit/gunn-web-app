@@ -30,7 +30,6 @@ import { initLists } from './lists.js'
 import { ripple } from './material.js'
 import {
   cacheBackground,
-  getManualAlternateSchedules,
   initSchedule,
   letras
 } from './schedule.js'
@@ -211,10 +210,7 @@ function attemptFns (fns) {
 }
 
 function initScheduleWhenReady () {
-  const manualAltSchedulesProm = getManualAlternateSchedules()
-  return schedulesReady.then(() => {
-    initSchedule(manualAltSchedulesProm)
-  })
+  return schedulesReady.then(initSchedule)
 }
 
 function makeNavBarRipple () {
@@ -523,7 +519,11 @@ function initSaveCodeManager () {
           values[key]
         )
       })
-      const periodCustomizations = loadJsonStorage('[gunn-web-app] scheduleapp.options', [], Array.isArray)
+      const periodCustomizations = loadJsonStorage(
+        '[gunn-web-app] scheduleapp.options',
+        [],
+        Array.isArray
+      )
       Promise.all(
         periodCustomizations.map((entry, i) => {
           if (i > 0 && entry[1][0] !== '#')
