@@ -28,11 +28,7 @@ import {
 } from './l10n.js'
 import { initLists } from './lists.js'
 import { ripple } from './material.js'
-import {
-  cacheBackground,
-  initSchedule,
-  letras
-} from './schedule.js'
+import { cacheBackground, initSchedule, letras } from './schedule.js'
 import { zoomImage } from '../touchy/rotate1.js'
 import {
   ALT_KEY,

@@ -39,11 +39,31 @@ import {
   toEach
 } from './utils.js'
 
-/// TEMP: Homeless
+/*
+  This file is so large that it needs a...
 
+  Table of Contents
+  - Cache of period image backgrounds
+  - Period customisation of names and colours
+  - Other customisation options (called "format options")
+  - Support (in the Utilities tab)
+  - Assignments
+  - Period reminders (notifications, virtual bell, and automatic link opening)
+  - Normal and alternate schedules, and updating them from the events
+  - Manually entered alternate schedules
+  - Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
+  - Week preview
+  - Schedule app and date picker
+  - H period editor
+  - initSchedule, called when `localize` is ready
 
-/// /Homeless
-
+  Why is this file so long anyways? If you make your way to the "Other
+  customisation" section, you can see that there's a lot of features not
+  relevant to the schedule listed. Since these so-called "format options" were
+  made to be too easily extensible, a lot of unrelated features now use it to
+  store almost all options, like the radios and switches you see the Options
+  tab.
+*/
 
 /// Cache of period image backgrounds
 const IMAGE_CACHE = 'ugwa-img-cache-YEET'
@@ -89,7 +109,27 @@ function savePeriodStyles () {
   }
   cookie.setItem('[gunn-web-app] scheduleapp.options', JSON.stringify(options))
 }
-const materialcolours = ['f44336', 'E91E63', '9C27B0', '673AB7', '3F51B5', '2196F3', '03A9F4', '00BCD4', '009688', '4CAF50', '8BC34A', 'CDDC39', 'FFEB3B', 'FFC107', 'FF9800', 'FF5722', '795548', '9E9E9E', '607D8B']
+const materialcolours = [
+  'f44336',
+  'E91E63',
+  '9C27B0',
+  '673AB7',
+  '3F51B5',
+  '2196F3',
+  '03A9F4',
+  '00BCD4',
+  '009688',
+  '4CAF50',
+  '8BC34A',
+  'CDDC39',
+  'FFEB3B',
+  'FFC107',
+  'FF9800',
+  'FF5722',
+  '795548',
+  '9E9E9E',
+  '607D8B'
+]
 function addCustomiser (parent, name, id) {
   const { label: val = '', colour = THEME_COLOUR, link = '' } = periodstyles[id]
   let isImage = colour[0] !== '#'
@@ -191,19 +231,19 @@ function addCustomiser (parent, name, id) {
     i < len;
     i++, c = arr[i]
   )
-  (c => {
-    const s = document.createElement('span')
-    s.classList.add('customiser-materialcolour')
-    s.addEventListener(
-      'click',
-      e => {
-        picker.colour = c
-      },
-      false
-    )
-    s.style.backgroundColor = c
-    t.appendChild(s)
-  })('#' + c)
+    (c => {
+      const s = document.createElement('span')
+      s.classList.add('customiser-materialcolour')
+      s.addEventListener(
+        'click',
+        e => {
+          picker.colour = c
+        },
+        false
+      )
+      s.style.backgroundColor = c
+      t.appendChild(s)
+    })('#' + c)
   const s = document.createElement('span')
   s.classList.add('customiser-materialcolour')
   s.classList.add('customiser-blackwhite')
@@ -211,8 +251,8 @@ function addCustomiser (parent, name, id) {
     'click',
     e => {
       picker.colour = document.body.classList.contains('light')
-      ? '#000000'
-      : '#ffffff'
+        ? '#000000'
+        : '#ffffff'
     },
     false
   )
@@ -228,52 +268,52 @@ function addCustomiser (parent, name, id) {
     imageInput.disabled = true
     if (imageInput.input.value) {
       cacheBackground(imageInput.input.value, id)
-      .then(() => {
-        imageInput.disabled = false
-        isImage = true
-        // intentionally not resetting backgroundColor because transparency meh
-        pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
-        if (scheduleapp) {
-          scheduleapp.setPeriod(id, { colour: imageInput.input.value }, true)
-        }
-        makeWeekHappen()
-        if (periodstyles[id].update) periodstyles[id].update()
-        savePeriodStyles()
-        pickertrigger.classList.add('ripple-dark')
-        pickertrigger.classList.remove('ripple-light')
-      })
-      .catch(err => {
-        imageInput.disabled = false
-        logError(err)
-        alert(localize('cannot'))
-      })
-    } else {
-      caches
-      .open(IMAGE_CACHE)
-      .then(cache => {
-        imageInput.disabled = false
-        cache.delete(`./.period-images/${id}`)
-        isImage = false
-        pickertrigger.style.backgroundColor = picker.colour
-        pickertrigger.style.backgroundImage = null
-        if (scheduleapp) {
-          scheduleapp.setPeriod(id, { colour: picker.colour }, true)
-        }
-        makeWeekHappen()
-        if (periodstyles[id].update) periodstyles[id].update()
-        savePeriodStyles()
-        if (picker.darkness() > 125) {
+        .then(() => {
+          imageInput.disabled = false
+          isImage = true
+          // intentionally not resetting backgroundColor because transparency meh
+          pickertrigger.style.backgroundImage = `url(./.period-images/${id}?${currentTime()})`
+          if (scheduleapp) {
+            scheduleapp.setPeriod(id, { colour: imageInput.input.value }, true)
+          }
+          makeWeekHappen()
+          if (periodstyles[id].update) periodstyles[id].update()
+          savePeriodStyles()
           pickertrigger.classList.add('ripple-dark')
           pickertrigger.classList.remove('ripple-light')
-        } else {
-          pickertrigger.classList.add('ripple-light')
-          pickertrigger.classList.remove('ripple-dark')
-        }
-      })
-      .catch(err => {
-        imageInput.disabled = false
-        logError(err)
-      })
+        })
+        .catch(err => {
+          imageInput.disabled = false
+          logError(err)
+          alert(localize('cannot'))
+        })
+    } else {
+      caches
+        .open(IMAGE_CACHE)
+        .then(cache => {
+          imageInput.disabled = false
+          cache.delete(`./.period-images/${id}`)
+          isImage = false
+          pickertrigger.style.backgroundColor = picker.colour
+          pickertrigger.style.backgroundImage = null
+          if (scheduleapp) {
+            scheduleapp.setPeriod(id, { colour: picker.colour }, true)
+          }
+          makeWeekHappen()
+          if (periodstyles[id].update) periodstyles[id].update()
+          savePeriodStyles()
+          if (picker.darkness() > 125) {
+            pickertrigger.classList.add('ripple-dark')
+            pickertrigger.classList.remove('ripple-light')
+          } else {
+            pickertrigger.classList.add('ripple-light')
+            pickertrigger.classList.remove('ripple-dark')
+          }
+        })
+        .catch(err => {
+          imageInput.disabled = false
+          logError(err)
+        })
     }
   })
   picker.window.appendChild(imageInput.wrapper)
@@ -300,8 +340,8 @@ function initPeriodCustomisers () {
   // addCustomiser(localize('brunch'), 'Brunch')
   addCustomiser(f, localize('lunch'), 'Lunch')
   document
-  .querySelector('.section.options')
-  .insertBefore(f, document.querySelector('#periodcustomisermarker'))
+    .querySelector('.section.options')
+    .insertBefore(f, document.querySelector('#periodcustomisermarker'))
 }
 
 /// Other customisation options (called "format options")
@@ -1086,7 +1126,7 @@ function initLinkOpener () {
       }
     )
     .update()
-  }
+}
 
 /// Normal and alternate schedules, and updating them from the events
 /** Helper function for legacy UGWA time format */
@@ -1147,10 +1187,10 @@ function identifyPeriod (name) {
     const letter = /(?:\b|period)([a-g1-7])\b/i.exec(name)
     if (letter) {
       return isNaN(+letter[1])
-      ? // Letter period
-      letter[1].toUpperCase()
-      : // Number period
-      ' ABCDEFG'[letter[1]]
+        ? // Letter period
+          letter[1].toUpperCase()
+        : // Number period
+          ' ABCDEFG'[letter[1]]
     }
   }
   if (~name.indexOf('self')) return 'SELF'
@@ -1160,7 +1200,7 @@ function identifyPeriod (name) {
     ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
     ~name.indexOf('tutorial')
   )
-  return 'Flex'
+    return 'Flex'
   else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
   else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
   else if (~name.indexOf('together')) return 'GT'
@@ -1221,68 +1261,68 @@ const dateRegex = /^\d+-\d{2}-\d{2}$/
 const manualAltPeriodRegex = /^(1?\d):(\d{2}) (1?\d):(\d{2}) ([a-z]+)$/
 export function getManualAlternateSchedules () {
   return fetch('./json/alt-schedules-2020.txt' + isAppDesign)
-  .then(r => r.text())
-  .then(text => {
-    const schedules = {}
-    const lines = text.split(/\r?\n/)
-    let currentDate = null
-    for (const line of lines) {
-      if (line[0] === '#') continue
-      if (currentDate) {
-        if (line[0] === '*') {
-          if (schedules[currentDate].description) {
-            schedules[currentDate].description += ' ' + line.slice(1).trim()
-          } else {
-            schedules[currentDate].description = line.slice(1).trim()
-          }
-        } else if (line) {
-          const match = line.match(manualAltPeriodRegex)
-          if (match) {
-            const [, startH, startM, endH, endM, periodLowercase] = match
-            const period =
-            periodLowercase === 'self'
-            ? 'SELF'
-            : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
-            if (letras.includes(period)) {
-              schedules[currentDate].periods.push({
-                name: period,
-                start: makeHMTM(+startH, +startM),
-                end: makeHMTM(+endH, +endM)
-              })
+    .then(r => r.text())
+    .then(text => {
+      const schedules = {}
+      const lines = text.split(/\r?\n/)
+      let currentDate = null
+      for (const line of lines) {
+        if (line[0] === '#') continue
+        if (currentDate) {
+          if (line[0] === '*') {
+            if (schedules[currentDate].description) {
+              schedules[currentDate].description += ' ' + line.slice(1).trim()
             } else {
-              console.warn(period, 'is not a valid period on', currentDate)
+              schedules[currentDate].description = line.slice(1).trim()
+            }
+          } else if (line) {
+            const match = line.match(manualAltPeriodRegex)
+            if (match) {
+              const [, startH, startM, endH, endM, periodLowercase] = match
+              const period =
+                periodLowercase === 'self'
+                  ? 'SELF'
+                  : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
+              if (letras.includes(period)) {
+                schedules[currentDate].periods.push({
+                  name: period,
+                  start: makeHMTM(+startH, +startM),
+                  end: makeHMTM(+endH, +endM)
+                })
+              } else {
+                console.warn(period, 'is not a valid period on', currentDate)
+              }
+            } else {
+              console.warn(
+                line,
+                'does not match the period regex on',
+                currentDate
+              )
             }
           } else {
-            console.warn(
-              line,
-              'does not match the period regex on',
-              currentDate
-            )
+            currentDate = null
           }
-        } else {
-          currentDate = null
-        }
-      } else if (line) {
-        if (dateRegex.test(line)) {
-          currentDate = line
-          .split('-')
-          .map(Number)
-          .join('-')
-          if (schedules[currentDate]) {
-            console.warn(
-              'A schedule already exists on',
-              currentDate,
-              schedules[currentDate]
-            )
+        } else if (line) {
+          if (dateRegex.test(line)) {
+            currentDate = line
+              .split('-')
+              .map(Number)
+              .join('-')
+            if (schedules[currentDate]) {
+              console.warn(
+                'A schedule already exists on',
+                currentDate,
+                schedules[currentDate]
+              )
+            }
+            schedules[currentDate] = { periods: [] }
+          } else {
+            console.warn(line, 'is not a valid date.')
           }
-          schedules[currentDate] = { periods: [] }
-        } else {
-          console.warn(line, 'is not a valid date.')
         }
       }
-    }
-    return schedules
-  })
+      return schedules
+    })
 }
 let manualAltSchedules = {}
 getManualAlternateSchedules().then(schedules => {
@@ -1473,6 +1513,7 @@ function makeWeekHappen () {
   renderEvents()
 }
 
+/// Schedule app and date picker
 let scheduleapp, datepicker
 function initScheduleApp () {
   scheduleapp = scheduleApp({
@@ -1570,7 +1611,8 @@ function initDatePicker () {
     }
   })
   document.addEventListener('keydown', e => {
-    const pressingArrows = (e.key === 'ArrowLeft' || e.key === 'ArrowRight') &&
+    const pressingArrows =
+      (e.key === 'ArrowLeft' || e.key === 'ArrowRight') &&
       !e.ctrlKey &&
       !e.altKey &&
       !e.shiftKey &&
@@ -1606,6 +1648,8 @@ function initDatePicker () {
   scheduleUpdated()
   // Disable buttons accordingly
   updateDisabled()
+
+  return { yesterdayer, tomorrower }
 }
 function getSkipToFeature () {
   // skip to next school day
@@ -1680,7 +1724,7 @@ function scheduleUpdated () {
   if (scheduleapp.options.autorender) scheduleapp.render()
   makeWeekHappen()
 }
-function initSwiping () {
+function initSwiping ({ yesterdayer, tomorrower }) {
   const scheduleAppWrapper = scheduleapp.element
   if (formatOptions.allowSwipe === 'swipe') {
     scheduleAppWrapper.classList.add('allowing-swipe')
@@ -1769,6 +1813,7 @@ function initSwiping () {
   scheduleAppWrapper.addEventListener('pointercancel', swipeEnd)
 }
 
+// H period editor
 const hPeriods = loadJsonStorage('[gunn-web-app] scheduleapp.h', [
   null,
   [makeHMTM(15, 45).totalminutes, makeHMTM(16, 15).totalminutes],
@@ -1887,7 +1932,7 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
   document.getElementById('h-days').appendChild(hDays)
 }
 
-/// initSchedule is called when `localize` is ready.
+/// initSchedule, called when `localize` is ready
 let months, daynames, days
 function getDefaultPeriodName (periodName) {
   return localizeWith('periodx', 'other', { X: periodName })
@@ -1941,11 +1986,14 @@ export function initSchedule (manualAltSchedulesProm) {
     ugwaifyAlternates(alternates, dayString, alternates[dayString])
   }
 
-  setWeekState = createReactive(document.querySelector('#weekwrapper'), weekPreviewCustomElems)
+  setWeekState = createReactive(
+    document.querySelector('#weekwrapper'),
+    weekPreviewCustomElems
+  )
   setEvents = createReactive(document.querySelector('#events'))
 
   initScheduleApp()
-  initDatePicker()
+  const { yesterdayer, tomorrower } = initDatePicker()
 
   initAssignmentEditing()
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
@@ -1953,6 +2001,7 @@ export function initSchedule (manualAltSchedulesProm) {
   initLinkOpener()
   initNotifications()
   initBell()
+  initSwiping({ yesterdayer, tomorrower })
   initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen)
   onSection.options.then(initFormatSwitches)
   onSection.utilities.then(initSupport)

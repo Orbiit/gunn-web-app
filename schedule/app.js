@@ -931,7 +931,10 @@ export function scheduleApp (options = {}) {
       const totalminute = getTotalMinutes(d)
       const { periods } = getSchedule(d)
       // endOfDay is an hour after end of school
-      return periods.length && totalminute - periods[periods.length - 1].end.totalminutes >= 60
+      return (
+        periods.length &&
+        totalminute - periods[periods.length - 1].end.totalminutes >= 60
+      )
     }
     // generateHtmlForOffset: generateDay
   }
