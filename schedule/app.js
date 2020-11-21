@@ -297,7 +297,7 @@ export function scheduleApp (options = {}) {
           }),
         favicon: period.start.totalminutes - totalminute < 100
           ? {
-            minutes: period.end.totalminutes - totalminute,
+            minutes: period.start.totalminutes - totalminute,
             colour
           }
           : null
@@ -800,6 +800,7 @@ export function scheduleApp (options = {}) {
     getTotalMinutes,
     getPeriodSpan,
     getSchedule,
+    offsetToDate,
     isEndOfDay: () => {
       const d = now()
       const totalminute = getTotalMinutes(d)

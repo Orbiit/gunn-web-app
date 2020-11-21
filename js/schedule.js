@@ -271,8 +271,7 @@ const formatOptionInfo = {
       off: 'no-h-period',
       onChange: checked => {
         hEditBtn.disabled = !checked
-        scheduleapp.render()
-        makeWeekHappen()
+        scheduleUpdated()
       }
     }
   },
@@ -350,9 +349,13 @@ function getPeriodSpan (pd) {
   )}</span>`
 }
 
-let scheduleapp
+let scheduleapp, datepicker
 function isSchoolDay (d) {
   return scheduleapp.getSchedule(d).periods.length
+}
+function scheduleUpdated () {
+  if (scheduleapp.options.autorender) scheduleapp.render()
+  makeWeekHappen()
 }
 
 function initFormatSwitches () {
@@ -1105,148 +1108,133 @@ function makeWeekHappen () {
   renderEvents()
 }
 
-let eventsul
+let setEvents
 const events = {}
-function renderEvents () {
-  const offset = scheduleapp.offset
-  const d = now()
-  eventsul.innerHTML = `<li><span class="secondary center">${localize(
-    'loading'
-  )}</span></li>`
-  function actuallyRenderEvents (items) {
-    let innerHTML = ``
-    if (items.length) {
-      for (let i = 0; i < items.length; i++) {
-        let timerange = ''
-        if (items[i].start) {
-          const start = new Date(items[i].start)
-          const end = new Date(items[i].end)
-          if (formatOptions.hourCycle === '0')
-            timerange = `${start.getMinutes()} &ndash; ${end.getMinutes()}`
-          else if (formatOptions.hourCycle === '24')
-            timerange = `${start.getHours()}:${(
-              '0' + start.getMinutes()
-            ).slice(-2)} &ndash; ${end.getHours()}:${(
-              '0' + end.getMinutes()
-            ).slice(-2)}`
-          else
-            timerange = `${((start.getHours() - 1) % 12) + 1}:${(
-              '0' + start.getMinutes()
-            ).slice(-2)}${
-              start.getHours() < 12 ? 'a' : 'p'
-            }m &ndash; ${((end.getHours() - 1) % 12) + 1}:${(
-              '0' + end.getMinutes()
-            ).slice(-2)}${end.getHours() < 12 ? 'a' : 'p'}m`
-        }
-        if (items[i].loc) {
-          if (timerange) timerange += ' &mdash; '
-          timerange += items[i].loc
-        }
-        if (timerange)
-          timerange = `<span class="secondary">${timerange}</span>`
-        innerHTML += `<li><span class="primary">${
-          items[i].name
-        }</span><span class="secondary${
-          items[i].error ? ' get-error' : ''
-        }">${items[i].desc || ''}</span>${timerange}</li>`
-      }
-    } else {
-      innerHTML = `<li><span class="secondary center">${localize(
-        'no-events'
-      )}</span></li>`
-    }
-    eventsul.innerHTML = innerHTML
+function getHumanTime (date) {
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  if (formatOptions.hourCycle === '0') {
+    return minute + ''
   }
-  if (events[offset]) {
-    if (events[offset] !== 'loading') {
-      actuallyRenderEvents(events[offset])
+  const minsLeadingZero = ('0' + minute).slice(-2)
+  return formatOptions.hourCycle === '24'
+    ? `${hour}:${minsLeadingZero}`
+    : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${
+      hour < 12 ? 'a' : 'p'
+    }m`
+}
+function actuallyRenderEvents (items) {
+  if (items.error) {
+    return [[
+      'li',
+      ['span.secondary.get-error', items.error]
+    ]]
+  } else if (items.length) {
+    return items.map(({ start, end, loc, name, desc }) => [
+      'li',
+      ['span.primary', name],
+      ['span.secondary', desc],
+      [
+        'span.secondary',
+        start && getHumanTime(new Date(start)) + '–' + getHumanTime(new Date(end)),
+        loc && ' · ' + loc
+      ]
+    ])
+  } else {
+    return [[
+      'li',
+      ['span.secondary.center', localize('no-events')]
+    ]]
+  }
+}
+function updateScheduleFromEvents (dateDate, json) {
+  const date = dateDate.slice(5, 10)
+  const alternateJSON = json.filter(
+    ev =>
+      altScheduleRegex.test(ev.summary) ||
+      noSchoolRegex.test(ev.summary)
+  )
+  const altSched = toAlternateSchedules(alternateJSON)
+  let ugwitaAltObj = loadJsonStorage(ALT_KEY, {})
+  let change = false
+  const selfDay = json.find(ev => ev.summary.includes('SELF'))
+  if (selfDay) {
+    if (!selfDays.includes(date)) {
+      selfDays.push(date)
+      change = true
+      ugwitaAltObj.self = selfDays
     }
   } else {
-    const dateDate = new Date(
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDate() + offset
-    ).toISOString()
-    const end = new Date(
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDate() + offset + 1
+    const index = selfDays.indexOf(date)
+    if (~index) {
+      selfDays.splice(index, 1)
+      change = true
+      ugwitaAltObj.self = selfDays
+    }
+  }
+  if (altSched[date] !== undefined) {
+    ugwitaAltObj[date] = altSched[date]
+    ugwaifyAlternates(
+      alternates,
+      date,
+      altSched[date],
+      alternateJSON[0].summary
     )
-    end.setMilliseconds(-1) // Do not include the first millisecond of the next day
+    change = true
+  } else if (ugwitaAltObj[date] !== undefined) {
+    delete ugwitaAltObj[date]
+    delete alternates[
+      date
+        .split('-')
+        .map(Number)
+        .join('-')
+    ]
+    change = true
+  }
+  if (change) {
+    cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
+    scheduleUpdated()
+  }
+}
+function renderEvents () {
+  const offset = scheduleapp.offset
+  if (events[offset]) {
+    if (events[offset] !== 'loading') {
+      setEvents(actuallyRenderEvents(events[offset]))
+    }
+  } else {
     events[offset] = 'loading'
+    setEvents([[
+      'li',
+      ['span.secondary.center', localize('loading')]
+    ]])
+
+    const d = now()
+    const dateDate = scheduleapp.offsetToDate(offset, d).toISOString()
+    const end = scheduleapp.offsetToDate(offset + 1, d)
+    end.setMilliseconds(-1) // Do not include the first millisecond of the next day
     ajax(
       // timeZone=America/Los_Angeles because the calendar is in UTC so
       // full-day events from the next day would otherwise be included
       `https://www.googleapis.com/calendar/v3/calendars/${googleCalendarId}/events?key=${apiKey}&timeMin=${dateDate}&timeMax=${end.toISOString()}&timeZone=${schoolTimeZone}&showDeleted=false&singleEvents=true&orderBy=startTime&fields=items(description%2Cend(date%2CdateTime)%2Clocation%2Cstart(date%2CdateTime)%2Csummary)`,
       json => {
         json = JSON.parse(json).items
-        const e = []
-        for (let i = 0; i < json.length; i++) {
-          e[i] = {
-            start: json[i].start.dateTime,
-            end: json[i].end.dateTime,
-            name: json[i].summary,
-            desc: json[i].description,
-            loc: json[i].location
-          }
-        }
+        const e = json.map(event => ({
+          start: event.start.dateTime,
+          end: event.end.dateTime,
+          name: event.summary,
+          desc: event.description,
+          loc: event.location
+        }))
         events[offset] = e
-        if (scheduleapp.offset === offset)
-          actuallyRenderEvents(events[offset])
+        if (scheduleapp.offset === offset) {
+          setEvents(actuallyRenderEvents(events[offset]))
+        }
 
-        const date = dateDate.slice(5, 10)
-        const alternateJSON = json.filter(
-          ev =>
-            altScheduleRegex.test(ev.summary) ||
-            noSchoolRegex.test(ev.summary)
-        )
-        const altSched = toAlternateSchedules(alternateJSON)
-        let ugwitaAltObj = loadJsonStorage(ALT_KEY, {})
-        let change = false
-        const selfDay = json.find(ev => ev.summary.includes('SELF'))
-        if (selfDay) {
-          if (!selfDays.includes(date)) {
-            selfDays.push(date)
-            change = true
-            ugwitaAltObj.self = selfDays
-          }
-        } else {
-          const index = selfDays.indexOf(date)
-          if (~index) {
-            selfDays.splice(index, 1)
-            change = true
-            ugwitaAltObj.self = selfDays
-          }
-        }
-        if (altSched[date] !== undefined) {
-          ugwitaAltObj[date] = altSched[date]
-          ugwaifyAlternates(
-            alternates,
-            date,
-            altSched[date],
-            alternateJSON[0].summary
-          )
-          change = true
-        } else if (ugwitaAltObj[date] !== undefined) {
-          delete ugwitaAltObj[date]
-          delete alternates[
-            date
-              .split('-')
-              .map(Number)
-              .join('-')
-          ]
-          change = true
-        }
-        if (change) {
-          cookie.setItem(ALT_KEY, JSON.stringify(ugwitaAltObj))
-          if (scheduleapp.options.autorender) scheduleapp.render()
-          makeWeekHappen()
-        }
+        updateScheduleFromEvents(dateDate, json)
       },
       e => {
-        events[offset] = [
-          { name: '', desc: `${e}${localize('events-error')}`, error: true }
-        ]
+        events[offset] = { error: e + localize('events-error') }
         if (scheduleapp.offset === offset)
           actuallyRenderEvents(events[offset])
       }
@@ -1385,7 +1373,7 @@ export function initSchedule (manualAltSchedulesProm) {
     }
   }
 
-  eventsul = document.querySelector('#events')
+  setEvents = createReactive(document.querySelector('#events'))
 
   for (const dayString in alternates) {
     if (!dayString.includes('-')) continue
@@ -1402,8 +1390,7 @@ export function initSchedule (manualAltSchedulesProm) {
   const scheduleAppWrapper = document.querySelector('#schedulewrapper')
   manualAltSchedulesProm.then(schedules => {
     manualAltSchedules = schedules
-    scheduleapp.render()
-    makeWeekHappen()
+    scheduleUpdated()
   })
   scheduleapp = scheduleApp({
     element: scheduleAppWrapper,
@@ -1452,7 +1439,7 @@ export function initSchedule (manualAltSchedulesProm) {
   asgnThing.todayIs() // rerender now that the customization has loaded properly into periodstyles
   const yesterdayer = document.querySelector('#plihieraux')
   const tomorrower = document.querySelector('#plimorgaux')
-  const datepicker = new DatePicker(...datePickerRange)
+  datepicker = new DatePicker(...datePickerRange)
   const d = now()
   datepicker.onchange = e => {
     if (scheduleapp.options.autorender) {
@@ -1918,8 +1905,7 @@ function initHEditor (
         hPeriods[day] = null
         label.textContent = daynames[day]
       }
-      scheduleapp.render()
-      makeWeekHappen()
+      scheduleUpdated()
       cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
     })
     wrapper.appendChild(checkbox)
@@ -1949,10 +1935,7 @@ function initHEditor (
         hPeriods[day] = range.range.map(n =>
           Math.round(n * (MAX_TIME - MIN_TIME) + MIN_TIME)
         )
-        // Apparently there's this `autorender` option that I should be
-        // checking? but meh
-        scheduleapp.render()
-        makeWeekHappen()
+        scheduleUpdated()
         cookie.setItem('[gunn-web-app] scheduleapp.h', JSON.stringify(hPeriods))
       },
       oninput: r => {
