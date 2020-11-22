@@ -29,7 +29,6 @@ import {
   escapeHTML,
   getAudioContext,
   googleCalendarId,
-  isAppDesign,
   loadJsonStorage,
   logError,
   now,
@@ -1674,7 +1673,9 @@ function initSwiping ({ yesterdayer, tomorrower }) {
         if (offset !== swiping.swipingOffset) {
           swiping.swipingOffset = offset
           // TODO: Swipe
-          setPreview(scheduleapp.getRenderedScheduleForDay(scheduleapp.offset + offset))
+          setPreview(
+            scheduleapp.getRenderedScheduleForDay(scheduleapp.offset + offset)
+          )
           swipePreview.style.transform =
             offset === -1 ? 'translate(-100%)' : 'translate(100%)'
         }

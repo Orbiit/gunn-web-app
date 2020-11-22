@@ -1,8 +1,8 @@
-import { identity } from '../js/utils.js'
-
 function exists (value) {
   // Allows 0 and 0n to be "truthy"
-  return value !== undefined && value !== null && value !== false && value !== ''
+  return (
+    value !== undefined && value !== null && value !== false && value !== ''
+  )
 }
 
 const l10nArgFinder = /\{(\w+)\}/g

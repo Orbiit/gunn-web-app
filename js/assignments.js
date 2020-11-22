@@ -6,7 +6,6 @@ import { ripple } from './material.js'
 import {
   cookie,
   currentTime,
-  escapeHTML,
   loadJsonStorage,
   loadJsonWithDefault,
   logError,
@@ -207,10 +206,7 @@ class Assignment {
             ariaLabel: this.done ? localize('undoneify') : localize('doneify')
           }
         },
-        [
-          'i.material-icons',
-          this.done ? '\ue834' : '\ue835'
-        ]
+        ['i.material-icons', this.done ? '\ue834' : '\ue835']
       ],
       [
         {
@@ -224,10 +220,7 @@ class Assignment {
           `span.asgn-category.asgn-category-${this.category}`,
           localizeCategory(this.category)
         ],
-        [
-          'span.asgn-text',
-          this.text
-        ]
+        ['span.asgn-text', this.text]
       ]
     ]
   }
@@ -694,9 +687,11 @@ export function initAssignments ({
           if (!byPeriod[asgn.period || 'noPeriod']) {
             byPeriod[asgn.period || 'noPeriod'] = ['fragment']
           }
-          byPeriod[asgn.period || 'noPeriod'].push(asgn.asPeriodInline({
-            today
-          }))
+          byPeriod[asgn.period || 'noPeriod'].push(
+            asgn.asPeriodInline({
+              today
+            })
+          )
         })
       return byPeriod
     },

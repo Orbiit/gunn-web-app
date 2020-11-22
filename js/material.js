@@ -4,6 +4,7 @@ const RIPPLE_TARGET = 'material-ripple-target'
 const ripples = new Map()
 function ripplePointerDown ({ target, clientX: x, clientY: y, pointerId }) {
   const elem = target.closest('.' + RIPPLE_TARGET)
+  if (!elem) return
   const rect = elem.getBoundingClientRect()
   elem.setPointerCapture(pointerId)
   const ripple = document.createElement('div')
@@ -14,8 +15,8 @@ function ripplePointerDown ({ target, clientX: x, clientY: y, pointerId }) {
   if (elem.classList.contains('ripple-dark')) {
     ripple.classList.add('ripple-dark')
   }
-  ripple.style.left = (x - rect.left) + 'px'
-  ripple.style.top = (y - rect.top) + 'px'
+  ripple.style.left = x - rect.left + 'px'
+  ripple.style.top = y - rect.top + 'px'
   elem.appendChild(ripple)
   const start = currentTime()
   const dest = Math.max(rect.width, rect.height) / 10
