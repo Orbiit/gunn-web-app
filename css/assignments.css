@@ -15,12 +15,6 @@ button.material.icon.asgn-done-btn {
   text-shadow: inherit;
   flex: none;
 }
-.schedule-container .asgn-done-btn {
-  transition: background-color 0.2s;
-}
-.schedule-container .asgn-done-btn:hover {
-  background-color: var(--ripple);
-}
 .asgn-done-btn .material-icons {
   pointer-events: none;
   padding: 10px; /* otherwise the text shadow gets clipped */
@@ -29,6 +23,7 @@ button.material.icon.asgn-done-btn {
   font-size: 14px;
   position: relative;
   display: flex;
+  align-items: center;
 }
 .asgn-line .asgn-category {
   margin-right: 10px;

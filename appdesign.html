@@ -93,7 +93,7 @@
       href="favicon/safari-pinned-tab.svg"
       color="#ff594c"
     />
-    <link rel="shortcut icon" href="favicon/favicon.ico" />
+    <link rel="shortcut icon" href="favicon/favicon.ico" id="favicon" />
     <meta name="msapplication-config" content="favicon/browserconfig.xml" />
     <meta name="theme-color" content="#ff594c" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -151,9 +151,9 @@
 
       /*
       const start = Date.now()
-      const baseTime = new Date(2020, 9, 27, 23, 50, 50).getTime()
+      const baseTime = new Date(2020, 10, 20, 15, 3, 55).getTime()
       // const baseTime = new Date().getTime()
-      const speed = 60
+      const speed = 1
       setCurrentTime(() => {
         return (Date.now() - start) * speed + baseTime
       })
@@ -428,6 +428,7 @@
 
       <span id="asgn-sec-ins-after-pt"></span>
 
+      <h1 data-l10n="events"></h1>
       <ul class="material-list two-line" id="events"></ul>
     </div>
 
@@ -984,7 +985,7 @@
       <span id="insert-error-log-here"></span>
     </div>
 
-    <div id="info-staff" class="material-dialog">
+    <div id="info-staff" class="material-dialog dialog-hidden">
       <h1 data-l10n="staff-name"></h1>
       <div class="content"></div>
       <div class="buttons">
@@ -995,7 +996,7 @@
       </div>
     </div>
 
-    <div id="info-club" class="material-dialog">
+    <div id="info-club" class="material-dialog dialog-hidden">
       <h1 data-l10n="club-name"></h1>
       <div class="content"></div>
       <div class="buttons">
@@ -1007,7 +1008,7 @@
       </div>
     </div>
 
-    <div id="asgn-editor" class="material-dialog">
+    <div id="asgn-editor" class="material-dialog dialog-hidden">
       <h1 data-l10n="edit-asgn"></h1>
       <div class="content">
         <textarea class="asgn-text-edit" id="asgn-content"></textarea>
@@ -1055,7 +1056,7 @@
       </div>
     </div>
 
-    <div id="h-editor" class="material-dialog">
+    <div id="h-editor" class="material-dialog dialog-hidden">
       <h1 data-l10n="h-editor"></h1>
       <div class="content" id="h-days"></div>
       <div class="buttons">
@@ -1063,7 +1064,7 @@
       </div>
     </div>
 
-    <div id="iframe-window" class="material-dialog">
+    <div id="iframe-window" class="material-dialog dialog-hidden">
       <h1>
         <a id="iframe-title" target="_blank" rel="noopener noreferrer"
           ><i class="material-icons">&#xe89e;</i></a
@@ -1115,7 +1116,6 @@
       id="error-log"
       class="error-log"
       placeholder="Errors will be logged here."
-      readonly
       required
     ></textarea>
     <noscript>

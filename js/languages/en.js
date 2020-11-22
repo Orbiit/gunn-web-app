@@ -60,6 +60,7 @@ export default {
     'edit-asgn': 'Assignment properties',
     'edit-h': 'Set period 8 times',
     errors: 'Runtime error log',
+    events: 'Events',
     'export-copy': 'copy export code',
     'export-file': 'download export code',
     'feature-based': 'Many features based on the original Gunn App.',
@@ -249,7 +250,6 @@ export default {
     doneify: 'Mark as done',
     ds: 'S  M  T  W  Θ  F  S',
     'enable-lists': 'Enable club/staff lists',
-    events: 'Events',
     'events-error':
       "; couldn't get events; maybe you aren't connected to the internet?",
     'export-file-name':
@@ -389,6 +389,8 @@ export default {
     'ending-short': '{T} left',
     long: '{T} long',
     over: "School's over!",
+    range: '{T1}–{T2} · {D}',
+    seconds: '{T}s',
     'self-ended': 'Ended {T} ago.',
     'self-ending': 'Ending in {T1}; started {T2} ago.',
     'self-starting': 'Starting in {T}.',

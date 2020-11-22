@@ -12,6 +12,7 @@ export const googleCalendarId = encodeURIComponent(
 )
 
 export const NADA = () => null
+export const identity = value => value
 
 export function shuffleInPlace (arr) {
   for (let i = arr.length; i--; ) {
@@ -47,6 +48,28 @@ export const cookie = (() => {
     }
   }
 })()
+export function loadJsonWithDefault (
+  json,
+  defaultVal = {},
+  validate = value => typeof value === 'object'
+) {
+  try {
+    const parsed = JSON.parse(json)
+    if (validate(parsed)) {
+      return parsed
+    } else {
+      return defaultVal
+    }
+  } catch (err) {
+    logError(err)
+    return defaultVal
+  }
+}
+export function loadJsonStorage (key, defaultVal = {}, { validate } = {}) {
+  const value = cookie.getItem(key)
+  if (!value) return defaultVal
+  return loadJsonWithDefault(value, defaultVal, validate)
+}
 
 // Current time getters are centralized here so it is easier to simulate a
 // different time
@@ -156,7 +179,14 @@ export function showDialog (dialog) {
     scrim.classList.add('show-scrim')
   }
   openDialog = dialog
-  dialog.classList.add('show')
+  if (dialog.classList.contains('dialog-hidden')) {
+    dialog.classList.remove('dialog-hidden')
+    window.requestAnimationFrame(() => {
+      dialog.classList.add('show')
+    })
+  } else {
+    dialog.classList.add('show')
+  }
 }
 export function closeDialog () {
   if (openDialog) {

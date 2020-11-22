@@ -3,7 +3,14 @@
 import { months } from './app.js'
 import { localize, localizeWith } from './l10n.js'
 import { ripple } from './material.js'
-import { cookie, currentTime, escapeHTML, logError, NADA } from './utils.js'
+import {
+  cookie,
+  currentTime,
+  loadJsonStorage,
+  loadJsonWithDefault,
+  logError,
+  NADA
+} from './utils.js'
 
 // asgn = assignment
 
@@ -72,7 +79,7 @@ function createConfetti (x, y) {
   document.body.appendChild(canvas)
   const start = currentTime()
   let lastTime = start
-  ;(function paint () {
+  function paint () {
     c.clearRect(0, 0, CONFETTI_RADIUS * 2, CONFETTI_RADIUS * 2)
     const now = currentTime()
     const elapsed = now - lastTime
@@ -103,7 +110,8 @@ function createConfetti (x, y) {
     lastTime = now
     if (confetti.length) window.requestAnimationFrame(paint)
     else document.body.removeChild(canvas)
-  })()
+  }
+  paint()
 }
 
 const IMPORTANCE_ALGORITHMIC_WEIGHT = 1
@@ -179,24 +187,42 @@ class Assignment {
   }
 
   // used with the periods
-  toHTML ({ today } = {}) {
-    return `<div class="asgn-line asgn-importance-${this.importance}${
-      this.done ? ' asgn-is-done' : ''
-    }" data-asgn-id="${
-      this.id
-    }"><button class="asgn-done-btn material icon" aria-label="${
-      this.done ? localize('undoneify') : localize('doneify')
-    }"><i class="material-icons">${
-      this.done ? '&#xe834;' : '&#xe835;'
-    }</i></button><span class="asgn-edit" tabindex="0" aria-label="${localize(
-      'asgn-edit-label'
-    )}"><span class="asgn-category asgn-category-${
-      this.category
-    }">${localizeCategory(
-      this.category
-    )}</span><span class="asgn-text">${escapeHTML(
-      this.text
-    )}</span></span></div>`
+  asPeriodInline ({ today } = {}) {
+    return [
+      {
+        type: 'div.asgn-line',
+        classes: [
+          `asgn-importance-${this.importance}`,
+          this.done && 'asgn-is-done'
+        ],
+        dataset: {
+          asgnId: this.id
+        }
+      },
+      [
+        {
+          type: 'ripple-btn.asgn-done-btn.material.icon',
+          properties: {
+            ariaLabel: this.done ? localize('undoneify') : localize('doneify')
+          }
+        },
+        ['i.material-icons', this.done ? '\ue834' : '\ue835']
+      ],
+      [
+        {
+          type: 'span.asgn-edit',
+          properties: {
+            tabIndex: 0,
+            ariaLabel: localize('asgn-edit-label')
+          }
+        },
+        [
+          `span.asgn-category.asgn-category-${this.category}`,
+          localizeCategory(this.category)
+        ],
+        ['span.asgn-text', this.text]
+      ]
+    ]
   }
 
   // used in the upcoming assignments section
@@ -506,22 +532,12 @@ export function initAssignments ({
   failQueueCookie = null,
   assyncID
 }) {
-  try {
-    loadJSON = JSON.parse(loadJSON)
-    if (!Array.isArray(loadJSON)) loadJSON = []
-  } catch (e) {
-    logError(e)
-    loadJSON = []
-  }
+  loadJSON = loadJsonWithDefault(loadJSON, [], Array.isArray)
   const manager = new AssignmentsManager(loadJSON, assyncID)
   if (failQueueCookie) {
-    try {
-      manager.failureQueue = JSON.parse(cookie.getItem(failQueueCookie))
-      if (!Array.isArray(manager.failureQueue)) manager.failureQueue = []
-    } catch (e) {
-      logError(e)
-      manager.failureQueue = []
-    }
+    manager.failureQueue = loadJsonStorage(failQueueCookie, [], {
+      validate: Array.isArray
+    })
     manager.saveFailures = () => {
       cookie.setItem(failQueueCookie, JSON.stringify(manager.failureQueue))
     }
@@ -669,11 +685,13 @@ export function initAssignments ({
         .getAssignmentsFor(Assignment.dateObjToDayInt(date))
         .forEach(asgn => {
           if (!byPeriod[asgn.period || 'noPeriod']) {
-            byPeriod[asgn.period || 'noPeriod'] = ''
+            byPeriod[asgn.period || 'noPeriod'] = ['fragment']
           }
-          byPeriod[asgn.period || 'noPeriod'] += asgn.toHTML({
-            today
-          })
+          byPeriod[asgn.period || 'noPeriod'].push(
+            asgn.asPeriodInline({
+              today
+            })
+          )
         })
       return byPeriod
     },

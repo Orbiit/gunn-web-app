@@ -28,12 +28,7 @@ import {
 } from './l10n.js'
 import { initLists } from './lists.js'
 import { ripple } from './material.js'
-import {
-  cacheBackground,
-  getManualAlternateSchedules,
-  initSchedule,
-  letras
-} from './schedule.js'
+import { cacheBackground, initSchedule, letras } from './schedule.js'
 import { zoomImage } from '../touchy/rotate1.js'
 import {
   ALT_KEY,
@@ -46,6 +41,8 @@ import {
   googleCalendarId,
   LAST_YEARS_ALT_KEY,
   lastDay,
+  loadJsonStorage,
+  loadJsonWithDefault,
   logError,
   now,
   showDialog,
@@ -135,13 +132,9 @@ const schedulesReady = cookie.getItem(ALT_KEY)
 if (cookie.getItem(LAST_YEARS_ALT_KEY)) cookie.removeItem(LAST_YEARS_ALT_KEY)
 
 document.documentElement.classList.add('hide-app')
-window.addEventListener(
-  'load',
-  e => {
-    l10nReady.then(main)
-  },
-  false
-)
+document.addEventListener('DOMContentLoaded', e => {
+  l10nReady.then(main)
+})
 
 function main () {
   document.title = localize('appname')
@@ -165,37 +158,20 @@ function main () {
     initPWA,
     initErrorLog,
     initFooter,
-    showIOSDialog
+    showIOSDialog,
+    initPSA,
+    initControlCentre,
+    initLists,
+    makeNavBarRipple,
+    initTabfocus
   ])
-  // Allow page to render the localization (seems to require two animation
-  // frames for some reason?)
-  window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
-      attemptFns([
-        initPSA,
-        initControlCentre,
-        initBarcodes,
-        initLists,
-        makeNavBarRipple,
-        initTabfocus,
-        initSecondsCounter,
-        initGradeCalc,
-        initSaveCodeManager,
-        initMaps,
-        initChat
-      ])
-      try {
-        initScheduleWhenReady()
-      } catch (err) {
-        logError(err.stack || err.message || err)
-        // Yank error log back over the screen
-        const errorLog = document.getElementById('error-log')
-        errorLog.classList.remove('textarea')
-        errorLog.classList.add('error-log')
-        document.body.appendChild(errorLog)
-      }
-    })
-  })
+  onSection.utilities.then(initBarcodes)
+  onSection.schedule.then(initSecondsCounter)
+  onSection.utilities.then(initGradeCalc)
+  onSection.options.then(initSaveCodeManager)
+  onSection.utilities.then(initMaps)
+  onSection.utilities.then(initChat)
+  initScheduleWhenReady()
 }
 
 function attemptFns (fns) {
@@ -209,10 +185,7 @@ function attemptFns (fns) {
 }
 
 function initScheduleWhenReady () {
-  const manualAltSchedulesProm = getManualAlternateSchedules()
-  return schedulesReady.then(() => {
-    initSchedule(manualAltSchedulesProm)
-  })
+  return schedulesReady.then(initSchedule)
 }
 
 function makeNavBarRipple () {
@@ -514,15 +487,17 @@ function initSaveCodeManager () {
   function importCode (code) {
     if (!confirm(localize('import-warning'))) return
     try {
-      const values = JSON.parse(code)
+      const values = loadJsonWithDefault(code, {})
       Object.keys(values).forEach(key => {
         cookie.setItem(
           key === EXCEPT ? key : UGWA_COOKIE_PREFIX + key,
           values[key]
         )
       })
-      const periodCustomizations = JSON.parse(
-        cookie.getItem('[gunn-web-app] scheduleapp.options')
+      const periodCustomizations = loadJsonStorage(
+        '[gunn-web-app] scheduleapp.options',
+        [],
+        Array.isArray
       )
       Promise.all(
         periodCustomizations.map((entry, i) => {
@@ -747,6 +722,10 @@ function showIOSDialog () {
 
 function localizePage () {
   function parseL10nString (l10nStr) {
+    if (!l10nStr.includes('{')) {
+      // Short circuit if there are no arguments in the string
+      return [{ text: l10nStr }]
+    }
     const parts = []
     const braceRegex = /{([a-z-/\d]+)\|?|}/g
     let lastIndex = 0
@@ -901,6 +880,8 @@ function initPWA () {
 
 function initErrorLog () {
   const errorLog = document.getElementById('error-log')
+  errorLog.readOnly = true
+  errorLog.required = false
   const logInsertPt = document.getElementById('insert-error-log-here')
   logInsertPt.parentNode.replaceChild(errorLog, logInsertPt)
   errorLog.classList.add('textarea')

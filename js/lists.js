@@ -655,6 +655,10 @@ export function initLists () {
     toEach('.lists-enabled', t => t.classList.remove('lists-enabled'))
     return
   }
+  onSection.staff.then(initStaff)
+  onSection.clubs.then(initClubs)
+}
+function initStaff () {
   const eggWrapper = egg()
   initList('staff', {
     jsonPath: 'json/staff.json' + isAppDesign,
@@ -717,6 +721,8 @@ export function initLists () {
       }
     }
   })
+}
+function initClubs () {
   // Hi Gavin
   const clubAddList = document.getElementById('club-add-list')
   const clubAdsWrapper = document.getElementById('club-ads-wrapper')
@@ -772,7 +778,7 @@ export function initLists () {
         })
         .filter(pair => pair)
       shuffleInPlace(showable)
-      Promise.all([isOnline, onSection.clubs]).then(([online]) => {
+      isOnline.then(online => {
         if (!online) return
         clubAdsWrapper.classList.add('club-ad-available')
 

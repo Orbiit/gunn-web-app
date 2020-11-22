@@ -1,7 +1,7 @@
 import { code39 } from './code39.js'
 import { localize } from './l10n.js'
 import { ripple } from './material.js'
-import { cookie } from './utils.js'
+import { cookie, loadJsonWithDefault } from './utils.js'
 
 export function initBarcodes () {
   const DEFAULT_BARCODE = '95000000' // more obvious that this is the default since it looks funny
@@ -12,14 +12,16 @@ export function initBarcodes () {
   const barcodeelems = []
   const code = cookie.getItem('[gunn-web-app] barcode.ids')
   if (code) {
-    if (code[0] === 'A') barcodes = JSON.parse(code.slice(1))
-    else
+    if (code[0] === 'A') {
+      barcodes = loadJsonWithDefault(code.slice(1), [], Array.isArray)
+    } else {
       barcodes = code
         .split(',')
         .map((a, i) => [
           localize('barcode-legacy-default').replace('{N}', i),
           a
         ])
+    }
   }
   const showingBarcodeParam = /(?:\?|&)barcode=([^&]+)/.exec(
     window.location.search

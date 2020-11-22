@@ -35,7 +35,7 @@ function parseAlternate (summary, description) {
 
       if (!times) {
         if (periods.length > 0) {
-          periods[periods.length - 1].original += '\n' + name
+          periods[periods.length - 1].name += '\n' + name
         }
         return
       }

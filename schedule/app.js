@@ -1,13 +1,67 @@
+import { createL10nApplier, createReactive } from '../js/dumb-reactive.js'
+import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { currentTime, escapeHTML, now } from '../js/utils.js'
+import { currentTime, identity, now, THEME_COLOUR } from '../js/utils.js'
+
+const FAVICON_SIZE = 32
 
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
 }
+
+const onBlur = new Promise(resolve => {
+  window.addEventListener('blur', resolve, { once: true })
+})
+
+export const customElems = {
+  customElems: {
+    'ext-link': ({ options: { ripple: rippleEffect } }) => {
+      const link = document.createElement('a')
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
+      if (rippleEffect) ripple(link)
+      return link
+    },
+    'ripple-btn': () => {
+      const button = document.createElement('button')
+      ripple(button)
+      return button
+    }
+  }
+}
+const applyEndTime = createL10nApplier(localize('end-time', 'times'), {
+  T: 'strong'
+})
+const applyEndedAgo = createL10nApplier(localize('ended', 'times'), {
+  P: null,
+  T: 'strong'
+})
+const applyEndingIn = createL10nApplier(localize('ending', 'times'), {
+  P: null,
+  T: 'strong'
+})
+const applyStartingIn = createL10nApplier(localize('starting', 'times'), {
+  P: null,
+  T: 'strong'
+})
+const applyPdEndedAgo = createL10nApplier(localize('self-ended', 'times'), {
+  T: 'strong'
+})
+const applyPdEndingIn = createL10nApplier(localize('self-ending', 'times'), {
+  T1: 'strong',
+  T2: null
+})
+const applyPdStarting = createL10nApplier(localize('self-starting', 'times'), {
+  T: 'strong'
+})
+const applyAltSchedMsg = createL10nApplier(localize('alt-msg'), {
+  D: 'strong'
+})
+
 function getDateId (d = now()) {
   // toISOString uses UTC D:
   // Just returns a unique ID per day, so no leading zeroes needed
@@ -36,10 +90,10 @@ export function getFontColour (colour) {
   return isLight(colour) ? 'rgba(0,0,0,0.8)' : 'white'
 }
 export function scheduleApp (options = {}) {
-  let elem
+  let element
   const container = document.createElement('div')
-  if (options.element) elem = options.element
-  else elem = document.createElement('div')
+  if (options.element) element = options.element
+  else element = document.createElement('div')
   container.classList.add('schedule-container')
   container.addEventListener('click', e => {
     if (e.target.dataset.club) {
@@ -53,22 +107,29 @@ export function scheduleApp (options = {}) {
   function getPeriod (name) {
     return options.periods[name] || { label: name, colour: '#000' }
   }
-  function getHumanTime (messytime) {
-    const hr = +messytime.slice(0, 2) % 24
-    if (options.h0Joke) return +messytime.slice(2) + ''
-    else if (options.h24) return `${hr}:${messytime.slice(2)}`
-    else
-      return `${((hr - 1) % 12) + 1}:${messytime.slice(2)}${
-        hr < 12 ? 'a' : 'p'
-      }m`
+  function getHumanTime ({ hour, minute }) {
+    if (options.h0Joke) {
+      return minute + ''
+    }
+    const minsLeadingZero = ('0' + minute).slice(-2)
+    return options.h24
+      ? `${hour}:${minsLeadingZero}`
+      : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${hour < 12 ? 'a' : 'p'}m`
   }
   function getCSS (colour, id) {
     if (colour[0] === '#') {
-      return `background-color:${colour};color:${getFontColour(colour)};`
+      return {
+        backgroundColor: colour,
+        color: getFontColour(colour)
+      }
     } else {
-      return `background-image: url('./.period-images/${id}?${encodeURIComponent(
-        colour
-      )}'); color: white; text-shadow: 0 0 10px black;`
+      return {
+        backgroundImage: `url('./.period-images/${id}?${encodeURIComponent(
+          colour
+        )}')`,
+        color: 'white',
+        textShadow: '0 0 10px black'
+      }
     }
   }
   function getUsefulTimePhrase (minutes) {
@@ -78,28 +139,18 @@ export function scheduleApp (options = {}) {
   }
   function getPeriodSpan (period) {
     if (period === 'GT') {
-      return `<span class="schedule-endinginperiod gt-confuse">${localize(
-        'gunn-together/name'
-      )}</span>`
+      return [
+        'span.schedule-endinginperiod.gt-confuse',
+        localize('gunn-together/name')
+      ]
     }
-    return `<span style="${getCSS(
-      getPeriod(period).colour,
-      period
-    )}" class="schedule-endinginperiod">${escapeHTML(
+    return [
+      {
+        type: 'span.schedule-endinginperiod',
+        style: getCSS(getPeriod(period).colour, period)
+      },
       getPeriod(period).label
-    )}</span>`
-  }
-  // function isSELFDay (month, date) {
-  //   return (
-  //     options.self &&
-  //     options.selfDays.includes(
-  //       ('0' + (month + 1)).slice(-2) + '-' + ('0' + date).slice(-2)
-  //     )
-  //   )
-  // }
-  function isSELFDay () {
-    // Hacky solution to turn off the old behaviour of replacing flex with SELF
-    return false
+    ]
   }
   getFontColour('rgba(0,0,0,0.2)')
   let setTitle = false
@@ -111,20 +162,11 @@ export function scheduleApp (options = {}) {
     const weekday = d.getDay()
     let alternate = false
     let summer = false
-    const isSELF = isSELFDay(mez, dia)
     let periods
     // For Gunn Together period resolution (see below)
     const gtWeek = Math.floor(
       (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
     )
-    // Don't touch this function because it's reimplemented under getWeek and
-    // maybe elsewhere for some reason >_<
-    function getPeriodName (index) {
-      if (periods[index].name === 'Flex' && isSELF) {
-        return 'SELF'
-      }
-      return periods[index].name
-    }
     if (options.customSchedule) {
       periods = options.customSchedule(d, ano, mez, dia, weekday)
       if (periods && periods.alternate) {
@@ -209,8 +251,6 @@ export function scheduleApp (options = {}) {
       periods,
       alternate,
       summer,
-      getPeriodName,
-      isSELF,
       date: { ano, mez, dia, weekday }
     }
   }
@@ -220,203 +260,331 @@ export function scheduleApp (options = {}) {
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
   }
-  function generateDay (offset = 0) {
+  function getCurrentStatus () {
+    const d = now()
+    const totalminute = getTotalMinutes(d)
+    const { periods } = getSchedule(d)
+    if (!periods.length) {
+      return {
+        title: localize('appname'),
+        end: null,
+        favicon: null
+      }
+    }
+    let currPd // current period
+    for (currPd = 0; currPd < periods.length; currPd++) {
+      if (totalminute < periods[currPd].end.totalminutes) {
+        break
+      }
+    }
+    const period = periods[Math.min(currPd, periods.length - 1)]
+    if (currPd >= periods.length) {
+      // after school
+      return {
+        title: localize('appname'),
+        end: null,
+        favicon: null
+      }
+    } else if (totalminute >= period.start.totalminutes) {
+      // during a period
+      const { label, colour } = getPeriod(period.name)
+      return {
+        title: options.compact
+          ? localizeWith('ending-short', 'times', {
+              T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+            })
+          : localizeWith('ending', 'times', {
+              P: label,
+              T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+            }),
+        titleInfo: { type: 'ending', label },
+        end: period.end.totalminutes,
+        favicon: {
+          minutes: period.end.totalminutes - totalminute,
+          colour
+        }
+      }
+    } else {
+      // passing period or before school
+      const { label, colour } = getPeriod(period.name)
+      return {
+        title: options.compact
+          ? localizeWith('starting-short', 'times', {
+              P: label,
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+            })
+          : localizeWith('starting', 'times', {
+              P: label,
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+            }),
+        titleInfo: { type: 'starting', label },
+        end: period.start.totalminutes,
+        // Favicon can only show like 2 digits
+        favicon:
+          period.start.totalminutes - totalminute < 100
+            ? {
+                minutes: period.start.totalminutes - totalminute,
+                colour
+              }
+            : null
+      }
+    }
+  }
+  const borderRadius = FAVICON_SIZE * 0.15
+  const faviconCanvas = document.createElement('canvas')
+  faviconCanvas.width = FAVICON_SIZE
+  faviconCanvas.height = FAVICON_SIZE
+  const fc = faviconCanvas.getContext('2d')
+  fc.textAlign = 'center'
+  fc.textBaseline = 'middle'
+  fc.lineWidth = FAVICON_SIZE * 0.1
+  fc.lineJoin = 'round'
+  fc.lineCap = 'round'
+  const sRadius = FAVICON_SIZE * 0.45 // radius for last seconds
+  let lastMinuteData = null
+  function displayLastSeconds () {
+    const now = currentTime()
+    const seconds = (lastMinuteData.end - now) / 1000
+    if (seconds < 0) {
+      lastMinuteData = null
+      displayCurrentStatus()
+      return
+    }
+
+    if (lastMinuteData.titleInfo) {
+      const { type, label } = lastMinuteData.titleInfo
+      const secs = localizeWith('seconds', 'times', { T: seconds.toFixed(3) })
+      if (type === 'ending') {
+        document.title = options.compact
+          ? localizeWith('ending-short', 'times', { T: secs })
+          : localizeWith('ending', 'times', { P: label, T: secs })
+      } else if (type === 'starting') {
+        document.title = options.compact
+          ? localizeWith('starting-short', 'times', { P: label, T: secs })
+          : localizeWith('starting', 'times', { P: label, T: secs })
+      }
+    }
+
+    const primaryColour = lastMinuteData.colour
+      ? isLight(lastMinuteData.colour)
+        ? 'black'
+        : 'white'
+      : THEME_COLOUR
+    fc.fillStyle = lastMinuteData.colour || 'white'
+    fc.strokeStyle = primaryColour
+
+    fc.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE)
+
+    fc.beginPath()
+    fc.moveTo(FAVICON_SIZE / 2 + sRadius, FAVICON_SIZE / 2)
+    fc.arc(FAVICON_SIZE / 2, FAVICON_SIZE / 2, sRadius, 0, 2 * Math.PI)
+    fc.closePath()
+    fc.fill()
+
+    fc.beginPath()
+    fc.moveTo(FAVICON_SIZE / 2, FAVICON_SIZE / 2 - sRadius)
+    // Rounding seconds so when it shows 30 seconds always will show half-way,
+    // even if it's not exactly 30s
+    fc.arc(
+      FAVICON_SIZE / 2,
+      FAVICON_SIZE / 2,
+      sRadius,
+      Math.PI * 1.5,
+      2 * Math.PI * (1 - Math.round(seconds) / 60) - Math.PI / 2,
+      true
+    )
+    fc.stroke()
+
+    fc.fillStyle = primaryColour
+    fc.font = `bold ${FAVICON_SIZE * 0.6}px "Roboto", sans-serif`
+    fc.fillText(
+      Math.round(seconds)
+        .toString()
+        .padStart(2, '0'),
+      FAVICON_SIZE / 2,
+      FAVICON_SIZE * 0.575
+    )
+
+    options.favicon.href = faviconCanvas.toDataURL()
+
+    if (lastMinuteData) {
+      // requestAnimationFrame only works when viewing the tab
+      setTimeout(displayLastSeconds, 1000 / 15)
+    }
+  }
+  function displayCurrentStatus () {
+    if (lastMinuteData) return
+    const { title, favicon, end, titleInfo } = getCurrentStatus()
+    if (end !== null) {
+      const d = now()
+      const endDateTime = offsetToDate(0, d)
+      endDateTime.setMinutes(end)
+      if (endDateTime - d < 60000) {
+        lastMinuteData = {
+          end: endDateTime.getTime(),
+          colour: favicon && favicon.colour[0] === '#' ? favicon.colour : null,
+          titleInfo
+        }
+        displayLastSeconds()
+        return
+      }
+    }
+    document.title = title
+    if (favicon === null) {
+      options.favicon.href = options.defaultFavicon
+    } else {
+      const { minutes, colour } = favicon
+      const isColour = colour[0] === '#'
+
+      fc.clearRect(0, 0, FAVICON_SIZE, FAVICON_SIZE)
+
+      fc.fillStyle = isColour ? colour : 'white'
+      fc.beginPath()
+      // Rounded square
+      fc.moveTo(0, borderRadius)
+      fc.arc(borderRadius, borderRadius, borderRadius, Math.PI, Math.PI * 1.5)
+      fc.lineTo(FAVICON_SIZE - borderRadius, 0)
+      fc.arc(
+        FAVICON_SIZE - borderRadius,
+        borderRadius,
+        borderRadius,
+        -Math.PI / 2,
+        0
+      )
+      fc.lineTo(FAVICON_SIZE, FAVICON_SIZE - borderRadius)
+      fc.arc(
+        FAVICON_SIZE - borderRadius,
+        FAVICON_SIZE - borderRadius,
+        borderRadius,
+        0,
+        Math.PI / 2
+      )
+      fc.lineTo(borderRadius, FAVICON_SIZE)
+      fc.arc(
+        borderRadius,
+        FAVICON_SIZE - borderRadius,
+        borderRadius,
+        Math.PI / 2,
+        Math.PI
+      )
+      fc.closePath()
+      fc.fill()
+
+      fc.fillStyle = isColour
+        ? isLight(colour)
+          ? 'black'
+          : 'white'
+        : THEME_COLOUR
+      fc.font = `bold ${FAVICON_SIZE * 0.8}px "Roboto", sans-serif`
+      fc.fillText(minutes, FAVICON_SIZE / 2, FAVICON_SIZE * 0.575)
+
+      options.favicon.href = faviconCanvas.toDataURL()
+    }
+  }
+  function getRenderedScheduleForDay (offset = 0) {
     let d = now()
-    let innerHTML
-    let checkfuture = true
+    let isToday = true
     const totalminute = getTotalMinutes(d)
     if (offset !== 0) {
       d = offsetToDate(offset, d)
-      checkfuture = false
+      isToday = false
     }
     const {
       periods,
       alternate,
       summer,
-      getPeriodName,
-      isSELF,
       date: { ano, mez, dia, weekday }
     } = getSchedule(d)
     const day = days[weekday]
-    innerHTML = `<h2 class="schedule-dayname">${day}</h2><h3 class="schedule-date"><a class="totally-not-a-link" href="?date=${`${ano}-${mez +
-      1}-${dia}`}">${localizeWith('date', 'times', {
-      M: months[mez],
-      D: dia
-    })}</a></h3>`
+    const isSchool = !summer && periods.length
+    const noSchool = !summer && !periods.length
     const assignments = options.getAssignments(d)
-    if (assignments.noPeriod) {
-      innerHTML += assignments.noPeriod
-    }
-    if (summer)
-      return (
-        innerHTML +
-        `<span class="schedule-noschool">${localize('summer')}</span>`
-      )
-    if (alternate) {
-      innerHTML += `<span class="schedule-alternatemsg">${localizeWith(
-        'alt-msg',
-        'other',
-        { D: `<strong>${alternate.description}</strong>` }
-      )}</span>`
-    }
-    if (periods.length) {
-      // If a day ends in an optional period, don't count it.
-      // 'Flex' is temporarily in the list because it's kind of optional this
-      // year.
-      const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
+
+    const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
+    let schedule = []
+    if (isSchool) {
+      schedule = []
+
       const [lastRequiredPeriod] = periods
         .filter(({ name }) => !optionalPeriods.includes(name))
         .slice(-1)
       if (lastRequiredPeriod) {
-        innerHTML += `<span class="schedule-end">${localizeWith(
-          'end-time',
-          'times',
-          {
-            T: `<strong>${getHumanTime(
-              ('0' + lastRequiredPeriod.end.hour).slice(-2) +
-                ('0' + lastRequiredPeriod.end.minute).slice(-2)
-            )}</strong>`
+        schedule.push([
+          'span.schedule-end',
+          applyEndTime({
+            T: getHumanTime(lastRequiredPeriod.end)
+          })
+        ])
+      }
+
+      if (isToday) {
+        let currPd // current period
+        for (currPd = 0; currPd < periods.length; currPd++) {
+          if (totalminute < periods[currPd].end.totalminutes) {
+            break
           }
-        )}</span>`
-      }
-      // QUESTION: Should there be feedback for days with only optional periods?
-      // Later QUESTION: What did I mean by "feedback"??
-      // "Feedback" as in a note that the entire day is optional.
-      if (checkfuture) {
-        let i
-        for (i = 0; i < periods.length; i++)
-          if (totalminute < periods[i].end.totalminutes) break
-        let str
-        let compactTime, period, compactStr
-        if (i >= periods.length) {
-          str = `<p class="schedule-endingin">${localizeWith('ended', 'times', {
-            P: getPeriodSpan((period = getPeriodName(periods.length - 1))),
-            T: `<strong>${(compactTime = getUsefulTimePhrase(
-              totalminute - periods[periods.length - 1].end.totalminutes
-            ))}</strong>`
-          })}</p>`
-          compactStr = localize('appname')
-          returnval.endOfDay =
-            totalminute - periods[periods.length - 1].end.totalminutes >= 60
         }
-        // after school (endOfDay is an hour past)
-        else if (totalminute >= periods[i].start.totalminutes) {
-          str = `<div class="schedule-periodprogress"><div style="width: ${((totalminute -
-            periods[i].start.totalminutes) /
-            (periods[i].end.totalminutes - periods[i].start.totalminutes)) *
-            100}%;"></div></div><p class="schedule-endingin">${localizeWith(
-            'ending',
-            'times',
-            {
-              P: getPeriodSpan((period = getPeriodName(i))),
-              T: `<strong>${(compactTime = getUsefulTimePhrase(
-                periods[i].end.totalminutes - totalminute
-              ))}</strong>`
-            }
-          )}</p>`
-          compactStr = localizeWith('ending-short', 'times', { T: compactTime })
-        }
-        // during a period
-        else {
-          str = `<p class="schedule-endingin">${localizeWith(
-            'starting',
-            'times',
-            {
-              P: getPeriodSpan((period = getPeriodName(i))),
-              T: `<strong>${(compactTime = getUsefulTimePhrase(
-                periods[i].start.totalminutes - totalminute
-              ))}</strong>`
-            }
-          )}</p>`
-          compactStr = localizeWith('starting-short', 'times', {
-            T: compactTime,
-            P: getPeriod(period).label
-          }) // passing period or before school
-        }
-        innerHTML += str
-        if (setTitle) {
-          if (options.compact) document.title = compactStr
-          else
-            document.title = str
-              .replace(/<[^>]+>/g, '')
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '"')
-              .replace(/&amp;/g, '&')
-        }
-      }
-      for (const period of periods) {
-        const periodName = getPeriod(
-          period.name === 'Flex' && isSELF ? 'SELF' : period.name
-        )
-        innerHTML += `<div class="schedule-period ${
-          period.name === 'GT' ? 'gunn-together' : ''
-        } ${isLight(periodName.colour) ? 'light' : 'dark'}" style="${getCSS(
-          periodName.colour,
-          period.name
-        )}">`
-        if (period.name !== 'GT') {
-          innerHTML += `<span class="schedule-periodname">${escapeHTML(
-            periodName.label
-          )}<span class="pd-btns">${
-            options.displayAddAsgn
-              ? `<button class="material icon pd-btn add-asgn" data-pd="${
-                  period.name
-                }" title="${localize(
-                  'add-asgn'
-                )}"><i class="material-icons">add_task</i></button>`
-              : ''
-          }${
-            periodName.link
-              ? `<a class="material icon pd-btn" target="_blank" href="${periodName.link}" rel="noopener noreferrer"><i class="material-icons">\ue89e</i></a>`
-              : ''
-          }</span></span>`
-        }
-        if (period.gunnTogether || period.name === 'GT') {
-          innerHTML += `<div class="gunn-together-badge">${localize(
-            'gunn-together/name'
-          )}</div>`
-        }
-        if (period.name === 'GT') {
-          innerHTML += `<span>${localize('gunn-together/subtitle')}</span>`
-        }
-        innerHTML += `<span>${getHumanTime(
-          ('0' + period.start.hour).slice(-2) +
-            ('0' + period.start.minute).slice(-2)
-        )} &ndash; ${getHumanTime(
-          ('0' + period.end.hour).slice(-2) +
-            ('0' + period.end.minute).slice(-2)
-        )} &middot; ${localizeWith('long', 'times', {
-          T: getUsefulTimePhrase(
-            period.end.totalminutes - period.start.totalminutes
+        const period = periods[Math.min(currPd, periods.length - 1)]
+        if (currPd >= periods.length) {
+          // after school
+          schedule.push([
+            'p.schedule-endingin',
+            applyEndedAgo({
+              P: getPeriodSpan(period.name),
+              T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
+            })
+          ])
+        } else if (totalminute >= period.start.totalminutes) {
+          // during a period
+          const progress =
+            ((totalminute - period.start.totalminutes) /
+              (period.end.totalminutes - period.start.totalminutes)) *
+            100
+          schedule.push(
+            [
+              'div.schedule-periodprogress',
+              [{ type: 'div', style: { width: progress + '%' } }]
+            ],
+            [
+              'p.schedule-endingin',
+              applyEndingIn({
+                P: getPeriodSpan(period.name),
+                T: getUsefulTimePhrase(period.end.totalminutes - totalminute)
+              })
+            ]
           )
-        })}</span>`
-        if (checkfuture) {
-          innerHTML += `<span>`
-          if (totalminute >= period.end.totalminutes)
-            innerHTML += localizeWith('self-ended', 'times', {
-              T: `<strong>${getUsefulTimePhrase(
-                totalminute - period.end.totalminutes
-              )}</strong>`
+        } else {
+          // passing period or before school
+          schedule.push([
+            'p.schedule-endingin',
+            applyStartingIn({
+              P: getPeriodSpan(period.name),
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
             })
-          else if (totalminute < period.start.totalminutes)
-            innerHTML += localizeWith('self-starting', 'times', {
-              T: `<strong>${getUsefulTimePhrase(
-                period.start.totalminutes - totalminute
-              )}</strong>`
+          ])
+        }
+      }
+
+      for (const period of periods) {
+        const periodStyle = getPeriod(period.name)
+        let periodTimeLeft = null
+        if (isToday) {
+          if (totalminute >= period.end.totalminutes) {
+            periodTimeLeft = applyPdEndedAgo({
+              T: getUsefulTimePhrase(totalminute - period.end.totalminutes)
             })
-          else
-            innerHTML += localizeWith('self-ending', 'times', {
-              T1: `<strong>${getUsefulTimePhrase(
-                period.end.totalminutes - totalminute
-              )}</strong>`,
+          } else if (totalminute < period.start.totalminutes) {
+            periodTimeLeft = applyPdStarting({
+              T: getUsefulTimePhrase(period.start.totalminutes - totalminute)
+            })
+          } else {
+            periodTimeLeft = applyPdEndingIn({
+              T1: getUsefulTimePhrase(period.end.totalminutes - totalminute),
               T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
             })
-          innerHTML += `</span>`
+          }
         }
-        if (assignments[period.name]) {
-          innerHTML += assignments[period.name]
-        }
+        let clubItems = []
         if (period.name === 'Lunch' && dayToPrime[weekday]) {
           const clubs = []
           Object.keys(savedClubs).forEach(clubName => {
@@ -425,55 +593,132 @@ export function scheduleApp (options = {}) {
             }
           })
           if (clubs.length) {
-            innerHTML +=
-              `<span class="small-heading">${localize('lunch-clubs')}</span>` +
-              clubs
-                .map(club => {
-                  const clubData = getClubByName && getClubByName(club)
-                  const extraData =
-                    clubData &&
-                    [
-                      clubData.link
-                        ? `<a href="${escapeHTML(
-                            clubData.link
-                          )}" target="_blank" rel="noopener noreferrer" class="join-club-link">${localize(
-                            'join'
-                          )}</a>`
-                        : null,
-                      clubData.time ? escapeHTML(clubData.time) : null
-                    ].filter(d => d)
-                  return `<span class="club-links"><a href="#" data-club="${escapeHTML(
+            clubItems = [
+              ['span.small-heading', localize('lunch-clubs')],
+              ...clubs.map(club => {
+                const clubData = getClubByName && getClubByName(club)
+                const extraData = clubData
+                  ? [
+                      clubData.link && [
+                        {
+                          type: 'ext-link.join-club-link',
+                          properties: { href: clubData.link }
+                        },
+                        localize('join')
+                      ],
+                      clubData.time
+                    ]
+                      .filter(identity)
+                      .map(datum => [' · ', datum])
+                  : []
+                return [
+                  'span.club-links',
+                  [
+                    { type: 'a', properties: { href: '#' }, dataset: { club } },
                     club
-                  )}">${club}</a>${
-                    extraData ? ` (${extraData.join(' &middot; ')})` : ''
-                  }</span>`
-                })
-                .join('')
+                  ],
+                  ...(extraData.length
+                    ? [' (', ...[].concat(...extraData).slice(1), ')']
+                    : [])
+                ]
+              })
+            ]
           }
         }
-        innerHTML += `</div>`
+        schedule.push([
+          {
+            type: 'div.schedule-period',
+            classes: [
+              period.name === 'GT' && 'gunn-together',
+              isLight(periodStyle.colour) ? 'light' : 'dark'
+            ],
+            style: getCSS(periodStyle.colour, period.name)
+          },
+          period.name !== 'GT' && [
+            'span.schedule-periodname',
+            periodStyle.label,
+            [
+              'span.pd-btns',
+              options.displayAddAsgn && [
+                {
+                  type: 'ripple-btn.material.icon.pd-btn.add-asgn',
+                  dataset: { pd: period.name }
+                },
+                ['i.material-icons', 'add_task']
+              ],
+              periodStyle.link && [
+                {
+                  type: 'ext-link.material.icon.pd-btn',
+                  properties: { href: periodStyle.link },
+                  options: { ripple: true }
+                },
+                ['i.material-icons', '\ue89e']
+              ]
+            ]
+          ],
+          (period.gunnTogether || period.name === 'GT') && [
+            'div.gunn-together-badge',
+            localize('gunn-together/name')
+          ],
+          period.name === 'GT' && ['span', localize('gunn-together/subtitle')],
+          [
+            'span',
+            localizeWith('range', 'times', {
+              T1: getHumanTime(period.start),
+              T2: getHumanTime(period.end),
+              D: localizeWith('long', 'times', {
+                T: getUsefulTimePhrase(
+                  period.end.totalminutes - period.start.totalminutes
+                )
+              })
+            })
+          ],
+          ['span', periodTimeLeft],
+          assignments[period.name],
+          ...clubItems
+        ])
       }
-    } else {
-      innerHTML += `<span class="schedule-noschool">${
-        getPeriod('NO_SCHOOL').label
-      }</span>`
+    } else if (noSchool) {
+      schedule = [['span.schedule-noschool', localize('no-school')]]
     }
-    return innerHTML
+
+    return [
+      ['h2.schedule-dayname', day],
+      [
+        'h3.schedule-date',
+        [
+          {
+            type: 'a.totally-not-a-link',
+            properties: { href: `?date=${ano}-${mez + 1}-${dia}` }
+          },
+          localizeWith('date', 'times', {
+            M: months[mez],
+            D: dia
+          })
+        ]
+      ],
+      assignments.noPeriod,
+      summer && ['span.schedule-noschool', localize('summer')],
+      !summer &&
+        alternate && [
+          'span.schedule-alternatemsg',
+          applyAltSchedMsg({ D: alternate.description })
+        ],
+      ...schedule
+    ]
   }
   if (!options.offset) options.offset = 0
+  const setState = createReactive(container, customElems)
   /**
    * onBlur runs once when the tab loses focus. This is to prevent Google from
    * using the current time in the tab title for the site name in Google Search
    * (see #82). I think this is fine because mobile devices won't need the tab
    * title, and those who do need the tab title probably fire blur reliably.
    */
-  function onBlur () {
+  onBlur.then(() => {
     setTitle = true
-    // Recalculate the schedule to update the title.
-    generateDay(options.offset)
-    window.removeEventListener('blur', onBlur, false)
-  }
-  window.addEventListener('blur', onBlur, false)
+    displayCurrentStatus()
+  })
   function getDate (date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
   }
@@ -506,7 +751,7 @@ export function scheduleApp (options = {}) {
   const onMinutes = []
   let lastToday = getDateId()
   const checkSpeed = 50 // Every 50 ms
-  let lastMinute, timeoutID, animationID
+  let lastMinute, timeoutID
   function checkMinute () {
     const currentMinute = now()
       .toISOString()
@@ -528,7 +773,7 @@ export function scheduleApp (options = {}) {
     if (options.update) {
       timeoutID = setTimeout(checkMinute, checkSpeed)
     } else {
-      animationID = null
+      timeoutID = null
     }
     for (const { next, onNext, update } of timers) {
       if (next && currentTime() >= next.time) {
@@ -543,10 +788,11 @@ export function scheduleApp (options = {}) {
   }
   const returnval = {
     options,
-    element: elem,
+    element,
     container,
     render () {
-      container.innerHTML = generateDay(options.offset)
+      setState(getRenderedScheduleForDay(options.offset))
+      if (setTitle) displayCurrentStatus()
     },
     update () {
       options.update = true
@@ -560,7 +806,10 @@ export function scheduleApp (options = {}) {
     },
     stopupdate () {
       options.update = false
-      window.cancelAnimationFrame(animationID)
+      if (timeoutID) {
+        clearTimeout(timeoutID)
+        timeoutID = null
+      }
     },
     get offset () {
       return options.offset
@@ -600,17 +849,12 @@ export function scheduleApp (options = {}) {
           today.getDate() - today.getDay() + i
         )
         const day = []
-        const isSELF = isSELFDay(d.getMonth(), d.getDate())
         const sched = getSchedule(d).periods
         if (sched.length)
           for (const period of sched) {
-            // q stands for 'quick' because I'm too lazy to make a variable name
-            // but I am not lazy enough to make a comment explaining it
-            const q = getPeriod(
-              period.name === 'Flex' && isSELF ? 'SELF' : period.name
-            )
-            q.id = period.name
-            day.push(q)
+            const style = getPeriod(period.name)
+            style.id = period.name
+            day.push(style)
           }
         if (today.getDay() === i) day.today = true
         day.date = d
@@ -678,9 +922,19 @@ export function scheduleApp (options = {}) {
     getTotalMinutes,
     getPeriodSpan,
     getSchedule,
-    generateHtmlForOffset: generateDay
+    offsetToDate,
+    isEndOfDay: () => {
+      const d = now()
+      const totalminute = getTotalMinutes(d)
+      const { periods } = getSchedule(d)
+      // endOfDay is an hour after end of school
+      return (
+        periods.length &&
+        totalminute - periods[periods.length - 1].end.totalminutes >= 60
+      )
+    },
+    getRenderedScheduleForDay
   }
-  elem.appendChild(container)
-  generateDay() // Calculate endOfDay, but don't render the HTML yet
+  element.appendChild(container)
   return returnval
 }
