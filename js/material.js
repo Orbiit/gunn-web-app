@@ -38,22 +38,20 @@ function ripplePointerDown ({ target, clientX: x, clientY: y, pointerId }) {
       window.requestAnimationFrame(updateScale)
     }
   }
-  ripples.set(elem, () => {
+  ripples.set(pointerId, () => {
     fade = true
     fadestart = currentTime()
-    ripples.delete(elem)
+    ripples.delete(pointerId)
   })
   window.requestAnimationFrame(updateScale)
 }
-function ripplePointerUp ({ target }) {
-  const elem = target.closest('.' + RIPPLE_TARGET)
-  if (elem) {
-    const onPointerUp = ripples.get(elem)
-    if (onPointerUp) onPointerUp()
-  }
+function ripplePointerUp ({ pointerId }) {
+  const onPointerUp = ripples.get(pointerId)
+  if (onPointerUp) onPointerUp()
 }
 document.addEventListener('pointerdown', ripplePointerDown)
 document.addEventListener('pointerup', ripplePointerUp)
+document.addEventListener('pointercancel', ripplePointerUp)
 export function ripple (elem) {
   if (typeof elem === 'string') {
     for (const match of document.querySelectorAll(elem)) {

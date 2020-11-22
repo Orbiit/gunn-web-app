@@ -266,6 +266,7 @@ ul.material-list.three-line li {
 }
 ul.material-list span {
   display: block;
+  white-space: pre-wrap;
 }
 ul.material-list span.primary {
   font-size: 16px;

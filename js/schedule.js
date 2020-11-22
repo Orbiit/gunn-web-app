@@ -1694,19 +1694,22 @@ function initSwiping ({ yesterdayer, tomorrower }) {
         const { width } = scheduleapp.container.getBoundingClientRect()
         const swipeX = e.clientX - swiping.startX
         let change = false
-        if (swiping.swipingOffset === -1) {
-          if (swipeX > width * SWIPE_THRESHOLD) {
-            change = true
-            yesterdayer.click()
-            scheduleapp.container.style.transform = `translateX(${swipeX -
-              width}px)`
-          }
-        } else {
-          if (swipeX < -width * SWIPE_THRESHOLD) {
-            change = true
-            tomorrower.click()
-            scheduleapp.container.style.transform = `translateX(${swipeX +
-              width}px)`
+        // Do not swipe if pointercancel
+        if (e.type === 'pointerup') {
+          if (swiping.swipingOffset === -1) {
+            if (swipeX > width * SWIPE_THRESHOLD) {
+              change = true
+              yesterdayer.click()
+              scheduleapp.container.style.transform = `translateX(${swipeX -
+                width}px)`
+            }
+          } else {
+            if (swipeX < -width * SWIPE_THRESHOLD) {
+              change = true
+              tomorrower.click()
+              scheduleapp.container.style.transform = `translateX(${swipeX +
+                width}px)`
+            }
           }
         }
         if (change) {
