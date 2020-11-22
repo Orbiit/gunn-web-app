@@ -751,7 +751,7 @@ export function scheduleApp (options = {}) {
   const onMinutes = []
   let lastToday = getDateId()
   const checkSpeed = 50 // Every 50 ms
-  let lastMinute, timeoutID, animationID
+  let lastMinute, timeoutID
   function checkMinute () {
     const currentMinute = now()
       .toISOString()
@@ -773,7 +773,7 @@ export function scheduleApp (options = {}) {
     if (options.update) {
       timeoutID = setTimeout(checkMinute, checkSpeed)
     } else {
-      animationID = null
+      timeoutID = null
     }
     for (const { next, onNext, update } of timers) {
       if (next && currentTime() >= next.time) {
@@ -806,7 +806,10 @@ export function scheduleApp (options = {}) {
     },
     stopupdate () {
       options.update = false
-      window.cancelAnimationFrame(animationID)
+      if (timeoutID) {
+        clearTimeout(timeoutID)
+        timeoutID = null
+      }
     },
     get offset () {
       return options.offset

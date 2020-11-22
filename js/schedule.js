@@ -1558,7 +1558,8 @@ function initDatePicker () {
   // Date setting is done, so we can now autorender
   scheduleapp.options.autorender = true
   // Begin to autoupdate
-  scheduleUpdated()
+  scheduleapp.update() // This is distinctly NOT .render()
+  makeWeekHappen()
   // Disable buttons accordingly
   updateDisabled()
 
