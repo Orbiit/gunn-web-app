@@ -179,7 +179,14 @@ export function showDialog (dialog) {
     scrim.classList.add('show-scrim')
   }
   openDialog = dialog
-  dialog.classList.add('show')
+  if (dialog.classList.contains('dialog-hidden')) {
+    dialog.classList.remove('dialog-hidden')
+    window.requestAnimationFrame(() => {
+      dialog.classList.add('show')
+    })
+  } else {
+    dialog.classList.add('show')
+  }
 }
 export function closeDialog () {
   if (openDialog) {

@@ -1,75 +1,66 @@
 import { closeDialog, currentTime, NADA, toEach } from './utils.js'
 
+const RIPPLE_TARGET = 'material-ripple-target'
+const ripples = new Map()
+function ripplePointerDown ({ target, clientX: x, clientY: y, pointerId }) {
+  const elem = target.closest('.' + RIPPLE_TARGET)
+  const rect = elem.getBoundingClientRect()
+  elem.setPointerCapture(pointerId)
+  const ripple = document.createElement('div')
+  ripple.classList.add('ripple')
+  if (elem.classList.contains('ripple-light')) {
+    ripple.classList.add('ripple-light')
+  }
+  if (elem.classList.contains('ripple-dark')) {
+    ripple.classList.add('ripple-dark')
+  }
+  ripple.style.left = (x - rect.left) + 'px'
+  ripple.style.top = (y - rect.top) + 'px'
+  elem.appendChild(ripple)
+  const start = currentTime()
+  const dest = Math.max(rect.width, rect.height) / 10
+  const duration = dest * 31
+  let fade = false
+  let fadestart
+  function updateScale () {
+    const elapsed = (currentTime() - start) / duration
+    const fadeelapsed = (currentTime() - fadestart) / 500
+    if (fade && fadeelapsed > 1) {
+      elem.removeChild(ripple)
+    } else {
+      ripple.style.transform = `scale(${elapsed * dest})`
+      if (fadeelapsed) {
+        ripple.style.opacity = 1 - fadeelapsed
+      } else {
+        ripple.style.opacity = 1
+      }
+      window.requestAnimationFrame(updateScale)
+    }
+  }
+  ripples.set(elem, () => {
+    fade = true
+    fadestart = currentTime()
+    ripples.delete(elem)
+  })
+  window.requestAnimationFrame(updateScale)
+}
+function ripplePointerUp ({ target }) {
+  const elem = target.closest('.' + RIPPLE_TARGET)
+  if (elem) {
+    const onPointerUp = ripples.get(elem)
+    if (onPointerUp) onPointerUp()
+  }
+}
+document.addEventListener('pointerdown', ripplePointerDown)
+document.addEventListener('pointerup', ripplePointerUp)
 export function ripple (elem) {
   if (typeof elem === 'string') {
-    const s = document.querySelectorAll(elem)
-    for (let i = 0; i < s.length; i++) ripple(s[i])
+    for (const match of document.querySelectorAll(elem)) {
+      ripple(match)
+    }
     return
   }
-  function mousedown (x, y) {
-    let r = document.createElement('div')
-    const rect = elem.getBoundingClientRect()
-    r.classList.add('ripple')
-    if (elem.classList.contains('ripple-light')) r.classList.add('ripple-light')
-    if (elem.classList.contains('ripple-dark')) r.classList.add('ripple-dark')
-    r.style.left = x - rect.left + 'px'
-    r.style.top = y - rect.top + 'px'
-    elem.appendChild(r)
-    const start = currentTime()
-    const dest = Math.max(rect.width, rect.height) / 10
-    const duration = dest * 31
-    let fade = false
-    let fadestart
-    function updateScale () {
-      const elapsed = (currentTime() - start) / duration
-      const fadeelapsed = (currentTime() - fadestart) / 500
-      if (fade && fadeelapsed > 1) {
-        elem.removeChild(r)
-        r = null
-      } else {
-        r.style.transform = `scale(${elapsed * dest})`
-        if (fadeelapsed) r.style.opacity = 1 - fadeelapsed
-        else r.style.opacity = 1
-        window.requestAnimationFrame(updateScale)
-      }
-    }
-    function mouseup (e) {
-      fade = true
-      fadestart = currentTime()
-      document.removeEventListener('mouseup', mouseup, false)
-      document.removeEventListener('touchend', mouseup, false)
-      if (e.type === 'touchend') lasttap = fadestart
-    }
-    window.requestAnimationFrame(updateScale)
-    document.addEventListener('mouseup', mouseup, false)
-    document.addEventListener('touchend', mouseup, false)
-  }
-  let lasttap = 0
-  elem.addEventListener(
-    'mousedown',
-    e => {
-      if (currentTime() - lasttap > 100) mousedown(e.clientX, e.clientY)
-    },
-    false
-  )
-  elem.addEventListener(
-    'touchstart',
-    e => {
-      mousedown(e.touches[0].clientX, e.touches[0].clientY)
-    },
-    false
-  )
-  const focusblob = document.createElement('div')
-  focusblob.classList.add('ripple')
-  focusblob.classList.add('ripple-focus')
-  /* elem.addEventListener("focus",e=>{
-    let rect=elem.getBoundingClientRect();
-    focusblob.style.width=focusblob.style.height=(Math.max(rect.width,rect.height)*0.8)+'px';
-    elem.appendChild(focusblob);
-  },false);
-  elem.addEventListener("blur",e=>{
-    elem.removeChild(focusblob);
-  },false); */
+  elem.classList.add(RIPPLE_TARGET)
 }
 export function materialInput (
   labeltext,

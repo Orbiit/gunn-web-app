@@ -80,7 +80,7 @@ function createConfetti (x, y) {
   document.body.appendChild(canvas)
   const start = currentTime()
   let lastTime = start
-  ;(function paint () {
+  function paint () {
     c.clearRect(0, 0, CONFETTI_RADIUS * 2, CONFETTI_RADIUS * 2)
     const now = currentTime()
     const elapsed = now - lastTime
@@ -111,7 +111,8 @@ function createConfetti (x, y) {
     lastTime = now
     if (confetti.length) window.requestAnimationFrame(paint)
     else document.body.removeChild(canvas)
-  })()
+  }
+  paint()
 }
 
 const IMPORTANCE_ALGORITHMIC_WEIGHT = 1

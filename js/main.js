@@ -722,6 +722,10 @@ function showIOSDialog () {
 
 function localizePage () {
   function parseL10nString (l10nStr) {
+    if (!l10nStr.includes('{')) {
+      // Short circuit if there are no arguments in the string
+      return [{ text: l10nStr }]
+    }
     const parts = []
     const braceRegex = /{([a-z-/\d]+)\|?|}/g
     let lastIndex = 0
@@ -876,6 +880,8 @@ function initPWA () {
 
 function initErrorLog () {
   const errorLog = document.getElementById('error-log')
+  errorLog.readOnly = true
+  errorLog.required = false
   const logInsertPt = document.getElementById('insert-error-log-here')
   logInsertPt.parentNode.replaceChild(errorLog, logInsertPt)
   errorLog.classList.add('textarea')

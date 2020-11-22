@@ -321,6 +321,9 @@ ul.material-list li.error,
   z-index: 20;
   word-break: break-word;
 }
+.dialog-hidden {
+  display: none;
+}
 .material-dialog.show {
   opacity: 1;
   pointer-events: all;

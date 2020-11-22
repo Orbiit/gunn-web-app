@@ -31,7 +31,8 @@ export function localize (id, src = 'other', lang = currentLang) {
     console.warn(`Language ${lang} not loaded.`)
     langs[lang] = {}
   }
-  const path = [src, ...id.split('/')]
+  const path = id.split('/')
+  path.unshift(src)
   let obj = langs[lang]
   for (const key of path) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {

@@ -50,7 +50,6 @@ import {
   - Assignments
   - Period reminders (notifications, virtual bell, and automatic link opening)
   - Normal and alternate schedules, and updating them from the events
-  - Manually entered alternate schedules
   - Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
   - Week preview
   - Schedule app and date picker
@@ -1255,80 +1254,6 @@ function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
   return true
 }
 
-/// Manually entered alternate schedules
-const dateRegex = /^\d+-\d{2}-\d{2}$/
-const manualAltPeriodRegex = /^(1?\d):(\d{2}) (1?\d):(\d{2}) ([a-z]+)$/
-export function getManualAlternateSchedules () {
-  return fetch('./json/alt-schedules-2020.txt' + isAppDesign)
-    .then(r => r.text())
-    .then(text => {
-      const schedules = {}
-      const lines = text.split(/\r?\n/)
-      let currentDate = null
-      for (const line of lines) {
-        if (line[0] === '#') continue
-        if (currentDate) {
-          if (line[0] === '*') {
-            if (schedules[currentDate].description) {
-              schedules[currentDate].description += ' ' + line.slice(1).trim()
-            } else {
-              schedules[currentDate].description = line.slice(1).trim()
-            }
-          } else if (line) {
-            const match = line.match(manualAltPeriodRegex)
-            if (match) {
-              const [, startH, startM, endH, endM, periodLowercase] = match
-              const period =
-                periodLowercase === 'self'
-                  ? 'SELF'
-                  : periodLowercase[0].toUpperCase() + periodLowercase.slice(1)
-              if (letras.includes(period)) {
-                schedules[currentDate].periods.push({
-                  name: period,
-                  start: makeHMTM(+startH, +startM),
-                  end: makeHMTM(+endH, +endM)
-                })
-              } else {
-                console.warn(period, 'is not a valid period on', currentDate)
-              }
-            } else {
-              console.warn(
-                line,
-                'does not match the period regex on',
-                currentDate
-              )
-            }
-          } else {
-            currentDate = null
-          }
-        } else if (line) {
-          if (dateRegex.test(line)) {
-            currentDate = line
-              .split('-')
-              .map(Number)
-              .join('-')
-            if (schedules[currentDate]) {
-              console.warn(
-                'A schedule already exists on',
-                currentDate,
-                schedules[currentDate]
-              )
-            }
-            schedules[currentDate] = { periods: [] }
-          } else {
-            console.warn(line, 'is not a valid date.')
-          }
-        }
-      }
-      return schedules
-    })
-}
-let manualAltSchedules = {}
-getManualAlternateSchedules().then(schedules => {
-  manualAltSchedules = schedules
-  if (scheduleapp) scheduleUpdated()
-})
-
 /// Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
 let setEvents
 const events = {}
@@ -1543,18 +1468,7 @@ function initScheduleApp () {
     getAssignments (date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan)
     },
-    customSchedule (date, y, m, d, wd) {
-      const schedule = manualAltSchedules[`${y}-${m + 1}-${d}`]
-      if (!schedule) return
-      const { periods, description = localize('default-alt-msg') } = schedule
-      return {
-        periods:
-          formatOptions.showH === 'yes-h-period2'
-            ? periods
-            : periods.filter(pd => pd.name !== 'H'),
-        alternate: { description }
-      }
-    },
+    // customSchedule (date, y, m, d, wd) {},
     isSummer: (y, m, d) => !datepicker.inrange({ y: y, m: m, d: d }),
     favicon: document.getElementById('favicon'),
     defaultFavicon: 'favicon/favicon.ico',
@@ -1936,7 +1850,7 @@ let months, daynames, days
 function getDefaultPeriodName (periodName) {
   return localizeWith('periodx', 'other', { X: periodName })
 }
-export function initSchedule (manualAltSchedulesProm) {
+export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
   days = localize('ds').split('  ')
