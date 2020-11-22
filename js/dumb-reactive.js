@@ -1,5 +1,10 @@
 import { identity } from '../js/utils.js'
 
+function exists (value) {
+  // Allows 0 and 0n to be "truthy"
+  return value !== undefined && value !== null && value !== false && value !== ''
+}
+
 const l10nArgFinder = /\{(\w+)\}/g
 export function createL10nApplier (l10n, l10nArgs) {
   const fragmentRaw = ['fragment']
@@ -16,7 +21,7 @@ export function createL10nApplier (l10n, l10nArgs) {
     lastIndex = exec.index + exec[0].length
   }
   fragmentRaw.push(l10n.slice(lastIndex))
-  const fragmentBase = fragmentRaw.filter(identity)
+  const fragmentBase = fragmentRaw.filter(exists)
   return values =>
     fragmentBase.map(part => {
       if (typeof part === 'string') {
@@ -37,9 +42,9 @@ function diffArray (oldArr, newArr) {
 }
 function diffObject (oldObj, newObj) {
   return {
-    removed: Object.keys(oldObj).filter(key => !newObj[key]),
+    removed: Object.keys(oldObj).filter(key => !exists(newObj[key])),
     changed: Object.entries(newObj).filter(
-      ([key, value]) => oldObj[key] !== value
+      ([key, value]) => exists(value) && oldObj[key] !== value
     )
   }
 }
@@ -49,7 +54,7 @@ function processStateArray (states) {
   const processed = []
   for (let i = 0; i < states.length; i++) {
     const state = states[i]
-    if (!state) continue
+    if (!exists(state)) continue
     if (typeof state === 'string') {
       if (i > 0 && typeof processed[processed.length - 1] === 'string') {
         processed[processed.length - 1] += state
@@ -84,7 +89,7 @@ function processState ([type, ...children]) {
     options: {}, // For custom elements
     children: processStateArray(children)
   }
-  if (type.classes) elem.classes.push(...type.classes.filter(identity))
+  if (type.classes) elem.classes.push(...type.classes.filter(exists))
   if (type.properties) Object.assign(elem.properties, type.properties)
   if (type.style) Object.assign(elem.style, type.style)
   if (type.dataset) Object.assign(elem.dataset, type.dataset)

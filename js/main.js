@@ -132,13 +132,9 @@ const schedulesReady = cookie.getItem(ALT_KEY)
 if (cookie.getItem(LAST_YEARS_ALT_KEY)) cookie.removeItem(LAST_YEARS_ALT_KEY)
 
 document.documentElement.classList.add('hide-app')
-window.addEventListener(
-  'load',
-  e => {
-    l10nReady.then(main)
-  },
-  false
-)
+document.addEventListener('DOMContentLoaded', e => {
+  l10nReady.then(main)
+})
 
 function main () {
   document.title = localize('appname')
@@ -162,37 +158,20 @@ function main () {
     initPWA,
     initErrorLog,
     initFooter,
-    showIOSDialog
+    showIOSDialog,
+    initPSA,
+    initControlCentre,
+    initLists,
+    makeNavBarRipple,
+    initTabfocus
   ])
-  // Allow page to render the localization (seems to require two animation
-  // frames for some reason?)
-  window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
-      attemptFns([
-        initPSA,
-        initControlCentre,
-        initLists,
-        makeNavBarRipple,
-        initTabfocus
-      ])
-      onSection.utilities.then(initBarcodes)
-      onSection.schedule.then(initSecondsCounter)
-      onSection.utilities.then(initGradeCalc)
-      onSection.options.then(initSaveCodeManager)
-      onSection.utilities.then(initMaps)
-      onSection.utilities.then(initChat)
-      try {
-        initScheduleWhenReady()
-      } catch (err) {
-        logError(err.stack || err.message || err)
-        // Yank error log back over the screen
-        const errorLog = document.getElementById('error-log')
-        errorLog.classList.remove('textarea')
-        errorLog.classList.add('error-log')
-        document.body.appendChild(errorLog)
-      }
-    })
-  })
+  onSection.utilities.then(initBarcodes)
+  onSection.schedule.then(initSecondsCounter)
+  onSection.utilities.then(initGradeCalc)
+  onSection.options.then(initSaveCodeManager)
+  onSection.utilities.then(initMaps)
+  onSection.utilities.then(initChat)
+  initScheduleWhenReady()
 }
 
 function attemptFns (fns) {

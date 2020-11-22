@@ -215,7 +215,7 @@ class Assignment {
         {
           type: 'span.asgn-edit',
           properties: {
-            tabIndex: '0',
+            tabIndex: 0,
             ariaLabel: localize('asgn-edit-label')
           }
         },

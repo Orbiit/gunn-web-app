@@ -5,7 +5,7 @@ import {
   noSchoolRegex,
   toAlternateSchedules
 } from './altScheduleGenerator.js?for=appdesign'
-import { getFontColour, scheduleApp } from './app.js'
+import { customElems, getFontColour, scheduleApp } from './app.js'
 import {
   categoryList,
   initAssignments,
@@ -1178,8 +1178,7 @@ const normalschedule = [
   ],
   null
 ]
-const alternates = loadJsonStorage(ALT_KEY, {})
-const selfDays = alternates.self || []
+let alternates, selfDays
 function identifyPeriod (name) {
   name = name.toLowerCase()
   if (~name.indexOf('period')) {
@@ -1733,6 +1732,7 @@ function initSwiping ({ yesterdayer, tomorrower }) {
   const MIN_SWIPE_DIST = 40
   const SWIPE_THRESHOLD = 0.3
   const swipePreview = document.getElementById('swipe-preview')
+  const setPreview = createReactive(swipePreview, customElems)
   let swiping = null
   scheduleAppWrapper.addEventListener('pointerdown', e => {
     if (formatOptions.allowSwipe === 'swipe' && swiping === null) {
@@ -1760,9 +1760,7 @@ function initSwiping ({ yesterdayer, tomorrower }) {
         if (offset !== swiping.swipingOffset) {
           swiping.swipingOffset = offset
           // TODO: Swipe
-          // swipePreview.innerHTML = scheduleapp.generateHtmlForOffset(
-          //   scheduleapp.offset + offset
-          // )
+          setPreview(scheduleapp.getRenderedScheduleForDay(scheduleapp.offset + offset))
           swipePreview.style.transform =
             offset === -1 ? 'translate(-100%)' : 'translate(100%)'
         }
@@ -1961,7 +1959,7 @@ export function initSchedule (manualAltSchedulesProm) {
   }
   const options = loadJsonStorage(
     '[gunn-web-app] scheduleapp.options',
-    [],
+    [VERSION],
     Array.isArray
   )
   // Using !<= in case options[0] isn't a number
@@ -1981,7 +1979,11 @@ export function initSchedule (manualAltSchedulesProm) {
     }
   }
 
-  // This is here because it has a dependency on `daynames` (which is localized)
+  // Alternate schedules are retrieved inside `initSchedule` because it is
+  // called once alternate schedules are fetched for a new user
+  alternates = loadJsonStorage(ALT_KEY, {})
+  selfDays = alternates.self || []
+  // `ugwaifyAlternates` has a dependency on `daynames` (which is localized)
   for (const dayString in alternates) {
     if (!dayString.includes('-')) continue
     ugwaifyAlternates(alternates, dayString, alternates[dayString])

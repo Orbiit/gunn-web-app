@@ -17,6 +17,22 @@ const onBlur = new Promise(resolve => {
   window.addEventListener('blur', resolve, { once: true })
 })
 
+export const customElems = {
+  customElems: {
+    'ext-link': ({ options: { ripple: rippleEffect } }) => {
+      const link = document.createElement('a')
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
+      if (rippleEffect) ripple(link)
+      return link
+    },
+    'ripple-btn': () => {
+      const button = document.createElement('button')
+      ripple(button)
+      return button
+    }
+  }
+}
 const applyEndTime = createL10nApplier(localize('end-time', 'times'), {
   T: 'strong'
 })
@@ -692,22 +708,7 @@ export function scheduleApp (options = {}) {
     ]
   }
   if (!options.offset) options.offset = 0
-  const setState = createReactive(container, {
-    customElems: {
-      'ext-link': ({ options: { ripple: rippleEffect } }) => {
-        const link = document.createElement('a')
-        link.target = '_blank'
-        link.rel = 'noopener noreferrer'
-        if (rippleEffect) ripple(link)
-        return link
-      },
-      'ripple-btn': () => {
-        const button = document.createElement('button')
-        ripple(button)
-        return button
-      }
-    }
-  })
+  const setState = createReactive(container, customElems)
   /**
    * onBlur runs once when the tab loses focus. This is to prevent Google from
    * using the current time in the tab title for the site name in Google Search
