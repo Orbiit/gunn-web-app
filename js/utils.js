@@ -204,3 +204,12 @@ export function getAudioContext () {
   }
   return audioCtx
 }
+
+export function generateID () {
+  return (
+    currentTime().toString(36) +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  )
+}

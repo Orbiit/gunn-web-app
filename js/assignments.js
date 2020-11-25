@@ -6,6 +6,7 @@ import { ripple } from './material.js'
 import {
   cookie,
   currentTime,
+  generateID,
   loadJsonStorage,
   loadJsonWithDefault,
   logError,
@@ -118,15 +119,6 @@ const IMPORTANCE_ALGORITHMIC_WEIGHT = 1
 
 const assignmentsById = {}
 let currentId = 0
-
-function generateID () {
-  return (
-    currentTime().toString(36) +
-    Math.random()
-      .toString(36)
-      .slice(2)
-  )
-}
 
 class Assignment {
   constructor (props = {}, id = generateID()) {
@@ -347,7 +339,7 @@ class AssyncManager {
 
   fetch () {
     this.setStatus('loading', 'load')
-    return fetch(`https://www.jsonstore.io/${this.hash}`)
+    return fetch(`https://sheep.thingkingland.app/assync/${this.hash}/`)
       .then(r => {
         this.setStatus('loaded', 'load')
         return r.json()
@@ -363,7 +355,7 @@ class AssyncManager {
   save (mode, asgn) {
     this.setStatus('loading', 'sav')
     return fetch(
-      `https://www.jsonstore.io/${this.hash}/${asgn.assyncID || asgn}`,
+      `https://sheep.thingkingland.app/assync/${this.hash}/${asgn.assyncID || asgn}/`,
       {
         headers: {
           'Content-type': 'application/json'
@@ -387,13 +379,14 @@ class AssyncManager {
   }
 
   static newHash () {
-    let hash = ''
-    while (hash.length < 64) {
-      hash += Math.floor(Math.random() * 0x100000000)
+    // Tends to be 23-24 chars long
+    const hash = (
+      currentTime().toString(16) +
+      Math.random()
         .toString(16)
-        .padStart(8, '0')
-    }
-    return hash
+        .slice(2)
+    )
+    return hash.slice(0, 64) // Max 64 chars (server-side restriction)
   }
 }
 

@@ -120,7 +120,7 @@ export default {
       'Other versions: {gunn-schedule|Gunn Schedule} (no alternate schedules) · {ugwita|Ugwita} (ugly) · {ugwa2|Ugwa 2} (not done) · {ugwisha|Ugwisha}.',
     periods: 'Periods',
     'periods-desc': 'Click on the coloured box to change period colour.',
-    'prev-chats': 'Previous chats',
+    'prev-chats': 'Chat history',
     reload: 'Restart UGWA',
     'report-bugs':
       'You can {gh|make a new issue on GitHub} or email {email|seanthesheep22+gwa@outlook.com} to make a feature request or bug report.',
@@ -200,8 +200,7 @@ export default {
     'asgn-edit-label': 'Edit assignment',
     'assync-loaded': 'Assignments loaded.',
     'assync-loading': 'Loading assignments...',
-    'assync-loading-problem':
-      'Assync is no more. All saved assignments have been lost. Please turn off Assync in Options.',
+    'assync-loading-problem': 'There was a problem loading the assignments.',
     'assync-saved': 'Changes saved.',
     'assync-saving': 'Saving changes...',
     'assync-saving-problem': 'There was a problem saving the changes.',
