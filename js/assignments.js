@@ -355,7 +355,8 @@ class AssyncManager {
   save (mode, asgn) {
     this.setStatus('loading', 'sav')
     return fetch(
-      `https://sheep.thingkingland.app/assync/${this.hash}/${asgn.assyncID || asgn}/`,
+      `https://sheep.thingkingland.app/assync/${this.hash}/${asgn.assyncID ||
+        asgn}/`,
       {
         headers: {
           'Content-type': 'application/json'
@@ -380,12 +381,11 @@ class AssyncManager {
 
   static newHash () {
     // Tends to be 23-24 chars long
-    const hash = (
+    const hash =
       currentTime().toString(16) +
       Math.random()
         .toString(16)
         .slice(2)
-    )
     return hash.slice(0, 64) // Max 64 chars (server-side restriction)
   }
 }

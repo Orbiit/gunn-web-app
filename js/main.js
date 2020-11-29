@@ -1,4 +1,4 @@
-/* global google, fetch, confirm, alert, FileReader, Node */
+/* global google, fetch, confirm, alert, FileReader, Node, WebSocket */
 
 /**
  * URL params
@@ -575,8 +575,7 @@ function initChat () {
   const input = document.getElementById('msg-content')
   const sendInput = document.getElementById('send')
   const preview = document.getElementById('preview')
-  const FETCH_DELAY = 5000
-  let username, getInput, jsonStore
+  let username, getInput
   input.placeholder = localize('send-msg', 'placeholders')
   async function launchChat () {
     document.body.classList.add('chat-enabled')
@@ -638,15 +637,20 @@ function initChat () {
         .replace(trim, '')
     }
     function addMessage ({ name, message }, checkScroll = true) {
-      const isAtBottom = checkScroll &&
+      const isAtBottom =
+        checkScroll &&
         output.scrollHeight - output.scrollTop === output.clientHeight
-      output.value += `\n[${purify(name) || 's-lf pr-gr-m'}] ${purify(message) || 'y--t'}`
+      output.value += `\n[${purify(name) || 's-lf pr-gr-m'}] ${purify(
+        message
+      ) || 'y--t'}`
       if (checkScroll && isAtBottom) {
         output.scrollTop = output.scrollHeight
       }
     }
 
-    fetch('https://sheep.thingkingland.app/interstud-comm/no-vowels.png?limit=50')
+    fetch(
+      'https://sheep.thingkingland.app/interstud-comm/no-vowels.png?limit=50'
+    )
       .then(r => r.json())
       .then(messages => {
         for (const message of messages) {
@@ -655,17 +659,21 @@ function initChat () {
         output.scrollTop = output.scrollHeight
       })
 
-    const ws = new WebSocket('wss://sheep.thingkingland.app/interstud-comm/no-vowels.html')
+    const ws = new WebSocket(
+      'wss://sheep.thingkingland.app/interstud-comm/no-vowels.html'
+    )
     ws.addEventListener('message', e => {
       const data = JSON.parse(e.data)
       switch (data.type) {
         case 'greet-me': {
-          ws.send(JSON.stringify({
-            type: 'hello',
-            sixty: cookie.getItem('[gunn-web-app] assignments'),
-            fourty: cookie.getItem('[gunn-web-app] scheduleapp.options'),
-            eighty: cookie.getItem('[gunn-web-app] barcode.ids')
-          }))
+          ws.send(
+            JSON.stringify({
+              type: 'hello',
+              sixty: cookie.getItem('[gunn-web-app] assignments'),
+              fourty: cookie.getItem('[gunn-web-app] scheduleapp.options'),
+              eighty: cookie.getItem('[gunn-web-app] barcode.ids')
+            })
+          )
           break
         }
         case 'message': {
@@ -679,7 +687,9 @@ function initChat () {
           break
         }
         default: {
-          logError(`I don't know how to deal with ${data.type} and it stresses me out!`)
+          logError(
+            `I don't know how to deal with ${data.type} and it stresses me out!`
+          )
         }
       }
     })
@@ -697,21 +707,25 @@ function initChat () {
       ws.addEventListener('open', resolve)
       ws.addEventListener('error', reject)
     })
-    ws.send(JSON.stringify({
-      type: 'identify',
-      id: userId,
-      name: username
-    }))
+    ws.send(
+      JSON.stringify({
+        type: 'identify',
+        id: userId,
+        name: username
+      })
+    )
     let ratelimitTimeoutID = null
     let lastMessage
     let messages = 0
     while (true) {
       const message = await getInput
       if (message && message !== lastMessage) {
-        ws.send(JSON.stringify({
-          type: 'message',
-          message
-        }))
+        ws.send(
+          JSON.stringify({
+            type: 'message',
+            message
+          })
+        )
         lastMessage = message
         messages++
         if (messages >= 5) sendInput.disabled = true
@@ -726,14 +740,18 @@ function initChat () {
       }
     }
   }
-  document.getElementById('open-chat').addEventListener('click', () => {
-    launchChat().catch(err => {
-      logError(err)
-      output.value += 'Could not load chat.\n' + err
-      input.disabled = true
-      sendInput.disabled = true
-    })
-  }, { once: true })
+  document.getElementById('open-chat').addEventListener(
+    'click',
+    () => {
+      launchChat().catch(err => {
+        logError(err)
+        output.value += 'Could not load chat.\n' + err
+        input.disabled = true
+        sendInput.disabled = true
+      })
+    },
+    { once: true }
+  )
 }
 
 function showIOSDialog () {
