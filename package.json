@@ -11,6 +11,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "@pixi/jsdoc-template": "^2.6.0",
     "clean-css": "^4.1.11",
     "html-minifier": "^3.5.16",
     "jsdoc": "~3.6.6",
