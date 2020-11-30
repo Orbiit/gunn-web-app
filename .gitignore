@@ -6,3 +6,6 @@ json/clubs-links*.json
 
 # Imgur API client ID and secret, used by js/get-clubs-gdrive-thumbnails.js
 imgur-api.json
+
+# Generated JSDoc output (ignoring for now)
+docs
