@@ -12,6 +12,18 @@
  * @param {all-langs} l10n.js - show all test and WIP languages
  */
 
+/**
+ * The built in HTMLElement object.
+ * @external HTMLElement
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement}
+ */
+
+/**
+ * The built in HTMLElement object.
+ * @external HTMLDivElement
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLDivElement}
+ */
+
 // ?for=appdesign so that Ugwita cache doesn't conflict
 import { toAlternateSchedules } from './altScheduleGenerator.js?for=appdesign'
 import { setDaysMonths } from './app.js'

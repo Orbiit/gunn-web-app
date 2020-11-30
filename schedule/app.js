@@ -125,7 +125,7 @@ function getDateId (d = now()) {
 /**
  * Dummy `<div>` element for converting colours to RGB. (Setting a CSS style to
  * a colour with JS normalizes it to RGB.)
- * @type {HTMLDivElement}
+ * @type {external:HTMLDivElement}
  */
 const colourtoy = document.createElement('div')
 
@@ -169,8 +169,8 @@ export function getFontColour (colour) {
  * Parameters for the schedule app. This is how {@link module:js/schedule}
  * communicates values to the schedule app, like "imports" from the module.
  * @typedef {Object} ScheduleAppOptions
- * @property {HTMLElement} [element] A wrapper element to render the schedule
- * in. If not given, UGWA will create a new `<div>` element.
+ * @property {external:HTMLElement} [element] A wrapper element to render the
+ * schedule in. If not given, UGWA will create a new `<div>` element.
  * @property {module:js/schedule.PeriodStyles} [periods={}] The user's custom
  * properties for each period.
  * @property {Array<module:js/schedule.NormalSchedule>} [normal=[]] An array of

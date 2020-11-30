@@ -190,6 +190,13 @@ function savePeriodStyles () {
   }
   cookie.setItem('[gunn-web-app] scheduleapp.options', JSON.stringify(options))
 }
+
+/**
+ * The hex colours (with the # omitted) of the main {@link
+ * https://material.io/design/color/the-color-system.html#tools-for-picking-colors
+ * 2014 Material Design colour palette} for the colour picker's palette.
+ * @type {Array<string>}
+ */
 const materialcolours = [
   'f44336',
   'E91E63',
@@ -211,12 +218,34 @@ const materialcolours = [
   '9E9E9E',
   '607D8B'
 ]
+
+/**
+ * Creates a "customiser"—a set of elements allowing the user to customise
+ * properties of a period in UGWA.
+ * @param {external:HTMLElement} parent The wrapper to which the customiser will
+ * be added.
+ * @param {string} name The display name for the period; it shows as the label
+ * of the period name input.
+ * @param {module:js/schedule~PeriodId} id The ID of the period that this
+ * customiser customises
+ * @return {external:HTMLDivElement} A wrapper `<div>` element containing all
+ * the period customising components, like the colour picker and link and name
+ * inputs.
+ */
 function addCustomiser (parent, name, id) {
   const { label: val = '', colour = THEME_COLOUR, link = '' } = periodstyles[id]
   let isImage = colour[0] !== '#'
-  let init = true
+
   const div = document.createElement('div')
   div.classList.add('customiser-wrapper')
+
+  /**
+   * Keeps track of whether this is the first time the colour picker fires its
+   * onChange callback (since it calls it once when initializing).
+   * @type {boolean}
+   */
+  let init = true
+
   const pickertrigger = document.createElement('button')
   const picker = new ColourPicker(e => {
     if (isImage) return
