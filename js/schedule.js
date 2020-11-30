@@ -1,3 +1,42 @@
+/**
+ * This is kind of the big junction for the Schedule tab in UGWA. It connects
+ * the schedule app to the rest of the app and deals with some features
+ * surrounding it, like rendering the week preview and events. Anything that
+ * needs to deal with the schedule is here.
+ *
+ * This module also deals with "format options," originally for things like the
+ * time format, but now it's used for any toggle options that need to be saved
+ * in UGWA. This explains why there are some unrelated features here, like the
+ * Support section in the Utilities tab.
+ *
+ * ---
+ *
+ * This file is so large that it needs a...
+ *
+ * ### Table of Contents
+ * - Cache of period image backgrounds
+ * - Period customisation of names and colours
+ * - Other customisation options (called "format options")
+ * - Support (in the Utilities tab)
+ * - Assignments
+ * - Period reminders (notifications, virtual bell, and automatic link opening)
+ * - Normal and alternate schedules, and updating them from the events
+ * - Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
+ * - Week preview
+ * - Schedule app and date picker
+ * - H period editor
+ * - initSchedule, called when `localize` is ready
+ *
+ * Why is this file so long anyways? If you make your way to the "Other
+ * customisation" section, you can see that there's a lot of features not
+ * relevant to the schedule listed. Since these so-called "format options" were
+ * made to be too easily extensible, a lot of unrelated features now use it to
+ * store almost all options, like the radios and switches you see the Options
+ * tab.
+ *
+ * @module js/schedule
+ */
+
 /* global fetch, caches, alert, Notification */
 
 import {
@@ -38,33 +77,22 @@ import {
   toEach
 } from './utils.js'
 
-/*
-  This file is so large that it needs a...
-
-  Table of Contents
-  - Cache of period image backgrounds
-  - Period customisation of names and colours
-  - Other customisation options (called "format options")
-  - Support (in the Utilities tab)
-  - Assignments
-  - Period reminders (notifications, virtual bell, and automatic link opening)
-  - Normal and alternate schedules, and updating them from the events
-  - Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
-  - Week preview
-  - Schedule app and date picker
-  - H period editor
-  - initSchedule, called when `localize` is ready
-
-  Why is this file so long anyways? If you make your way to the "Other
-  customisation" section, you can see that there's a lot of features not
-  relevant to the schedule listed. Since these so-called "format options" were
-  made to be too easily extensible, a lot of unrelated features now use it to
-  store almost all options, like the radios and switches you see the Options
-  tab.
-*/
-
+/// ===========================================================================
 /// Cache of period image backgrounds
+/// ===========================================================================
+
+/**
+ * The cache name for period background images.
+ * @type {string}
+ */
 const IMAGE_CACHE = 'ugwa-img-cache-YEET'
+
+/**
+ * Adds a background image URL to the cache so that it is loaded offline.
+ * @param {string} url URL of the period background image
+ * @param {string} pd The period ID
+ * @async
+ */
 export function cacheBackground (url, pd) {
   return Promise.all([
     caches.open(IMAGE_CACHE),
@@ -72,14 +100,34 @@ export function cacheBackground (url, pd) {
   ]).then(([cache, res]) => cache.put(`./.period-images/${pd}`, res))
 }
 
+/// ===========================================================================
 /// Period customisation of names and colours
+/// ===========================================================================
+
 /**
- * Period customisation save format version
+ * Period customisation save format version. This is a precautionary number in
+ * case it needs to be upgraded in the future, but in practice the version
+ * number is currently ignored.
+ *
  * WARNING: if you change this it'll change everyone's saves; it's best to add a
- * way to convert the saves properly
+ * way to convert the saves properly.
+ *
+ * @type {number}
  */
 const VERSION = 5
-/** Ordering of period letters in period customisation data */
+
+/**
+ * A period ID.
+ *
+ * For historical reasons, UGWA uses pre-2020 period names (ie letters).
+ *
+ * @typedef {string} PeriodId
+ */
+
+/**
+ * Ordering of period IDs in period customisation data saved in localStorage.
+ * @type {Array<?module:js/schedule~PeriodId>}
+ */
 export const letras = [
   null, // Placeholder because the version number is at index 0
   'A',
@@ -96,8 +144,43 @@ export const letras = [
   'H',
   '0'
 ]
-/** Period customisation values (names, colours, etc.) */
-let periodstyles
+
+/**
+ * The background style of a period. If it starts with a #, it represents a hex
+ * colour. Otherwise, it's assumed to be an image URL.
+ * @typedef {string} PeriodColour
+ */
+
+/**
+ * User's customised properties for a period.
+ * @typedef {Object} PeriodStyle
+ * @property {string} label The name of the period.
+ * @property {module:js/schedule~PeriodColour} colour The background style of
+ * the period.
+ * @property {string} [link] The associated class link for the period.
+ * @property {function()} [update] You won't believe what this is for. Nope! It's
+ * actually a callback function for the *assignment editor's period dropdown*.
+ * Whenever the period style is updated by the user, the callback is called to
+ * update the period span in the dropdown.
+ */
+
+/**
+ * A mapping of period IDs to the user's customised properties for each period.
+ * @typedef {Object<module:js/schedule~PeriodId, module:js/schedule~PeriodStyle>} PeriodStyles
+ * @static
+ */
+
+/**
+ * Period customisation values "period styles" (names, colours, etc.). This
+ * isn't initialized immediately because default period names are localized.
+ * @type {?module:js/schedule.PeriodStyles}
+ */
+let periodstyles = null
+
+/**
+ * Saves all the period styles to localStorage.
+ * @see {@link module:js/schedule.PeriodStyles}
+ */
 function savePeriodStyles () {
   const options = new Array(letras.length)
   options[0] = VERSION

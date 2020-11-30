@@ -1,3 +1,15 @@
+/**
+ * Schedule rendering and time calculations are performed here. Specifically,
+ * this module exports {@link scheduleApp}, which is where all the fun stuff
+ * happens.
+ *
+ * Historical context: scheduleApp was originally supposed to be a reusable
+ * component. However, since then, it has become more interconnected with the
+ * rest of UGWA, resulting in this mess.
+ *
+ * @module schedule/app
+ */
+
 import { createL10nApplier, createReactive } from '../js/dumb-reactive.js'
 import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
@@ -5,14 +17,45 @@ import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
 import { currentTime, identity, now, THEME_COLOUR } from '../js/utils.js'
 
+/**
+ * The width and the height of the favicon canvas; effectively the resolution of
+ * the "time left" favicon. This can be as large as I want, but 32 is
+ * reasonable.
+ * @type {number}
+ */
 const FAVICON_SIZE = 32
 
-export let days, months
+/**
+ * Array of the names of the days of the week. Not initialized until
+ * localization loads.
+ * @type {?Array<string>}
+ */
+export let days = null
+
+/**
+ * Array of 0-indexed month names. Not initialized until localization loads.
+ * @type {?Array<string>}
+ */
+export let months = null
+
+/**
+ * A callback function for the entire module as a hacky solution for when
+ * localization loads.
+ * @param {Array<string>} newDays An array of names of the days of the week
+ * @param {Array<string>} newMonths An array of month names
+ */
 export function setDaysMonths (newDays, newMonths) {
   days = newDays
   months = newMonths
 }
 
+/**
+ * A promise for when the user leaves the tab in the background (the page loses
+ * focus, or "blurs"). Since search engine scrapers are unlikely to do that,
+ * this promise is used to determine when to start showing the time left in the
+ * favicon/tab title to avoid it showing up in search results.
+ * @type {Promise}
+ */
 const onBlur = new Promise(resolve => {
   window.addEventListener('blur', resolve, { once: true })
 })
@@ -62,13 +105,37 @@ const applyAltSchedMsg = createL10nApplier(localize('alt-msg'), {
   D: 'strong'
 })
 
+/**
+ * Returns a unique ID per day, so this isn't intended to be seen by the user
+ * (no leading zeroes needed). However, for debugging purposes, the month is
+ * made 1-indexed.
+ *
+ * Why not use toISOString()? Its time zone is in UTC, while UGWA uses local time zone.
+ *
+ * @param {Date} [d] The Date object representing the date in local time;
+ * defaults to the current date
+ */
 function getDateId (d = now()) {
   // toISOString uses UTC D:
   // Just returns a unique ID per day, so no leading zeroes needed
   // Adding 1 to month to make it human readable, though
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
 }
+
+/**
+ * Dummy `<div>` element for converting colours to RGB. (Setting a CSS style to
+ * a colour with JS normalizes it to RGB.)
+ * @type {HTMLDivElement}
+ */
 const colourtoy = document.createElement('div')
+
+/**
+ * Determines whether a colour would be light enough to deserve dark text. The
+ * colour can be any valid CSS colour value; it is normalized using a DOM
+ * element.
+ * @param {string} colour A CSS colour value
+ * @return {boolean} Whether the colour is considered a light background
+ */
 function isLight (colour) {
   colourtoy.style.backgroundColor = colour
   colour = colourtoy.style.backgroundColor
@@ -86,9 +153,52 @@ function isLight (colour) {
     ) > 150
   )
 }
+
+/**
+ * Determines an appropriate text colour that would contrast well with the given
+ * colour. This is used to determine the text colour for period cards of a
+ * custom colour.
+ * @param {string} colour A CSS colour value
+ * @return {string} Another CSS colour value for the text colour
+ */
 export function getFontColour (colour) {
   return isLight(colour) ? 'rgba(0,0,0,0.8)' : 'white'
 }
+
+/**
+ * Parameters for the schedule app. This is how {@link module:js/schedule}
+ * communicates values to the schedule app, like "imports" from the module.
+ * @typedef {Object} ScheduleAppOptions
+ * @property {HTMLElement} [element] A wrapper element to render the schedule
+ * in. If not given, UGWA will create a new `<div>` element.
+ * @property {module:js/schedule.PeriodStyles} [periods={}] The user's custom
+ * properties for each period.
+ * @property {Array<module:js/schedule.NormalSchedule>} [normal=[]] An array of
+ * normal schedules, from Sunday to Saturday.
+ */
+
+/**
+ * An object (referred to here as `returnval` and in {@link module:js/schedule}
+ * as `scheduleapp`) containing what can be considered as "exports" from the
+ * schedule app.
+ * @typedef {Object} ScheduleApp
+ */
+
+/**
+ * Creates a schedule app component. This is called in {@link
+ * module:js/schedule}. This creates a wrapper element in which the schedule is
+ * rendered. However, the "schedule app" also resolves schedules (ie, determines
+ * whether a day has an alternate, summer, or normal schedule) and other
+ * time-dependent actions (eg notifications, etc.).
+ *
+ * For historical reasons, the app is meant to be reusable. However, in reality,
+ * it has become more interconnected with the rest of UGWA, so things would
+ * likely break if more than one instance is created.
+ *
+ * @param {ScheduleAppOptions} [options={}] "Options," though in reality most of
+ * these are required now for the schedule app to be useful.
+ * @return {ScheduleApp} The schedule app component
+ */
 export function scheduleApp (options = {}) {
   let element
   const container = document.createElement('div')
@@ -103,7 +213,7 @@ export function scheduleApp (options = {}) {
   })
   if (!options.alternates) options.alternates = {}
   if (!options.periods) options.periods = {}
-  if (!options.normal) options.normal = {}
+  if (!options.normal) options.normal = []
   function getPeriod (name) {
     return options.periods[name] || { label: name, colour: '#000' }
   }
