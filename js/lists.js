@@ -92,6 +92,7 @@ function initList (
   type,
   {
     jsonPath,
+    renderPromise = Promise.resolve(),
     insertExtra = () => {},
     sortName,
     searchableProps = [],
@@ -116,6 +117,53 @@ function initList (
   const permalink = info.querySelector('.info-permalink')
   searchMarker.parentNode.replaceChild(search.wrapper, searchMarker)
   let data
+  function renderList () {
+    const names = Object.keys(data).sort(sortName)
+    const elements = document.createDocumentFragment()
+    for (const name of names) {
+      const item = data[name]
+
+      const li = Object.assign(document.createElement('li'), {
+        tabIndex: 0
+      })
+      Object.assign(li.dataset, {
+        name,
+        // Hidden feature: to search by a specific property, you can use
+        // P_R_O_P_N_A_M_E and regex search (r/...).
+        search: [
+          'N_A_M_E ' + name,
+          ...searchableProps.map(prop =>
+            typeof prop === 'function'
+              ? prop(item)
+              : [...prop.toUpperCase()].join('_') + ' ' + (item[prop] || '')
+          )
+        ].join('\n')
+      })
+      ripple(li)
+      elements.appendChild(li)
+
+      li.appendChild(
+        Object.assign(document.createElement('span'), {
+          className: 'primary',
+          textContent: name
+        })
+      )
+
+      for (const prop of secondaryProps) {
+        li.appendChild(
+          Object.assign(document.createElement('span'), {
+            className: 'secondary',
+            textContent:
+              prop === 'email'
+                ? (item.email || '').replace('pausd.org', '')
+                : item[prop]
+          })
+        )
+      }
+    }
+    list.appendChild(elements)
+    if (search.input.value) doSearch()
+  }
   ajax(
     (window.location.protocol === 'file:'
       ? 'https://orbiit.github.io/gunn-web-app/'
@@ -123,51 +171,6 @@ function initList (
     json => {
       data = JSON.parse(json)
       insertExtra(data)
-      const names = Object.keys(data).sort(sortName)
-      const elements = document.createDocumentFragment()
-      for (const name of names) {
-        const item = data[name]
-
-        const li = Object.assign(document.createElement('li'), {
-          tabIndex: 0
-        })
-        Object.assign(li.dataset, {
-          name,
-          // Hidden feature: to search by a specific property, you can use
-          // P_R_O_P_N_A_M_E and regex search (r/...).
-          search: [
-            'N_A_M_E ' + name,
-            ...searchableProps.map(prop =>
-              typeof prop === 'function'
-                ? prop(item)
-                : [...prop.toUpperCase()].join('_') + ' ' + (item[prop] || '')
-            )
-          ].join('\n')
-        })
-        ripple(li)
-        elements.appendChild(li)
-
-        li.appendChild(
-          Object.assign(document.createElement('span'), {
-            className: 'primary',
-            textContent: name
-          })
-        )
-
-        for (const prop of secondaryProps) {
-          li.appendChild(
-            Object.assign(document.createElement('span'), {
-              className: 'secondary',
-              textContent:
-                prop === 'email'
-                  ? (item.email || '').replace('pausd.org', '')
-                  : item[prop]
-            })
-          )
-        }
-      }
-      list.appendChild(elements)
-      if (search.input.value) doSearch()
 
       const showItemOnLoad = new RegExp(`(?:\\?|&)show-${type}=([^&]+)`).exec(
         window.location.search
@@ -182,6 +185,8 @@ function initList (
         }
         window.history.replaceState({}, '', window.location.pathname)
       }
+
+      renderPromise.then(renderList)
     },
     err => {
       list.innerHTML = `<li class="error">${err}${errMsg}</li>`
@@ -655,13 +660,14 @@ export function initLists () {
     toEach('.lists-enabled', t => t.classList.remove('lists-enabled'))
     return
   }
-  onSection.staff.then(initStaff)
-  onSection.clubs.then(initClubs)
+  initClubs()
+  initStaff()
 }
 function initStaff () {
   const eggWrapper = egg()
   initList('staff', {
     jsonPath: 'json/staff.json' + isAppDesign,
+    renderPromise: onSection.staff,
     insertExtra: staff => {
       staff['Aaryan Agrawal Person'] = {
         game: true,
@@ -738,6 +744,7 @@ function initClubs () {
     getByName
   } = initList('club', {
     jsonPath: 'json/clubs.json' + isAppDesign,
+    renderPromise: onSection.clubs,
     insertExtra: clubs => {
       clubs[localize('club/self/club')] = {
         desc: localize('club/self/desc'),
