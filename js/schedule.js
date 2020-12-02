@@ -448,7 +448,30 @@ const formatOptionInfo = {
   // 15
   bellVolume: { default: '' },
   // 16: TEMP
-  tempCheckState: { default: '0' }
+  tempCheckState: { default: '0' },
+  // 17:
+  updateTitle: {
+    // Disable by default on phones, where the tab title doesn't show in the
+    // browser anyways (533 might be the wrong boundary for the blurry edge
+    // between phones and tablets--kindles are 533 while some obscure phones are
+    // 540--but whatever)
+    default: Math.min(window.screen.width, window.screen.height) < 533
+      ? 'no'
+      : 'yes',
+    toggle: {
+      id: 'update-title',
+      on: 'yes',
+      off: 'no',
+      onChange: checked => {
+        scheduleapp.options.updateTitle = checked
+        if (checked) {
+          scheduleapp.displayCurrentStatus()
+        } else {
+          scheduleapp.resetCurrentStatus()
+        }
+      }
+    }
+  }
 }
 // Load format options from localStorage
 const formatOptionsCookie = cookie.getItem(
@@ -1501,6 +1524,7 @@ function initScheduleApp () {
     isSummer: (y, m, d) => !datepicker.inrange({ y: y, m: m, d: d }),
     favicon: document.getElementById('favicon'),
     defaultFavicon: 'favicon/favicon.ico',
+    updateTitle: formatOptions.updateTitle !== 'no',
     autorender: false
   })
 }

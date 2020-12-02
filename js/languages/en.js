@@ -170,6 +170,7 @@ export default {
     'trick-cache': 'trick the cache',
     'turn-back-on': 'Turn back on',
     units: 'Units included',
+    'update-title': 'Show the time left in the tab title and favicon?',
     'use-iframe':
       "Open link in an embed as opposed to in a new tab? (Many sites don't allow themselves to be embedded, but Zoom works.)",
     'use-safari':
@@ -364,6 +365,7 @@ export default {
     staff: 'Search staff'
   },
   times: {
+    branded: '{T} · UGWA',
     date: '{M} {D}',
     'due-date' ({ P: periodSpan, D: dateStr }) {
       return 'due by ' + (periodSpan ? periodSpan + ' on ' : '') + dateStr

@@ -343,6 +343,11 @@ export function scheduleApp (options = {}) {
   const sRadius = FAVICON_SIZE * 0.45 // radius for last seconds
   let lastMinuteData = null
   function displayLastSeconds () {
+    if (!options.updateTitle) {
+      lastMinuteData = null
+      return
+    }
+
     const now = currentTime()
     const seconds = (lastMinuteData.end - now) / 1000
     if (seconds < 0) {
@@ -354,15 +359,17 @@ export function scheduleApp (options = {}) {
     if (lastMinuteData.titleInfo) {
       const { type, label } = lastMinuteData.titleInfo
       const secs = localizeWith('seconds', 'times', { T: seconds.toFixed(3) })
+      let title
       if (type === 'ending') {
-        document.title = options.compact
+        title = options.compact
           ? localizeWith('ending-short', 'times', { T: secs })
           : localizeWith('ending', 'times', { P: label, T: secs })
       } else if (type === 'starting') {
-        document.title = options.compact
+        title = options.compact
           ? localizeWith('starting-short', 'times', { P: label, T: secs })
           : localizeWith('starting', 'times', { P: label, T: secs })
       }
+      document.title = localizeWith('branded', 'times', { T: title })
     }
 
     const primaryColour = lastMinuteData.colour
@@ -413,7 +420,7 @@ export function scheduleApp (options = {}) {
     }
   }
   function displayCurrentStatus () {
-    if (lastMinuteData) return
+    if (lastMinuteData || !options.updateTitle) return
     const { title, favicon, end, titleInfo } = getCurrentStatus()
     if (end !== null) {
       const d = now()
@@ -429,7 +436,7 @@ export function scheduleApp (options = {}) {
         return
       }
     }
-    document.title = title
+    document.title = localizeWith('branded', 'times', { T: title })
     if (favicon === null) {
       options.favicon.href = options.defaultFavicon
     } else {
@@ -480,6 +487,10 @@ export function scheduleApp (options = {}) {
 
       options.favicon.href = faviconCanvas.toDataURL()
     }
+  }
+  function resetCurrentStatus () {
+    document.title = localize('appname')
+    options.favicon.href = options.defaultFavicon
   }
   function getRenderedScheduleForDay (offset = 0) {
     let d = now()
@@ -933,7 +944,9 @@ export function scheduleApp (options = {}) {
         totalminute - periods[periods.length - 1].end.totalminutes >= 60
       )
     },
-    getRenderedScheduleForDay
+    getRenderedScheduleForDay,
+    displayCurrentStatus,
+    resetCurrentStatus
   }
   element.appendChild(container)
   return returnval
