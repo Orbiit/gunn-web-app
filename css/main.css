@@ -618,6 +618,11 @@ body.light .percent-wrapper {
   pointer-events: none;
 }
 
+.glitch,
+.glitch * {
+  text-shadow: -1px 0 cyan, 1px 0 magenta !important;
+}
+
 .ios-cover,
 .ios-not-safari,
 .ios-ok,

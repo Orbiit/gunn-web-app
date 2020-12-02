@@ -128,6 +128,22 @@ const materialcolours = [
   '9E9E9E',
   '607D8B'
 ]
+function allLetters () {
+  for (const letter of 'ABCDEFGH') {
+    const { label } = periodstyles[letter]
+    if (label !== localizeWith('periodx', 'other', { X: letter })) {
+      return false
+    }
+  }
+  return true
+}
+function checkGlitch () {
+  if (allLetters()) {
+    document.body.classList.add('glitch')
+  } else {
+    document.body.classList.remove('glitch')
+  }
+}
 function addCustomiser (parent, name, id) {
   const { label: val = '', colour = THEME_COLOUR, link = '' } = periodstyles[id]
   let isImage = colour[0] !== '#'
@@ -192,6 +208,7 @@ function addCustomiser (parent, name, id) {
       }
       makeWeekHappen()
       if (periodstyles[id].update) periodstyles[id].update()
+      checkGlitch()
       savePeriodStyles()
     },
     false
@@ -1951,6 +1968,7 @@ export function initSchedule () {
       Object.assign(periodstyles[letras[i]], { label, colour, link })
     }
   }
+  checkGlitch()
 
   // Alternate schedules are retrieved inside `initSchedule` because it is
   // called once alternate schedules are fetched for a new user
