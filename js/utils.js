@@ -213,3 +213,7 @@ export function generateID () {
       .slice(2)
   )
 }
+
+export const onBlur = new Promise(resolve => {
+  window.addEventListener('blur', resolve, { once: true })
+})

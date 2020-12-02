@@ -13,10 +13,6 @@ export function setDaysMonths (newDays, newMonths) {
   months = newMonths
 }
 
-const onBlur = new Promise(resolve => {
-  window.addEventListener('blur', resolve, { once: true })
-})
-
 export const customElems = {
   customElems: {
     'ext-link': ({ options: { ripple: rippleEffect } }) => {
@@ -153,7 +149,6 @@ export function scheduleApp (options = {}) {
     ]
   }
   getFontColour('rgba(0,0,0,0.2)')
-  let setTitle = false
   const dayToPrime = { 1: 2, 2: 3, 3: 5, 4: 7, 5: 11 }
   function getSchedule (d, includeZero = options.show0) {
     const ano = d.getFullYear()
@@ -722,16 +717,6 @@ export function scheduleApp (options = {}) {
   }
   if (!options.offset) options.offset = 0
   const setState = createReactive(container, customElems)
-  /**
-   * onBlur runs once when the tab loses focus. This is to prevent Google from
-   * using the current time in the tab title for the site name in Google Search
-   * (see #82). I think this is fine because mobile devices won't need the tab
-   * title, and those who do need the tab title probably fire blur reliably.
-   */
-  onBlur.then(() => {
-    setTitle = true
-    displayCurrentStatus()
-  })
   function getDate (date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
   }
@@ -805,7 +790,7 @@ export function scheduleApp (options = {}) {
     container,
     render () {
       setState(getRenderedScheduleForDay(options.offset))
-      if (setTitle) displayCurrentStatus()
+      displayCurrentStatus()
     },
     update () {
       options.update = true

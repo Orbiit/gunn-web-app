@@ -32,6 +32,7 @@ import {
   loadJsonStorage,
   logError,
   now,
+  onBlur,
   schoolTimeZone,
   showDialog,
   THEME_COLOUR,
@@ -472,9 +473,8 @@ const formatOptionInfo = {
     // browser anyways (533 might be the wrong boundary for the blurry edge
     // between phones and tablets--kindles are 533 while some obscure phones are
     // 540--but whatever)
-    default: Math.min(window.screen.width, window.screen.height) < 533
-      ? 'no'
-      : 'yes',
+    default:
+      Math.min(window.screen.width, window.screen.height) < 533 ? 'no' : 'yes',
     toggle: {
       id: 'update-title',
       on: 'yes',
@@ -500,11 +500,18 @@ if (formatOptionsCookie) {
   values[0] = FORMATTING_VERSION
   const keys = Object.keys(formatOptionInfo)
   for (let i = 0; i < keys.length; i++) {
-    formatOptions[keys[i]] = values[i] || formatOptionInfo[keys[i]].default
+    if (typeof values[i] === 'string') {
+      formatOptions[keys[i]] = values[i]
+    } else {
+      formatOptions[keys[i]] = formatOptionInfo[keys[i]].default
+      // Omg modifying formatOptionInfo?? :O :O
+      formatOptionInfo[keys[i]].justSetFromDefault = true
+    }
   }
 } else {
   for (const key of Object.keys(formatOptionInfo)) {
     formatOptions[key] = formatOptionInfo[key].default
+    formatOptionInfo[key].justSetFromDefault = true
   }
 }
 function saveFormatOptions () {
@@ -1541,9 +1548,25 @@ function initScheduleApp () {
     isSummer: (y, m, d) => !datepicker.inrange({ y: y, m: m, d: d }),
     favicon: document.getElementById('favicon'),
     defaultFavicon: 'favicon/favicon.ico',
-    updateTitle: formatOptions.updateTitle !== 'no',
+    updateTitle: formatOptionInfo.updateTitle.justSetFromDefault
+      ? false
+      : formatOptions.updateTitle !== 'no',
     autorender: false
   })
+  // onBlur resolves once when the tab loses focus. This is to prevent Google
+  // from using the current time in the tab title for the site name in Google
+  // Search (see #82). I think this is fine because mobile devices won't need
+  // the tab title, and those who do need the tab title probably fire blur
+  // reliably, and Google (hopefully?) doesn't save localStorage.
+  if (
+    formatOptionInfo.updateTitle.justSetFromDefault &&
+    formatOptions.updateTitle !== 'no'
+  ) {
+    onBlur.then(() => {
+      scheduleapp.options.updateTitle = true
+      scheduleapp.displayCurrentStatus()
+    })
+  }
 }
 function isSchoolDay (d) {
   return scheduleapp.getSchedule(d).periods.length
