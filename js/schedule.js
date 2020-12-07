@@ -1301,7 +1301,9 @@ function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
         periods.push({
           name: pd,
           start: p.start,
-          end: p.end
+          end: p.end,
+          async: p.name.toLowerCase().includes('asynchronous'),
+          final: p.name.toLowerCase().includes('final')
         })
       }
     })

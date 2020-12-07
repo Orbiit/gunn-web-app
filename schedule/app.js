@@ -664,8 +664,16 @@ export function scheduleApp (options = {}) {
               ]
             ]
           ],
+          period.async && [
+            'div.period-badge',
+            localize('async')
+          ],
+          period.final && [
+            'div.period-badge.finals-badge',
+            localize('finals')
+          ],
           (period.gunnTogether || period.name === 'GT') && [
-            'div.gunn-together-badge',
+            'div.period-badge.gunn-together-badge',
             localize('gunn-together/name')
           ],
           period.name === 'GT' && ['span', localize('gunn-together/subtitle')],

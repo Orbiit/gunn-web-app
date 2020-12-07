@@ -130,7 +130,7 @@ body.dark .schedule-container .schedule-periodprogress > div {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   color: white;
 }
-.gunn-together-badge {
+.period-badge {
   display: inline-flex;
   align-items: center;
   height: 32px;
@@ -141,7 +141,7 @@ body.dark .schedule-container .schedule-periodprogress > div {
   position: relative;
   z-index: 0;
 }
-.gunn-together-badge::before {
+.period-badge::before {
   content: '';
   position: absolute;
   top: 0;
@@ -152,4 +152,12 @@ body.dark .schedule-container .schedule-periodprogress > div {
   background-color: currentColor;
   opacity: 0.2;
   border-radius: 16px;
+}
+.finals-badge {
+  color: white;
+  text-shadow: none;
+}
+.finals-badge::before {
+  background-color: var(--theme);
+  opacity: 1;
 }

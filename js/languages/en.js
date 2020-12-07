@@ -205,6 +205,7 @@ export default {
     'assync-saved': 'Changes saved.',
     'assync-saving': 'Saving changes...',
     'assync-saving-problem': 'There was a problem saving the changes.',
+    'async': 'Asynchronous',
     'barcode-close-instructions': 'Click/tap anywhere to close.',
     'barcode-default': 'Intellectual student',
     'barcode-legacy-default': 'Student #{N}',
@@ -254,6 +255,7 @@ export default {
       "; couldn't get events; maybe you aren't connected to the internet?",
     'export-file-name':
       'the-settings-of-a-great-intellectual-gunn-student.json',
+    finals: 'Finals',
     flex: 'Tutorial',
     'gunn-together': {
       name: 'Gunn Together',
