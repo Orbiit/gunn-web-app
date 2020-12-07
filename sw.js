@@ -43,12 +43,15 @@ self.addEventListener('install', e => {
   )
 })
 self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url)
   e.respondWith(
     caches
       .match(e.request, {
-        ignoreSearch: new URL(e.request.url).pathname.startsWith(
-          '/gunn-web-app/.period-images/'
-        )
+        ignoreSearch:
+          // Allow URL parameters
+          url.pathname.endsWith('/gunn-web-app/') ||
+          // Allow adding a query to bypass cache
+          url.pathname.startsWith('/gunn-web-app/.period-images/')
       })
       .then(response => response || fetch(e.request))
   )
