@@ -94,7 +94,7 @@ function initList (
     jsonPath,
     renderPromise = Promise.resolve(),
     insertExtra = () => {},
-    sortName,
+    sort,
     searchableProps = [],
     secondaryProps = [],
     errMsg = '',
@@ -118,7 +118,9 @@ function initList (
   searchMarker.parentNode.replaceChild(search.wrapper, searchMarker)
   let data
   function renderList () {
-    const names = Object.keys(data).sort(sortName)
+    const names = Object.entries(data)
+      .sort(sort)
+      .map(pair => pair[0])
     const elements = document.createDocumentFragment()
     for (const name of names) {
       const item = data[name]
@@ -664,6 +666,19 @@ export function initLists () {
   initStaff()
 }
 function initStaff () {
+  function getLastNameFromEmail (name, email) {
+    const parts = name
+      .toLowerCase()
+      .replace(/'/g, '')
+      .match(/\w+/g)
+    let sortable = ''
+    for (const part of parts) {
+      if (email.includes(part)) {
+        sortable += part
+      }
+    }
+    return sortable
+  }
   const eggWrapper = egg()
   initList('staff', {
     jsonPath: 'json/staff.json' + isAppDesign,
@@ -673,15 +688,19 @@ function initStaff () {
         game: true,
         jobTitle: localize('supreme-leader'),
         department: localize('universe'),
+        email: 'aperson@',
         special: true
       }
       // staff['Joshua Paley'].jobTitle = localize('blamed-teacher');
       // staff['Christina Woznicki'].woznicki = true;
       // staff['Casey O\'Connell'].oc = 'https://sheeptester.github.io/hello-world/elements.html'
     },
-    sortName: (a, b) =>
-      a[a.lastIndexOf(' ') + 1].charCodeAt() -
-      b[b.lastIndexOf(' ') + 1].charCodeAt(),
+    sort: ([aName, { email: a }], [bName, { email: b }]) => {
+      const aLastName = getLastNameFromEmail(aName, a)
+      const bLastName = getLastNameFromEmail(bName, b)
+      // localeCompare returns 0 (falsy) when the strings are equal
+      return aLastName.localeCompare(bLastName) || aName.localeCompare(bName)
+    },
     searchableProps: [
       'jobTitle',
       'department',
@@ -865,7 +884,7 @@ function initClubs () {
         })
       })
     },
-    sortName: (a, b) => a.localeCompare(b),
+    sort: ([a], [b]) => a.localeCompare(b),
     searchableProps: [
       'room',
       'day',

@@ -1302,7 +1302,7 @@ function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
           name: pd,
           start: p.start,
           end: p.end,
-          async: p.name.toLowerCase().includes('asynchronous'),
+          async: p.name.toLowerCase().includes('async'),
           final: p.name.toLowerCase().includes('final')
         })
       }

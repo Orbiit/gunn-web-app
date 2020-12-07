@@ -205,7 +205,7 @@ export default {
     'assync-saved': 'Changes saved.',
     'assync-saving': 'Saving changes...',
     'assync-saving-problem': 'There was a problem saving the changes.',
-    'async': 'Asynchronous',
+    async: 'Asynchronous',
     'barcode-close-instructions': 'Click/tap anywhere to close.',
     'barcode-default': 'Intellectual student',
     'barcode-legacy-default': 'Student #{N}',

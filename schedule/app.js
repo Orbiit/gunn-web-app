@@ -664,14 +664,8 @@ export function scheduleApp (options = {}) {
               ]
             ]
           ],
-          period.async && [
-            'div.period-badge',
-            localize('async')
-          ],
-          period.final && [
-            'div.period-badge.finals-badge',
-            localize('finals')
-          ],
+          period.async && ['div.period-badge', localize('async')],
+          period.final && ['div.period-badge.finals-badge', localize('finals')],
           (period.gunnTogether || period.name === 'GT') && [
             'div.period-badge.gunn-together-badge',
             localize('gunn-together/name')
