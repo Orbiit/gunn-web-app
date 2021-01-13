@@ -228,6 +228,7 @@ export function scheduleApp (options = {}) {
         else if (gtWeek === 12 || gtWeek === 13) name = 'SELF'
         else if (gtWeek === 15) name = 'C'
         else if (gtWeek === 16) name = 'B'
+        else if (gtWeek > 20) name = 'E'
         if (name) {
           return { ...period, name, gunnTogether: true }
         }
