@@ -1,0 +1,16 @@
+.mining canvas {
+  -ms-interpolation-mode: bicubic;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+.mining textarea {
+  border: #333;
+  background: none;
+  color: #888;
+}
+.mining table button {
+  font-size: 4em;
+  padding: 0 10px;
+}

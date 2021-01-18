@@ -4,154 +4,15 @@
     <title>Game Ideas - UGWA</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="speeddodge.css">
     <style>
       body{max-width:1000px;margin:20px auto;padding:0 20px;font-family:sans-serif;}input,button,select,textarea{font:inherit;}a {text-decoration:none;}
-      canvas {
-        border: 1px solid black;
-      }
     </style>
   </head>
   <body>
-    <p>space to shoot</p>
+    <script src="speeddodge.js" charset="utf-8"></script>
     <script type="text/javascript">
-      var canvas=document.createElement("canvas"),
-      c=canvas.getContext('2d')
-      y=0,
-      currenty=0,
-      playerheight=10,
-      playerx=30,
-      enemies=[],
-      enemytick=0,
-      starttime=new Date().getTime(),
-      ammo=0,
-      shooting=false,
-      shots=[];
-      canvas.height=360;
-      canvas.width=500;
-      canvas.addEventListener("mousemove",e=>{
-        y=e.clientY-canvas.getBoundingClientRect().top-playerheight/2;
-        if (y>canvas.height-playerheight) y=canvas.height-playerheight;
-        else if (y<0) y=0;
-      },false);
-      canvas.addEventListener("touchmove",e=>{
-        y=e.touches[0].clientY-canvas.getBoundingClientRect().top-playerheight/2;
-        if (y>canvas.height-playerheight) y=canvas.height-playerheight;
-        else if (y<0) y=0;
-      },false);
-      document.addEventListener("keydown",e=>{
-        if (e.keyCode===32) {
-          if (!shooting) {
-            if (ammo>0) {
-              ammo--;
-              shots.push(y+(playerheight-4)/2);
-            }
-            shooting=true;
-          }
-          e.preventDefault();
-        }
-      },false);
-      document.addEventListener("keyup",e=>{
-        if (e.keyCode===32) {
-          shooting=false;
-          e.preventDefault();
-        }
-      },false);
-      function render() {
-        c.fillStyle='rgba(255,255,255,0.8)';
-        c.fillRect(0,0,canvas.width,canvas.height);
-        currenty+=(y-currenty)/5;
-        var lose=false;
-        if (enemytick%3===0) {
-          var type;
-          switch (Math.floor(Math.random()*7)) {
-            case 0:
-              type='fast';
-              break;
-            case 1:
-              type='sine';
-              break;
-            case 2:
-              type='fat';
-              break;
-            case 3:
-              type='ammo';
-              break;
-            default:
-              type='normal';
-          }
-          enemies.push({
-            x:500,
-            y:Math.random()*(canvas.height-playerheight),
-            type:type,
-            sinebase:Math.random()*(canvas.height-playerheight-100)+50,
-            creation:new Date().getTime()
-          });
-        }
-        enemytick++;
-        for (var i=0;i<enemies.length;i++) {
-          switch (enemies[i].type) {
-            case 'fast':
-              enemies[i].x-=9;
-              break;
-            case 'fat':
-              enemies[i].x-=1;
-              break;
-            case 'sine':
-              enemies[i].y=Math.sin((new Date().getTime()-enemies[i].creation)/50)*50+enemies[i].sinebase;
-            default:
-              enemies[i].x-=3;
-          }
-          enemies[i].x-=enemies[i].type==='fast'?12:9;
-          c.fillStyle=enemies[i].type==='fast'?'red':
-                      enemies[i].type==='sine'?'green':
-                      enemies[i].type==='fat'?'black':
-                      enemies[i].type==='ammo'?'orange':
-                      'blue';
-          if (enemies[i].x-20<0) enemies.splice(i--,1);
-          else {
-            if (enemies[i].type==='fat') c.fillRect(enemies[i].x,enemies[i].y,20,15);
-            else if (enemies[i].type==='ammo') c.fillRect(enemies[i].x,enemies[i].y,5,5);
-            else c.fillRect(enemies[i].x,enemies[i].y,20,10);
-            var shot=false;
-            if (enemies[i].type!=='fat') for (var j=0;j<shots.length;j++) {
-              if (Math.abs(enemies[i].y-shots[j])<playerheight) {
-                if (enemies[i].type==='ammo') ammo++;
-                enemies.splice(i--,1);
-                shot=true;
-                break;
-              }
-            }
-            if (!shot&&Math.abs(enemies[i].y-y)<playerheight&&Math.abs(enemies[i].x-playerx)<20) {
-              if (enemies[i].type==='ammo') {
-                ammo++;
-                enemies.splice(i--,1);
-              }
-              else lose=true;
-            }
-          }
-        }
-        for (var i=0;i<shots.length;i++) {
-          c.fillStyle='orange';
-          c.fillRect(playerx,shots[i],canvas.width,4);
-        }
-        shots=[];
-        c.fillStyle='purple';
-        c.fillRect(playerx,currenty,20,10);
-        c.fillStyle='orange';
-        for (var i=0;i<ammo;i++) c.fillRect(i*10+5,canvas.height-10,5,5);
-        if (lose) {
-          var p=document.createElement('p');
-          p.innerHTML=new Date().getTime()-starttime;
-          document.body.insertBefore(p,canvas.nextSibling);
-          enemies=[],
-          enemytick=0,
-          starttime=new Date().getTime(),
-          ammo=0;
-        }
-        window.requestAnimationFrame(render);
-      }
-      window.requestAnimationFrame(render);
-      document.body.appendChild(canvas);
+      document.body.appendChild(speeddodge());
     </script>
   </body>
 </html>

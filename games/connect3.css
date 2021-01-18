@@ -1,18 +1,4 @@
-html, body {
-  height: 100%;
-  width: 100%;
-}
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  font-size: 0;
-  background-color: #303030;
-  color: white;
-  font-family: 'Roboto', sans-serif;
-}
-.grid {
+.connect3-grid {
   background-color: #424242;
   padding: 20px;
   box-shadow: 0 6px 24px rgba(0,0,0,0.3);
@@ -21,7 +7,7 @@ body {
   height: 355px;
   position: relative;
 }
-.grid::after {
+.connect3-grid::after {
   content: attr(data-score);
   font-size: 72px;
   text-align: center;
@@ -31,7 +17,7 @@ body {
   bottom: 100%;
   left: 0;
 }
-.grid > span {
+.connect3-grid > span {
   position: absolute;
   padding: 20px;
   border-radius: 2px;
@@ -41,29 +27,29 @@ body {
   box-shadow: 0 0.5px 3px rgba(0,0,0,0.3);
   transition: left .2s, top .2s;
 }
-.grid > span.square {
+.connect3-grid > span.connect3-square {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linejoin='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M1 1H9V9H1z'/%3E%3C/svg%3E")
 }
-.grid > span.circle {
+.connect3-grid > span.connect3-circle {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Ccircle cx='5' cy='5' r='4'/%3E%3C/svg%3E")
 }
-.grid > span.triangle {
+.connect3-grid > span.connect3-triangle {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linejoin='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M5 1.5L9 8.5H1z'/%3E%3C/svg%3E")
 }
-.grid > span.plus {
+.connect3-grid > span.connect3-plus {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linecap='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M5 1V9M1 5H9'/%3E%3C/svg%3E")
 }
-.grid > span.minus {
+.connect3-grid > span.connect3-minus {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' stroke-linecap='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M2 5H8'/%3E%3C/svg%3E")
 }
-.grid > span.hexagon {
+.connect3-grid > span.connect3-hexagon {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10' stroke-linejoin='round' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='1'%3E%3Cpath d='M4 1H8L10.6 5L8 9H4L1.4 5z'/%3E%3C/svg%3E");
   background-size: 24px 20px;
 }
-.grid > span.dot {
+.connect3-grid > span.connect3-dot {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='rgba(0,0,0,0.3)'%3E%3Ccircle cx='5' cy='5' r='1'/%3E%3C/svg%3E");
 }
-.grid > span::after {
+.connect3-grid > span::after {
   content: '';
   pointer-events: none;
   width: 100%;
@@ -79,23 +65,23 @@ body {
   opacity: 0;
   transition: all .2s;
 }
-.grid > span.active::after {
+.connect3-grid > span.connect3-active::after {
   transform: scale(1);
   opacity: 1;
 }
-.grid > span.entering {
+.connect3-grid > span.connect3-entering {
   padding: 0 20px;
-  animation: entering .2s .2s forwards;
+  animation: connect3-entering .2s .2s forwards;
 }
-@keyframes entering {
+@keyframes connect3-entering {
   from {padding: 0 20px;}
   to {padding: 20px;}
 }
-.grid > span.exiting {
+.connect3-grid > span.connect3-exiting {
   pointer-events: none;
-  animation: exiting .2s forwards;
+  animation: connect3-exiting .2s forwards;
 }
-@keyframes exiting {
+@keyframes connect3-exiting {
   from {padding: 20px; margin-top: 0;}
   to {padding: 0 20px; margin-top: 40px;}
 }
