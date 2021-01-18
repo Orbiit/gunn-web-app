@@ -6,25 +6,34 @@
     root.speeddodge=factory();
   }
 }(typeof self!=='undefined'?self:this,function(b){
-  function speeddodge() {
-    var wrapper=document.createElement('div'),
-    p=document.createElement('p'),
+  'use strict';
+
+  function speeddodge(onScore) {
+    var wrapper=document.createElement("div"),
+    p=document.createElement("p"),
+    button=document.createElement("button"),
+    ul=document.createElement("ul"),
     canvas=document.createElement("canvas"),
-    c=canvas.getContext('2d')
+    c=canvas.getContext('2d'),
     y=0,
     currenty=0,
     playerheight=10,
     playerx=30,
     enemies=[],
-    enemytick=0,
+    lastEnemy=0,
     starttime=new Date().getTime(),
-    ammo=0,
+    ammo=3,
     shooting=false,
-    shots=[];
-    p.textContent="space to shoot";
+    shots=[],
+    speed=0.1;
+    wrapper.className="speeddodge-wrapper";
+    p.textContent="collect orange dots; as defense, press ";
+    button.textContent="space to shoot";
+    p.appendChild(button);
     wrapper.appendChild(p);
     wrapper.appendChild(canvas);
-    canvas.className='speeddodge';
+    wrapper.appendChild(ul);
+    canvas.className="speeddodge";
     canvas.height=360;
     canvas.width=500;
     canvas.addEventListener("mousemove",e=>{
@@ -33,34 +42,61 @@
       else if (y<0) y=0;
     },false);
     canvas.addEventListener("touchmove",e=>{
-      y=e.touches[0].clientY-canvas.getBoundingClientRect().top-playerheight/2;
+      y=e.changedTouches[0].clientY-canvas.getBoundingClientRect().top-playerheight/2;
       if (y>canvas.height-playerheight) y=canvas.height-playerheight;
       else if (y<0) y=0;
     },false);
-    document.addEventListener("keydown",e=>{
+    var handleMouseDown=e=>{
+      if (!shooting) {
+        if (ammo>0) {
+          ammo--;
+          shots.push([playerx,y,canvas.width,playerheight,Date.now()]);
+        }
+        shooting=true;
+      }
+    },
+    handleMouseUp=e=>{
+      shooting=false;
+    },
+    handleKeyDown=e=>{
       if (e.keyCode===32) {
         if (!shooting) {
           if (ammo>0) {
             ammo--;
-            shots.push(y+(playerheight-4)/2);
+            shots.push([playerx,y,canvas.width,playerheight,Date.now()]);
           }
           shooting=true;
         }
         e.preventDefault();
       }
-    },false);
-    document.addEventListener("keyup",e=>{
+    },
+    handleKeyUp=e=>{
       if (e.keyCode===32) {
         shooting=false;
         e.preventDefault();
       }
-    },false);
+    };
+    button.addEventListener("mousedown",handleMouseDown,false);
+    button.addEventListener("mouseup",handleMouseUp,false);
+    button.addEventListener("touchstart",handleMouseDown,false);
+    button.addEventListener("touchend",handleMouseUp,false);
+    document.addEventListener("keydown",handleKeyDown,false);
+    document.addEventListener("keyup",handleKeyUp,false);
+    var animating=true,
+    lastAnimationId;
+    function fill([x,y,width,height]){
+      c.fillRect(x,y,width,height)
+    }
+    function collide([x1,y1,width1,height1],[x2,y2,width2,height2]){
+      return x1<=x2+width2&&y1<=y2+height2&&x2<=x1+width1&&y2<=y1+height1
+    }
     function render() {
       c.fillStyle='rgba(255,255,255,0.8)';
-      c.fillRect(0,0,canvas.width,canvas.height);
+      fill([0,0,canvas.width,canvas.height]);
       currenty+=(y-currenty)/5;
       var lose=false;
-      if (enemytick%3===0) {
+      if (Date.now()-lastEnemy>50/speed) {
+        lastEnemy=Date.now();
         var type;
         switch (Math.floor(Math.random()*7)) {
           case 0:
@@ -86,7 +122,7 @@
           creation:new Date().getTime()
         });
       }
-      enemytick++;
+      var player=[playerx,currenty,20,10];
       for (var i=0;i<enemies.length;i++) {
         switch (enemies[i].type) {
           case 'fast':
@@ -96,31 +132,32 @@
             enemies[i].x-=1;
             break;
           case 'sine':
-            enemies[i].y=Math.sin((new Date().getTime()-enemies[i].creation)/50)*50+enemies[i].sinebase;
+            enemies[i].y=Math.sin((new Date().getTime()-enemies[i].creation)/50*speed)*50+enemies[i].sinebase;
           default:
             enemies[i].x-=3;
         }
-        enemies[i].x-=enemies[i].type==='fast'?12:9;
+        enemies[i].x-=speed*(enemies[i].type==='fast'?12:9);
         c.fillStyle=enemies[i].type==='fast'?'red':
                     enemies[i].type==='sine'?'green':
                     enemies[i].type==='fat'?'black':
                     enemies[i].type==='ammo'?'orange':
                     'blue';
-        if (enemies[i].x-20<0) enemies.splice(i--,1);
+        if (enemies[i].x+20<0) enemies.splice(i--,1);
         else {
-          if (enemies[i].type==='fat') c.fillRect(enemies[i].x,enemies[i].y,20,15);
-          else if (enemies[i].type==='ammo') c.fillRect(enemies[i].x,enemies[i].y,5,5);
-          else c.fillRect(enemies[i].x,enemies[i].y,20,10);
+          var rect=[enemies[i].x,enemies[i].y,20,10];
+          if (enemies[i].type==='fat') rect=[enemies[i].x,enemies[i].y,20,15];
+          else if (enemies[i].type==='ammo') rect=[enemies[i].x,enemies[i].y,5,5];
+          fill(rect);
           var shot=false;
           if (enemies[i].type!=='fat') for (var j=0;j<shots.length;j++) {
-            if (Math.abs(enemies[i].y-shots[j])<playerheight) {
+            if (collide(shots[j],rect)) {
               if (enemies[i].type==='ammo') ammo++;
               enemies.splice(i--,1);
               shot=true;
               break;
             }
           }
-          if (!shot&&Math.abs(enemies[i].y-y)<playerheight&&Math.abs(enemies[i].x-playerx)<20) {
+          if (!shot&&collide(player,rect)) {
             if (enemies[i].type==='ammo') {
               ammo++;
               enemies.splice(i--,1);
@@ -130,27 +167,46 @@
         }
       }
       for (var i=0;i<shots.length;i++) {
-        c.fillStyle='orange';
-        c.fillRect(playerx,shots[i],canvas.width,4);
+        var age=Date.now()-shots[i][4];
+        c.fillStyle='rgba(255,165,0,'+(1-age/200)+')';
+        fill(shots[i]);
+        if (age>200) shots.splice(i--, 1);
       }
-      shots=[];
+      speed+=(1-speed)*1e-3;
       c.fillStyle='purple';
-      c.fillRect(playerx,currenty,20,10);
+      fill(player);
       c.fillStyle='orange';
-      for (var i=0;i<ammo;i++) c.fillRect(i*10+5,canvas.height-10,5,5);
+      for (var i=0;i<ammo;i++) fill([i*10+5,canvas.height-10,5,5]);
       if (lose) {
-        var p=document.createElement('p');
-        p.innerHTML=new Date().getTime()-starttime;
-        document.body.insertBefore(p,canvas.nextSibling);
+        var li=document.createElement('li'),
+        score=new Date().getTime()-starttime;
+        li.innerHTML=score;
+        if (onScore) onScore(score);
+        if (ul.firstChild) ul.insertBefore(li,ul.firstChild);
+        else ul.appendChild(li,ul.firstChild);
         enemies=[],
-        enemytick=0,
+        lastEnemy=0,
         starttime=new Date().getTime(),
-        ammo=0;
+        speed=0.1;
+        setTimeout(()=>{
+          ammo=3,
+          shots=[];
+          if (animating) lastAnimationId=window.requestAnimationFrame(render);
+        },1000);
+      } else if (animating) {
+        lastAnimationId=window.requestAnimationFrame(render);
       }
-      window.requestAnimationFrame(render);
     }
-    window.requestAnimationFrame(render);
-    return wrapper;
+    lastAnimationId=window.requestAnimationFrame(render);
+    return {
+      wrapper,
+      stop:()=>{
+        animating=false;
+        window.cancelAnimationFrame(lastAnimationId);
+        document.removeEventListener("keydown",handleKeyDown,false);
+        document.removeEventListener("keyup",handleKeyUp,false);
+      }
+    };
   }
   return speeddodge
 }));

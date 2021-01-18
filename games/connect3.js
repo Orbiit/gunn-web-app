@@ -5,6 +5,8 @@
     root.connect3 = factory();
   }
 }(typeof self !== 'undefined' ? self : this, function (b) {
+  'use strict';
+
   function connect3() {
     const colours = ["#009688", "#00BCD4", "#2196F3", "#4CAF50", "#8BC34A", "#FFEB3B", "#FFC107"],
     shapes = ["minus", "circle", "triangle", "plus", "square", "hexagon", "dot"],

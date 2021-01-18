@@ -5,6 +5,8 @@
     root.mining = factory();
   }
 }(typeof self !== 'undefined' ? self : this, function (b) {
+  'use strict';
+
   function loadImage(url) {
     return new Promise(resolve => {
       const img = new Image();
@@ -13,7 +15,7 @@
     });
   }
 
-  function mining() {
+  function mining(onDie) {
     const wrapper = document.createElement('div');
     wrapper.classList.add('mining');
     const canvas = document.createElement('canvas');
@@ -22,7 +24,7 @@
     wrapper.appendChild(canvas);
     const p = document.createElement('p');
     const output = document.createElement('textarea');
-    output.rows = 2;
+    output.rows = 3;
     output.cols = 60;
     output.readOnly = true;
     output.value = 'ARROW KEYS TO MOVE/MINE. COLLECT OIL/MAGMA FOR FUEL. HELL HURTS AFTER PROLONGED EXPOSURE. YOU MAY HEAL IN HEAVEN.';
@@ -62,12 +64,13 @@
     }
     loadImage('./otherstuff.png').then(init);
 
-    document.addEventListener('keydown', e => {
+    const handleKeyDown = e => {
       if (e.keyCode >= 37 && e.keyCode <= 40) {
         player.orientation = e.keyCode - 37;
         player.move();
       }
-    });
+    };
+    document.addEventListener('keydown', handleKeyDown);
 
     const CANVAS_SIZE = 300;
     const c = canvas.getContext('2d', {alpha: false});
@@ -197,8 +200,11 @@
       if (value >= 0)
         c.fillRect(x - width / 2, y - METER_HEIGHT / 2, width * value, METER_HEIGHT);
     }
+    let lastAnimationId;
+    let animating = true;
     function paint() {
-      c.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+      c.fillStyle = 'black';
+      c.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
       if (HOT_BLOCKS.includes(getTile(player.x, player.y + 1))) player.health --;
 
@@ -223,15 +229,25 @@
       drawMeter(TILE_SIZE * 2 / 3, CANVAS_SIZE / 2, 10, player.power / MAX_POWER, 'rgba(255,255,0,0.8)');
 
       if (player.power > 0 && player.health > 0) {
-        window.requestAnimationFrame(paint);
+        if (animating) {
+          lastAnimationId = window.requestAnimationFrame(paint);
+        }
       } else {
         output.value = `GAME OVER - ${player.power <= 0 ? 'NO FUEL' : 'YOU DIED'}\n`
           + `GOLD: ${player.inv.gold}. SILVER: ${player.inv.silver}.`
           + ` RUBY: ${player.inv.gem1}. EMERALD: ${player.inv.gem2}.`
-          + ` DIAMOND: ${player.inv.gem3}. AMETHYST : ${player.inv.gem4}.`
+          + ` DIAMOND: ${player.inv.gem3}. AMETHYST : ${player.inv.gem4}.`;
+        if (onDie) onDie();
       }
     }
-    return wrapper;
+    return {
+      wrapper: wrapper,
+      stop() {
+        animating = false;
+        window.cancelAnimationFrame(lastAnimationId);
+        document.removeEventListener('keydown', handleKeyDown);
+      }
+    };
   }
   return mining;
 }));
