@@ -4,8 +4,8 @@ const CACHE_NAME = 'ugwa-sw-1610559342216'
 const urlsToCache = [
   './',
   'images/newmap.min.png',
-  'https://fonts.googleapis.com/css?family=Roboto:300,400%7CMaterial+Icons',
-  'https://fonts.gstatic.com/s/materialicons/v54/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2',
+  'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&family=Material+Icons&display=swap',
+  'https://fonts.gstatic.com/s/materialicons/v70/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4.woff2',
   'https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4WxKOzY.woff2',

@@ -465,8 +465,8 @@ const formatOptionInfo = {
   },
   // 15
   bellVolume: { default: '' },
-  // 16: TEMP
-  tempCheckState: { default: '0' },
+  // 16: Unused - was used for t r a c k i n g
+  _tempCheckState: { default: '0' },
   // 17:
   updateTitle: {
     // Disable by default on phones, where the tab title doesn't show in the
@@ -568,35 +568,6 @@ function initFormatSwitches () {
     }
   }
 }
-// TEMP: checking
-function checkForUrgentSchedule () {
-  fetch('https://sheep.thingkingland.app/interstud-comm/urgent-schedule', {
-    method: 'POST'
-  })
-}
-if (formatOptions.tempCheckState < 3) {
-  formatOptions.tempCheckState = '3'
-  fetch('https://sheep.thingkingland.app/interstud-comm/check-update', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      ...formatOptions,
-      theme: cookie.getItem('global.theme') || '[null]',
-      psa: cookie.getItem('[gunn-web-app] scheduleapp.psa') || '[null]',
-      loadLists:
-        cookie.getItem('[gunn-web-app] scheduleapp.loadLists') || '[null]',
-      language: cookie.getItem('[gunn-web-app] language') || '[null]',
-      uau: navigator.userAgent
-    })
-  })
-  saveFormatOptions()
-} else {
-  checkForUrgentSchedule()
-}
-// Every ten minutes
-setInterval(checkForUrgentSchedule, 10 * 60 * 1000)
 
 /// Support (in the Utilities tab)
 // Literally has nothing to do with the schedule, but because its
