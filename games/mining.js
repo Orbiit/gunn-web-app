@@ -237,7 +237,7 @@
           + `GOLD: ${player.inv.gold}. SILVER: ${player.inv.silver}.`
           + ` RUBY: ${player.inv.gem1}. EMERALD: ${player.inv.gem2}.`
           + ` DIAMOND: ${player.inv.gem3}. AMETHYST : ${player.inv.gem4}.`;
-        if (onDie) onDie();
+        if (onDie) onDie(player.inv);
       }
     }
     return {

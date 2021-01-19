@@ -6,6 +6,7 @@
   width: 355px;
   height: 355px;
   position: relative;
+  flex: none;
 }
 .connect3-grid::after {
   content: attr(data-score);
@@ -84,4 +85,9 @@
 @keyframes connect3-exiting {
   from {padding: 20px; margin-top: 0;}
   to {padding: 0 20px; margin-top: 40px;}
+}
+@media (max-width: 400px) {
+  .connect3-grid {
+    transform: scale(0.8);
+  }
 }

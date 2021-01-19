@@ -207,7 +207,12 @@
       for (let x = 8; x--;) new Tile(x, y, tiles[y][x]);
     }
     score.set(0);
-    return squareElem;
+    return {
+      wrapper: squareElem,
+      get score() {
+        return score.number;
+      }
+    };
   }
   return connect3;
 }));

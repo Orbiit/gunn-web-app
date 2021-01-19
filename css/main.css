@@ -3,6 +3,14 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-overflow-scrolling: touch;
 }
+@media (prefers-reduced-motion) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
 :focus {
   outline: none;
 }

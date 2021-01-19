@@ -13,7 +13,9 @@
         }
         window.errors += '\n' + errorText
         if (window.errorLogger) window.errorLogger.value = window.errors
-        console.error('[BIG WUCKY]\n' + errorText)
+        if (errorText.slice(0, 3) !== '[!]') {
+          console.error('[BIG WUCKY]\n' + errorText)
+        }
       }
       if (window.addEventListener) {
         window.addEventListener(

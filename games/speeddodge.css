@@ -1,6 +1,8 @@
 .speeddodge {
   border: 1px solid black;
   touch-action: none;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .speeddodge-wrapper button {
   touch-action: none;

@@ -168,8 +168,9 @@ scrim.className = 'scrim'
 let openDialog = null
 export function showDialog (dialog) {
   if (openDialog) {
-    if (openDialog === dialog) return
-    openDialog.classList.remove('show')
+    if (openDialog.dialog === dialog) return
+    openDialog.dialog.classList.remove('show')
+    openDialog.onClose()
   } else {
     if (!scrim.parentNode) {
       document.body.appendChild(scrim)
@@ -178,7 +179,10 @@ export function showDialog (dialog) {
     }
     scrim.classList.add('show-scrim')
   }
-  openDialog = dialog
+  openDialog = { dialog }
+  const closePromise = new Promise(resolve => {
+    openDialog.onClose = resolve
+  })
   if (dialog.classList.contains('dialog-hidden')) {
     dialog.classList.remove('dialog-hidden')
     window.requestAnimationFrame(() => {
@@ -187,10 +191,12 @@ export function showDialog (dialog) {
   } else {
     dialog.classList.add('show')
   }
+  return closePromise
 }
 export function closeDialog () {
   if (openDialog) {
-    openDialog.classList.remove('show')
+    openDialog.dialog.classList.remove('show')
+    openDialog.onClose()
     scrim.classList.remove('show-scrim')
     openDialog = null
   }
