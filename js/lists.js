@@ -639,7 +639,10 @@ function initClubs () {
         highScoreDisplay.textContent = `High score: ${highScore('speeddodge')}`
         content.appendChild(highScoreDisplay)
         const { wrapper, stop } = window.speeddodge(score => {
-          highScoreDisplay.textContent = `High score: ${highScore('speeddodge', score)}`
+          highScoreDisplay.textContent = `High score: ${highScore(
+            'speeddodge',
+            score
+          )}`
         })
         content.appendChild(wrapper)
         await close

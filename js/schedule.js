@@ -32,6 +32,7 @@ import {
   loadJsonStorage,
   logError,
   now,
+  outsideSchool,
   onBlur,
   schoolTimeZone,
   showDialog,
@@ -1306,16 +1307,27 @@ function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
 /// Events (for some reason `renderEvents` is only called by `makeWeekHappen`)
 let setEvents
 const events = {}
-function getHumanTime (date) {
-  const hour = date.getHours()
-  const minute = date.getMinutes()
+function _getHumanTime (hour, minute) {
   if (formatOptions.hourCycle === '0') {
     return minute + ''
+  } else {
+    const minsLeadingZero = ('0' + minute).slice(-2)
+    return formatOptions.hourCycle === '24'
+      ? `${hour}:${minsLeadingZero}`
+      : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${hour < 12 ? 'a' : 'p'}m`
   }
-  const minsLeadingZero = ('0' + minute).slice(-2)
-  return formatOptions.hourCycle === '24'
-    ? `${hour}:${minsLeadingZero}`
-    : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${hour < 12 ? 'a' : 'p'}m`
+}
+function getHumanTime (date) {
+  const display = _getHumanTime(date.getHours(), date.getMinutes())
+  if (outsideSchool) {
+    const localTime = outsideSchool(date)
+    return localizeWith('timezone', 'times', {
+      S: display, // "School"
+      L: _getHumanTime(localTime.getHours(), localTime.getMinutes()) // "Local"
+    })
+  } else {
+    return display
+  }
 }
 function actuallyRenderEvents (items) {
   if (items.error) {

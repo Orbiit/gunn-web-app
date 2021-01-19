@@ -3,7 +3,13 @@ import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
 import { showClub, getClubByName } from '../js/lists.js'
 import { savedClubs } from '../js/saved-clubs.js'
-import { currentTime, identity, now, THEME_COLOUR } from '../js/utils.js'
+import {
+  currentTime,
+  identity,
+  now,
+  outsideSchool,
+  THEME_COLOUR
+} from '../js/utils.js'
 
 const FAVICON_SIZE = 32
 
@@ -103,14 +109,29 @@ export function scheduleApp (options = {}) {
   function getPeriod (name) {
     return options.periods[name] || { label: name, colour: '#000' }
   }
-  function getHumanTime ({ hour, minute }) {
+  function _getHumanTime (hour, minute) {
     if (options.h0Joke) {
       return minute + ''
+    } else {
+      const minsLeadingZero = ('0' + minute).slice(-2)
+      return options.h24
+        ? `${hour}:${minsLeadingZero}`
+        : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${
+            hour < 12 ? 'a' : 'p'
+          }m`
     }
-    const minsLeadingZero = ('0' + minute).slice(-2)
-    return options.h24
-      ? `${hour}:${minsLeadingZero}`
-      : `${((hour + 11) % 12) + 1}:${minsLeadingZero} ${hour < 12 ? 'a' : 'p'}m`
+  }
+  function getHumanTime ({ hour, minute }, { ano, mez, dia }) {
+    const display = _getHumanTime(hour, minute)
+    if (outsideSchool) {
+      const localTime = outsideSchool(new Date(ano, mez, dia, hour, minute))
+      return localizeWith('timezone', 'times', {
+        S: display, // "School"
+        L: _getHumanTime(localTime.getHours(), localTime.getMinutes()) // "Local"
+      })
+    } else {
+      return display
+    }
   }
   function getCSS (colour, id) {
     if (colour[0] === '#') {
@@ -498,12 +519,8 @@ export function scheduleApp (options = {}) {
       d = offsetToDate(offset, d)
       isToday = false
     }
-    const {
-      periods,
-      alternate,
-      summer,
-      date: { ano, mez, dia, weekday }
-    } = getSchedule(d)
+    const { periods, alternate, summer, date } = getSchedule(d)
+    const { ano, mez, dia, weekday } = date
     const day = days[weekday]
     const isSchool = !summer && periods.length
     const noSchool = !summer && !periods.length
@@ -521,7 +538,7 @@ export function scheduleApp (options = {}) {
         schedule.push([
           'span.schedule-end',
           applyEndTime({
-            T: getHumanTime(lastRequiredPeriod.end)
+            T: getHumanTime(lastRequiredPeriod.end, date)
           })
         ])
       }
@@ -675,8 +692,8 @@ export function scheduleApp (options = {}) {
           [
             'span',
             localizeWith('range', 'times', {
-              T1: getHumanTime(period.start),
-              T2: getHumanTime(period.end),
+              T1: getHumanTime(period.start, date),
+              T2: getHumanTime(period.end, date),
               D: localizeWith('long', 'times', {
                 T: getUsefulTimePhrase(
                   period.end.totalminutes - period.start.totalminutes

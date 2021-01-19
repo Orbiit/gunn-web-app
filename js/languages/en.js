@@ -398,6 +398,7 @@ export default {
     'self-ending': 'Ending in {T1}; started {T2} ago.',
     'self-starting': 'Starting in {T}.',
     starting: '{P} starting in {T}.',
-    'starting-short': '{T} until {P}'
+    'starting-short': '{T} until {P}',
+    timezone: '{S} PT ({L} local)'
   }
 }

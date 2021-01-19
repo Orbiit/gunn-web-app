@@ -80,6 +80,7 @@ export let currentTime = () => Date.now()
 export function setCurrentTime (newFn) {
   currentTime = newFn
 }
+export let outsideSchool = null
 try {
   const { timeZone } = new Intl.DateTimeFormat().resolvedOptions()
   if (timeZone && timeZone !== schoolTimeZone) {
@@ -101,9 +102,14 @@ try {
       minute: 'numeric',
       second: 'numeric'
     })
-    currentTime = () => {
-      const now = new Date()
-      const datetime = schoolTzFormatter.format(now)
+    /**
+     * Converts a Date object to the school's time zone such that Date methods
+     * like .getHours() etc. will be in the school's time zone.
+     * @param {Date} dateObj - The Date object in the user's local time zone.
+     * @return {Date} The Date object with values from the school's time zone.
+     */
+    function timeAtSchool (dateObj) {
+      const datetime = schoolTzFormatter.format(dateObj)
       const [date, fullYear, time] = datetime.split(/,\s+/)
       const [month, day] = date.split(' ')
       const [year, era] = fullYear.split(' ')
@@ -116,9 +122,33 @@ try {
         hour === '24' ? 0 : +hour, // bugs.chromium.org/p/chromium/issues/detail?id=1045791
         +minute,
         +second,
-        now.getMilliseconds()
-      ).getTime()
+        dateObj.getMilliseconds()
+      )
     }
+    /**
+     * Reverses timeAtSchool.
+     *
+     * NOTE: Not perfect around daylight saving changes. For example,
+     *
+     * @example (Taipei time)
+     * timeAtSchool(timeFromSchool(new Date(2020, 10, 1, 3)))
+     * // -> Sun Nov 01 2020 02:00:00 GMT+0800 (Taipei Standard Time)
+     * VS
+     * timeAtSchool(timeFromSchool(new Date(2020, 10, 2, 3)))
+     * // -> Mon Nov 02 2020 03:00:00 GMT+0800 (Taipei Standard Time)
+     *
+     * @param {Date} dateObj - School time Date.
+     * @return {Date} User local time Date.
+     */
+    function timeFromSchool (dateObj) {
+      const offset = dateObj.getTime() - timeAtSchool(dateObj).getTime()
+      const proposal = new Date(dateObj.getTime() + offset)
+      return proposal
+    }
+    currentTime = () => {
+      return timeAtSchool(new Date()).getTime()
+    }
+    outsideSchool = timeFromSchool
   }
 } catch (err) {
   window.logError(err)

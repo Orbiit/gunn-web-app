@@ -940,5 +940,7 @@ function initErrorLog () {
   errorLog.classList.add('textarea')
   errorLog.classList.remove('error-log')
   errorLog.placeholder = localize('errors', 'placeholders')
-  window.logError('[!] Phew! The app should work now. If the schedule loads properly for you, you can ignore the above.')
+  window.logError(
+    '[!] Phew! The app should work now. If the schedule loads properly for you, you can ignore the above.'
+  )
 }

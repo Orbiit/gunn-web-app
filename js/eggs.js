@@ -35,7 +35,10 @@ export function highScore (scoreId, newScore = null) {
     }
     if (newScore > highScores[scoreId]) {
       highScores[scoreId] = newScore
-      cookie.setItem('[gunn-web-app] scheduleapp.plugins', JSON.stringify(highScores))
+      cookie.setItem(
+        '[gunn-web-app] scheduleapp.plugins',
+        JSON.stringify(highScores)
+      )
     }
   }
   return highScores[scoreId]
