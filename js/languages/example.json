@@ -315,5 +315,6 @@
   "times/self-ending": [],
   "times/self-starting": [],
   "times/starting": [],
-  "times/starting-short": []
+  "times/starting-short": [],
+  "times/timezone": []
 }

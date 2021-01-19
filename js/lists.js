@@ -12,7 +12,6 @@ import {
   now,
   showDialog,
   shuffleInPlace,
-  THEME_COLOUR,
   toEach
 } from './utils.js'
 

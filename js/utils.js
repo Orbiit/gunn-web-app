@@ -108,7 +108,7 @@ try {
      * @param {Date} dateObj - The Date object in the user's local time zone.
      * @return {Date} The Date object with values from the school's time zone.
      */
-    function timeAtSchool (dateObj) {
+    const timeAtSchool = function timeAtSchool (dateObj) {
       const datetime = schoolTzFormatter.format(dateObj)
       const [date, fullYear, time] = datetime.split(/,\s+/)
       const [month, day] = date.split(' ')
@@ -140,7 +140,7 @@ try {
      * @param {Date} dateObj - School time Date.
      * @return {Date} User local time Date.
      */
-    function timeFromSchool (dateObj) {
+    const timeFromSchool = function timeFromSchool (dateObj) {
       const offset = dateObj.getTime() - timeAtSchool(dateObj).getTime()
       const proposal = new Date(dateObj.getTime() + offset)
       return proposal
