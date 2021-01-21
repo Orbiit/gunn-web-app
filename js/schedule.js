@@ -496,6 +496,7 @@ const formatOptionsCookie = cookie.getItem(
   '[gunn-web-app] scheduleapp.formatOptions'
 )
 const formatOptions = {}
+let newUser = false
 if (formatOptionsCookie) {
   const values = formatOptionsCookie.split('.')
   values[0] = FORMATTING_VERSION
@@ -505,15 +506,14 @@ if (formatOptionsCookie) {
       formatOptions[keys[i]] = values[i]
     } else {
       formatOptions[keys[i]] = formatOptionInfo[keys[i]].default
-      // Omg modifying formatOptionInfo?? :O :O
-      formatOptionInfo[keys[i]].justSetFromDefault = true
     }
   }
 } else {
   for (const key of Object.keys(formatOptionInfo)) {
     formatOptions[key] = formatOptionInfo[key].default
-    formatOptionInfo[key].justSetFromDefault = true
   }
+  saveFormatOptions()
+  newUser = true
 }
 function saveFormatOptions () {
   cookie.setItem(
@@ -1534,9 +1534,7 @@ function initScheduleApp () {
     isSummer: (y, m, d) => !datepicker.inrange({ y: y, m: m, d: d }),
     favicon: document.getElementById('favicon'),
     defaultFavicon: 'favicon/favicon.ico',
-    updateTitle: formatOptionInfo.updateTitle.justSetFromDefault
-      ? false
-      : formatOptions.updateTitle !== 'no',
+    updateTitle: newUser ? false : formatOptions.updateTitle !== 'no',
     autorender: false
   })
   // onBlur resolves once when the tab loses focus. This is to prevent Google
@@ -1544,10 +1542,7 @@ function initScheduleApp () {
   // Search (see #82). I think this is fine because mobile devices won't need
   // the tab title, and those who do need the tab title probably fire blur
   // reliably, and Google (hopefully?) doesn't save localStorage.
-  if (
-    formatOptionInfo.updateTitle.justSetFromDefault &&
-    formatOptions.updateTitle !== 'no'
-  ) {
+  if (newUser && formatOptions.updateTitle !== 'no') {
     onBlur.then(() => {
       scheduleapp.options.updateTitle = true
       scheduleapp.displayCurrentStatus()
