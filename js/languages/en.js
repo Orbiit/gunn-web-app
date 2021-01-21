@@ -259,6 +259,8 @@ export default {
     flex: 'Tutorial',
     'gunn-together': {
       name: 'Gunn Together',
+      sem2:
+        'Stay in Period 5 and ask your teacher where to go during Gunn Together. Those with prep should check Schoology.',
       subtitle:
         'Ask your Period 5 teacher whom you should meet with during this period.'
     },

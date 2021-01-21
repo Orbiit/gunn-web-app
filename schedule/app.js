@@ -251,7 +251,7 @@ export function scheduleApp (options = {}) {
         else if (gtWeek === 16) name = 'B'
         else if (gtWeek > 20) name = 'E'
         if (name) {
-          return { ...period, name, gunnTogether: true }
+          return { ...period, name, gunnTogether: gtWeek > 20 ? 'sem2' : true }
         }
       }
       return period
@@ -689,6 +689,10 @@ export function scheduleApp (options = {}) {
             localize('gunn-together/name')
           ],
           period.name === 'GT' && ['span', localize('gunn-together/subtitle')],
+          period.gunnTogether === 'sem2' && [
+            'span',
+            localize('gunn-together/sem2')
+          ],
           [
             'span',
             localizeWith('range', 'times', {

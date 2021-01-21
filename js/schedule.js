@@ -1249,7 +1249,8 @@ function identifyPeriod (name) {
     return 'Flex'
   else if (~name.indexOf('brunch') || ~name.indexOf('break')) return 'Brunch'
   else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
-  else if (~name.indexOf('together')) return 'GT'
+  // gt - 2021-01-20
+  else if (~name.indexOf('together') || ~name.indexOf('gt')) return 'GT'
   else return name
 }
 function toTraditionalUGWATime (minutes) {
