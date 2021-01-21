@@ -350,6 +350,7 @@ export default {
       immediately: 'immediately',
       never: 'never'
     },
+    today: 'Today',
     undoneify: 'Unmark as done',
     universe: 'Universe',
     you: 'You',
@@ -391,6 +392,7 @@ export default {
     ending: '{P} ending in {T}.',
     'ending-short': '{T} left',
     long: '{T} long',
+    month: '{M} {Y}',
     over: "School's over!",
     range: '{T1}–{T2} · {D}',
     seconds: '{T}s',

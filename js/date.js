@@ -1,4 +1,5 @@
-import { localize } from './l10n.js'
+import { ripple } from './material.js'
+import { localize, localizeWith } from './l10n.js'
 import { now } from './utils.js'
 // Date format names:
 // weird = the weird {d, m, y} object format that this uses for some reason
@@ -7,8 +8,8 @@ export class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor (start, end, elem) {
     this._days = localize('ds').split('  ')
-    this._months = localize('mos').split('  ')
-    const [days, months] = [this._days, this._months]
+    this._months = localize('months').split('  ')
+    const days = this._days
     this.start = start
     this.end = end
     this.min = DatePicker.weirdToJS(start).getTime()
@@ -26,32 +27,48 @@ export class DatePicker {
     const apocalypse = DatePicker.weirdToJS(end).getTime()
     const startday = genesis.getDay()
     let today = new Date(start.y, start.m, start.d - startday)
-    let monthalt = false
-    let lastmonth = today.getMonth()
+    let lastmonth = null
     genesis = genesis.getTime()
     while (today.getTime() < apocalypse) {
-      const week = []
+      let week = []
+      this.weeks.push(week)
       for (let i = 0; i < days.length; i++) {
         today = new Date(start.y, start.m, start.d - startday + weeknum * 7 + i)
+        if (lastmonth !== today.getMonth()) {
+          lastmonth = today.getMonth()
+          if (week.length > 0) {
+            const newWeek = new Array(week.length).fill({
+              notinrange: true,
+              placeholder: true
+            })
+            week.push(
+              ...new Array(7 - week.length).fill({
+                notinrange: true,
+                placeholder: true
+              })
+            )
+            this.weeks.push({ month: lastmonth, year: today.getFullYear() })
+            this.weeks.push(newWeek)
+            week = newWeek
+          } else {
+            this.weeks.splice(-1, 0, {
+              month: lastmonth,
+              year: today.getFullYear()
+            })
+          }
+        }
         const todayId = DatePicker.weirdToString(DatePicker.jsToWeird(today))
-        const entry = { today }
-        this.dates[todayId] = entry
-        week.push(todayId)
+        const entry = { today, dateId: todayId }
+        week.push(entry)
         if (today.getTime() >= genesis && today.getTime() <= apocalypse) {
           entry.month = today.getMonth()
           entry.year = today.getFullYear()
-          if ((entry.date = today.getDate()) === 1) monthalt = !monthalt
-          entry.monthalt = monthalt
-        } else entry.notinrange = true
-        if (i === 0 && lastmonth !== today.getMonth()) {
-          lastmonth = today.getMonth()
-          entry.newMonth = `${months[lastmonth]} '${today
-            .getFullYear()
-            .toString()
-            .slice(-2)}`
+          entry.date = today.getDate()
+          this.dates[todayId] = entry
+        } else {
+          entry.notinrange = true
         }
       }
-      this.weeks.push(week)
       weeknum++
     }
   }
@@ -121,25 +138,30 @@ export class DatePicker {
     for (const weekDates of this.weeks) {
       const week = document.createElement('div')
       week.classList.add('datepicker-week')
-      for (const date of weekDates) {
-        const entry = this.dates[date]
+      dates.appendChild(week)
+
+      if (weekDates.month !== undefined) {
+        week.classList.add('datepicker-has-month')
+        const t = document.createElement('span')
+        t.classList.add('datepicker-month')
+        t.textContent = localizeWith('month', 'times', {
+          M: this._months[weekDates.month],
+          Y: weekDates.year
+        })
+        week.appendChild(t)
+        continue
+      }
+
+      for (const entry of weekDates) {
         const day = document.createElement('span')
         entry.elem = day
         day.classList.add('datepicker-day')
-        day.dataset.dateId = date
+        day.dataset.dateId = entry.dateId
         if (!entry.notinrange) {
           day.textContent = entry.date
-          if (entry.monthalt) day.classList.add('datepicker-monthalt')
         }
         week.appendChild(day)
-        if (entry.newMonth !== undefined) {
-          const t = document.createElement('span')
-          t.classList.add('datepicker-month')
-          t.innerHTML = entry.newMonth
-          week.appendChild(t)
-        }
       }
-      dates.appendChild(week)
     }
     dates.addEventListener(
       'click',
@@ -165,6 +187,24 @@ export class DatePicker {
     ) {
       t.elem.classList.add('datepicker-selected')
     }
+
+    const todayWrapper = document.createElement('div')
+    todayWrapper.className = 'datepicker-bottom'
+    const todayBtn = document.createElement('button')
+    todayBtn.className = 'material datepicker-today-btn'
+    todayBtn.textContent = localize('today')
+    ripple(todayBtn)
+    todayBtn.addEventListener('click', e => {
+      this.day = DatePicker.jsToWeird(now())
+      const todayElem = this.dates[DatePicker.weirdToString(this.day)]
+      if (todayElem) {
+        todayElem.elem.scrollIntoView({
+          block: 'center'
+        })
+      }
+    })
+    todayWrapper.appendChild(todayBtn)
+    this.wrapper.appendChild(todayWrapper)
   }
 
   get day () {
