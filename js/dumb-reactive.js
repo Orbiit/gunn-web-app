@@ -53,7 +53,7 @@ function processStateArray (states) {
   // Merge adjacent strings
   const processed = []
   for (let i = 0; i < states.length; i++) {
-    const state = states[i]
+    const state = typeof states[i] === 'number' ? states[i].toString() : states[i]
     if (!exists(state)) continue
     if (typeof state === 'string') {
       if (i > 0 && typeof processed[processed.length - 1] === 'string') {
@@ -70,7 +70,7 @@ function processStateArray (states) {
       }
     } else {
       console.error(state)
-      throw new Error('State is neither a string nor an array')
+      throw new Error('State is neither a string, number, nor array')
     }
   }
   return processed

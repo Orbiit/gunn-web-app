@@ -1,3 +1,4 @@
+import { createReactive } from './dumb-reactive.js'
 import { ripple } from './material.js'
 import { cookie, loadJsonStorage, THEME_COLOUR } from './utils.js'
 
@@ -44,154 +45,190 @@ export function highScore (scoreId, newScore = null) {
   return highScores[scoreId]
 }
 
+function getRenderedEgg ({
+  score,
+  highScore,
+  gameEnd,
+  clicks,
+  power,
+  extra,
+  onKey,
+  onUp,
+  onLeft,
+  onPlay,
+  onRight,
+  onDown,
+  onClick,
+  onPower,
+  onExtra
+}) {
+  return [
+    [
+      { type: 'div', style: { display: 'flex', alignItems: 'center' } },
+      [
+        { type: 'div.center', style: { flex: 'auto' } },
+        ['style', `.egg-snake:focus {box-shadow: 0 0 3px ${THEME_COLOUR};}`],
+        [
+          {
+            type: 'egg-canvas.egg-snake',
+            properties: { width: 20, height: 20, tabIndex: 0 },
+            style: {
+              height: '100px',
+              imageRendering: 'pixelated',
+              cursor: 'pointer',
+              border: '1px solid currentColor'
+            },
+            options: { onKeyDown: onKey }
+          }
+        ]
+      ]
+    ],
+    [
+      'div.center',
+      [
+        'div',
+        [
+          { type: 'ripple-btn.material.icon', options: { onClick: onUp } },
+          ['i.material-icons', 'keyboard_arrow_up']
+        ]
+      ],
+      [
+        'div',
+        [
+          { type: 'ripple-btn.material.icon', options: { onClick: onLeft } },
+          ['i.material-icons', 'keyboard_arrow_left']
+        ],
+        [
+          { type: 'ripple-btn.material.icon', options: { onClick: onPlay } },
+          ['i.material-icons', 'play_arrow']
+        ],
+        [
+          { type: 'ripple-btn.material.icon', options: { onClick: onRight } },
+          ['i.material-icons', 'keyboard_arrow_right']
+        ]
+      ],
+      [
+        'div',
+        [
+          { type: 'ripple-btn.material.icon', options: { onClick: onDown } },
+          ['i.material-icons', 'keyboard_arrow_down']
+        ]
+      ]
+    ],
+    [
+      'p',
+      'Score: ',
+      score === null ? '[press play to start]' : score,
+      ...(gameEnd
+        ? [' (GAME OVER', gameEnd[0] && ' - NEW HIGH SCORE', ')']
+        : []),
+      '; personal high score: ',
+      highScore
+    ],
+    ['p', 'Click on the box to give it focus so you can use arrow keys.'],
+    [
+      'p',
+      [
+        {
+          type: 'ripple-btn.material.ripple-light.raised',
+          options: { onClick }
+        },
+        'click me'
+      ],
+      ' ',
+      clicks
+    ],
+    [
+      'p',
+      [
+        {
+          type: 'ripple-btn.material.ripple-light.raised',
+          options: { onClick: onPower }
+        },
+        'extra click per click'
+      ],
+      ' ',
+      power,
+      ' click(s) per second (price: ',
+      (power + 1) * 25,
+      clicks < (power + 1) * 25 && ' (which is too many for you)',
+      ' clicks)'
+    ],
+    [
+      'p',
+      [
+        {
+          type: 'ripple-btn.material.ripple-light.raised',
+          options: { onClick: onExtra }
+        },
+        'extra click per second'
+      ],
+      ' ',
+      extra,
+      ' click(s) per second (price: ',
+      extra * 150 + 100,
+      clicks < extra * 150 + 100 && ' (which is too many for you)',
+      ' clicks; note: this resets when UGWA is refreshed)'
+    ]
+  ]
+}
+
 export function egg () {
   // This is me being really lazy
   const wrapper = document.createElement('div')
-  const canvas = wrapper
-    .appendChild(
-      Object.assign(document.createElement('div'), {
-        style: 'display: flex; align-items: center;'
-      })
-    )
-    .appendChild(
-      Object.assign(document.createElement('div'), {
-        className: 'center',
-        style: 'flex: auto;'
-      })
-    )
-    .appendChild(
-      Object.assign(document.createElement('style'), {
-        textContent: `.egg-snake:focus {box-shadow: 0 0 3px ${THEME_COLOUR};}`
-      })
-    )
-    .parentNode.appendChild(
-      Object.assign(document.createElement('canvas'), {
-        className: 'egg-snake',
-        width: 20,
-        height: 20,
-        tabIndex: 0,
-        style:
-          'height: 100px; image-rendering: pixelated; cursor: pointer; border: 1px solid currentColor;'
-      })
-    )
-  const c = canvas.getContext('2d')
-  const upBtn = canvas.parentNode.parentNode
-    .appendChild(
-      Object.assign(document.createElement('div'), {
-        className: 'center'
-      })
-    )
-    .appendChild(document.createElement('div'))
-    .appendChild(
-      Object.assign(document.createElement('button'), {
-        className: 'material icon',
-        innerHTML: '<i class="material-icons">keyboard_arrow_up</i>'
-      })
-    )
-  const leftBtn = upBtn.parentNode.parentNode
-    .appendChild(document.createElement('div'))
-    .appendChild(
-      Object.assign(document.createElement('button'), {
-        className: 'material icon',
-        innerHTML: '<i class="material-icons">keyboard_arrow_left</i>'
-      })
-    )
-  const playBtn = leftBtn.parentNode.appendChild(
-    Object.assign(document.createElement('button'), {
-      className: 'material icon',
-      innerHTML: '<i class="material-icons">play_arrow</i>'
-    })
-  )
-  const rightBtn = playBtn.parentNode.appendChild(
-    Object.assign(document.createElement('button'), {
-      className: 'material icon',
-      innerHTML: '<i class="material-icons">keyboard_arrow_right</i>'
-    })
-  )
-  const downBtn = rightBtn.parentNode.parentNode
-    .appendChild(document.createElement('div'))
-    .appendChild(
-      Object.assign(document.createElement('button'), {
-        className: 'material icon',
-        innerHTML: '<i class="material-icons">keyboard_arrow_down</i>'
-      })
-    )
-  const scoreDisplay = wrapper
-    .appendChild(document.createElement('p'))
-    .appendChild(document.createTextNode('Score: '))
-    .parentNode.appendChild(document.createElement('span'))
-    .appendChild(document.createTextNode('[press play to start]')).parentNode
-  const highScoreDisplay = scoreDisplay.parentNode
-    .appendChild(document.createTextNode('; personal high score: '))
-    .parentNode.appendChild(document.createElement('span'))
-  wrapper.appendChild(
-    Object.assign(document.createElement('p'), {
-      textContent:
-        'Click on the box to give it focus so you can use arrow keys.'
-    })
-  )
-  const btn = wrapper.appendChild(document.createElement('p')).appendChild(
-    Object.assign(document.createElement('button'), {
-      className: 'material ripple-light raised',
-      textContent: 'click me'
-    })
-  )
-  const clicks = btn.parentNode
-    .appendChild(document.createTextNode(' '))
-    .parentNode.appendChild(document.createElement('span'))
-  const buyBtn = wrapper.appendChild(document.createElement('p')).appendChild(
-    Object.assign(document.createElement('button'), {
-      className: 'material ripple-light raised',
-      textContent: 'extra click per click'
-    })
-  )
-  const powerDisplay = buyBtn.parentNode
-    .appendChild(document.createTextNode(' '))
-    .parentNode.appendChild(document.createElement('span'))
-  const priceDisplay = buyBtn.parentNode
-    .appendChild(document.createTextNode(' click(s) per click (price: '))
-    .parentNode.appendChild(document.createElement('span'))
-  buyBtn.parentNode.appendChild(document.createTextNode(' clicks)'))
-  const buyTBtn = wrapper.appendChild(document.createElement('p')).appendChild(
-    Object.assign(document.createElement('button'), {
-      className: 'material ripple-light raised',
-      textContent: 'extra click per second'
-    })
-  )
-  const extraDisplay = buyTBtn.parentNode
-    .appendChild(document.createTextNode(' '))
-    .parentNode.appendChild(document.createElement('span'))
-  const priceTDisplay = buyTBtn.parentNode
-    .appendChild(document.createTextNode(' click(s) per second (price: '))
-    .parentNode.appendChild(document.createElement('span'))
-  buyTBtn.parentNode.appendChild(
-    document.createTextNode(
-      ' clicks; note: this resets when UGWA is refreshed)'
-    )
-  )
-  ;[playBtn, leftBtn, upBtn, rightBtn, downBtn].forEach(ripple)
-  ripple(btn)
-  ripple(buyBtn)
-  ripple(buyTBtn)
+  const state = {
+    score: null,
+    highScore:
+      +cookie.getItem('[gunn-web-app] scheduleapp.snakeHighScore') || 0,
+    gameEnd: false,
+    clicks: +cookie.getItem('[gunn-web-app] scheduleapp.clicks') || 0,
+    power: +cookie.getItem('[gunn-web-app] scheduleapp.clickPower') || 1,
+    extra: 0
+  }
+  let c
+  const setState = createReactive(wrapper, {
+    customElems: {
+      'egg-canvas': ({ options: { onKeyDown } }) => {
+        const canvas = document.createElement('canvas')
+        c = canvas.getContext('2d')
+        canvas.addEventListener('keydown', onKeyDown)
+        return canvas
+      },
+      'ripple-btn': ({ options: { onClick } }) => {
+        const button = document.createElement('button')
+        button.addEventListener('click', onClick)
+        ripple(button)
+        return button
+      }
+    }
+  })
 
   let direction = [0, 1]
-  leftBtn.onclick = e => (direction = [-1, 0])
-  upBtn.onclick = e => (direction = [0, -1])
-  rightBtn.onclick = e => (direction = [1, 0])
-  downBtn.onclick = e => (direction = [0, 1])
-  canvas.onkeydown = e => {
+  state.onLeft = () => {
+    direction = [-1, 0]
+  }
+  state.onUp = () => {
+    direction = [0, -1]
+  }
+  state.onRight = () => {
+    direction = [1, 0]
+  }
+  state.onDown = () => {
+    direction = [0, 1]
+  }
+  state.onKey = e => {
     switch (e.keyCode) {
       case 37:
-        leftBtn.click()
+        state.onLeft()
         break
       case 38:
-        upBtn.click()
+        state.onUp()
         break
       case 39:
-        rightBtn.click()
+        state.onRight()
         break
       case 40:
-        downBtn.click()
+        state.onDown()
         break
       default:
         return
@@ -221,17 +258,17 @@ export function egg () {
     c.fillRect(apple[0], apple[1], 1, 1)
   }
   let playing = false
-  let score, snake, apple, idealLength
-  let highScore =
-    +cookie.getItem('[gunn-web-app] scheduleapp.snakeHighScore') || 0
-  highScoreDisplay.textContent = highScore
-  playBtn.onclick = e => {
-    scoreDisplay.textContent = score = 0
+  let snake, apple, idealLength
+
+  state.onPlay = () => {
+    if (playing) return
+    state.score = 0
+    state.gameEnd = null
     snake = [[9, 9]]
     apple = getApplePos()
     idealLength = 3
     playing = setInterval(() => {
-      if (!document.body.contains(canvas)) {
+      if (!document.body.contains(c.canvas)) {
         clearInterval(playing)
         playing = false
       }
@@ -246,86 +283,61 @@ export function egg () {
       ) {
         clearInterval(playing)
         playing = false
-        scoreDisplay.textContent =
-          score + ` (GAME OVER${score > highScore ? ' - NEW HIGH SCORE' : ''})`
-        if (score > highScore) {
-          highScore = score
-          highScoreDisplay.textContent = highScore
-          cookie.setItem('[gunn-web-app] scheduleapp.snakeHighScore', highScore)
+        state.gameEnd = [state.score > state.highScore]
+        if (state.score > state.highScore) {
+          state.highScore = state.score
+          cookie.setItem(
+            '[gunn-web-app] scheduleapp.snakeHighScore',
+            state.highScore
+          )
         }
+        setState(getRenderedEgg(state))
       } else if (newPos[0] === apple[0] && newPos[1] === apple[1]) {
         apple = getApplePos()
         idealLength++
-        scoreDisplay.textContent = ++score
+        state.score++
+        setState(getRenderedEgg(state))
       }
       snake.push(newPos)
       if (snake.length > idealLength) snake.splice(0, 1)
       render()
     }, 200)
     render()
+    setState(getRenderedEgg(state))
   }
 
-  const stats = {
-    count: +cookie.getItem('[gunn-web-app] scheduleapp.clicks') || 0,
-    power: +cookie.getItem('[gunn-web-app] scheduleapp.clickPower') || 1,
-    extra: 0
+  state.onClick = () => {
+    state.clicks += state.power
+    cookie.setItem('[gunn-web-app] scheduleapp.clicks', state.clicks)
+    setState(getRenderedEgg(state))
   }
+  state.onPower = () => {
+    const price = (state.power + 1) * 25
+    if (state.clicks >= price) {
+      state.clicks -= price
+      cookie.setItem('[gunn-web-app] scheduleapp.clicks', state.clicks)
 
-  clicks.textContent = stats.count
-  btn.addEventListener(
-    'click',
-    e => {
-      stats.count += stats.power
-      cookie.setItem('[gunn-web-app] scheduleapp.clicks', stats.count)
-      clicks.textContent = stats.count
-    },
-    false
-  )
-  priceDisplay.textContent = (stats.power + 1) * 25
-  powerDisplay.textContent = stats.power
-  buyBtn.addEventListener(
-    'click',
-    e => {
-      const price = (stats.power + 1) * 25
-      if (stats.count < price) {
-        priceDisplay.textContent = price + ' (which is too many for you)'
-      } else {
-        stats.count -= price
-        clicks.textContent = stats.count
-        cookie.setItem('[gunn-web-app] scheduleapp.clicks', stats.count)
+      state.power++
+      cookie.setItem('[gunn-web-app] scheduleapp.clickPower', state.power)
+      setState(getRenderedEgg(state))
+    }
+  }
+  state.onExtra = () => {
+    const price = state.extra * 150 + 100
+    if (state.clicks >= price) {
+      state.clicks -= price
+      cookie.setItem('[gunn-web-app] scheduleapp.clicks', state.clicks)
 
-        stats.power++
-        powerDisplay.textContent = stats.power
-        cookie.setItem('[gunn-web-app] scheduleapp.clickPower', stats.power)
-        priceDisplay.textContent = (stats.power + 1) * 25
-      }
-    },
-    false
-  )
-  priceTDisplay.textContent = stats.extra * 150 + 100
-  extraDisplay.textContent = stats.extra
-  buyTBtn.addEventListener(
-    'click',
-    e => {
-      const price = stats.extra * 150 + 100
-      if (stats.count < price) {
-        priceTDisplay.textContent = price + ' (which is too many for you)'
-      } else {
-        stats.count -= price
-        clicks.textContent = stats.count
-        cookie.setItem('[gunn-web-app] scheduleapp.clicks', stats.count)
-
-        stats.extra++
-        extraDisplay.textContent = stats.extra
-        priceTDisplay.textContent = stats.extra * 150 + 100
-      }
-    },
-    false
-  )
+      state.extra++
+      setState(getRenderedEgg(state))
+    }
+  }
   setInterval(() => {
-    stats.count += stats.extra
-    clicks.textContent = stats.count
-    cookie.setItem('[gunn-web-app] scheduleapp.clicks', stats.count)
+    state.clicks += state.extra
+    cookie.setItem('[gunn-web-app] scheduleapp.clicks', state.clicks)
+    setState(getRenderedEgg(state))
   }, 1000)
+
+  setState(getRenderedEgg(state))
   return wrapper
 }
