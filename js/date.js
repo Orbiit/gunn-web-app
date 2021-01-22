@@ -199,6 +199,7 @@ export class DatePicker {
       const todayElem = this.dates[DatePicker.weirdToString(this.day)]
       if (todayElem) {
         todayElem.elem.scrollIntoView({
+          behavior: 'smooth',
           block: 'center'
         })
       }

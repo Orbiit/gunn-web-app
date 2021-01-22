@@ -41,7 +41,6 @@
   padding: 20px 24px;
   box-sizing: border-box;
   overflow: auto;
-  scroll-behavior: smooth;
 }
 .datepicker-has-month {
   justify-content: center;

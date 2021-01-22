@@ -53,7 +53,8 @@ function processStateArray (states) {
   // Merge adjacent strings
   const processed = []
   for (let i = 0; i < states.length; i++) {
-    const state = typeof states[i] === 'number' ? states[i].toString() : states[i]
+    const state =
+      typeof states[i] === 'number' ? states[i].toString() : states[i]
     if (!exists(state)) continue
     if (typeof state === 'string') {
       if (i > 0 && typeof processed[processed.length - 1] === 'string') {
