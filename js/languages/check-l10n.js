@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const MAX = 10
 
-const langs = ['en', 'en-gt', 'fr']
+const langs = ['en', 'en-gt', 'fr', 'en-bg']
 
 function insertIntoMap (map, obj, prefix = '') {
   if (typeof obj === 'object') {
