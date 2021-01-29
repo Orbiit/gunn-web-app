@@ -16,7 +16,7 @@ export const availableLangs = {
 
 export const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
   ? Object.keys(availableLangs)
-  : ['en', 'en-gt', 'fr', 'en-bg']
+  : ['en', 'en-gt', 'fr']
 if (!availableLangs[cookie.getItem('[gunn-web-app] language')]) {
   let lang = 'en'
   if (navigator.languages) {
