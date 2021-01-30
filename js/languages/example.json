@@ -18,6 +18,7 @@
   "html/asgn-none": [],
   "html/asgn-period-date": ["period", "date"],
   "html/asgn-sort": [],
+  "html/ash-creds": ["name"],
   "html/assignments": [],
   "html/assync": [],
   "html/assync-desc": [],

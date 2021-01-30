@@ -21,6 +21,7 @@ export default {
     'asgn-none': 'New Zealand',
     'asgn-period-date': 'Due by {period} on {date}.',
     'asgn-sort': 'Sorting method',
+    'ash-creds': '{name|Ash} for a language.',
     assignments: 'Assignments',
     assync: 'Assignment Synchronization System (Assync)',
     'assync-desc':
