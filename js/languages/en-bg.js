@@ -5,11 +5,11 @@ window.langs['en-bg'] = {
     about: 'Equipment for rent',
     'add-barcode': 'Kenyan friends',
     'add-home':
-    'Dinani Battani {share-icon}, Gavani "{add-home|Leave your homepage}" {add-home-img}and hit "{add|Enter}."',
+      'Dinani Battani {share-icon}, Gavani "{add-home|Leave your homepage}" {add-home-img}and hit "{add|Enter}."',
     'add-ugwa': 'Add programs using EE',
     'allow-swipe': 'How many days do you want to clean your fingers?',
     'android-instruct':
-    '{name|I - Android}-Click the menu and select "Add to Home Screen."',
+      '{name|I - Android}-Click the menu and select "Add to Home Screen."',
     announcements: 'It should',
     'asgn-after': 'Everything',
     'asgn-algorithms': 'Use the A L G O R I T H M.',
@@ -23,39 +23,34 @@ window.langs['en-bg'] = {
     'asgn-sort': 'Done',
     assignments: 'Plan',
     assync: 'Live streaming system',
-    'assync-desc':
-    'You need as many scans as possible for the test you need.',
+    'assync-desc': 'You need as many scans as possible for the test you need.',
     barcode: 'Please help',
     'barcode-desc':
-    'Click this image to complete it. Confirm registration is automatically displayed for each section and the screen is clear. Use code 39 to make it easier for students to read the text. {wikipedia|Web - Wikipedia}.',
+      'Click this image to complete it. Confirm registration is automatically displayed for each section and the screen is clear. Use code 39 to make it easier for students to read the text. {wikipedia|Web - Wikipedia}.',
     bell: 'After reading the above',
     'bell-volume': 'Zero so you can play again.',
-    browsers:
-    'UGWA replaces Chrome 7 iOS Safari.',
+    browsers: 'UGWA replaces Chrome 7 iOS Safari.',
     bugs: 'Misinterpretation',
     category: 'very good: {category}',
-    'chrome-instruct':
-    '{name|Click}-on the title',
-    'click-for-audio':
-    '{icon} Mobile weapon',
+    'chrome-instruct': '{name|Click}-on the title',
+    'click-for-audio': '{icon} Mobile weapon',
     close: 'Everything is in place',
     'club-list': 'I am a picture of the pope',
     'club-name': 'O b',
     clubs: 'Simple simple',
     'clubs-disclaimer':
-    "Club information is based on {doc-link|the club documentation} dated {link|September 30, 2020}. I'm sorry, I was wrong.",
+      "Club information is based on {doc-link|the club documentation} dated {link|September 30, 2020}. I'm sorry, I was wrong.",
     comm: 'connections',
     'control-centre': 'Control room',
-    'control-centre-desc': "If UGWA is large, use the down button",
-    'coronavirus-heading': "The school is closed!",
+    'control-centre-desc': 'If UGWA is large, use the down button',
+    'coronavirus-heading': 'The school is closed!',
     'coronavirus-pausd': 'PAUSD and the man',
-    'coronavirus-subtitle':
-    "GWA studies every year.",
+    'coronavirus-subtitle': 'GWA studies every year.',
     credits: 'in order to',
     'current-grade': 'The apostle Paul: {input}',
     'dark-theme': 'Cheap price:',
     'desktop-instruct':
-    '{name|Click Star}-not Browser, or click Click and select Network.',
+      '{name|Click Star}-not Browser, or click Click and select Network.',
     'disable-lists': 'Clean the entrance to the trees',
     'edit-asgn': 'over and over',
     'edit-h': 'Eighth Noah Mol Explorebatur',
@@ -65,69 +60,66 @@ window.langs['en-bg'] = {
     'export-file': 'Please send a copy',
     'feature-based': 'Compared to many previous versions of GunApp.',
     'finals-worth': 'Following the decision of another board member: {input}',
-    'gmaps-instruct':
-    "{for|Google Maps}: Available online.",
+    'gmaps-instruct': '{for|Google Maps}: Available online.',
     'h-editor': 'He followed us',
     heaucques: 'Update',
     'henry-creds': '{name|Henry} showed me a Google map.',
     'hide-preps': 'Is there a secret to such a "cure"?',
     'image-instruct':
-    '{for|Divide the image}: in two or move it so that it can be touched with your fingers.',
+      '{for|Divide the image}: in two or move it so that it can be touched with your fingers.',
     'import-file': 'Or load the contents of the imported: {file} {import|file}',
     importance: 'Linesumg: {low|drank} {medium|.} {high|.}',
     intent:
-    'This tool is designed to support GelBop B Stuff for ChannelBook users.',
+      'This tool is designed to support GelBop B Stuff for ChannelBook users.',
     'ios-instruct':
-    '{name|In iOS}-Safari, click the Add icon and select Add Home.',
+      '{name|In iOS}-Safari, click the Add icon and select Add Home.',
     'kevin-creds': '{name|Uppsala} UPC University.',
     'kill-sw': 'Uninstall app',
     languages: 'Language skills',
     'light-theme': 'Small shoes',
-    'lists-disabled': "This list includes people with disabilities",
+    'lists-disabled': 'This list includes people with disabilities',
     loading: 'Obviously...',
     'loading-assync': 'Obviously...',
     lonely:
-    "As a UGWA, you should try to prepare your team this year so that UGWA can coach difficult students.",
+      'As a UGWA, you should try to prepare your team this year so that UGWA can coach difficult students.',
     map: 'II.Card negative-NI',
     'mark-psas-read': '{icon} Write and read yourself',
-    'martin-ad': "{ad|Very suitable} - Temperature",
-    material:
-    "Original {link|graphic design}, theme and color.",
+    'martin-ad': '{ad|Very suitable} - Temperature',
+    material: 'Original {link|graphic design}, theme and color.',
     'matthew-creds': '{name|Methos} There are only four people.',
     'min-grade': 'Try the important things: {input}',
     minscore: 'Pasi pehukuru',
-    'msg-note':
-    'Allow to sit and delay every 10 seconds.',
+    'msg-note': 'Allow to sit and delay every 10 seconds.',
     naw: 'You can do nothing',
     'neither-theme': 'my friends:',
     new: 'Record',
     'new-psa': 'New wings! {count}',
     'no-hour': 'Sometimes not',
     'not-using-assync':
-    '{create|Create different income figures} or {id} {join|compare people}',
+      '{create|Create different income figures} or {id} {join|compare people}',
     'notif-time-before':
-    'Start {time} and end of the game (only UGVA contact information)',
+      'Start {time} and end of the game (only UGVA contact information)',
     notifications: 'Ahhh',
     numbers: 'kana',
     ok: 'Friday',
     'open-chat': 'Faster - quickly',
     'open-link-before':
-    'When activated (voice) Remote Control {time} {emphasis|This page does not just show items.}',
+      'When activated (voice) Remote Control {time} {emphasis|This page does not just show items.}',
     options: 'Examples',
     'other-apps':
-    "Plans to use GoonTim third tool: {tga-ios|TheGunnApp} Belgian Mboy C · {tga-android|'e'e Mulh} of David · {ugwa-backend|Back} GUVAKevin I:",
+      "Plans to use GoonTim third tool: {tga-ios|TheGunnApp} Belgian Mboy C · {tga-android|'e'e Mulh} of David · {ugwa-backend|Back} GUVAKevin I:",
     'other-versions':
-    'There are also: {gunn-schedule|Hannah Hannah} (perfect) · {ugwita|.} (of color) · {ugwa2|Uma} (Uma Ju b) · {ugwisha|bad}.',
+      'There are also: {gunn-schedule|Hannah Hannah} (perfect) · {ugwita|.} (of color) · {ugwa2|Uma} (Uma Ju b) · {ugwisha|bad}.',
     periods: 'About Emma',
     'periods-desc': 'Press the color in the center to separate.',
     'prev-chats': 'Song of the head,',
     reload: 'Goa lines',
     'report-bugs':
-    'Looking for {gh|GitB?} or email {email|anesheep22+gwa@outlook.com} Email Create job search reports or report bugs.',
+      'Looking for {gh|GitB?} or email {email|anesheep22+gwa@outlook.com} Email Create job search reports or report bugs.',
     s1a: 'Quick installation',
     s1b: '741-741',
     s1c:
-    'The term "support" refers to the needs of LGBTQ personnel,\nand is a special word for supporting "LGBTQ".',
+      'The term "support" refers to the needs of LGBTQ personnel,\nand is a special word for supporting "LGBTQ".',
     s2a: 'Tips on suicide prevention',
     s2b: '800-273-8256',
     s2c: 'Vaccinations and immunizations (below)',
@@ -149,7 +141,7 @@ window.langs['en-bg'] = {
     'select-date': 'Select the date',
     send: "It's creatine.",
     'service-creds':
-    '{search|Sau rau Google}, {so|MDN}, Suite {mdn|search engine application} application.',
+      '{search|Sau rau Google}, {so|MDN}, Suite {mdn|search engine application} application.',
     'show-h': 'Stranica 8?',
     // 'show-self-toggle': 'The battery?',
     show0: 'Show time',
@@ -157,7 +149,7 @@ window.langs['en-bg'] = {
     sponsor: 'They are supported by rock bands.',
     staff: 'tips',
     'staff-disclaimer':
-    "Please note that on {link|September 30, 2020}, 30 employees will be fired for misconduct.",
+      'Please note that on {link|September 30, 2020}, 30 employees will be fired for misconduct.',
     'staff-list': 'People',
     'staff-name': 'minutes',
     support: 'A pupil of Halberg',
@@ -171,16 +163,15 @@ window.langs['en-bg'] = {
     'turn-back-on': 'UGqr Madison Moore',
     units: 'Ana branch',
     'update-title': 'Name on the left side of the photo',
-    'use-iframe':
-    "Do you want to delete a new link on your new site?",
+    'use-iframe': 'Do you want to delete a new link on your new site?',
     'use-safari':
-    "First of all, Safari cannot be unlocked and UGWA will continue to support it",
+      'First of all, Safari cannot be unlocked and UGWA will continue to support it',
     'using-assync': 'Mee akara: {id} {leave|.}',
     utilities: 'Exclusive support',
     version: 'Excellent {version} users.',
     'want-ugwa-normal': 'Uganda Luuchten.'
-},
-other: {
+  },
+  other: {
     'add-asgn': 'Unity',
     'add-to-list': "What's in a club?",
     'alt-msg': 'The program of your choice is here. "{D}"',
@@ -215,35 +206,34 @@ other: {
     cannot: 'It was an explosion',
     'close-future': 'Provided',
     club: {
-    advisors: 'Instructions for writing',
-    coadvisor: {
+      advisors: 'Instructions for writing',
+      coadvisor: {
         email: 'Write a letter by email. By mail',
         name: 'User identification'
-    },
-    day: 'Nudulu',
-    desc: 'Read more:',
-    donation: 'I havefulllives',
-    error:
-        "The tree will drop the notification message.No yes?",
-    location: 'Andoneugly',
-    presidents: 'Councilors:',
-    signup: 'berries',
-    self: {
+      },
+      day: 'Nudulu',
+      desc: 'Read more:',
+      donation: 'I havefulllives',
+      error: 'The tree will drop the notification message.No yes?',
+      location: 'Andoneugly',
+      presidents: 'Councilors:',
+      signup: 'berries',
+      self: {
         club: 'Onjezani',
         day: 'Friday',
         desc:
-        'Our team is the foundation of compassion, patience and other habits that help friends trust teachers and our exceptional students create a safe and comfortable environment for us.',
+          'Our team is the foundation of compassion, patience and other habits that help friends trust teachers and our exceptional students create a safe and comfortable environment for us.',
         email: 'ccarlomagno@pausd.org',
         prez: 'On the roto and',
         room: 'Oasis, Wheeler',
         teacher: 'French court',
         time: '11:05 AM'
-    },
-    'teacher-email': 'Branch address:',
-    tier: 'Guide:',
-    time: 'Meetingdays;',
-    video: 'Watch video:',
-    zoom: 'Edit the relationship'
+      },
+      'teacher-email': 'Branch address:',
+      tier: 'Guide:',
+      time: 'Meetingdays;',
+      video: 'Watch video:',
+      zoom: 'Edit the relationship'
     },
     days: 'Sunday  Monday  Tuesday  Wednesday  Wednesday  Friday  Wednesday',
     'dead-club': 'This is a group of trips to Ghana.',
@@ -251,43 +241,36 @@ other: {
     doneify: 'It is a joy to see',
     ds: 'S  M  T  W  Θ  F  Δ',
     'enable-lists': 'Enter your address / subject',
-    'events-error':
-    "I can't find a job, can I connect to the network?",
-    'export-file-name':
-    'it-all-depends-on-the-number-of-good-students.json',
+    'events-error': "I can't find a job, can I connect to the network?",
+    'export-file-name': 'it-all-depends-on-the-number-of-good-students.json',
     finals: 'for example',
     flex: 'Information:',
     'gunn-together': {
-    name: 'Good luck',
-    sem2:
-        'In 5th grade, ask the teacher why you want to ask this question.',
-    subtitle:
-        'Is your fifth foot faster?'
+      name: 'Good luck',
+      sem2: 'In 5th grade, ask the teacher why you want to ask this question.',
+      subtitle: 'Is your fifth foot faster?'
     },
     gmaps: 'U.S. Google Maps',
-    'gmaps-error':
-    "Google Maps is not open",
+    'gmaps-error': 'Google Maps is not open',
     hex: 'Rex',
     image: 'Utimaginis',
     'image-url': 'Video URL:',
     'import-problem': 'Do you have any problems?',
-    'import-warning':
-    'You will keep your promises, right?',
+    'import-warning': 'You will keep your promises, right?',
     join: 'Good luck!',
     loading: 'Join ...',
     lunch: 'Restaurant:',
     'lunch-clubs': 'Oh my money',
-    minscore: "You need more than {S} luck to succeed in affiliate business and you need more than luck to succeed in a joint venture.",
-    'minscore-too-high-addendum':
-    " However, we do not go unnoticed.",
+    minscore:
+      'You need more than {S} luck to succeed in affiliate business and you need more than luck to succeed in a joint venture.',
+    'minscore-too-high-addendum': ' However, we do not go unnoticed.',
     months:
-    'January  February  May  April  May  June  July  August  October  November  November  December',
+      'January  February  May  April  May  June  July  August  October  November  November  December',
     mos: 'Jan  Feb  May  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec',
     'no-events': 'Be careful №.',
     'no-school': 'Sports equipment',
-    'no-study':
-    "{E} 0% also exceeded the license limit.",
-    'no-study-emph': "No need to read",
+    'no-study': '{E} 0% also exceeded the license limit.',
+    'no-study-emph': 'No need to read',
     'notif-click-desc': 'Click to open',
     overdue: 'What a thing',
     p0: 'Central in 20 cities',
@@ -303,64 +286,61 @@ other: {
     self: 'Throughout life',
     'show-more': 'Iron rod',
     staff: {
-    basement: 'No conditions:',
-    department: 'U-Lick:',
-    email: 'Category:',
-    error:
-        "Employees cannot access the Internet without your knowledge",
-    phone: 'Be careful',
-    schedule: 'Choose one of the following options:',
-    title: 'Aa:',
-    website: 'website'
+      basement: 'No conditions:',
+      department: 'U-Lick:',
+      email: 'Category:',
+      error: 'Employees cannot access the Internet without your knowledge',
+      phone: 'Be careful',
+      schedule: 'Choose one of the following options:',
+      title: 'Aa:',
+      website: 'website'
     },
     'staff-self-meetings' ({ S: hasSelf, M: hasMeetings }) {
-    if (hasSelf) {
-        return hasMeetings
-        ? 'Learn more about help.'
-        : 'Invalid.'
-    } else {
+      if (hasSelf) {
+        return hasMeetings ? 'Learn more about help.' : 'Invalid.'
+      } else {
         return hasMeetings ? 'I have a suggestion.' : ''
-    }
+      }
     },
     summer: 'He is a liar!',
     'supreme-leader': 'General walk',
     symbols: {
-    brunch: '🧃',
-    flex: 'Ug.',
-    lunch: '🍱',
-    'period-a': '1',
-    'period-b': '2',
-    'period-c': '3',
-    'period-d': '4',
-    'period-e': '5',
-    'period-f': '6',
-    'period-g': '7',
-    'period-h': '8',
-    'period-zero': '0',
-    self: 'Stanta'
+      brunch: '🧃',
+      flex: 'Ug.',
+      lunch: '🍱',
+      'period-a': '1',
+      'period-b': '2',
+      'period-c': '3',
+      'period-d': '4',
+      'period-e': '5',
+      'period-f': '6',
+      'period-g': '7',
+      'period-h': '8',
+      'period-zero': '0',
+      self: 'Stanta'
     },
     'time-before': {
-    'before-0-00-10': 'Within 10 seconds',
-    'before-0-00-30': 'After 30 seconds',
-    'before-0-01-00': 'Before',
-    'before-0-02-00': 'Good 2 minutes',
-    'before-0-05-00': 'after five minutes',
-    'before-0-10-00': '10 minutes',
-    'before-0-15-00': '15 minutes ago',
-    'before-0-30-00': '0 minutes pass',
-    'before-1-00-00': 'One hour ago',
-    immediately: 'throwing',
-    never: 'Related'
+      'before-0-00-10': 'Within 10 seconds',
+      'before-0-00-30': 'After 30 seconds',
+      'before-0-01-00': 'Before',
+      'before-0-02-00': 'Good 2 minutes',
+      'before-0-05-00': 'after five minutes',
+      'before-0-10-00': '10 minutes',
+      'before-0-15-00': '15 minutes ago',
+      'before-0-30-00': '0 minutes pass',
+      'before-1-00-00': 'One hour ago',
+      immediately: 'throwing',
+      never: 'Related'
     },
     today: 'people',
     undoneify: 'Delete used files',
     universe: '"Strong."',
     you: 'UTI is a very popular product',
     'yt-only':
-    '(For obvious reasons), the most popular videos on YouTube are here',
+      '(For obvious reasons), the most popular videos on YouTube are here',
     'zero-error': "Don't try to make me happy."
-},
-placeholders: {
+  },
+  placeholders: {
     assignment: 'finish',
     assync: 'No information added',
     clubs: 'Look at the company',
@@ -368,26 +348,32 @@ placeholders: {
     import: 'Or see the guide',
     'send-msg': 'Send message',
     staff: 'I am looking for staff'
-},
-times: {
+  },
+  times: {
     branded: '{T} · Yoga Exercise',
     date: '{M} {D}',
     'due-date' ({ P: periodSpan, D: dateStr }) {
-    return 'Created by Floro ' + (periodSpan ? periodSpan + ' In this world ' : '') + dateStr
+      return (
+        'Created by Floro ' +
+        (periodSpan ? periodSpan + ' In this world ' : '') +
+        dateStr
+      )
     },
     duration ({ T: minutes }) {
-    if (minutes < 1) return 'Less than half a minute'
-    return (
+      if (minutes < 1) return 'Less than half a minute'
+      return (
         (minutes >= 120
-        ? Math.floor(minutes / 60) + ' Soy'
-        : minutes >= 60
-        ? 'and'
-        : '') +
+          ? Math.floor(minutes / 60) + ' Soy'
+          : minutes >= 60
+          ? 'and'
+          : '') +
         (minutes % 60 === 0
-        ? ''
-        : (minutes >= 60 ? ' Dear Canada ' : '') +
-            (minutes % 60 === 1 ? 'Minute by minute' : (minutes % 60) + ' Wait a minute'))
-    )
+          ? ''
+          : (minutes >= 60 ? ' Dear Canada ' : '') +
+            (minutes % 60 === 1
+              ? 'Minute by minute'
+              : (minutes % 60) + ' Wait a minute'))
+      )
     },
     'end-time': 'School ends {T} today.',
     ended: '{P} He {T} will live.',
@@ -395,7 +381,7 @@ times: {
     'ending-short': '{T} This happens all the time',
     long: '{T} మకనా',
     month: '{M} {Y}',
-    over: "Finish the lesson!",
+    over: 'Finish the lesson!',
     range: '{T1}–{T2} · {D}',
     seconds: '{T}s',
     'self-ended': 'Full {T} page.',
