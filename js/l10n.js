@@ -9,9 +9,11 @@ export const availableLangs = {
   'en-gt': 'English (Google Translated through Chinese)',
   es: 'español',
   fr: 'français',
+  'en-bg': 'Engrish',
   test: 'le language test',
   'x-mleng': "L'leng"
 }
+
 export const publicLangs = /(?:\?|&)all-langs/.exec(window.location.search)
   ? Object.keys(availableLangs)
   : ['en', 'en-gt', 'fr']
