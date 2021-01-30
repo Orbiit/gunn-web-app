@@ -153,7 +153,7 @@ async function main () {
   const outputPath = fileURLToPath(
     new URL('../json/clubs.json', import.meta.url)
   )
-  await fs.writeFile(outputPath, JSON.stringify(clubs, null, '\t'))
+  await fs.writeFile(outputPath, JSON.stringify(clubs, null, '\t') + '\n')
 
   if (Object.keys(links).length) {
     console.log('Not matched:', Object.keys(links))

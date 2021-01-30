@@ -4,9 +4,12 @@
  * Preview "Accept all" (if there are any suggestions)
  * Select all and copy to data:text/html;charset=UTF-8,<body contenteditable>
  * Run the following in the console
+ * Put the JSON output in json/clubs-links.json
  */
 
-// Put the JSON output in json/clubs-links.json
+// NOTE: I've been saving past clubs-links.json versions as clubs-links-N.json,
+// where N is a manually incremented number. This way, I can compare changes
+// using this command:
 // diff json/clubs-links-N.json json/clubs-links.json --color=always
 
 JSON.stringify(

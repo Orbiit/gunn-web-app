@@ -14,12 +14,18 @@ npm run update-staff
 You might want to update the last updated date in **js/languages/en.js** in
 `staff-disclaimer`.
 
-## Updating the club list
+## Updating the club list (2020–2021)
 
-```sh
-# Probably will require updating after 2020-2021
-npm run update-clubs
-```
+One of the nice things about UGWA graduating this year is that I do not have to
+worry about the state of UGWA's club system. Due to clubs being virtual, there's
+a lot of quirkiness involved to support club videos and Zoom links. The code
+that handles it likely will not work in future years.
+
+1. Follow the instructions in [js/get-clubs-links.js](../js/get-clubs-links.js).
+
+2. `npm run update-clubs`
+
+    This uses your Google Calendar API key. You can enable the Google Drive API using the directions in [js/get-clubs-gdrive-thumbnails.js](../js/get-clubs-gdrive-thumbnails.js).
 
 You might want to update the last updated date in **js/languages/en.js** in
 `clubs-disclaimer`.

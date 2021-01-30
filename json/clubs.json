@@ -15,8 +15,8 @@
 		"new": true,
 		"desc": "A club dedicated for cleaning creeks through independent events and/or our creek segment at Barron Creek near Sofia University (can give volunteer hours). Miscellaneous activities for creek cleaning include removing graffiti, picking up litter, and enjoying being outside.",
 		"day": "Tuesday, Thursday",
-		"time": "11:40 AM",
-		"link": "https://pausd.zoom.us/j/4707399225",
+		"time": "4:00 PM",
+		"link": "https://pausd.zoom.us/j/94670658273",
 		"video": "https://www.youtube.com/watch?v=QUFUHAeQz5A",
 		"signup": "https://docs.google.com/forms/d/e/1FAIpQLSc4Spw9pjVCTo7WT9P4A36Up9mzhbCh2A8hcYYEESQOuHvCqA/viewform",
 		"tier": 1,
@@ -213,18 +213,6 @@
 		"email": "jhexsel@pausd.org",
 		"thumbnail": null
 	},
-	"Black Student Union": {
-		"new": true,
-		"desc": "The BSU provides an opportunity to  build community, celebrate and learn more about black culture, lifestyle and history. It also addresses issues that are important to black people as well.",
-		"day": "Monday",
-		"time": "3:30 PM",
-		"tier": 1,
-		"president": "Ian Brown",
-		"coteacher": "Pier Angeli La Place",
-		"coemail": "plaplace@pausd.org",
-		"teacher": "Myesha Dickson",
-		"email": "mcompton@pausd.org"
-	},
 	"Bridge Club": {
 		"new": false,
 		"desc": "We play the most fun card game ever: Bridge!",
@@ -390,19 +378,6 @@
 		"president": "Inga Gous",
 		"teacher": "Liz Matchett",
 		"email": "lmatchett@pausd.org"
-	},
-	"Dungeons and Dragons Club": {
-		"new": false,
-		"desc": "Gunn Dungeons and Dragons Club, is a club about playing the table top roll playing game, dungeons and dragons. We are trying to have a place where new players can get into the game and more veteran players can find more people to play with.",
-		"day": "Thursday",
-		"time": "11:40 AM",
-		"link": "https://pausd.zoom.us/j/91832787732",
-		"video": "https://www.youtube.com/watch?v=mpr2XYhBL54",
-		"signup": "https://docs.google.com/forms/d/e/1FAIpQLSdyilJdG-YyxBrGd2AzKd6TswtlblxiLyIdN5dbdEVkNZcOww/viewform?usp=sf_link",
-		"tier": 1,
-		"president": "Nicholas Mount",
-		"teacher": "Daljeet Gill",
-		"email": "dgill@pausd.org"
 	},
 	"Economics Club": {
 		"new": true,
@@ -579,6 +554,7 @@
 		"time": "11:40 AM",
 		"link": "https://tinyurl.com/gunnhpc",
 		"video": "https://drive.google.com/file/d/1oP6hfCaNRj1_ZgldWAZlozJDEXTwyUI5/view",
+		"signup": "https://tinyurl.com/hpc-sign-up",
 		"tier": 1,
 		"president": "Aaron Cheung",
 		"teacher": "Dr. Heather Mellows",
@@ -590,7 +566,7 @@
 		"desc": "Our overarching goal is to help the Gunn community become more aware of how nutrition and fitness contribute to our physical and mental health, as well as factors like the environment and animal welfare. Topics we may cover are protein sources, micro and macronutrients, myths, and truths surrounding plant-based diets, etc.We plan on achieving our purpose through pre-recorded podcasts which members can listen to on their own time (while taking a walk!) and group discussions. We also will hold fitness competitions, group online workout sessions, synchronous cooking activities, and share recipes and tips over social media accounts.",
 		"day": "Thursday",
 		"time": "3:45 PM",
-		"link": "https://pausd.zoom.us/j/99925029375",
+		"link": "https://pausd.zoom.us/j/99048695806?pwd=Zjh5QmM4ZzdZdzJ5d1p4SUZtcCs3Zz09",
 		"video": "https://drive.google.com/file/d/1am75dGHxTZAhPDETPPmgnCoXe-V3uPRt/view?usp=sharing",
 		"signup": "https://forms.gle/zu7i6fJA9NMpNrg26",
 		"tier": 2,
@@ -665,18 +641,6 @@
 		"teacher": "Terence Kitada",
 		"email": "tkitada@pausd.org"
 	},
-	"Islam In The Light": {
-		"new": true,
-		"desc": "It is about the misconceptions about Islam. Like does the hijab oppress women, do Muslims worship a black cube, do they not eat pigs because they are sacred, etc.",
-		"day": "Thursday",
-		"time": "11:40 AM",
-		"link": "https://pausd.zoom.us/j/93475967323",
-		"video": "https://youtu.be/6Ru4Vcz6XVA",
-		"tier": 1,
-		"president": "Hadi Mirza",
-		"teacher": "Kristen Owen",
-		"email": "kowen@pausd.org"
-	},
 	"Japanese Culture Club": {
 		"new": false,
 		"desc": "The purpose of the Japanese Culture Club is to educate students about the many aspects of Japanese Culture. We want to put a large focus on Japanese traditions, history, and present-day pop culture, and how those have affected our own society as well. Overall, our main goal is to teach the rich culture of this amazing country to all students who find it fascinating!",
@@ -748,6 +712,7 @@
 		"time": "3:30 PM",
 		"link": "https://pausd.zoom.us/j/97911573416",
 		"video": "https://youtu.be/8znHozb10No",
+		"signup": "https://docs.google.com/forms/d/1wb33IGbHcHNBW_iXqMYXKfsqD6sdyojTA6wtBtbA2N8/edit",
 		"tier": 1,
 		"president": "Chris Ford",
 		"teacher": "Kim Sabbag",
@@ -930,7 +895,7 @@
 		"desc": "The main focus of this club will be on Astrophysics, but we will also discuss topics in the field of basic newtonian physics and particle physics as well. If you have absolutely no knowledge of physics, you are still more than welcome to join; we will first go over basic physics. Activities will include discussions and optional mini-projects. There will also be designated time for members to get to know each other since we no longer have much opportunity to socialize and meet new people due to the pandemic. Meetings will be held once a week at most.",
 		"day": "Wednesday",
 		"time": "11:40 AM",
-		"link": "https://pausd.zoom.us/j/6554777765",
+		"link": "https://pausd.zoom.us/j/98017098008",
 		"video": "https://youtu.be/JIaIqARc8N4",
 		"tier": 1,
 		"president": "Zachary Chang-Otanez",
@@ -993,7 +958,7 @@
 		"new": false,
 		"desc": "Project QUERB invites anyone interested in the fundamental physics behind our world at the smallest scale, or quantum mechanics. Members are exposed to this radically unique and exciting field, and can build an in-depth understanding of it, through presentations, activities, and mentoring by professionals in the field. We work towards conducting our annual, groundbreaking quantum physics experiment, such as implementing Shor’s Algorithm or experimenting with circular polarization.",
 		"day": "Monday",
-		"time": "12:35 PM",
+		"time": "11:40 AM",
 		"link": "https://pausd.zoom.us/j/2269137689",
 		"video": "https://youtu.be/DtLzF6_GLow",
 		"signup": "https://forms.gle/AjDGtZKcUQexh8aK6",
@@ -1338,19 +1303,6 @@
 		"email": "jshelby@pausd.org",
 		"thumbnail": "https://i.imgur.com/HGTXIBZ.jpg"
 	},
-	"Throwback Club": {
-		"new": true,
-		"desc": "The Throwback Thursday Club is all about keeping the Gunn community together and bonding over something everyone can",
-		"day": "Wednesday",
-		"time": "11:40 AM",
-		"link": "https://tinyurl.com/thr0wB",
-		"video": "https://drive.google.com/file/d/1MrdvG4AM0VsAoK0E-RrslRC6lu0X42gL/view",
-		"tier": 1,
-		"president": "Jonathan Tsang",
-		"teacher": "Amy Anderson",
-		"email": "amanderson@pausd.org",
-		"thumbnail": "https://i.imgur.com/vdis1P0.jpeg"
-	},
 	"TItan Science Journal Club": {
 		"new": true,
 		"desc": "The Titan Science Journal is a STEM-based magazine for high school students. The club works on publishing a quarterly journal. Members will help edit, compile, design, and manage the writing and publication process of the journal. Submissions are open to everyone. Meetings are held every other week and additional meeting will be held as we get closer to publication dates. Fundraisers will occur at least once a semester. Funds go towards printing and publishing costs.",
@@ -1381,7 +1333,7 @@
 		"desc": "United Computations brings together a community of students with a common interest in computer science. We plan on inviting guest speakers to club meetings, holding beginner competitive programming lessons and delving into the various fields of computer science. Additionally, as members of United Computations, students can participate in organizing Gunn’s annual hackathon (GunnHacks 7.0). Anyone interested in computer science is welcome to join!",
 		"day": "Wednesday",
 		"time": "3:15 PM",
-		"link": "https://pausd.zoom.us/j/91447696916",
+		"link": "https://us04web.zoom.us/j/8223237158?pwd=hP16LpPZ2PdO4GBGmy_bNxSjzGJGIQ Password: 8iRXsu",
 		"video": "https://youtu.be/l91x8IgbUt8",
 		"signup": "https://tinyurl.com/gunnucsignup https://tinyurl.com/gunnucdiscord",
 		"tier": 2,
@@ -1416,6 +1368,6 @@
 		"coemail": "ddeggeller@pausd.org",
 		"teacher": "Diane Ichikawa",
 		"email": "dichikawa@pausd.org",
-		"thumbnail": "https://i.imgur.com/RSpDlSR.jpeg"
+		"thumbnail": "https://i.imgur.com/bLZqfjO.jpeg"
 	}
 }
