@@ -25,7 +25,7 @@ that handles it likely will not work in future years.
 
 2. `npm run update-clubs`
 
-    This uses your Google Calendar API key. You can enable the Google Drive API using the directions in [js/get-clubs-gdrive-thumbnails.js](../js/get-clubs-gdrive-thumbnails.js).
+   This uses your Google Calendar API key. You can enable the Google Drive API using the directions in [js/get-clubs-gdrive-thumbnails.js](../js/get-clubs-gdrive-thumbnails.js).
 
 You might want to update the last updated date in **js/languages/en.js** in
 `clubs-disclaimer`.

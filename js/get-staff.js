@@ -107,6 +107,11 @@ function checkRooms (semester) {
 }
 
 async function main () {
+  const output = fileURLToPath(new URL('../json/staff.json', import.meta.url))
+  const oldStaff = await fs
+    .readFile(output, 'utf8')
+    .then(JSON.parse)
+    .catch(() => {})
   const staff = {}
 
   const [{ teachers }, ...sections] = await fetch(icSectionData).then(r =>
@@ -139,22 +144,26 @@ async function main () {
         .find('.fsFullName')
         .text()
         .trim()
+      const oldEntry = oldStaff[name] || {}
       staff[name] = {
-        jobTitle: teacher
-          .find('.fsTitles')
-          .text()
-          .trim(),
+        jobTitle:
+          teacher
+            .find('.fsTitles')
+            .text()
+            .trim() || oldEntry.jobTitle,
         department:
           teacher
             .find('.fsDepartments')
             .text()
-            .trim() || undefined,
+            .trim() || oldEntry.department,
         phone:
           teacher
             .find('.fsPhones > a')
             .text()
-            .trim() || undefined,
-        email: getEmail(teacher.find('.fsEmail > div > script').html())
+            .trim() || oldEntry.phone,
+        email:
+          getEmail(teacher.find('.fsEmail > div > script').html()) ||
+          oldEntry.email
       }
     })
     console.log(colours.green(`Page ${page} done.`))
@@ -214,7 +223,6 @@ async function main () {
     }
   }
 
-  const output = fileURLToPath(new URL('../json/staff.json', import.meta.url))
   let json = JSON.stringify(staff, null, '\t')
   for (const [id, value] of substitutions) {
     json = json.replace(`"${id}"`, JSON.stringify(value))

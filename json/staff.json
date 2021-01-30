@@ -29,23 +29,9 @@
 		}
 	},
 	"Leonel Argumedo": {
-		"jobTitle": "Assistant Principal",
+		"jobTitle": "Assistant Principal-HS",
 		"email": "largumedo@pausd.org",
 		"periods": {
-			"SELF": [[["SELF",null]],null]
-		}
-	},
-	"Adriana Aro": {
-		"jobTitle": "Teacher",
-		"department": "Special Ed",
-		"phone": "354-8262",
-		"email": "aaro@pausd.org",
-		"periods": {
-			"1": [[["US Hist","V-26"]],null],
-			"2": [[["Wld Hist","V-25"]],null],
-			"3": [[["Therapeutic Elective","K - 10"]],null],
-			"6": [[["Wld Hist","V-25"]],null],
-			"7": [[["US Hist","V-26"]],null],
 			"SELF": [[["SELF",null]],null]
 		}
 	},
@@ -155,6 +141,10 @@
 			"SELF": [[["SELF",null]],null]
 		}
 	},
+	"Todd Bittle": {
+		"jobTitle": "Counselor",
+		"email": "tbittle@pausd.org"
+	},
 	"Kristy Blackburn": {
 		"jobTitle": "Teacher",
 		"phone": "354-8238 ext. 5112",
@@ -224,10 +214,6 @@
 			"SELF": [[["SELF","L-08"]],null]
 		}
 	},
-	"Jonathan Cano": {
-		"jobTitle": "Computer Support Spec II",
-		"email": "jcano@pausd.org"
-	},
 	"Courtney Carlomagno": {
 		"jobTitle": "Teacher",
 		"phone": "354-8262 ext. 1446",
@@ -237,6 +223,10 @@
 			"3": [[["Conceptual Physics","L-01"]],null],
 			"SELF": [[["SELF",null]],null]
 		}
+	},
+	"Tom Casavant": {
+		"jobTitle": "Teacher",
+		"email": "tocasavant@pausd.org"
 	},
 	"Monica Casey": {
 		"jobTitle": "Library Assistant I",
@@ -446,6 +436,10 @@
 		"jobTitle": "Food Services Asst I",
 		"email": "mdidari@pausd.org"
 	},
+	"Liu Ding": {
+		"jobTitle": "Food Services Asst I",
+		"email": "lding@pausd.org"
+	},
 	"Rachel Dion": {
 		"jobTitle": "Teacher",
 		"phone": "354-8247 ext. 5483",
@@ -469,6 +463,10 @@
 		"phone": "354-8284 ext. 5266",
 		"email": "tdouglas@pausd.org"
 	},
+	"Anne Dumontier": {
+		"jobTitle": "Teacher",
+		"email": "adumontier@pausd.org"
+	},
 	"Paul Dunlap": {
 		"jobTitle": "Teacher",
 		"phone": "354-8238 ext. 5248",
@@ -479,6 +477,10 @@
 			"5": [[],[["WritCr 11","N - 114"]]],
 			"6": [[],[["Cont Herit","N - 114"]]]
 		}
+	},
+	"Heidi Dunn": {
+		"jobTitle": "Teacher",
+		"email": "hdunn@pausd.org"
 	},
 	"Marie-Jose Durquet": {
 		"jobTitle": "Teacher",
@@ -641,6 +643,10 @@
 			"6": [[["Engn Tech","L-05"]],null],
 			"SELF": [[["SELF","L-05"]],null]
 		}
+	},
+	"Daniel Hahn": {
+		"jobTitle": "Teacher",
+		"email": "dhahn@pausd.org"
 	},
 	"Lisa Hall": {
 		"jobTitle": "Teacher",
@@ -847,6 +853,10 @@
 			"SELF": [[["SELF",null]],null]
 		}
 	},
+	"Kristen Jensen": {
+		"jobTitle": "School-based MHT I",
+		"email": "kjensen@pausd.org"
+	},
 	"Curtis Johansen": {
 		"jobTitle": "Teacher",
 		"phone": "354-8257 ext. 5923",
@@ -884,6 +894,14 @@
 	"Kevin Johnson": {
 		"jobTitle": "Athletic Assistant",
 		"email": "kjohnson@pausd.org"
+	},
+	"Rachael Kaci": {
+		"jobTitle": "Teacher",
+		"email": "rkaci@pausd.org",
+		"periods": {
+			"4": [[["ExplExp-AAR","V-04"]],null],
+			"8": [[["Expl Exp12",null],["Gen Weep11","V-04"]],[["Gen Weep11","V-04"]]]
+		}
 	},
 	"Takeshi Kaneko": {
 		"jobTitle": "Teacher",
@@ -1042,11 +1060,6 @@
 		"periods": {
 			"Meetings": [[["Counseling",null],["Counseling",null],["Counseling",null],["Counseling",null]],null]
 		}
-	},
-	"Kira Levina": {
-		"jobTitle": "Instructional Aide GE",
-		"phone": "849-7922 ext. 5342",
-		"email": "klevina@pausd.org"
 	},
 	"Sandra Lewis": {
 		"jobTitle": "Teacher",
@@ -1207,11 +1220,6 @@
 		"periods": {
 			"SELF": [[["SELF",null]],null]
 		}
-	},
-	"Carlos Martinez": {
-		"jobTitle": "Teacher",
-		"phone": "354-8247",
-		"email": "cmartinez@pausd.org"
 	},
 	"Rolando Martinez": {
 		"jobTitle": "Computer Support Spec II",
@@ -1423,6 +1431,19 @@
 			"SELF": [[["SELF",null]],null]
 		}
 	},
+	"Tiffany Ou-Ponticelli": {
+		"jobTitle": "Teacher",
+		"email": "touponticelli@pausd.org",
+		"periods": {
+			"1": [[["Orchstr","S-102"],["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Orchstr","S-102"],["Prep",null],["Prep 12",null]]],
+			"2": [[["SchServ 11",null]],[]],
+			"3": [[["SchServ 11",null]],[]],
+			"4": [[["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Prep",null],["Prep 12",null]]],
+			"5": [[["Orchstr","S-102"],["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Orchstr","S-102"],["Prep",null],["Prep 12",null]]],
+			"6": [[["SchServ 11",null]],[]],
+			"7": [[["Prep",null],["Prep 11",null],["SchServ 11",null]],[["Prep",null],["Prep 12",null]]]
+		}
+	},
 	"Kristen Owen": {
 		"jobTitle": "Teacher",
 		"email": "kowen@pausd.org",
@@ -1622,9 +1643,17 @@
 			"SELF": [[["SELF",null]],null]
 		}
 	},
+	"Navneet Schworetzky": {
+		"jobTitle": "Teacher",
+		"email": "nschworetzky@pausd.org"
+	},
 	"Howard Selznick": {
 		"jobTitle": "Student Attendant",
 		"email": "hselznick@pausd.org"
+	},
+	"Karen Serrano Vides": {
+		"jobTitle": "Student Attendant",
+		"email": "kserranovides@pausd.org"
 	},
 	"James Shelby": {
 		"jobTitle": "Teacher",
@@ -1650,6 +1679,10 @@
 			"SELF": [[["SELF",null]],null]
 		}
 	},
+	"Arya Soofiani": {
+		"jobTitle": "Student Attendant",
+		"email": "asoofiani@pausd.org"
+	},
 	"Christopher Stephenson": {
 		"jobTitle": "Job Coach",
 		"email": "cstephenson@pausd.org"
@@ -1659,7 +1692,7 @@
 		"email": "psteward@pausd.org"
 	},
 	"Wendy Stratton": {
-		"jobTitle": "Principal",
+		"jobTitle": "Principal-HS",
 		"email": "wstratton@pausd.org"
 	},
 	"Todd Summers": {
@@ -1716,10 +1749,6 @@
 	"Melenaite Tupou": {
 		"jobTitle": "Family Engagement Specialist",
 		"email": "mtupou@pausd.org"
-	},
-	"Amanda Valenzuela": {
-		"jobTitle": "Student Attendant",
-		"email": "avalenzuela@pausd.org"
 	},
 	"Susan Van Zandt": {
 		"jobTitle": "Teacher",

@@ -119,7 +119,8 @@ async function main () {
       // Will assume that the document is generally more accurate than Lisa
       // Hall's spreadsheet (not always the case though, as someone put "11:40
       // PM" for their time on the document)
-      time: actualTime2 || noSecondsTime,
+      // Edit 2021-01-29: The spreadsheet now seems more up-to-date.
+      time: noSecondsTime || actualTime2,
       link: cleanLinks(link || zoom),
       video: cleanLinks(video),
       signup:
