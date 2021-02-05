@@ -131,19 +131,15 @@
 		"teacher": "Laura Lizundia",
 		"email": "llizundia@pausd.org"
 	},
-	"Arab Culture Club": {
-		"new": false,
-		"desc": "The goal of the club is to celebrate Arabic culture at Gunn. We will have Arab food, games, and activities to teach members about Arab culture and countries. Meetings will consist of presentations and discussions about different aspects about Arab culture and interactive activities such as cooking and crafts.",
-		"day": "Wednesday",
-		"time": "11:40 AM",
-		"link": "https://pausd.zoom.us/j/99997337590",
-		"video": "https://drive.google.com/file/d/10lh62lryBg52cbHDt8YPPFnPCrQ1OPwn/view?usp=sharing",
-		"signup": "https://forms.gle/rJpGD9faGaMn4tnM7",
+	"Applications of Computer Science": {
+		"new": true,
+		"desc": "Applications of Computer Science is a place for students who are passionate about real-life applications of Computer Science—like app development, website development, and more. Our purpose is to collaborate, discuss ideas, explore the world of real-life applications of Computer Science, learn to implement our ideas, and appreciate the abundance of places that Computer Science can take us. An example of an activity we will enjoy is talking with professionals (like softwareengineers, existing app programmers, professors, etc) and having them help us advance our skills and knowledge of what we are able to do.",
+		"day": "Thursday",
+		"time": "11:45 AM",
 		"tier": 1,
-		"president": "Christine Kang",
-		"teacher": "Ethan Halter",
-		"email": "ehalter@pausd.org",
-		"thumbnail": null
+		"president": "Julia Novick",
+		"teacher": "Gabriela Garger",
+		"email": "ggarger@pausd.org"
 	},
 	"Asian Traditional Culture Club": {
 		"new": true,
@@ -263,6 +259,16 @@
 		"teacher": "Marjorie Paronable",
 		"email": "mparonable@pausd.org"
 	},
+	"Chess Club": {
+		"new": true,
+		"desc": "Chess club is a place for chess players of all skills and grades to come together and have fun playing chess.",
+		"day": "Monday",
+		"time": "12:35 PM",
+		"tier": 1,
+		"president": "Kelson Cantrell",
+		"teacher": "Kristina Granlund-Moyer",
+		"email": "kgranlund@pausd.org"
+	},
 	"Chinese Culture Club": {
 		"new": false,
 		"desc": "Want to learn more about Chinese culture while getting extra credit for Chinese class? Join Chinese Culture Club! Every week, we will have culture presentations and fun games to play. When in-person school resumes, there will also be snacks! At the end of the year, the Chinese Culture club also holds a ceremony that honors students in Chinese level three and above to the National Chinese Honor Society.",
@@ -315,6 +321,16 @@
 		"email": "dwang@pausd.org",
 		"thumbnail": "https://i.imgur.com/kRLrKr1.jpg"
 	},
+	"College Prep Club (CPC)": {
+		"new": true,
+		"desc": "C.P.C is a club designed to prepare students for Gunn classes and college through fun activities, guest speakers, fundraisers, and more. Our aim is to provide more information and resources to help decrease stress that often emerges with school and the college preparation process. Our main focus will be targeted towards lower classmen, while upperclassmen will get the chance to build our foundation and mentor younger students.",
+		"day": "Thursday",
+		"time": "11:40 AM",
+		"tier": 2,
+		"president": "Ally Tan",
+		"teacher": "Susan Van Zandt",
+		"email": "svanzandt@pausd.org"
+	},
 	"Competitive Programming Club": {
 		"new": false,
 		"desc": "In Gunn Competition Programming Club, we teach students programming algorithms and languages. We motivate and train students to solve problems with their programming skills and participate in prestigious competitive programming contests, such as USACO, Codeforces, PicoCTF, and local programming competitions. We plan on hosting a programming competition for middle and high schoolers in the spring. During club time, we share knowledge and have fun with our club members!",
@@ -366,6 +382,16 @@
 		"teacher": "Shaina Holdener",
 		"email": "sholdener@pausd.org"
 	},
+	"Data Science Club": {
+		"new": true,
+		"desc": "Data science club will be dedicated to learning about machine learning and data mining to create meaningful projects. Through python tools and libraries, we will explore the use of machine learning and its applications. Finally, at the end of the year, we hope to create research that we might submit for publication.",
+		"day": "Wednesday",
+		"time": "11:40 PM",
+		"tier": 1,
+		"president": "Justin Lin",
+		"teacher": "Rachel Congress",
+		"email": "rcongress@pausd.org"
+	},
 	"Dream Volunteers Club": {
 		"new": false,
 		"desc": "Dream Volunteers Club partners with the NGO Dream Volunteers to connect with the network of Young Dreamer students around the world who do sustainable volunteer work in their communities. We do local service work, both during and outside of meetings, and make cross cultural connections by sending and receiving videos from Dreamers abroad. We are part of the network of 15+ DV Clubs in the Bay Area and will be organizing service projects with them as well. Our members have created their own changemaker projects that we work to support! Join us to make a change in your local community and get connected to and inspired by changemakers around the world!",
@@ -393,6 +419,16 @@
 		"email": "jpatrick@pausd.org",
 		"thumbnail": "https://i.imgur.com/OVnS6uU.jpeg"
 	},
+	"Environmental Technology": {
+		"new": true,
+		"desc": "This club is focused on increasing awareness of environmental issues and discussing the application of technology to curb our carbon footprint. We will brainstorm solutions to solve climate change through technology and implement our ideas to make the school cleaner. If you are interested in learning and helping the Earth through computer science, this club is for you!",
+		"day": "Monday",
+		"time": "12:35 PM",
+		"tier": 1,
+		"president": "Pariya Sarin",
+		"teacher": "Arshdeep Shinh",
+		"email": "ashinh@pausd.org"
+	},
 	"eSports Club": {
 		"new": true,
 		"desc": "The Gunn eSports Club is a club that will act as a network for Gunn high school students who enjoy video games, focusing on improving members and encouraging students to get into more serious competition while playing with and against each other. Specifically during meetings, we will watch and discuss professional eSports matches. As a club, we hope to remove the negative prejudices and stereotypes around video games and showcase the benefits that video games can bring, such as a sense of community, through supporting charities through methods such as donating tournament prize pools.",
@@ -407,6 +443,26 @@
 		"email": "jlopez@pausd.org",
 		"thumbnail": null
 	},
+	"Ethics Bowl Club": {
+		"new": true,
+		"desc": "Interested in ethical issues? Well then maybe you’d find a place at Gunn Ethics Bowl Club. Don’t have a lot of experience talking about ethics? Don’t worry about it, neither do we. Experienced in talking about ethics? Please join, we need you. During club meeting we’ll talk about, you guessed it, ethics. Eventually we even plan to compete in the National High School Ethics Bowl (whow how ambitious), but until then Gunn ethics club is your place to talk to your peers about pressing issues of the current day.",
+		"day": "Monday",
+		"time": "3:30 PM",
+		"tier": 1,
+		"president": "Tse Kai Chan",
+		"teacher": "Catherine Bissegger",
+		"email": "cbissegger@pausd.org"
+	},
+	"Everyday AI": {
+		"new": true,
+		"desc": "The purpose of my club is to inform people about this new topic in the tech world called artificial intelligence. My club will explore real world AI problems and implementations. We will have thorough discussions about the positives and negatives about AI as a whole and certain real world implementations of AI. We will also look at possible future opportunities of AI in the tech world. Along with talking about these topics, my club will also bring in people who have dedicated their whole life on AI.",
+		"day": "Thursday",
+		"time": "11:40 AM",
+		"tier": 1,
+		"president": "Mahima Agrawal",
+		"teacher": "Adam Yonkers",
+		"email": "ayonkers@pausd.org"
+	},
 	"Film Club": {
 		"new": false,
 		"desc": "Film Club’s purpose is to provide a safe and inclusive environment for Gunn students to express their creativity through video and learn about filmmaking outside of an official class. Film Club strives to create a community for the filmmakers of Gunn to express their creativity and share their knowledge and experience with other students. Film Club will work to achieve its goals by effectively making use of club meeting times to plan out our activities and projects. Each week, Film Club will meet to discuss a video-related topic, plan a project, or engage in another activity arranged by the club president. Film Club plans to have one large project per semester, to be determined by the club and open to all club members to help plan and execute to completion.",
@@ -419,6 +475,17 @@
 		"teacher": "Edward Corpuz",
 		"email": "ecorpuz@pausd.org",
 		"thumbnail": "https://i.imgur.com/OT3lbrF.jpg"
+	},
+	"Forensics Club": {
+		"new": true,
+		"desc": "Our clubs purpose is to provide information to people interested in forensics through information presentations, interesting case studies, virtual labs, virtual simulations, and guest speakers. This club will teach people about the different fields of forensics, numerous career pathways within its scope, and resources on universities/opportunists that provide additional classes or courses about forensics.",
+		"day": "Wednesday",
+		"time": "11:40 AM",
+		"tier": 1,
+		"president": "Anika Seshadri",
+		"coteacher": "N/A",
+		"teacher": "Heather Mellows",
+		"email": "hmellows@pausd.org"
 	},
 	"French Club/ National French Honor Society": {
 		"new": false,
@@ -433,6 +500,16 @@
 		"teacher": "Laura Lizundia",
 		"email": "llizundia@pausd.org",
 		"thumbnail": null
+	},
+	"Friends Club": {
+		"new": false,
+		"desc": "Our mission is to bring people together and create a fun and welcoming environment that promotes inclusivity and friendship. In addition, we will watch the popular TV show \"Friends\", which will give everyone a chance to relax and take a break from the stress of school.",
+		"day": "Monday",
+		"time": "12:35 AM",
+		"tier": 1,
+		"president": "Samantha Liu",
+		"teacher": "Laurel Howard",
+		"email": "lahoward@pausd.org"
 	},
 	"Game Design Club": {
 		"new": false,
@@ -547,6 +624,16 @@
 		"email": "ggarger@pausd.org",
 		"thumbnail": null
 	},
+	"Gunn ML": {
+		"new": true,
+		"desc": "Artificial intelligence and machine learning is drastically changing the way people interact with the world. Rather than broad computer science, Gunn AI focuses specifically on the fundamental algorithms of artificial intelligence. This club will primarily focus on building, learning about, and teaching various concepts of AI and machine learning to students. We will also have occasional guest speakers talk about where AI is headed next and it's applications in the modern world. This club is open to people with all levels of experience with the main goal of learning from each other. Whether you're new to computer science as a whole, or new to the topic of AI, this club will be a great place for you to learn about one of the fastest growing fields in computer science.",
+		"day": "Thursday",
+		"time": "11:40 AM",
+		"tier": 1,
+		"president": "Mihir Rao",
+		"teacher": "Kristen Owen",
+		"email": "kowen@pausd.org"
+	},
 	"Harry Potter Club": {
 		"new": true,
 		"desc": "This club is a place for Harry Potter fans to get together and discuss the subject. It is also a place to introduce those unfamiliar with the Magical World into it. The club's activities will include, but are not limited to, discussions over topic questions, plot review, theories, and movie watchings. Everyone is welcome!",
@@ -654,20 +741,6 @@
 		"email": "mhall@pausd.org",
 		"thumbnail": "https://i.imgur.com/1PvYU1h.jpg"
 	},
-	"Jewish Student Union": {
-		"new": false,
-		"desc": "Provide a space for all students to hang out, learn about Judaism, and experience Jewish culture.",
-		"day": "Tuesday",
-		"time": "11:40 AM",
-		"link": "https://pausd.zoom.us/j/95896007831",
-		"video": "https://drive.google.com/file/d/1EHkcz5AkHweCLUnxO1wW_QnMaYDmZDNo/view?usp=sharing",
-		"signup": "https://docs.google.com/forms/d/e/1FAIpQLSeWm3iElLN2UQpV-pA3S_sg_K7V4Iy-8IgEtwEM5-TrEVNjFQ/viewform?usp=sf_link",
-		"tier": 1,
-		"president": "Lotem Efrat",
-		"teacher": "Elana Zizmor",
-		"email": "ezizmor@pausd.org",
-		"thumbnail": "https://i.imgur.com/DwISQ2R.jpg"
-	},
 	"K-Pop Dance Club": {
 		"new": true,
 		"desc": "Welcome to the K-Pop dance club! Every K-Pop song has a specific dance that goes with it. We don't have official dance experience; we're all beginners! We accept all skill levels (even if you haven't danced before in your life.) We will learn K-Pop dances, starting with easier ones, and gradually learning the harder ones as the year goes on. Again, we are all beginners and will work together to learn the dances!",
@@ -705,6 +778,17 @@
 		"teacher": "Marcus Jamison",
 		"email": "mjamison@pausd.org"
 	},
+	"Lifestyle club": {
+		"new": true,
+		"desc": "The Gunn Lifestyle Club is meant to help improve students' overall lifestyle and outlook on life. Our plan is to talk about topics such as mental health, harmful habits, physical fitness, eating stigma and healthy eating, motivation/attitude, and more. We’ll be showing demonstrations like how to prepare healthy snacks in club meetings and students can choose whether or not they want to participate although we’ll highly encourage them to do so. Before each club meeting, we will post what topics we will cover so if a certain student doesn’t feel comfortable attending they can choose not to. We also are planning on having guest speakers come in like counselors and nutritionists so that people can hear tips from a professional point of view. We really would love to start this club because we both wish we had something like this to help guide us during the pandemic.",
+		"day": "Wednesday",
+		"time": "11:45 AM",
+		"tier": 1,
+		"president": "Hila Livneh",
+		"coteacher": "n/a",
+		"teacher": "Ms. Limburg",
+		"email": "flimburg@pausd.org"
+	},
 	"March for Our Lives": {
 		"new": true,
 		"desc": "March For Our Lives promotes gun control as a way to prevent gun violence. The organization specifies its goals in a peace plan using the CHANGE acronym. Change the standards of gun ownershipHalve the rate of gun deaths in 10 yearsAccountability for the gun lobby and industryName a Director of Gun Violence PreventionGenerate community-based solutionsEmpower the next generation.",
@@ -730,16 +814,6 @@
 		"president": "Andrew Chang",
 		"teacher": "David Deggeller",
 		"email": "ddeggeller@pausd.org"
-	},
-	"Mechanical Design": {
-		"new": false,
-		"desc": "The main purpose of our club is to bring together students with interests in electronics. Our club gives Gunn students the opportunity to learn more about sensors, electronics with weekly presentations, and hands-on projects, using Arduino, Raspberry Pi, MKR 1000, etc. We inform our members about the capabilities and how sensors are applied in the real world and in certain applications. Also, we are currently in the process of forming an electronics team for competitions, but regardless, anyone who has an open mind to learn or is willing to share their knowledge is welcome to join!",
-		"day": "Monday",
-		"time": "11:40 AM",
-		"tier": 2,
-		"president": "Kevin Bao",
-		"teacher": "Charlotte Kaufman",
-		"email": "ckaufman@pausd.org"
 	},
 	"Medcorps": {
 		"new": true,
@@ -780,6 +854,16 @@
 		"teacher": "Maria Powell",
 		"email": "mpowell@pausd.org"
 	},
+	"Mural Club": {
+		"new": true,
+		"desc": "The overall goal of our club is to eventually impact and inform the community who sees our murals. To make this happen, every week we would form ideas/smaller murals/sketches of possible projects we can do. We would also re-evaluate the events that have happened in the world and in our country, state, and town in the past week to come up with more ideas for murals. Using all the ideas we generate every week, we would make at least one mural a month. We would also like to make murals about not only events, but holidays and special months that are dedicated to certain ethnic groups.",
+		"day": "Tuesday",
+		"time": "11:45 AM",
+		"tier": 3,
+		"president": "Elise Naddell",
+		"teacher": "Brian Miguel",
+		"email": "bmiguel@pausd.org"
+	},
 	"Music Society": {
 		"new": false,
 		"desc": "Gunn Music Society fosters a community of Gunn students who enjoy all different genres of music. Every meeting will consist of music-related games and activities and listening to music together. We hope to introduce new musical genres to our members and celebrate music through fun and exciting activities. Some games we have planned include “Finish the Lyric” and “Name That Song,” among many others. Our meetings will take place every other Monday during lunch.",
@@ -806,6 +890,16 @@
 		"teacher": "Haley Perkins",
 		"email": "hperkins@pausd.org",
 		"thumbnail": "https://i.imgur.com/s2j2zBD.jpg"
+	},
+	"Mythology Club": {
+		"new": false,
+		"desc": "The Mythology Club meets to learn about and discuss all kinds of world mythology!",
+		"day": "Thursday",
+		"time": "11:40 AM",
+		"tier": 1,
+		"president": "Hana Chang",
+		"teacher": "Marc Igler",
+		"email": "migler@pausd.org"
 	},
 	"National Art Honor Society": {
 		"new": false,
@@ -850,6 +944,17 @@
 		"email": "cpeters@pausd.org",
 		"thumbnail": null
 	},
+	"P.A.A.S (Plant Based Animal Activist Society)": {
+		"new": true,
+		"desc": "Throughout this semester, we will be working towards creating a pamphlet that dives into creating a more eco-friendly environment. By exploring topics such as reducing one’s carbon footprint with their diet, we will create an educational pamphlet on being sustainable in Palo Alto. We’ll also be watching many fun movies and playing kahoots, and quizizz together.  Feel free to simply drop by and just hang out with friends while playing fun trivia.",
+		"day": "Thursday",
+		"time": "11:40 AM",
+		"tier": 1,
+		"president": "Ruhani Suresh",
+		"coteacher": "N/A",
+		"teacher": "Brenda Chen",
+		"email": "bchen@pausd.org"
+	},
 	"Pandora's Box Creative Magazine": {
 		"new": false,
 		"desc": "Pandora's Box is Gunn's student-run literary magazine, containing original poetry, short stories, photographs, and artwork. We compose, compile, and celebrate the creative works of Gunn High School's students. We provide an opportunity for creative expression in a safe and encouraging environment. The group will participate in weekly meetings, taking place every Monday, where members will take part in writing or other creative activities and help plan the magazine. Fundraisers will occur at least once a semester. Funds go towards printing and publishing costs. Two issues will be published during the year, one each semester.",
@@ -889,6 +994,16 @@
 		"president": "Shinmu Jiang",
 		"teacher": "David Bisbee",
 		"email": "dbisbee@pausd.org"
+	},
+	"Philosophy Club": {
+		"new": true,
+		"desc": "Is there any significance to life? Why should we care about how our actions affect others?  How do we know if an action is good or bad? It’s no surprise that philosophical questions like these have roamed great minds over thousands of years. At philosophy club, we will learn and discuss some of the oldest and most controversial philosophical questions, thought experiments, and ethical theories. The club is discussion based, so members will drive the direction of topics that we examine. We would love to hear how you would answer life’s questions - we hope to see you in the club!",
+		"day": "Wednesday",
+		"time": "12:00 PM",
+		"tier": 1,
+		"president": "Elina Saab-Sundén",
+		"teacher": "Jordan Wells",
+		"email": "jwells@pausd.org"
 	},
 	"Physics and Astronomy Club": {
 		"new": true,
@@ -1032,6 +1147,18 @@
 		"teacher": "Arthur Kinyanjui",
 		"email": "akinyanjui@pausd.org",
 		"thumbnail": "https://i.imgur.com/IZSQDRF.jpg"
+	},
+	"Regency Era Club!": {
+		"new": true,
+		"desc": "Join the Regency Era club where we will indulge in culture, fashion, literature, films, and more from the Regency Era period! Stop by to watch clips from our favorite regency era films, learn etiquette like ballroom dancing, and talk about how vastly our social norms have changed! Also, if you watched Bridgerton you should definitely join because we will explore everything about it!",
+		"day": "Thursday",
+		"time": "11:45 AM",
+		"tier": 1,
+		"president": "Annabel Honigstein",
+		"coteacher": "Amy Anderson",
+		"coemail": "amanderson@pausd.org",
+		"teacher": "Barbara Boissevain",
+		"email": "bboissevain@pausd.org"
 	},
 	"Reptile Club": {
 		"new": true,
@@ -1193,6 +1320,16 @@
 		"teacher": "Anne Marie Metzler",
 		"email": "ametzler@pausd.org"
 	},
+	"Street Art Club": {
+		"new": true,
+		"desc": "Street Art Club will serve as a way to create a community for those who like all kinds of art; it will be focused on Public Art and murals, and all levels of skill and interest are welcome! We will talk about street art opportunities and organize zoom art events, and members can learn from their peers about street art! In addition, we may have guest speakers throughout the year.",
+		"day": "Friday",
+		"time": "11:45 AM",
+		"tier": 1,
+		"president": "Ezra Furtado-Tiwari",
+		"teacher": "Ariane Tuomy",
+		"email": "atuomy@pausd.org"
+	},
 	"Surfrider": {
 		"new": false,
 		"desc": "The Surfrider organization is a nonprofit environmental organization that works to protect the world's oceans and beaches. The purpose of this club here at Gunn would be to spread awareness of human impact on oceans and what we can do as a society and as individuals to help out. The club would meet twice a month to discuss upcoming beach clean ups around Half Moon Bay, as well as educate students on how to reduce one's plastic contribution, and work to make more restaurants in the area environmentally friendly. Some meeting activities include: creating jewelry from trash/plastic we find around campus, creating packages that include environmentally friendly products that can be used in one's day to day life. We would also create educational presentations and include videos and information from the Surfrider website.",
@@ -1340,6 +1477,26 @@
 		"president": "Serena Li",
 		"teacher": "Joshua Paley",
 		"email": "jpaley@pausd.org"
+	},
+	"Vote16 Palo Alto @ Gunn": {
+		"new": true,
+		"desc": "The Gunn chapter for VOTE16, which is a program that works to lower the legal voting at to 16 and 17 year-olds. Our club would mostly consist of discussing upcoming events, strategies, planning civic engagement events for students, getting endorsements, and overall making real change in local government.",
+		"day": "Tuesday",
+		"time": "11:40 AM",
+		"tier": 1,
+		"president": "Sarah Alvarez",
+		"teacher": "Tara Firenzi",
+		"email": "tfirenzi@pausd.org"
+	},
+	"Voting Club": {
+		"new": true,
+		"desc": "Dedicated to voting encouragement and educate people on the importance of voting, especially for those with little to no prior voting experience or mindset. (ie. first generation immigrants, people who just turned 18, etc).Primary objective: get people to vote!Activities include: Strategy discussion, phone banking, create advertisement on the importance of voting. Potentially: give speeches to audiences during events.",
+		"day": "Friday",
+		"time": "11:40 AM",
+		"tier": 2,
+		"president": "Allen Zhang",
+		"teacher": "Jason Miller",
+		"email": "jasmiller@pausd.org"
 	},
 	"Women in STEM Club": {
 		"new": false,
