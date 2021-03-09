@@ -70,6 +70,7 @@ export default {
       "{for|For Google Maps}: Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
     'h-editor': 'Period 8 settings',
     heaucques: 'OK.',
+    'health-screening': 'Health screening form',
     'henry-creds': '{name|Henry} made the Google Maps overlay.',
     'hide-preps': 'Hide periods with "prep" in their names from the schedule?',
     'image-instruct':
