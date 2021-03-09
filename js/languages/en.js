@@ -392,6 +392,7 @@ export default {
       )
     },
     'end-time': 'School ends at {T} today.',
+    'end-time-in': 'School ends at {T} today in {D}.',
     ended: '{P} ended {T} ago.',
     ending: '{P} ending in {T}.',
     'ending-short': '{T} left',

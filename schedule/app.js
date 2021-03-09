@@ -38,6 +38,10 @@ export const customElems = {
 const applyEndTime = createL10nApplier(localize('end-time', 'times'), {
   T: 'strong'
 })
+const applyEndTimeIn = createL10nApplier(localize('end-time-in', 'times'), {
+  T: 'strong',
+  D: null
+})
 const applyEndedAgo = createL10nApplier(localize('ended', 'times'), {
   P: null,
   T: 'strong'
@@ -535,12 +539,24 @@ export function scheduleApp (options = {}) {
         .filter(({ name }) => !optionalPeriods.includes(name))
         .slice(-1)
       if (lastRequiredPeriod) {
-        schedule.push([
-          'span.schedule-end',
-          applyEndTime({
-            T: getHumanTime(lastRequiredPeriod.end, date)
-          })
-        ])
+        if (totalminute > lastRequiredPeriod.end.totalminutes) {
+          schedule.push([
+            'span.schedule-end',
+            applyEndTime({
+              T: getHumanTime(lastRequiredPeriod.end, date)
+            })
+          ])
+        } else {
+          schedule.push([
+            'span.schedule-end',
+            applyEndTimeIn({
+              T: getHumanTime(lastRequiredPeriod.end, date),
+              D: getUsefulTimePhrase(
+                lastRequiredPeriod.end.totalminutes - totalminute
+              )
+            })
+          ])
+        }
       }
 
       if (isToday) {
