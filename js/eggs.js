@@ -149,7 +149,7 @@ function getRenderedEgg ({
       ],
       ' ',
       power,
-      ' click(s) per second (price: ',
+      ' click(s) per click (price: ',
       (power + 1) * 25,
       clicks < (power + 1) * 25 && ' (which is too many for you)',
       ' clicks)'

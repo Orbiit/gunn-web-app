@@ -38,6 +38,7 @@
 }
 .datepicker-days {
   flex: auto;
+  height: 0;
   padding: 20px 24px;
   box-sizing: border-box;
   overflow: auto;
