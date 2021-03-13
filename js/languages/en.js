@@ -45,6 +45,7 @@ export default {
     clubs: 'Clubs',
     'clubs-disclaimer':
       "Please note that club information was taken from the administration's {doc-link|chartered club list document} and {link|spreadsheet as of January 29th, 2021}, so attribute inaccuracies to them.",
+    'club-ad-more-info': 'More info',
     comm: 'Interstudent communication',
     'control-centre': 'Control Centre',
     'control-centre-desc': "If UGWA isn't updating, try these buttons.",
@@ -70,7 +71,10 @@ export default {
       "{for|For Google Maps}: Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
     'h-editor': 'Period 8 settings',
     heaucques: 'OK.',
-    'health-screening': 'Health screening form',
+    'health-screening': {
+      subtitle: 'Parents or students over 18 must complete ParentSquare before arriving on campus',
+      title: 'Health screening form'
+    },
     'henry-creds': '{name|Henry} made the Google Maps overlay.',
     'hide-preps': 'Hide periods with "prep" in their names from the schedule?',
     'image-instruct':

@@ -539,7 +539,7 @@ export function scheduleApp (options = {}) {
         .filter(({ name }) => !optionalPeriods.includes(name))
         .slice(-1)
       if (lastRequiredPeriod) {
-        if (totalminute > lastRequiredPeriod.end.totalminutes) {
+        if (!isToday || totalminute > lastRequiredPeriod.end.totalminutes) {
           schedule.push([
             'span.schedule-end',
             applyEndTime({
