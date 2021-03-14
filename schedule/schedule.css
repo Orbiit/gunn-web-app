@@ -40,6 +40,18 @@ body.dark .schedule-container .schedule-noschool {
 .schedule-container .schedule-noschool {
   margin: 15px 0;
 }
+.schedule-container .schedule-noschool-sheep {
+  background-size: cover;
+  width: 260px;
+  height: 200px;
+  margin: auto;
+}
+body.light .schedule-container .schedule-noschool-sheep {
+  background-image: url('../images/sheep-black.png');
+}
+body.dark .schedule-container .schedule-noschool-sheep {
+  background-image: url('../images/sheep-white.png');
+}
 .schedule-container .schedule-endingin {
   font-size: 14px;
 }

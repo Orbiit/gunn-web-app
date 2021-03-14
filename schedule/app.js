@@ -13,6 +13,9 @@ import {
 
 const FAVICON_SIZE = 32
 
+const SHEEP_COUNT = 16
+const SHEEP_VISUAL_HEIGHT = 200
+
 export let days, months
 export function setDaysMonths (newDays, newMonths) {
   days = newDays
@@ -727,7 +730,19 @@ export function scheduleApp (options = {}) {
         ])
       }
     } else if (noSchool) {
-      schedule = [['span.schedule-noschool', localize('no-school')]]
+      schedule = [
+        ['span.schedule-noschool', localize('no-school')],
+        [
+          {
+            type: 'div.schedule-noschool-sheep',
+            style: {
+              // TODO: It should be deterministic so that people can link to a
+              // specific day
+              backgroundPositionY: (Math.random() * SHEEP_COUNT | 0) * SHEEP_VISUAL_HEIGHT + 'px'
+            }
+          }
+        ]
+      ]
     }
 
     return [

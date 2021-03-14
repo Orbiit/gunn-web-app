@@ -151,9 +151,14 @@
       // setCurrentTime(() => new Date(2020, 2, 10, 13, 23).getTime())
       // setCurrentTime(() => Date.now() + 1000 * 60 * 60 * 24 * 4.7)
 
-      /*
+      // Hi, it's 2021-03-13 23:16 PT right now, and I'm noticing that there's
+      // some oddness going on around Sunday/Monday.
+      // - Sunday appears twice when using left/right
+      // - The next school day is Monday, which is a no school day
+      // - All the days after Sunday are one day off in the calendar
+      //*
       const start = Date.now()
-      const baseTime = new Date(2020, 10, 20, 10, 53, 55).getTime()
+      const baseTime = new Date(2021, 2, 14, 0, 0, 0).getTime()
       // const baseTime = new Date().getTime()
       const speed = 1
       setCurrentTime(() => {

@@ -25,6 +25,8 @@ const urlsToCache = [
   'js/languages/en-gt-core.js',
   'js/languages/fr.js',
   'json/alt-schedules-2020.txt',
+  'images/sheep-black.png',
+  'images/sheep-white.png',
   'images/gunn-together.svg'
 ]
 
