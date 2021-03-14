@@ -72,7 +72,8 @@ export default {
     'h-editor': 'Period 8 settings',
     heaucques: 'OK.',
     'health-screening': {
-      subtitle: 'Parents or students over 18 must complete ParentSquare before arriving on campus',
+      subtitle:
+        'Parents or students over 18 must complete ParentSquare before arriving on campus',
       title: 'Health screening form'
     },
     'henry-creds': '{name|Henry} made the Google Maps overlay.',
@@ -395,6 +396,7 @@ export default {
             (minutes % 60 === 1 ? 'a minute' : (minutes % 60) + ' minutes'))
       )
     },
+    'end-date': 'The school year ends in {D}.',
     'end-time': 'School ends at {T} today.',
     'end-time-in': 'School ends in {D} at {T}.',
     ended: '{P} ended {T} ago.',
@@ -404,6 +406,11 @@ export default {
     month: '{M} {Y}',
     over: "School's over!",
     range: '{T1}–{T2} · {D}',
+    'school-days' ({ D: days, W: weeks }) {
+      return `${days} school day${days === 1 ? '' : 's'} (${weeks} week${
+        weeks === 1 ? '' : 's'
+      })`
+    },
     seconds: '{T}s',
     'self-ended': 'Ended {T} ago.',
     'self-ending': 'Ending in {T1}; started {T2} ago.',

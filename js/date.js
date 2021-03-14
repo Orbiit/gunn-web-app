@@ -6,7 +6,7 @@ import { now } from './utils.js'
 // js = JavaScript Date object
 export class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
-  constructor (start, end, elem) {
+  constructor (start, end, elem, { showDaysLeft = false } = {}) {
     this._days = localize('ds').split('  ')
     this._months = localize('months').split('  ')
     const days = this._days
@@ -15,11 +15,11 @@ export class DatePicker {
     this.min = DatePicker.weirdToJS(start).getTime()
     this.max = DatePicker.weirdToJS(end).getTime()
     this.selected = null
+    this.todayEntry = null
     this.dates = {}
     this.weeks = []
-    elem
-      ? (this.wrapper = elem)
-      : (this.wrapper = document.createElement('div'))
+    this.showDaysLeft = showDaysLeft
+    this.wrapper = elem || document.createElement('div')
     this.wrapper.classList.add('datepicker-wrapper')
     this.wrapper.classList.add('hide')
     let genesis = DatePicker.weirdToJS(start)
@@ -97,23 +97,65 @@ export class DatePicker {
           t.elem.scrollIntoView()
         }
       }
+      const todayEntry =
+        this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(now()))] ||
+        null
+      if (todayEntry !== this.todayEntry) {
+        if (this.todayEntry) {
+          this.todayEntry.elem.classList.add('datepicker-today')
+        }
+        // `todayEntry` might be null if it's outside of the school year.
+        if (todayEntry) {
+          todayEntry.elem.classList.add('datepicker-today')
+        }
+        this.todayEntry = todayEntry
+      }
       if (this.isSchoolDay) {
         const temp = DatePicker.weirdToJS(this.start)
+        const weeksWithSchoolDays = new Set()
+        let schoolDays = 0
+        let encounteredToday = false
         while (this.compare(DatePicker.jsToWeird(temp), this.end) <= 0) {
           const entry = this.dates[
             DatePicker.weirdToString(DatePicker.jsToWeird(temp))
           ]
+          if (entry === todayEntry) {
+            encounteredToday = true
+          }
           if (entry) {
             if (this.isSchoolDay(temp)) {
               entry.elem.classList.remove('there-is-no-school')
+              if (encounteredToday) {
+                schoolDays++
+                weeksWithSchoolDays.add(this._getWeek(temp))
+              }
             } else {
               entry.elem.classList.add('there-is-no-school')
             }
           }
           temp.setDate(temp.getDate() + 1)
         }
+        this.schoolYearLeft.textContent = localizeWith('end-date', 'times', {
+          D: localizeWith('school-days', 'times', {
+            D: schoolDays,
+            W: weeksWithSchoolDays.size
+          })
+        })
       }
     }
+  }
+
+  /**
+   * Gives an ID that should be the same for all dates within a week but
+   * different for dates across different weeks.
+   */
+  _getWeek (date) {
+    const temp = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() - date.getDay()
+    )
+    return temp.toISOString().slice(0, 10)
   }
 
   _createElements () {
@@ -175,17 +217,16 @@ export class DatePicker {
       },
       false
     )
+    this.schoolYearLeft = document.createElement('p')
+    this.schoolYearLeft.className = 'datepicker-school-year-left'
+    dates.appendChild(this.schoolYearLeft)
     this.wrapper.appendChild(dates)
 
-    // Mark today
-    let t = this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(now()))]
-    if (t) t.elem.classList.add('datepicker-today')
-
-    if (
-      this.selected &&
-      (t = this.dates[DatePicker.weirdToString(this.selected)])
-    ) {
-      t.elem.classList.add('datepicker-selected')
+    if (this.selected) {
+      const t = this.dates[DatePicker.weirdToString(this.selected)]
+      if (t) {
+        t.elem.classList.add('datepicker-selected')
+      }
     }
 
     const todayWrapper = document.createElement('div')
