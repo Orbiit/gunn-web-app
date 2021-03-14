@@ -6,6 +6,7 @@ import { savedClubs } from '../js/saved-clubs.js'
 import {
   currentTime,
   identity,
+  mulberry32,
   now,
   outsideSchool,
   THEME_COLOUR
@@ -730,15 +731,26 @@ export function scheduleApp (options = {}) {
         ])
       }
     } else if (noSchool) {
+      // Although intended to be deterministic, this could change if
+      // - I change the date format
+      // - I add more sheep
+      const seededRandom = mulberry32(d.getTime())
+      // Alternate between two sets of sheep between days so the same sheep
+      // can't appear twice
+      const sheepId =
+        d.getTime() % (2 * 86400000) < 86400000
+          ? // Left half (including middle sheep)
+            Math.floor(seededRandom() * Math.ceil(SHEEP_COUNT / 2))
+          : // Right half (excluding middle sheep)
+            Math.floor(seededRandom() * Math.floor(SHEEP_COUNT / 2)) +
+            Math.ceil(SHEEP_COUNT / 2)
       schedule = [
         ['span.schedule-noschool', localize('no-school')],
         [
           {
             type: 'div.schedule-noschool-sheep',
             style: {
-              // TODO: It should be deterministic so that people can link to a
-              // specific day
-              backgroundPositionY: (Math.random() * SHEEP_COUNT | 0) * SHEEP_VISUAL_HEIGHT + 'px'
+              backgroundPositionY: sheepId * SHEEP_VISUAL_HEIGHT + 'px'
             }
           }
         ]

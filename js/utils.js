@@ -250,6 +250,20 @@ export function generateID () {
   )
 }
 
+// Seeded random function
+// mulberry32 - an actual high quality 32-bit generator
+// From https://gist.github.com/blixt/f17b47c62508be59987b#gistcomment-2792771
+// and https://github.com/bryc/code/blob/master/jshash/PRNGs.md#mulberry32
+export function mulberry32 (a) {
+  return () => {
+    a |= 0
+    a = (a + 0x6d2b79f5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
 export const onBlur = new Promise(resolve => {
   window.addEventListener('blur', resolve, { once: true })
 })

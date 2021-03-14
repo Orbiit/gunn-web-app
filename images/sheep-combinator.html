@@ -17,75 +17,94 @@
   </head>
   <body>
     <script>
-const IMAGE_WIDTH = 650
-const IMAGE_HEIGHT = 500
+      const IMAGE_WIDTH = 650
+      const IMAGE_HEIGHT = 500
 
-const parser = new DOMParser()
+      const parser = new DOMParser()
 
-fetch('./sheep/')
-  .then(r => r.text())
-  .then(html => parser.parseFromString(html, 'text/html'))
-  .then(doc => {
-    const fileNames = Array.from(doc.querySelectorAll('.display-name a'), link => link.href)
-      .filter(link => link.endsWith('.png'))
-    const images = Promise.all(fileNames.map(url => (
-      new Promise((resolve, reject) => {
-        const image = new Image()
-        image.addEventListener('load', () => resolve(image))
-        image.addEventListener('error', reject)
-        image.src = url
-      })
-    )))
+      fetch('./sheep/')
+        .then(r => r.text())
+        .then(html => parser.parseFromString(html, 'text/html'))
+        .then(doc => {
+          const fileNames = Array.from(
+            doc.querySelectorAll('.display-name a'),
+            link => link.href
+          ).filter(link => link.endsWith('.png'))
+          const images = Promise.all(
+            fileNames.map(
+              url =>
+                new Promise((resolve, reject) => {
+                  const image = new Image()
+                  image.addEventListener('load', () => resolve(image))
+                  image.addEventListener('error', reject)
+                  image.src = url
+                })
+            )
+          )
 
-    /**
-     * Creates a new canvas, adds it to the <body>, and then returns its
-     * CanvasRenderingContext2D.
-     */
-    function newContext () {
-      const canvas = document.createElement('canvas')
-      const context = canvas.getContext('2d')
-      canvas.width = IMAGE_WIDTH
-      canvas.height = IMAGE_HEIGHT * fileNames.length
-      document.body.appendChild(canvas)
-      return context
-    }
+          /**
+           * Creates a new canvas, adds it to the <body>, and then returns its
+           * CanvasRenderingContext2D.
+           */
+          function newContext () {
+            const canvas = document.createElement('canvas')
+            const context = canvas.getContext('2d')
+            canvas.width = IMAGE_WIDTH
+            canvas.height = IMAGE_HEIGHT * fileNames.length
+            document.body.appendChild(canvas)
+            return context
+          }
 
-    /**
-     * Converts an opaque greyscale image to a translucent image with the given
-     * RGB values, where white becomes fully transparent, and black becomes
-     * fully opaque.
-     */
-    function translucentifyImageData (imageData, [r, g, b]) {
-      const clone = new ImageData(imageData.width, imageData.height)
-      for (let i = 0; i < imageData.data.length; i += 4) {
-        clone.data[i] = r
-        clone.data[i + 1] = g
-        clone.data[i + 2] = b
+          /**
+           * Converts an opaque greyscale image to a translucent image with the given
+           * RGB values, where white becomes fully transparent, and black becomes
+           * fully opaque.
+           */
+          function translucentifyImageData (imageData, [r, g, b]) {
+            const clone = new ImageData(imageData.width, imageData.height)
+            for (let i = 0; i < imageData.data.length; i += 4) {
+              clone.data[i] = r
+              clone.data[i + 1] = g
+              clone.data[i + 2] = b
 
-        const sum = imageData.data[i]
-          + imageData.data[i + 1]
-          + imageData.data[i + 2]
-        clone.data[i + 3] = 255 - sum / 3
-      }
-      return clone
-    }
+              const sum =
+                imageData.data[i] +
+                imageData.data[i + 1] +
+                imageData.data[i + 2]
+              clone.data[i + 3] = 255 - sum / 3
+            }
+            return clone
+          }
 
-    images
-      .then(images => {
-        const c = newContext()
-        for (let i = 0; i < images.length; i++) {
-          c.drawImage(images[i], 0, i * IMAGE_HEIGHT)
-        }
-        return c.getImageData(0, 0, IMAGE_WIDTH, images.length * IMAGE_HEIGHT)
-      })
-      .then(imageData => {
-        const cLight = newContext()
-        cLight.putImageData(translucentifyImageData(imageData, [255, 255, 255]), 0, 0)
+          images
+            .then(images => {
+              const c = newContext()
+              for (let i = 0; i < images.length; i++) {
+                c.drawImage(images[i], 0, i * IMAGE_HEIGHT)
+              }
+              return c.getImageData(
+                0,
+                0,
+                IMAGE_WIDTH,
+                images.length * IMAGE_HEIGHT
+              )
+            })
+            .then(imageData => {
+              const cLight = newContext()
+              cLight.putImageData(
+                translucentifyImageData(imageData, [255, 255, 255]),
+                0,
+                0
+              )
 
-        const cDark = newContext()
-        cDark.putImageData(translucentifyImageData(imageData, [0, 0, 0]), 0, 0)
-      })
-  })
+              const cDark = newContext()
+              cDark.putImageData(
+                translucentifyImageData(imageData, [0, 0, 0]),
+                0,
+                0
+              )
+            })
+        })
     </script>
   </body>
 </html>
