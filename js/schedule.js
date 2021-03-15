@@ -399,7 +399,7 @@ const formatOptionInfo = {
     default: 'chrono-primero',
     radio: {
       name: 'asgn-sort',
-      onChange: value => asgnThing.todayIs(getPeriodSpan, now(), value)
+      onChange: value => asgnThing.todayIs(getPeriodSpan, Day.today(), value)
     }
   },
   // 6
@@ -849,7 +849,7 @@ function initAssignmentEditing () {
     assyncID
   })
   asgnThing.insertButton(refresh)
-  asgnThing.todayIs(getPeriodSpan, now(), formatOptions.asgnSort)
+  asgnThing.todayIs(getPeriodSpan, Day.today(), formatOptions.asgnSort)
   asgnThing.displaySection(formatOptions.asgnPos)
   if (assyncID) {
     refresh.click()
@@ -1718,9 +1718,10 @@ function initSwiping ({ yesterdayer, tomorrower }) {
         const offset = e.clientX > swiping.startX ? -1 : 1
         if (offset !== swiping.swipingOffset) {
           swiping.swipingOffset = offset
-          // TODO: Swipe
           setPreview(
-            scheduleapp.getRenderedScheduleForDay(scheduleapp.viewDay + offset)
+            scheduleapp.getRenderedScheduleForDay(
+              scheduleapp.viewDay.add(offset)
+            )
           )
           swipePreview.style.transform =
             offset === -1 ? 'translate(-100%)' : 'translate(100%)'
