@@ -1,6 +1,7 @@
 /* global fetch */
 
 import { months } from './app.js'
+import { Day } from './date.js'
 import { localize, localizeWith } from './l10n.js'
 import { ripple } from './material.js'
 import {
@@ -127,7 +128,9 @@ class Assignment {
     this.assyncID = id
     assignmentsById[this.id] = this
     this.manager = null
-    if (!this.dueObj) this.dueObj = { d: 1, m: 0, y: 2000 }
+    if (!this.dueObj) {
+      this.dueObj = Day.from(2000, 0, 1)
+    }
   }
 
   setProps ({
@@ -148,10 +151,11 @@ class Assignment {
   }
 
   setDue (dueObj) {
+    if (dueObj.y !== undefined) {
+      dueObj = Day.from(dueObj.y, dueObj.m, dueObj.d)
+    }
     this.dueObj = dueObj
-    this.due = Assignment.dateObjToDayInt(
-      new Date(dueObj.y, dueObj.m, dueObj.d)
-    )
+    this.due = dueObj.dayId
   }
 
   // finished assignments are less important than unfinished ones
@@ -268,8 +272,8 @@ class Assignment {
     dueText.innerHTML = localizeWith('due-date', 'times', {
       P: this.period && getPeriodSpan && getPeriodSpan(this.period),
       D: localizeWith('date', 'times', {
-        M: months[this.dueObj.m],
-        D: this.dueObj.d
+        M: months[this.dueObj.month],
+        D: this.dueObj.date
       })
     })
     editBtn.appendChild(dueText)
@@ -282,7 +286,11 @@ class Assignment {
       text: this.text,
       category: this.category,
       importance: this.importance,
-      dueObj: this.dueObj,
+      dueObj: {
+        d: this.dueObj.date,
+        m: this.dueObj.month,
+        y: this.dueObj.year
+      },
       period: this.period,
       done: this.done,
       assyncID: this.assyncID
@@ -292,12 +300,6 @@ class Assignment {
   // for debugging purposes
   toString () {
     return `D${this.due} I${this.importance} C-${this.category} ${this.text}`
-  }
-
-  // UGWA uses local time zone to represent dates
-  static dateObjToDayInt (dateObj) {
-    const minutes = dateObj.getTime() / 1000 / 60 - dateObj.getTimezoneOffset()
-    return Math.floor(minutes / 60 / 24)
   }
 }
 
@@ -588,11 +590,7 @@ export function initAssignments ({
     if (e.target.classList.contains('add-asgn')) {
       openEditor(
         new Assignment({
-          dueObj: getDefaultDate() || {
-            y: lastToday.getFullYear(),
-            m: lastToday.getMonth(),
-            d: lastToday.getDate()
-          },
+          dueObj: getDefaultDate() || lastToday,
           period: e.target.dataset.pd || null
         })
       )
@@ -637,7 +635,7 @@ export function initAssignments ({
       date = lastToday,
       sort = lastSort
     ) {
-      const today = Assignment.dateObjToDayInt(date || lastToday)
+      const today = (date || lastToday).dayId
       wrapper.innerHTML = ''
       manager
         .sortAssignmentsBy(sort)
@@ -671,11 +669,11 @@ export function initAssignments ({
       }
     },
     getScheduleAsgns (date, getPeriodSpan) {
-      const today = Assignment.dateObjToDayInt(lastToday)
+      const today = lastToday.dayId
       const byPeriod = {}
       manager
         .sortAssignmentsBy('important-importance')
-        .getAssignmentsFor(Assignment.dateObjToDayInt(date))
+        .getAssignmentsFor(date.dayId)
         .forEach(asgn => {
           if (!byPeriod[asgn.period || 'noPeriod']) {
             byPeriod[asgn.period || 'noPeriod'] = ['fragment']

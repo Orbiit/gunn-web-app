@@ -1,6 +1,115 @@
 import { ripple } from './material.js'
 import { localize, localizeWith } from './l10n.js'
 import { now } from './utils.js'
+
+/**
+ * A single, unified Day object representing a day (no time). Months are
+ * 0-indexed.
+ */
+export class Day {
+  constructor (utcDate) {
+    this._date = utcDate
+  }
+
+  get year () {
+    return this._date.getUTCFullYear()
+  }
+
+  get month () {
+    return this._date.getUTCMonth()
+  }
+
+  get date () {
+    return this._date.getUTCDate()
+  }
+
+  get day () {
+    return this._date.getUTCDay()
+  }
+
+  /**
+   * Returns the number of days between the Unix epoch and this date. It should
+   * be unique per date, so it can be used as an ID.
+   */
+  get dayId () {
+    return this._date.getTime() / 86400000
+  }
+
+  /**
+   * Returns the Sunday of a week, which can be used to get a unique ID for a
+   * week of dates.
+   */
+  get sunday () {
+    return this.add(-this.day)
+  }
+
+  /**
+   * Return a new Day that is `days` days after this date.
+   */
+  add (days) {
+    const clone = new Date(this._date)
+    clone.setUTCDate(this.date + days)
+    return new Day(clone)
+  }
+
+  /**
+   * Returns the UGWA legacy alternate schedule date ID, which is in the form
+   * M-D with no leading zeroes.
+   */
+  ugwaLegacy () {
+    return `${this.month + 1}-${this.date}`
+  }
+
+  /**
+   * Converts the Date to the date in local time at the start of the day.
+   */
+  toLocal () {
+    return new Date(this.year, this.month, this.date)
+  }
+
+  /**
+   * Returns the ISO 8601 representation of the date: YYYY-MM-DD.
+   */
+  toString () {
+    return [
+      this.year.toString().padStart(4, '0'),
+      (this.month + 1).toString().padStart(2, '0'),
+      this.date.toString().padStart(2, '0')
+    ].join('-')
+  }
+
+  /**
+   * Returns the day ID. JS calls this implicitly for things like comparisons,
+   * so you can directly compare a Day.
+   */
+  valueOf () {
+    return this.dayId
+  }
+
+  static get EPOCH () {
+    return new Day(new Date(0))
+  }
+
+  static from (year, month, date) {
+    return new Day(new Date(Date.UTC(year, month, date)))
+  }
+
+  static today () {
+    const today = now()
+    return Day.from(today.getFullYear(), today.getMonth(), today.getDate())
+  }
+
+  static parse (str) {
+    const [year, month, date] = str.split('-').map(Number)
+    const parsed = Day.from(year, month - 1, date)
+    return Number.isNaN(parsed.dayId) ? null : parsed
+  }
+
+  static fromDay (dayId) {
+    return Day.EPOCH.add(dayId)
+  }
+}
+
 // Date format names:
 // weird = the weird {d, m, y} object format that this uses for some reason
 // js = JavaScript Date object
@@ -12,8 +121,6 @@ export class DatePicker {
     const days = this._days
     this.start = start
     this.end = end
-    this.min = DatePicker.weirdToJS(start).getTime()
-    this.max = DatePicker.weirdToJS(end).getTime()
     this.selected = null
     this.todayEntry = null
     this.dates = {}
@@ -22,20 +129,14 @@ export class DatePicker {
     this.wrapper = elem || document.createElement('div')
     this.wrapper.classList.add('datepicker-wrapper')
     this.wrapper.classList.add('hide')
-    let genesis = DatePicker.weirdToJS(start)
-    let weeknum = 0
-    const apocalypse = DatePicker.weirdToJS(end).getTime()
-    const startday = genesis.getDay()
-    let today = new Date(start.y, start.m, start.d - startday)
     let lastmonth = null
-    genesis = genesis.getTime()
-    while (today.getTime() < apocalypse) {
+    let today = start.sunday
+    while (today < end) {
       let week = []
       this.weeks.push(week)
       for (let i = 0; i < days.length; i++) {
-        today = new Date(start.y, start.m, start.d - startday + weeknum * 7 + i)
-        if (lastmonth !== today.getMonth()) {
-          lastmonth = today.getMonth()
+        if (lastmonth !== today.month) {
+          lastmonth = today.month
           if (week.length > 0) {
             const newWeek = new Array(week.length).fill({
               notinrange: true,
@@ -47,29 +148,25 @@ export class DatePicker {
                 placeholder: true
               })
             )
-            this.weeks.push({ month: lastmonth, year: today.getFullYear() })
+            this.weeks.push({ month: lastmonth, year: today.year })
             this.weeks.push(newWeek)
             week = newWeek
           } else {
             this.weeks.splice(-1, 0, {
               month: lastmonth,
-              year: today.getFullYear()
+              year: today.year
             })
           }
         }
-        const todayId = DatePicker.weirdToString(DatePicker.jsToWeird(today))
-        const entry = { today, dateId: todayId }
+        const entry = { day: today, dateId: today.dayId }
         week.push(entry)
-        if (today.getTime() >= genesis && today.getTime() <= apocalypse) {
-          entry.month = today.getMonth()
-          entry.year = today.getFullYear()
-          entry.date = today.getDate()
-          this.dates[todayId] = entry
+        if (today >= start && today <= end) {
+          this.dates[today.dayId] = entry
         } else {
           entry.notinrange = true
         }
+        today = today.add(1)
       }
-      weeknum++
     }
   }
 
@@ -86,20 +183,17 @@ export class DatePicker {
       setTimeout(() => {
         document.addEventListener('click', close, false)
       }, 0)
-      let t
-      if (
-        this.selected &&
-        (t = this.dates[DatePicker.weirdToString(this.selected)])
-      ) {
-        if (t.elem.scrollIntoViewIfNeeded) {
-          t.elem.scrollIntoViewIfNeeded()
-        } else {
-          t.elem.scrollIntoView()
+      if (this.selected) {
+        const selectedEntry = this.dates[this.selected.dayId]
+        if (selectedEntry) {
+          if (selectedEntry.elem.scrollIntoViewIfNeeded) {
+            selectedEntry.elem.scrollIntoViewIfNeeded()
+          } else {
+            selectedEntry.elem.scrollIntoView()
+          }
         }
       }
-      const todayEntry =
-        this.dates[DatePicker.weirdToString(DatePicker.jsToWeird(now()))] ||
-        null
+      const todayEntry = this.dates[Day.today().dayId] || null
       if (todayEntry !== this.todayEntry) {
         if (this.todayEntry) {
           this.todayEntry.elem.classList.add('datepicker-today')
@@ -111,29 +205,27 @@ export class DatePicker {
         this.todayEntry = todayEntry
       }
       if (this.isSchoolDay) {
-        const temp = DatePicker.weirdToJS(this.start)
         const weeksWithSchoolDays = new Set()
         let schoolDays = 0
         let encounteredToday = false
-        while (this.compare(DatePicker.jsToWeird(temp), this.end) <= 0) {
-          const entry = this.dates[
-            DatePicker.weirdToString(DatePicker.jsToWeird(temp))
-          ]
+        let curr = this.start
+        while (curr <= this.end) {
+          const entry = this.dates[curr.dayId]
           if (entry === todayEntry) {
             encounteredToday = true
           }
           if (entry) {
-            if (this.isSchoolDay(temp)) {
+            if (this.isSchoolDay(curr)) {
               entry.elem.classList.remove('there-is-no-school')
               if (encounteredToday) {
                 schoolDays++
-                weeksWithSchoolDays.add(this._getWeek(temp))
+                weeksWithSchoolDays.add(curr.sunday.dayId)
               }
             } else {
               entry.elem.classList.add('there-is-no-school')
             }
           }
-          temp.setDate(temp.getDate() + 1)
+          curr = curr.add(1)
         }
         this.schoolYearLeft.textContent = localizeWith('end-date', 'times', {
           D: localizeWith('school-days', 'times', {
@@ -143,19 +235,6 @@ export class DatePicker {
         })
       }
     }
-  }
-
-  /**
-   * Gives an ID that should be the same for all dates within a week but
-   * different for dates across different weeks.
-   */
-  _getWeek (date) {
-    const temp = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() - date.getDay()
-    )
-    return temp.toISOString().slice(0, 10)
   }
 
   _createElements () {
@@ -200,7 +279,7 @@ export class DatePicker {
         day.classList.add('datepicker-day')
         day.dataset.dateId = entry.dateId
         if (!entry.notinrange) {
-          day.textContent = entry.date
+          day.textContent = entry.day.date
         }
         week.appendChild(day)
       }
@@ -211,7 +290,7 @@ export class DatePicker {
         if (e.target.classList.contains('datepicker-day')) {
           const entry = this.dates[e.target.dataset.dateId]
           if (entry && !entry.notinrange) {
-            this.day = { d: entry.date, m: entry.month, y: entry.year }
+            this.day = entry.day
           }
         }
       },
@@ -223,7 +302,7 @@ export class DatePicker {
     this.wrapper.appendChild(dates)
 
     if (this.selected) {
-      const t = this.dates[DatePicker.weirdToString(this.selected)]
+      const t = this.dates[this.selected.dayId]
       if (t) {
         t.elem.classList.add('datepicker-selected')
       }
@@ -236,8 +315,8 @@ export class DatePicker {
     todayBtn.textContent = localize('today')
     ripple(todayBtn)
     todayBtn.addEventListener('click', e => {
-      this.day = DatePicker.jsToWeird(now())
-      const todayElem = this.dates[DatePicker.weirdToString(this.day)]
+      this.day = Day.today()
+      const todayElem = this.dates[this.day.dayId]
       if (todayElem) {
         todayElem.elem.scrollIntoView({
           behavior: 'smooth',
@@ -254,22 +333,18 @@ export class DatePicker {
   }
 
   set day (day) {
-    let t
-    if (
-      this.created &&
-      this.selected &&
-      (t = this.dates[DatePicker.weirdToString(this.selected)])
-    ) {
-      t.elem.classList.remove('datepicker-selected')
+    if (this.created && this.selected) {
+      const selectedEntry = this.dates[this.selected.dayId]
+      if (selectedEntry) {
+        selectedEntry.elem.classList.remove('datepicker-selected')
+      }
     }
     if (day) {
-      day = DatePicker.purify(day)
-      if (
-        this.created &&
-        this.inrange(day) &&
-        (t = this.dates[DatePicker.weirdToString(day)])
-      ) {
-        t.elem.classList.add('datepicker-selected')
+      if (this.created && this.inrange(day)) {
+        const entry = this.dates[day.dayId]
+        if (entry) {
+          entry.elem.classList.add('datepicker-selected')
+        }
       }
     }
     this.selected = day
@@ -277,32 +352,6 @@ export class DatePicker {
   }
 
   inrange (day) {
-    const d = DatePicker.weirdToJS(day).getTime()
-    return !(d < this.min || d > this.max)
-  }
-
-  compare (d1, d2) {
-    return (
-      DatePicker.weirdToJS(d1).getTime() - DatePicker.weirdToJS(d2).getTime()
-    )
-  }
-
-  static weirdToJS ({ y, m, d }) {
-    return new Date(y, m, d)
-  }
-
-  static jsToWeird (d) {
-    return { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
-  }
-
-  static weirdToString ({ y, m, d }) {
-    // using dots bc some teachers use dots and since there's no leading zeroes
-    // it wouldn't look like iso 8601 if i used hyphens
-    return `${y}.${m}.${d}`
-  }
-
-  static purify (day) {
-    const d = new Date(day.y, day.m, day.d)
-    return { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
+    return day >= this.start && day <= this.end
   }
 }

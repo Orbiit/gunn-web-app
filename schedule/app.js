@@ -1,3 +1,4 @@
+import { Day } from '../js/date.js'
 import { createL10nApplier, createReactive } from '../js/dumb-reactive.js'
 import { ripple } from '../js/material.js'
 import { localize, localizeWith } from '../js/l10n.js'
@@ -129,10 +130,13 @@ export function scheduleApp (options = {}) {
           }m`
     }
   }
-  function getHumanTime ({ hour, minute }, { ano, mez, dia }) {
+  function getHumanTime ({ hour, minute }, date) {
     const display = _getHumanTime(hour, minute)
     if (outsideSchool) {
-      const localTime = outsideSchool(new Date(ano, mez, dia, hour, minute))
+      const localDate = date.toLocal()
+      localDate.setHours(hour)
+      localDate.setMinutes(minute)
+      const localTime = outsideSchool(localDate)
       return localizeWith('timezone', 'times', {
         S: display, // "School"
         L: _getHumanTime(localTime.getHours(), localTime.getMinutes()) // "Local"
@@ -180,34 +184,30 @@ export function scheduleApp (options = {}) {
   getFontColour('rgba(0,0,0,0.2)')
   const dayToPrime = { 1: 2, 2: 3, 3: 5, 4: 7, 5: 11 }
   function getSchedule (d, includeZero = options.show0) {
-    const ano = d.getFullYear()
-    const mez = d.getMonth()
-    const dia = d.getDate()
-    const weekday = d.getDay()
     let alternate = false
     let summer = false
     let periods
     // For Gunn Together period resolution (see below)
     const gtWeek = Math.floor(
-      (d - new Date(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
+      (d - Day.from(2020, 8 - 1, 17)) / 1000 / 60 / 60 / 24 / 7
     )
     if (options.customSchedule) {
-      periods = options.customSchedule(d, ano, mez, dia, weekday)
+      periods = options.customSchedule(d)
       if (periods && periods.alternate) {
         alternate = periods.alternate
         periods = periods.periods
       }
     }
     if (periods) periods = periods.slice()
-    else if (options.isSummer && options.isSummer(ano, mez, dia)) {
+    else if (options.isSummer && options.isSummer(d)) {
       summer = true
       periods = []
-    } else if (options.alternates[mez + 1 + '-' + dia]) {
-      const sched = options.alternates[mez + 1 + '-' + dia]
+    } else if (options.alternates[d.ugwaLegacy()]) {
+      const sched = options.alternates[d.ugwaLegacy()]
       alternate = sched
       periods = sched.periods.slice()
-    } else if (options.normal[weekday] && options.normal[weekday].length) {
-      periods = options.normal[weekday].map(period => {
+    } else if (options.normal[d.day] && options.normal[d.day].length) {
+      periods = options.normal[d.day].map(period => {
         if (typeof period.name === 'function') {
           return { ...period, name: period.name(d) }
         } else {
@@ -216,8 +216,8 @@ export function scheduleApp (options = {}) {
       })
     } else periods = []
     if (periods.length) {
-      if (options.hPeriods[weekday] && !periods.find(pd => pd.name === 'H')) {
-        const [start, end] = options.hPeriods[weekday]
+      if (options.hPeriods[d.day] && !periods.find(pd => pd.name === 'H')) {
+        const [start, end] = options.hPeriods[d.day]
         periods.push({
           name: 'H',
           start: {
@@ -233,7 +233,7 @@ export function scheduleApp (options = {}) {
         })
       }
       if (includeZero && !periods.find(pd => pd.name === '0')) {
-        if (getSchedule(new Date(ano, mez, dia - 1), false).periods.length) {
+        if (getSchedule(d.add(-1), false).periods.length) {
           periods.unshift(options.show0)
         }
       }
@@ -277,12 +277,8 @@ export function scheduleApp (options = {}) {
     return {
       periods,
       alternate,
-      summer,
-      date: { ano, mez, dia, weekday }
+      summer
     }
-  }
-  function offsetToDate (offset, d = now()) {
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + offset)
   }
   function getTotalMinutes (d = now()) {
     return d.getMinutes() + d.getHours() * 60
@@ -290,7 +286,7 @@ export function scheduleApp (options = {}) {
   function getCurrentStatus () {
     const d = now()
     const totalminute = getTotalMinutes(d)
-    const { periods } = getSchedule(d)
+    const { periods } = getSchedule(Day.today())
     if (!periods.length) {
       return {
         title: localize('appname'),
@@ -450,10 +446,9 @@ export function scheduleApp (options = {}) {
     if (lastMinuteData || !options.updateTitle) return
     const { title, favicon, end, titleInfo } = getCurrentStatus()
     if (end !== null) {
-      const d = now()
-      const endDateTime = offsetToDate(0, d)
+      const endDateTime = Day.today().toLocal()
       endDateTime.setMinutes(end)
-      if (endDateTime - d < 60000) {
+      if (endDateTime - now() < 60000) {
         lastMinuteData = {
           end: endDateTime.getTime(),
           colour: favicon && favicon.colour[0] === '#' ? favicon.colour : null,
@@ -519,20 +514,17 @@ export function scheduleApp (options = {}) {
     document.title = localize('appname')
     options.favicon.href = options.defaultFavicon
   }
-  function getRenderedScheduleForDay (offset = 0) {
-    let d = now()
+  function getRenderedScheduleForDay (date) {
     let isToday = true
-    const totalminute = getTotalMinutes(d)
-    if (offset !== 0) {
-      d = offsetToDate(offset, d)
+    const totalminute = getTotalMinutes(now())
+    if (Day.today().dayId !== date.dayId) {
       isToday = false
     }
-    const { periods, alternate, summer, date } = getSchedule(d)
-    const { ano, mez, dia, weekday } = date
-    const day = days[weekday]
+    const { periods, alternate, summer } = getSchedule(date)
+    const day = days[date.day]
     const isSchool = !summer && periods.length
     const noSchool = !summer && !periods.length
-    const assignments = options.getAssignments(d)
+    const assignments = options.getAssignments(date)
 
     const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
     let schedule = []
@@ -631,10 +623,10 @@ export function scheduleApp (options = {}) {
           }
         }
         let clubItems = []
-        if (period.name === 'Lunch' && dayToPrime[weekday]) {
+        if (period.name === 'Lunch' && dayToPrime[date.day]) {
           const clubs = []
           Object.keys(savedClubs).forEach(clubName => {
-            if (savedClubs[clubName] % dayToPrime[weekday] === 0) {
+            if (savedClubs[clubName] % dayToPrime[date.day] === 0) {
               clubs.push(clubName)
             }
           })
@@ -731,14 +723,13 @@ export function scheduleApp (options = {}) {
         ])
       }
     } else if (noSchool) {
-      // Although intended to be deterministic, this could change if
-      // - I change the date format
-      // - I add more sheep
-      const seededRandom = mulberry32(d.getTime())
+      // Although intended to be deterministic, this could change if I add more
+      // sheep
+      const seededRandom = mulberry32(date.dayId * 8)
       // Alternate between two sets of sheep between days so the same sheep
       // can't appear twice
       const sheepId =
-        d.getTime() % (2 * 86400000) < 86400000
+        date.dayId % 2 < 1
           ? // Left half (including middle sheep)
             Math.floor(seededRandom() * Math.ceil(SHEEP_COUNT / 2))
           : // Right half (excluding middle sheep)
@@ -764,11 +755,11 @@ export function scheduleApp (options = {}) {
         [
           {
             type: 'a.totally-not-a-link',
-            properties: { href: `?date=${ano}-${mez + 1}-${dia}` }
+            properties: { href: `?date=${date}` }
           },
           localizeWith('date', 'times', {
-            M: months[mez],
-            D: dia
+            M: months[date.month],
+            D: date.date
           })
         ]
       ],
@@ -782,16 +773,14 @@ export function scheduleApp (options = {}) {
       ...schedule
     ]
   }
-  if (!options.offset) options.offset = 0
+  if (!options.viewDay) options.viewDay = Day.today()
   const setState = createReactive(container, customElems)
-  function getDate (date) {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate())
-  }
   function getNext (timeOk, { start = true, end = true } = {}) {
-    const today = getDate(now())
+    const today = Day.today()
     const schedule = getSchedule(today)
     // Use seconds as common unit for these things
-    const time = (currentTime() - today.getTime()) / 1000
+    /** Seconds since the start of the day */
+    const time = (currentTime() - today.toLocal()) / 1000
     for (const period of schedule.periods) {
       if (start && timeOk(period.start.totalminutes * 60, time, period.name)) {
         return {
@@ -856,7 +845,7 @@ export function scheduleApp (options = {}) {
     element,
     container,
     render () {
-      setState(getRenderedScheduleForDay(options.offset))
+      setState(getRenderedScheduleForDay(options.viewDay))
       displayCurrentStatus()
     },
     update () {
@@ -876,18 +865,17 @@ export function scheduleApp (options = {}) {
         timeoutID = null
       }
     },
-    get offset () {
-      return options.offset
+    get viewDay () {
+      return options.viewDay
     },
-    set offset (o) {
-      const oldOffset = options.offset
-      options.offset = o
+    setViewDay (day) {
+      const oldDay = options.viewDay
+      options.viewDay = day
       if (options.autorender) returnval.render()
       for (const listener of onViewingDayChanges) {
         listener({
-          offset: options.offset,
-          date: offsetToDate(options.offset),
-          change: oldOffset !== o
+          date: options.viewDay,
+          change: oldDay.dayId !== day.dayId
         })
       }
     },
@@ -900,19 +888,10 @@ export function scheduleApp (options = {}) {
       }
     },
     getWeek () {
-      const actualtoday = now()
       const week = []
-      const today = new Date(
-        actualtoday.getFullYear(),
-        actualtoday.getMonth(),
-        actualtoday.getDate() + options.offset
-      )
+      const today = options.viewDay.sunday
       for (let i = 0; i < 7; i++) {
-        const d = new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate() - today.getDay() + i
-        )
+        const d = today.add(i)
         const day = []
         const sched = getSchedule(d).periods
         if (sched.length)
@@ -921,7 +900,7 @@ export function scheduleApp (options = {}) {
             style.id = period.name
             day.push(style)
           }
-        if (today.getDay() === i) day.today = true
+        if (today.day === i) day.today = true
         day.date = d
         week.push(day)
       }
@@ -936,7 +915,7 @@ export function scheduleApp (options = {}) {
       const entry = {
         timer,
         onNext: () => {
-          onNext(entry.next, { getDate, getSchedule, getUsefulTimePhrase })
+          onNext(entry.next, { getSchedule, getUsefulTimePhrase })
         },
         update: timer.update,
         next: null
@@ -958,16 +937,14 @@ export function scheduleApp (options = {}) {
       if (onNewDay) {
         onNewDays.push(() => {
           listener({
-            offset: options.offset,
-            date: offsetToDate(options.offset),
+            date: options.viewDay,
             change: 'new day'
           })
         })
       }
       if (callImmediately) {
         listener({
-          offset: options.offset,
-          date: offsetToDate(options.offset),
+          date: options.viewDay,
           change: 'init'
         })
       }
@@ -987,11 +964,10 @@ export function scheduleApp (options = {}) {
     getTotalMinutes,
     getPeriodSpan,
     getSchedule,
-    offsetToDate,
     isEndOfDay: () => {
       const d = now()
       const totalminute = getTotalMinutes(d)
-      const { periods } = getSchedule(d)
+      const { periods } = getSchedule(Day.today())
       // endOfDay is an hour after end of school
       return (
         periods.length &&

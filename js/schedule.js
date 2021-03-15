@@ -12,7 +12,7 @@ import {
   localizeCategory
 } from './assignments.js'
 import { ColourPicker } from './colour.js'
-import { DatePicker } from './date.js'
+import { DatePicker, Day } from './date.js'
 import { createReactive } from './dumb-reactive.js'
 import { onSection } from './footer.js'
 import { localize, localizeWith } from './l10n.js'
@@ -679,8 +679,8 @@ function initAssignmentEditing () {
   })
   dueDate.onchange = date => {
     dueDateTrigger.textContent = localizeWith('date', 'times', {
-      M: months[date.m],
-      D: date.d
+      M: months[date.month],
+      D: date.date
     })
   }
   contentInput.placeholder = localize('assignment', 'placeholders')
@@ -718,8 +718,8 @@ function initAssignmentEditing () {
     pdDropdown.set(period)
     catDropdown.set(category)
     dueDateTrigger.textContent = localizeWith('date', 'times', {
-      M: months[dueObj.m],
-      D: dueObj.d
+      M: months[dueObj.month],
+      D: dueObj.date
     })
     dueDate.day = dueObj
     contentInput.value = text
@@ -967,9 +967,9 @@ function initNotifications () {
           }
         )
       },
-      (next, { getDate, getSchedule, getUsefulTimePhrase }) => {
-        const today = getDate(now())
-        const currentMinute = (currentTime() - today.getTime()) / 1000 / 60
+      (next, { getSchedule, getUsefulTimePhrase }) => {
+        const today = Day.today()
+        const currentMinute = (currentTime() - today.toLocal()) / 1000 / 60
         const { periods } = getSchedule(today)
         const currentPeriod = periods.findIndex(
           period => currentMinute < period.end.totalminutes
@@ -1398,18 +1398,17 @@ function updateScheduleFromEvents (dateDate, json) {
   }
 }
 function renderEvents () {
-  const offset = scheduleapp.offset
-  if (events[offset]) {
-    if (events[offset] !== 'loading') {
-      setEvents(actuallyRenderEvents(events[offset]))
+  const viewDay = scheduleapp.viewDay
+  if (events[viewDay.dayId]) {
+    if (events[viewDay.dayId] !== 'loading') {
+      setEvents(actuallyRenderEvents(events[viewDay.dayId]))
     }
   } else {
-    events[offset] = 'loading'
+    events[viewDay.dayId] = 'loading'
     setEvents([['li', ['span.secondary.center', localize('loading')]]])
 
-    const d = now()
-    const dateDate = scheduleapp.offsetToDate(offset, d).toISOString()
-    const end = scheduleapp.offsetToDate(offset + 1, d)
+    const dateDate = viewDay.toLocal().toISOString()
+    const end = viewDay.add(1).toLocal()
     end.setMilliseconds(-1) // Do not include the first millisecond of the next day
     ajax(
       // timeZone=America/Los_Angeles because the calendar is in UTC so
@@ -1424,17 +1423,17 @@ function renderEvents () {
           desc: event.description,
           loc: event.location
         }))
-        events[offset] = e
-        if (scheduleapp.offset === offset) {
-          setEvents(actuallyRenderEvents(events[offset]))
+        events[viewDay.dayId] = e
+        if (scheduleapp.viewDay.dayId === viewDay.dayId) {
+          setEvents(actuallyRenderEvents(events[viewDay.dayId]))
         }
 
         updateScheduleFromEvents(dateDate, json)
       },
       e => {
-        events[offset] = { error: e + localize('events-error') }
-        if (scheduleapp.offset === offset) {
-          setEvents(actuallyRenderEvents(events[offset]))
+        events[viewDay.dayId] = { error: e + localize('events-error') }
+        if (scheduleapp.viewDay.dayId === viewDay.dayId) {
+          setEvents(actuallyRenderEvents(events[viewDay.dayId]))
         }
       }
     )
@@ -1450,11 +1449,7 @@ const weekPreviewCustomElems = {
       ripple(div)
       div.addEventListener('click', e => {
         const { d } = recordRef.state.options
-        datepicker.day = {
-          d: d.getDate(),
-          m: d.getMonth(),
-          y: d.getFullYear()
-        }
+        datepicker.day = d
       })
       return div
     }
@@ -1512,7 +1507,7 @@ function initScheduleApp () {
     get hPeriods () {
       return formatOptions.showH === 'yes-h-period2' ? hPeriods : []
     },
-    offset: 0,
+    viewDay: Day.today(),
     update: true,
     h24: formatOptions.hourCycle === '24',
     h0Joke: formatOptions.hourCycle === '0',
@@ -1530,8 +1525,8 @@ function initScheduleApp () {
     getAssignments (date, getPeriodSpan) {
       return asgnThing.getScheduleAsgns(date, getPeriodSpan)
     },
-    // customSchedule (date, y, m, d, wd) {},
-    isSummer: (y, m, d) => !datepicker.inrange({ y: y, m: m, d: d }),
+    // customSchedule (date) {},
+    isSummer: date => !datepicker.inrange(date),
     favicon: document.getElementById('favicon'),
     defaultFavicon: 'favicon/favicon.ico',
     updateTitle: newUser ? false : formatOptions.updateTitle !== 'no',
@@ -1552,10 +1547,7 @@ function initScheduleApp () {
 function isSchoolDay (d) {
   return scheduleapp.getSchedule(d).periods.length
 }
-const datePickerRange = [
-  { d: 17, m: 7, y: 2020 },
-  { d: 3, m: 5, y: 2021 }
-] // change for new school year, months are 0-indexed
+const datePickerRange = [Day.parse('2020-08-17'), Day.parse('2021-06-03')] // change for new school year, months are 0-indexed
 function initDatePicker () {
   datepicker = new DatePicker(...datePickerRange)
   datepicker.isSchoolDay = isSchoolDay
@@ -1568,9 +1560,7 @@ function initDatePicker () {
       }
     }
     if (e !== null) {
-      const d = new Date(e.y, e.m, e.d).getTime()
-      const today = currentTime()
-      scheduleapp.offset = Math.floor((d - today) / 86400000) + 1
+      scheduleapp.setViewDay(e)
       if (scheduleapp.options.autorender) makeWeekHappen()
     }
   }
@@ -1579,22 +1569,14 @@ function initDatePicker () {
   const yesterdayer = document.querySelector('#plihieraux')
   const tomorrower = document.querySelector('#plimorgaux')
   yesterdayer.addEventListener('click', e => {
-    const proposal = {
-      d: datepicker.day.d - 1,
-      m: datepicker.day.m,
-      y: datepicker.day.y
-    }
-    if (datepicker.compare(proposal, datepicker.start) >= 0) {
+    const proposal = datepicker.day.add(-1)
+    if (proposal >= datepicker.start) {
       datepicker.day = proposal
     }
   })
   tomorrower.addEventListener('click', e => {
-    const proposal = {
-      d: datepicker.day.d + 1,
-      m: datepicker.day.m,
-      y: datepicker.day.y
-    }
-    if (datepicker.compare(proposal, datepicker.end) <= 0) {
+    const proposal = datepicker.day.add(1)
+    if (proposal <= datepicker.end) {
       datepicker.day = proposal
     }
   })
@@ -1617,12 +1599,8 @@ function initDatePicker () {
     }
   })
   function updateDisabled () {
-    const selectedDay = datepicker.day
-    selectedDay.d--
-    yesterdayer.disabled = datepicker.compare(selectedDay, datepicker.start) < 0
-    selectedDay.d += 2
-    tomorrower.disabled = datepicker.compare(selectedDay, datepicker.end) > 0
-    selectedDay.d--
+    yesterdayer.disabled = datepicker.day.add(-1) < datepicker.start
+    tomorrower.disabled = datepicker.day.add(1) > datepicker.end
   }
   document.querySelector('#datepicker').addEventListener('click', e => {
     datepicker.open()
@@ -1642,29 +1620,22 @@ function initDatePicker () {
 }
 function getSkipToFeature () {
   // skip to next school day
-  const d = now()
+  let d = Day.today()
   let previewingFuture = false
   if (scheduleapp.isEndOfDay()) {
-    d.setDate(d.getDate() + 1)
+    d = d.add(1)
     previewingFuture = true
   }
-  while (
-    datepicker.compare(
-      { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() },
-      datepicker.end
-    ) <= 0 &&
-    !isSchoolDay(d)
-  ) {
-    d.setDate(d.getDate() + 1)
+  while (d <= datepicker.end && !isSchoolDay(d)) {
+    d = d.add(1)
     previewingFuture = true
   }
-  datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
+  datepicker.day = d
 
   // set from ?date= parameter in URL
   const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search)
   if (viewingDate) {
-    const [y, m, d] = viewingDate[1].split('-').map(Number)
-    const proposal = { y: y || 0, m: isNaN(m) ? 0 : m - 1, d: isNaN(d) ? 1 : d }
+    const proposal = Day.parse(viewingDate[1])
     if (datepicker.inrange(proposal)) {
       datepicker.day = proposal
       previewingFuture = false
@@ -1684,8 +1655,7 @@ function getSkipToFeature () {
     todayBtn.className = 'material'
     todayBtn.textContent = localize('return-today')
     todayBtn.addEventListener('click', e => {
-      const d = now()
-      datepicker.day = { d: d.getDate(), m: d.getMonth(), y: d.getFullYear() }
+      datepicker.day = Day.today()
       // Probably will be removed by datepicker's onchange handler
       if (previewingFuture) {
         previewingFuture.remove()
@@ -1750,7 +1720,7 @@ function initSwiping ({ yesterdayer, tomorrower }) {
           swiping.swipingOffset = offset
           // TODO: Swipe
           setPreview(
-            scheduleapp.getRenderedScheduleForDay(scheduleapp.offset + offset)
+            scheduleapp.getRenderedScheduleForDay(scheduleapp.viewDay + offset)
           )
           swipePreview.style.transform =
             offset === -1 ? 'translate(-100%)' : 'translate(100%)'
