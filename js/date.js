@@ -196,7 +196,7 @@ export class DatePicker {
       const todayEntry = this.dates[Day.today().dayId] || null
       if (todayEntry !== this.todayEntry) {
         if (this.todayEntry) {
-          this.todayEntry.elem.classList.add('datepicker-today')
+          this.todayEntry.elem.classList.remove('datepicker-today')
         }
         // `todayEntry` might be null if it's outside of the school year.
         if (todayEntry) {
@@ -227,12 +227,15 @@ export class DatePicker {
           }
           curr = curr.add(1)
         }
-        this.schoolYearLeft.textContent = localizeWith('end-date', 'times', {
-          D: localizeWith('school-days', 'times', {
-            D: schoolDays,
-            W: weeksWithSchoolDays.size
-          })
-        })
+        this.schoolYearLeft.textContent =
+          schoolDays === 0
+            ? localize('ended')
+            : localizeWith('end-date', 'times', {
+                D: localizeWith('school-days', 'times', {
+                  D: schoolDays,
+                  W: weeksWithSchoolDays.size
+                })
+              })
       }
     }
   }

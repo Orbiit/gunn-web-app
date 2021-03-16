@@ -1622,7 +1622,7 @@ function getSkipToFeature () {
   // skip to next school day
   let d = Day.today()
   let previewingFuture = false
-  if (scheduleapp.isEndOfDay()) {
+  if (d < datepicker.end && scheduleapp.isEndOfDay()) {
     d = d.add(1)
     previewingFuture = true
   }
@@ -1636,10 +1636,8 @@ function getSkipToFeature () {
   const viewingDate = /(?:\?|&)date=([^&]+)/.exec(window.location.search)
   if (viewingDate) {
     const proposal = Day.parse(viewingDate[1])
-    if (datepicker.inrange(proposal)) {
-      datepicker.day = proposal
-      previewingFuture = false
-    }
+    datepicker.day = proposal
+    previewingFuture = false
   }
 
   if (previewingFuture) {

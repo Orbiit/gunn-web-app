@@ -73,12 +73,6 @@ const applyAltSchedMsg = createL10nApplier(localize('alt-msg'), {
   D: 'strong'
 })
 
-function getDateId (d = now()) {
-  // toISOString uses UTC D:
-  // Just returns a unique ID per day, so no leading zeroes needed
-  // Adding 1 to month to make it human readable, though
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
-}
 const colourtoy = document.createElement('div')
 function isLight (colour) {
   colourtoy.style.backgroundColor = colour
@@ -803,7 +797,7 @@ export function scheduleApp (options = {}) {
   const onNewDays = []
   const onViewingDayChanges = []
   const onMinutes = []
-  let lastToday = getDateId()
+  let lastToday = Day.today().dayId
   const checkSpeed = 50 // Every 50 ms
   let lastMinute, timeoutID
   function checkMinute () {
@@ -835,8 +829,13 @@ export function scheduleApp (options = {}) {
         update()
       }
     }
-    if (getDateId() !== lastToday) {
-      lastToday = getDateId()
+    const todayId = Day.today().dayId
+    if (todayId !== lastToday) {
+      if (lastToday === options.viewDay.dayId) {
+        options.viewDay = Day.today()
+        if (options.autorender) returnval.render()
+      }
+      lastToday = todayId
       for (const onNewDay of onNewDays) onNewDay()
     }
   }
@@ -900,7 +899,7 @@ export function scheduleApp (options = {}) {
             style.id = period.name
             day.push(style)
           }
-        if (today.day === i) day.today = true
+        if (options.viewDay.day === i) day.today = true
         day.date = d
         week.push(day)
       }

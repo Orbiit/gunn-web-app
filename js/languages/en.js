@@ -258,6 +258,7 @@ export default {
     doneify: 'Mark as done',
     ds: 'S  M  T  W  Θ  F  S',
     'enable-lists': 'Enable club/staff lists',
+    ended: 'The school year ended.',
     'events-error':
       "; couldn't get events; maybe you aren't connected to the internet?",
     'export-file-name':
