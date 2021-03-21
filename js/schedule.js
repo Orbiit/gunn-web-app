@@ -31,7 +31,6 @@ import {
   googleCalendarId,
   loadJsonStorage,
   logError,
-  now,
   outsideSchool,
   onBlur,
   schoolTimeZone,
