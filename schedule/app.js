@@ -771,22 +771,23 @@ export function scheduleApp (options = {}) {
   const setState = createReactive(container, customElems)
   function getNext (timeOk, { start = true, end = true } = {}) {
     const today = Day.today()
+    const startOfDay = today.toLocal()
     const schedule = getSchedule(today)
     // Use seconds as common unit for these things
     /** Seconds since the start of the day */
-    const time = (currentTime() - today.toLocal()) / 1000
+    const time = (currentTime() - startOfDay) / 1000
     for (const period of schedule.periods) {
       if (start && timeOk(period.start.totalminutes * 60, time, period.name)) {
         return {
           period: period.name,
-          time: period.start.totalminutes * 60 * 1000 + today.getTime(),
+          time: period.start.totalminutes * 60 * 1000 + startOfDay,
           type: 'start'
         }
       }
       if (end && timeOk(period.end.totalminutes * 60, time, period.name)) {
         return {
           period: period.name,
-          time: period.end.totalminutes * 60 * 1000 + today.getTime(),
+          time: period.end.totalminutes * 60 * 1000 + startOfDay,
           type: 'end'
         }
       }
