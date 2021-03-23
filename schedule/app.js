@@ -780,14 +780,14 @@ export function scheduleApp (options = {}) {
       if (start && timeOk(period.start.totalminutes * 60, time, period.name)) {
         return {
           period: period.name,
-          time: period.start.totalminutes * 60 * 1000 + startOfDay,
+          time: period.start.totalminutes * 60 * 1000 + startOfDay.getTime(),
           type: 'start'
         }
       }
       if (end && timeOk(period.end.totalminutes * 60, time, period.name)) {
         return {
           period: period.name,
-          time: period.end.totalminutes * 60 * 1000 + startOfDay,
+          time: period.end.totalminutes * 60 * 1000 + startOfDay.getTime(),
           type: 'end'
         }
       }
