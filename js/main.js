@@ -57,13 +57,11 @@ function initMap () {
   })
   map.setMapTypeId('satellite')
   const imageBounds = {
-    north: 37.402294,
-    south: 37.398824,
-    east: -122.130923,
-    west: -122.136685
+    sw: {lat: 37.241595, lng: -122.081106},
+    ne: {lat: 37.235703, lng: -122.075437}
   }
   const historicalOverlay = new google.maps.GroundOverlay(
-    'http://i.imgur.com/cnsWqDz.png',
+    'gunn-web-app/images/mapoverlay.png',
     imageBounds
   )
   historicalOverlay.setMap(map)
