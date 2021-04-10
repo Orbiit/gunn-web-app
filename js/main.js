@@ -141,6 +141,10 @@ function main () {
   document.title = localize('appname')
   document.body.className = cookie.getItem('global.theme') || 'light'
   document.documentElement.classList.remove('hide-app')
+  // Just in case the app stays faded out for some reason, remove `app-animate-in`
+  setTimeout(() => {
+    document.documentElement.classList.remove('app-animate-in')
+  }, 5000)
   if (window !== window.parent) {
     document.body.classList.add('anti-ugwaga')
     document.body.innerHTML += `<div id="anti-ugwaga"><span>${localize(

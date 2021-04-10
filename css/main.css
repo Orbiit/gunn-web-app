@@ -23,7 +23,7 @@ body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
   font-size: 0;
-  transition: all 0.2s, opacity 0.5s;
+  transition: all 0.2s, opacity 0;
   background-color: var(--background);
   color: var(--colour);
   margin-bottom: 56px;
@@ -31,6 +31,9 @@ body {
 .hidden,
 .hide-app > body {
   opacity: 0;
+}
+.app-animate-in > body {
+  transition: all 0.2s, opacity 0.5s;
 }
 .light {
   --navbar: #f5f5f5;
