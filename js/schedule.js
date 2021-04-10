@@ -1905,19 +1905,19 @@ export function initSchedule () {
 
   // Default period names and styles
   periodstyles = {
-    Brunch: { label: localize('brunch'), colour: '#9E9E9E' },
-    Lunch: { label: localize('lunch'), colour: '#9E9E9E' },
-    Flex: { label: localize('flex'), colour: '#607D8B' },
-    SELF: { label: localize('self'), colour: '#455a64' },
-    A: { label: getDefaultPeriodName('1'), colour: '#f44336' },
-    B: { label: getDefaultPeriodName('2'), colour: '#2196F3' },
-    C: { label: getDefaultPeriodName('3'), colour: '#FFEB3B' },
-    D: { label: getDefaultPeriodName('4'), colour: '#795548' },
-    E: { label: getDefaultPeriodName('5'), colour: '#FF9800' },
-    F: { label: getDefaultPeriodName('6'), colour: '#9C27B0' },
-    G: { label: getDefaultPeriodName('7'), colour: '#4CAF50' },
-    H: { label: getDefaultPeriodName('8'), colour: '#673AB7' },
-    '0': { label: localize('p0'), colour: '#009688' }
+    Brunch: { label: localize('brunch'), colour: '#3174D6' },
+    Lunch: { label: localize('lunch'), colour: '#3174D6' },
+    Flex: { label: localize('flex'), colour: '#4CAF50' },
+    SELF: { label: localize('self'), colour: '#8BC34A' },
+    A: { label: getDefaultPeriodName('1'), colour: '#E91E63' },
+    B: { label: getDefaultPeriodName('2'), colour: '#9C27B0' },
+    C: { label: getDefaultPeriodName('3'), colour: '#673AB7' },
+    D: { label: getDefaultPeriodName('4'), colour: '#3F51B5' },
+    E: { label: getDefaultPeriodName('5'), colour: '#2196F3' },
+    F: { label: getDefaultPeriodName('6'), colour: '#00BCD4' },
+    G: { label: getDefaultPeriodName('7'), colour: '#009688' },
+    H: { label: getDefaultPeriodName('8'), colour: '#607D8B' },
+    '0': { label: localize('p0'), colour: '#F44336' }
   }
   const options = loadJsonStorage(
     '[gunn-web-app] scheduleapp.options',

@@ -139,10 +139,15 @@
   <body>
     <script type="text/javascript">
       try {
+        // Dark by default
         document.body.className =
-          localStorage.getItem('global.theme') || 'light'
+          localStorage.getItem('global.theme') ||
+          (window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark')
       } catch (err) {
-        console.error(err)
+        window.logError(err)
       }
     </script>
     <!-- NOAPPDESIGN -->

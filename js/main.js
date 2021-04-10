@@ -137,9 +137,16 @@ document.addEventListener('DOMContentLoaded', e => {
   l10nReady.then(main)
 })
 
+const colour =
+  cookie.getItem('global.theme') ||
+  (window.matchMedia &&
+  window.matchMedia('(prefers-color-scheme: light)').matches
+    ? 'light'
+    : 'dark')
+
 function main () {
   document.title = localize('appname')
-  document.body.className = cookie.getItem('global.theme') || 'light'
+  document.body.className = colour
   document.documentElement.classList.remove('hide-app')
   // Just in case the app stays faded out for some reason, remove `app-animate-in`
   setTimeout(() => {
@@ -220,18 +227,14 @@ function initTabfocus () {
 }
 
 function setTheme () {
-  if (cookie.getItem('global.theme'))
-    document.querySelector(
-      `input[name=theme][value=${cookie.getItem('global.theme')}]`
-    ).checked = true
-  else document.querySelector('input[name=theme][value=light]').checked = true
+  document.querySelector(`input[name=theme][value=${colour}]`).checked = true
   toEach('input[name=theme]', t =>
     t.addEventListener(
       'click',
       e => {
-        document.body.classList.remove(
-          cookie.getItem('global.theme') || 'light'
-        )
+        document.body.classList.remove('light')
+        document.body.classList.remove('dark')
+        document.body.classList.remove('neither')
         document.body.classList.add(e.target.value)
         t.checked = true
         cookie.setItem('global.theme', e.target.value)
