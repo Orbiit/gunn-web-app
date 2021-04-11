@@ -175,11 +175,17 @@ export function scheduleApp (options = {}) {
       getPeriod(period).label
     ]
   }
+  // This is probably dead code, but I'm leaving it here for sentimental reasons
+  // https://github.com/Orbiit/gunn-web-app/commit/98f1efd3cfc58c6e5f9fed904b5278da87fe1996#diff-16d1d8c89ba7f1c2eb9aab9a424e84b092dd81f763087cd79995bbf56d4dd408R22
   getFontColour('rgba(0,0,0,0.2)')
   const dayToPrime = { 1: 2, 2: 3, 3: 5, 4: 7, 5: 11 }
   function getSchedule (d, includeZero = options.show0) {
     let alternate = false
     let summer = false
+    const dateId =
+      ('0' + (d.month + 1)).slice(-2) + '-' + ('0' + d.date).slice(-2)
+    const isSelfDay = options.selfDays.has(dateId)
+    const isGtDay = options.gtDays.has(dateId)
     let periods
     // For Gunn Together period resolution (see below)
     const gtWeek = Math.floor(
@@ -236,6 +242,10 @@ export function scheduleApp (options = {}) {
     // Together it is hidden
     periods = periods.map(period => {
       if (period.name === 'GT') {
+        // Replace GT with SELF if it's a SELF day
+        if (isSelfDay) {
+          return { ...period, name: 'SELF' }
+        }
         // So far:
         // GTPD 55 643217674ss 32
         // Week 0         1
@@ -255,6 +265,8 @@ export function scheduleApp (options = {}) {
         if (name) {
           return { ...period, name, gunnTogether: gtWeek > 20 ? 'sem2' : true }
         }
+      } else if (period.name === 'SELF' && isGtDay) {
+        return { ...period, name: 'E', gunnTogether: 'sem2' }
       }
       return period
     })

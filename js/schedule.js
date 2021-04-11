@@ -1234,7 +1234,7 @@ const normalschedule = [
   ],
   null
 ]
-let alternates, selfDays
+let alternates, selfDays, gtDays
 function identifyPeriod (name) {
   name = name.toLowerCase()
   if (~name.indexOf('period')) {
@@ -1370,17 +1370,30 @@ function updateScheduleFromEvents (dateDate, json) {
   let change = false
   const selfDay = json.find(ev => ev.summary.includes('SELF'))
   if (selfDay) {
-    if (!selfDays.includes(date)) {
-      selfDays.push(date)
+    if (!selfDays.has(date)) {
+      selfDays.add(date)
       change = true
-      ugwitaAltObj.self = selfDays
+      ugwitaAltObj.self = [...selfDays]
     }
   } else {
-    const index = selfDays.indexOf(date)
-    if (~index) {
-      selfDays.splice(index, 1)
+    if (selfDays.delete(date)) {
       change = true
-      ugwitaAltObj.self = selfDays
+      ugwitaAltObj.self = [...selfDays]
+    }
+  }
+  const gtDay = json.find(ev =>
+    ev.summary.toLowerCase().includes('gunn together')
+  )
+  if (gtDay) {
+    if (!gtDays.has(date)) {
+      gtDays.add(date)
+      change = true
+      ugwitaAltObj.gt = [...gtDays]
+    }
+  } else {
+    if (gtDays.delete(date)) {
+      change = true
+      ugwitaAltObj.gt = [...gtDays]
     }
   }
   if (altSched[date] !== undefined) {
@@ -1514,6 +1527,7 @@ function initScheduleApp () {
     normal: normalschedule,
     alternates,
     selfDays,
+    gtDays,
     get hPeriods () {
       return formatOptions.showH === 'yes-h-period2' ? hPeriods : []
     },
@@ -1522,9 +1536,6 @@ function initScheduleApp () {
     h24: formatOptions.hourCycle === '24',
     h0Joke: formatOptions.hourCycle === '0',
     compact: formatOptions.timeLength === 'compact',
-    // No longer relevant, for SELF has taken over the school :(
-    // self: +formatOptions.showSelf,
-    self: true,
     displayAddAsgn: formatOptions.showAddAsgn === 'yes',
     show0: formatOptions.showZero === 'yes' && {
       name: '0',
@@ -1956,7 +1967,8 @@ export function initSchedule () {
   // Alternate schedules are retrieved inside `initSchedule` because it is
   // called once alternate schedules are fetched for a new user
   alternates = loadJsonStorage(ALT_KEY, {})
-  selfDays = alternates.self || []
+  selfDays = new Set(alternates.self || [])
+  gtDays = new Set(alternates.gt || [])
   // `ugwaifyAlternates` has a dependency on `daynames` (which is localized)
   for (const dayString in alternates) {
     if (!dayString.includes('-')) continue

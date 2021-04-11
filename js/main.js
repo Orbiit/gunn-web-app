@@ -80,13 +80,15 @@ const calendarURL =
   apiKey
 const keywords = [
   'self',
+  'gunn together',
+
   'schedule',
-  'extended',
+  // 'extended',
   'holiday',
-  'no students',
+  // 'no students',
   'no school',
-  'break',
-  'development'
+  'break'
+  // 'development'
 ]
 function refreshAlts () {
   return getAlternateSchedules().then(alts => {
@@ -111,15 +113,15 @@ function getAlternateSchedules () {
     )
   ).then(results => {
     const alternateSchedules = {}
-    results
-      .slice(1)
-      .forEach(events =>
-        Object.assign(alternateSchedules, toAlternateSchedules(events.items))
-      )
-    const selfDays = results[0].items
+    results.slice(2).forEach(events => {
+      Object.assign(alternateSchedules, toAlternateSchedules(events.items))
+    })
+    alternateSchedules.self = results[0].items
       .filter(day => day.summary.includes('SELF'))
       .map(day => (day.start.dateTime || day.start.date).slice(5, 10))
-    alternateSchedules.self = selfDays
+    alternateSchedules.gt = results[1].items
+      .filter(day => day.summary.toLowerCase().includes('gunn together'))
+      .map(day => (day.start.dateTime || day.start.date).slice(5, 10))
     return alternateSchedules
   })
 }

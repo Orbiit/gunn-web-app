@@ -266,7 +266,7 @@ export default {
     'export-file-name':
       'the-settings-of-a-great-intellectual-gunn-student.json',
     finals: 'Finals',
-    flex: 'Tutorial',
+    flex: 'Office hours',
     'gunn-together': {
       name: 'Gunn Together',
       sem2:
