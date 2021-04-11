@@ -56,10 +56,10 @@ function initMap () {
     center: { lat: 37.400922, lng: -122.133584 }
   })
   map.setMapTypeId('satellite')
-  const imageBounds = {
-    sw: { lat: 37.241595, lng: -122.081106 },
-    ne: { lat: 37.235703, lng: -122.075437 }
-  }
+  const imageBounds = new google.maps.LatLngBounds(
+    { lat: 37.241595, lng: -122.081106 }, // sw
+    { lat: 37.235703, lng: -122.075437 } // ne
+  )
   const historicalOverlay = new google.maps.GroundOverlay(
     'gunn-web-app/images/mapoverlay.png',
     imageBounds
