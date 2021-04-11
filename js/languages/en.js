@@ -112,6 +112,8 @@ export default {
     'no-hour': 'No hours',
     'not-using-assync':
       '{create|Create Assync account} or {id} {join|Sync to account}',
+    'notif-no-support': "Your browser doesn't support web notifications.",
+    'notif-send-test': '{button|Send test notification} in five seconds.',
     'notif-time-before':
       'Send a notification {time} when a period starts or ends. (Notifications will only be sent while UGWA is running.)',
     notifications: 'Notifications',
@@ -122,7 +124,7 @@ export default {
       'Automatically open a period\'s link {time} when it starts. {emphasis|NOTE: Pages cannot be opened automatically unless you allow the "Pop-ups and redirects" permission in the site settings.}',
     options: 'Options',
     'other-apps':
-      'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {bellhop|Bellhop} by Kartik C. · {nugwa|Not UGWA} by Tomer S. · {hw-central|Homework Central} by Saumya S. · {ugwa-backend|UGWA Backend} by Kevin Y.',
+      'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {bellhop|Bellhop} by Kartik C. · {nugwa|Not UGWA} by Tomer S. · {hw-central|Homework Central} by Saumya S. · {ugwa-backend|WATT} by Yu-Ting C. and Kevin Y.',
     'other-versions':
       'Other versions: {gunn-schedule|Gunn Schedule} (no alternate schedules) · {ugwita|Ugwita} (ugly) · {ugwa2|Ugwa 2} (not done) · {ugwisha|Ugwisha}.',
     periods: 'Periods',
@@ -297,6 +299,8 @@ export default {
       "You {E}; even if you score 0%, you'll be above your threshold.",
     'no-study-emph': "don't need to study",
     'notif-click-desc': 'Click to open link',
+    'notif-test': 'UGWA test notification',
+    'notif-test-subtitle': 'It works!',
     overdue: 'overdue',
     p0: 'Zero period',
     'period-link': '{P} link',

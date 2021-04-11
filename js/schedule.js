@@ -948,11 +948,22 @@ function initNotifications () {
       saveFormatOptions()
     })
   } else {
-    // Remove option if notifications aren't supported
-    notifDropdownWrapper.parentNode.parentNode.removeChild(
-      notifDropdownWrapper.parentNode
-    )
+    // Notifications are not supported
+    document.getElementById('notif-not-supported').style.display = 'block'
   }
+  const testNotifBtn = document.getElementById('send-test-notif')
+  testNotifBtn.addEventListener('click', e => {
+    testNotifBtn.disabled = true
+    setTimeout(() => {
+      testNotifBtn.disabled = false
+      const notification = new Notification(localize('notif-test'), {
+        body: localize('notif-test-subtitle')
+      })
+      notification.addEventListener('click', e => {
+        e.preventDefault()
+      })
+    }, 5000)
+  })
 
   const nextNotif = scheduleapp
     .addTimer(

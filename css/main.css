@@ -1078,6 +1078,11 @@ p.secondary {
   max-width: 300px;
 }
 
+#notif-not-supported {
+  display: none;
+  color: var(--theme);
+}
+
 #no-audio {
   display: none;
   position: fixed;
