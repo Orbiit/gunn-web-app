@@ -151,6 +151,14 @@ async function main () {
   }
   await imgurUrls.save()
 
+  // Overrides for Zoom links
+  if (clubs['Cash Club Corp']) {
+    clubs['Cash Club Corp'].link = 'https://us04web.zoom.us/j/4035403738?pwd=R2FtWFFZSHVHbWpHcFRzd0t1ME4rZz09'
+  }
+  if (clubs['United Computations']) {
+    clubs['United Computations'].link = 'https://pausd.zoom.us/j/91447696916'
+  }
+
   const outputPath = fileURLToPath(
     new URL('../json/clubs.json', import.meta.url)
   )
