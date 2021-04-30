@@ -1238,7 +1238,8 @@ const normalschedule = [
 let alternates, selfDays, gtDays
 function identifyPeriod (name) {
   name = name.toLowerCase()
-  if (~name.indexOf('period')) {
+  // Allow merely "per" (2021-06-02)
+  if (~name.indexOf('per')) {
     // Detect PeriodE/PeriodG (2020-03-31)
     const letter = /(?:\b|period)([a-h1-8])\b/i.exec(name)
     if (letter) {
