@@ -609,6 +609,37 @@ export function scheduleApp (options = {}) {
         }
       }
 
+      if (options.apSchedule[date.toString()]) {
+        const exams = options.apSchedule[date.toString()]
+        schedule.push([
+          'div.material-card.ap-card',
+          ['h1', localize('ap/today')],
+          [
+            {
+              type: 'a',
+              properties: {
+                href:
+                  'https://docs.google.com/spreadsheets/d/1o4mS60WSlz64mkgOD1a3-Cw746DSDQwfP_-CyV_YYfk/'
+              }
+            },
+            localize('ap/source')
+          ],
+          ...exams.map(([time, name, inPerson]) => [
+            'div',
+            [
+              'span.small-heading',
+              inPerson ? localize('ap/in-person') : localize('ap/digital'),
+              ' · ',
+              getHumanTime(
+                { hour: Math.floor(time / 60), minute: time % 60 },
+                date
+              )
+            ],
+            ['span', name]
+          ])
+        ])
+      }
+
       for (const period of periods) {
         const periodStyle = getPeriod(period.name)
         let periodTimeLeft = null

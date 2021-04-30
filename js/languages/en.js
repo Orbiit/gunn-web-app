@@ -194,6 +194,12 @@ export default {
     'add-to-list': 'Add to my clubs',
     'alt-msg': 'This is an alternate schedule. The school says, "{D}"',
     'anti-ugwaga': 'Click/tap to continue to the Unofficial Gunn Web App',
+    ap: {
+      digital: 'Digital',
+      'in-person': 'In person',
+      source: 'See full AP exam schedule',
+      today: 'AP exams today'
+    },
     appname: 'Unofficial Gunn Web App (UGWA)',
     asgn: 'Upcoming assignments',
     'asgn-cat-exam': 'exam',

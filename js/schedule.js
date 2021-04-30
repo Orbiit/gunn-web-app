@@ -5,6 +5,7 @@ import {
   noSchoolRegex,
   toAlternateSchedules
 } from './altScheduleGenerator.js?for=appdesign'
+import apSchedule from './ap-schedule.js'
 import { customElems, getFontColour, scheduleApp } from './app.js'
 import {
   categoryList,
@@ -1528,6 +1529,7 @@ function initScheduleApp () {
     alternates,
     selfDays,
     gtDays,
+    apSchedule,
     get hPeriods () {
       return formatOptions.showH === 'yes-h-period2' ? hPeriods : []
     },

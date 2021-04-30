@@ -173,3 +173,13 @@ body.dark .schedule-container .schedule-periodprogress > div {
   background-color: var(--theme);
   opacity: 1;
 }
+
+.ap-card h1 {
+  margin-top: 0;
+}
+.small-heading:not(:first-child) {
+  margin-top: 10px;
+}
+.ap-current {
+  font-weight: bold;
+}
