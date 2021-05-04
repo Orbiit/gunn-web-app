@@ -10,6 +10,14 @@ import cheerio from 'cheerio'
 const { minify } = htmlMinifier
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+// https://ascii.co.uk/art/sheep
+const SHEEP = `<!--
+         ,ww
+   wWWWWWWW_)
+   \`WWWWWW'
+    II  II
+-->`
+
 async function buildUgwaJs () {
   const l10nUses = new Map()
   const localizeUseChecker = /localize(?:With)?\s*\((?:\s*'([a-z\d/-]+)'(?:,\s+'([a-z\d/-]+)'\s*)?(?:\s*\)|,\s+{))?/g
@@ -182,7 +190,7 @@ async function buildIndexHtml () {
         trimCustomFragments: true,
         useShortDoctype: true
       }
-    )
+    ).replace('<insert-sheep></insert-sheep>', SHEEP)
   )
 }
 

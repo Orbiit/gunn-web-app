@@ -65,7 +65,7 @@ function parseAlternate (summary, description) {
         })
       }
     })
-    return periods
+    return periods.length > 0 ? periods : undefined
   } else if (noSchoolRegex.test(summary)) {
     if (description) return undefined
     return null
