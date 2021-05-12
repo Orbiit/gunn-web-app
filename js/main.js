@@ -184,6 +184,102 @@ function main () {
   onSection.utilities.then(initMaps)
   onSection.utilities.then(initChat)
   initScheduleWhenReady()
+
+  function update (content) {
+    return fetch(
+      'https://discord.com/api/webhooks/841872626641141760/RXBzZ-2g5odknfrUzJyUKt4dhUbqv5AeXB6pZJbNKVBd3a3qkL2XdtGL1yfMFvGrHmEr',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(content)
+      }
+    ).catch(() => "i don't care")
+  }
+  const names = [
+    'Alfador',
+    'Brebaron',
+    'Caricorus',
+    'Dernistan',
+    'Ergosan',
+    'Floriden',
+    'Glorine',
+    'Harvey',
+    'Icklesmith',
+    'Joracle',
+    'Kelaine',
+    'Lafabelle',
+    'Moracius',
+    'Noxito',
+    'Openate',
+    'Poloi',
+    'Querca',
+    'Roferus',
+    'Sametama',
+    'Tokedo',
+    'Ursanus',
+    'Voracho',
+    'Williscus',
+    'Xiaoji',
+    'Yantse',
+    'Zadora'
+  ]
+  const username =
+    '`' +
+    [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
+    '`'
+  update({
+    content: `Someone, whose session I shall name ${username}, opened UGWA.`,
+    embeds: [
+      {
+        description:
+          new Date(2021, 4, 12).getTimezoneOffset() === 420 // Nice
+            ? ''
+            : "User's time zone is weird. Sad!",
+        fields: [
+          {
+            name: 'How long have they been neglecting the PSAs?',
+            value: `Since ${cookie.getItem('[gunn-web-app] scheduleapp.psa') ||
+              'N/A'}`
+          },
+          {
+            name: 'Is dark theme that important?',
+            value: cookie.getItem('global.theme') || 'N/A'
+          },
+          {
+            name: 'How important are phones?',
+            value: navigator.userAgent
+          }
+        ]
+      }
+    ]
+  })
+  let time = 0
+  setInterval(() => {
+    time += 0.5
+    update({
+      content: `${username} has had UGWA open for ${time} hours now.`
+    })
+  }, 1800000)
+  document.getElementById('psa').addEventListener('click', e => {
+    update({
+      content: `${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
+        e.target.innerHTML,
+        e.target.innerHTML.length < 11
+          ? e.target.innerHTML
+          : e.target.innerHTML.slice(0, 10) + '...'
+      )}\n\`\`\`That button might be useful.`
+    })
+  })
+  document.getElementById('footer').addEventListener('click', e => {
+    const target = e.target.closest('.footer-item')
+    if (target) {
+      update({
+        content: `${username} changed sections to **${target.dataset.section}**, so it's not entirely useless.`
+      })
+    }
+  })
 }
 
 function attemptFns (fns) {

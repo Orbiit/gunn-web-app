@@ -520,7 +520,7 @@ function initClubs () {
         })
         .filter(pair => pair)
       shuffleInPlace(showable)
-      isOnline.then(online => {
+      Promise.all([isOnline, onSection.clubs]).then(online => {
         if (!online) return
         clubAdsWrapper.classList.add('club-ad-available')
 
