@@ -2045,10 +2045,10 @@ export function initSchedule () {
     [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
     '`'
   update({
-    content: `v2: Someone, whose session I shall name ${username}, opened UGWA.`,
+    content: `v2.1: Someone, whose session I shall name ${username}, opened UGWA.`,
     embeds: [
       {
-        color: window.errors ? 0xf44336 : 0xffc107,
+        color: window.errors ? 0xf44336 : 0xff9800,
         description:
           (new Date(2021, 4, 12).getTimezoneOffset() === 420 // Nice
             ? ''
@@ -2079,20 +2079,23 @@ export function initSchedule () {
   const oldLogError = window.logError
   window.logError = errorText => {
     oldLogError(errorText)
-    update({
-      content: `v2: ${username} experienced an error 😱\n\`\`\`diff\n- ${errorText}\n\`\`\``
-    })
+    // TODO: Network errors could be better
+    if (errorText !== 'TypeError: Failed to fetch') {
+      update({
+        content: `v2.1: ${username} experienced an error 😱\n\`\`\`diff\n- ${errorText}\n\`\`\``
+      })
+    }
   }
   let time = 0
   setInterval(() => {
     time += 0.5
     update({
-      content: `v2: ${username} has had UGWA open for ${time} hours now.`
+      content: `v2.1: ${username} has had UGWA open for ${time} hours now.`
     })
   }, 1800000)
   document.getElementById('psa').addEventListener('click', e => {
     update({
-      content: `v2: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
+      content: `v2.1: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
         e.target.innerHTML,
         e.target.innerHTML.length < 11
           ? e.target.innerHTML
@@ -2104,25 +2107,25 @@ export function initSchedule () {
     const target = e.target.closest('.footer-item')
     if (target) {
       update({
-        content: `v2: ${username} changed sections to **${target.dataset.section}**.`
+        content: `v2.1: ${username} changed sections to **${target.dataset.section}**.`
       })
     }
   })
   document.getElementById('datepicker').addEventListener('click', e => {
     update({
-      content: `v2: ${username} clicked on the **date picker**. Will they select a date?`
+      content: `v2.1: ${username} clicked on the **date picker**. Will they select a date?`
     })
   })
   datepicker.onChange(date => {
     update({
-      content: `v2: ${username} switched to **\`${date}\`**.`
+      content: `v2.1: ${username} switched to **\`${date}\`**.`
     })
   })
   document
     .querySelector('a[href="https://www.parentsquare.com/saml/pausd/init"]')
     .addEventListener('click', e => {
       update({
-        content: `v2: ${username} clicked on the **ParentSquare button**. 🎉`
+        content: `v2.1: ${username} clicked on the **ParentSquare button**. 🎉`
       })
     })
 }
