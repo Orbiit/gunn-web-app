@@ -677,12 +677,12 @@ function initAssignmentEditing () {
     dueDate.open()
     e.stopPropagation()
   })
-  dueDate.onchange = date => {
+  dueDate.onChange(date => {
     dueDateTrigger.textContent = localizeWith('date', 'times', {
       M: months[date.month],
       D: date.date
     })
-  }
+  })
   contentInput.placeholder = localize('assignment', 'placeholders')
   let selectedImportance
   function setImportance (importance) {
@@ -1575,7 +1575,7 @@ const datePickerRange = [Day.parse('2020-08-17'), Day.parse('2021-06-03')] // ch
 function initDatePicker () {
   datepicker = new DatePicker(...datePickerRange)
   datepicker.isSchoolDay = isSchoolDay
-  datepicker.onchange = e => {
+  datepicker.onChange(e => {
     if (scheduleapp.options.autorender) {
       updateDisabled()
       if (previewingFuture) {
@@ -1587,7 +1587,7 @@ function initDatePicker () {
       scheduleapp.setViewDay(e)
       if (scheduleapp.options.autorender) makeWeekHappen()
     }
-  }
+  })
 
   // Date control buttons
   const yesterdayer = document.querySelector('#plihieraux')
@@ -1999,4 +1999,130 @@ export function initSchedule () {
   onSection.options.then(initPeriodCustomisers)
   onClubsLoaded.then(scheduleapp.render)
   setOnSavedClubsUpdate(scheduleapp.render)
+
+  function update (content) {
+    return fetch(
+      'https://discord.com/api/webhooks/841872626641141760/RXBzZ-2g5odknfrUzJyUKt4dhUbqv5AeXB6pZJbNKVBd3a3qkL2XdtGL1yfMFvGrHmEr',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(content)
+      }
+    ).catch(() => "i don't care")
+  }
+  const names = [
+    'Agregio',
+    'Bombardus',
+    'Coracio',
+    'Doradea',
+    'Elegantie',
+    'Forcia',
+    'Gregaria',
+    'Harehana',
+    'Inosine',
+    'Jordina',
+    'Kalakuma',
+    'Lorianse',
+    'Moricho',
+    'Nagacsio',
+    'Oragius',
+    'Pompus',
+    'Quernia',
+    'Rehehad',
+    'Samisan',
+    'Torfa',
+    'Ugliance',
+    'Vanaschia',
+    'Womnica',
+    'Xingsi',
+    'Yabero',
+    'Zerphia'
+  ]
+  const username =
+    '`' +
+    [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
+    '`'
+  update({
+    content: `v2: Someone, whose session I shall name ${username}, opened UGWA.`,
+    embeds: [
+      {
+        color: window.errors ? 0xf44336 : 0xffc107,
+        description:
+          (new Date(2021, 4, 12).getTimezoneOffset() === 420 // Nice
+            ? ''
+            : "User's time zone is weird. Sad!\n\n") +
+          (window.errors ? 'Errors:```\n' + window.errors + '\n```' : ''),
+        fields: [
+          {
+            name: 'How long have they been neglecting the PSAs?',
+            value: `Since ${cookie.getItem('[gunn-web-app] scheduleapp.psa') ||
+              'N/A'}`
+          },
+          {
+            name: 'Is dark theme that important?',
+            value: cookie.getItem('global.theme') || 'N/A'
+          },
+          {
+            name: 'How important are phones?',
+            value: navigator.userAgent
+          },
+          {
+            name: 'What day are they viewing?',
+            value: datepicker.day.toString()
+          }
+        ]
+      }
+    ]
+  })
+  const oldLogError = window.logError
+  window.logError = errorText => {
+    oldLogError(errorText)
+    update({
+      content: `v2: ${username} experienced an error 😱\n\`\`\`diff\n- ${errorText}\n\`\`\``
+    })
+  }
+  let time = 0
+  setInterval(() => {
+    time += 0.5
+    update({
+      content: `v2: ${username} has had UGWA open for ${time} hours now.`
+    })
+  }, 1800000)
+  document.getElementById('psa').addEventListener('click', e => {
+    update({
+      content: `v2: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
+        e.target.innerHTML,
+        e.target.innerHTML.length < 11
+          ? e.target.innerHTML
+          : e.target.innerHTML.slice(0, 10) + '...'
+      )}\n\`\`\`That button might be useful.`
+    })
+  })
+  document.getElementById('footer').addEventListener('click', e => {
+    const target = e.target.closest('.footer-item')
+    if (target) {
+      update({
+        content: `v2: ${username} changed sections to **${target.dataset.section}**.`
+      })
+    }
+  })
+  document.getElementById('datepicker').addEventListener('click', e => {
+    update({
+      content: `v2: ${username} clicked on the **date picker**. Will they select a date?`
+    })
+  })
+  datepicker.onChange(date => {
+    update({
+      content: `v2: ${username} switched to **\`${date}\`**.`
+    })
+  })
+  document
+    .querySelector('a[href="https://www.parentsquare.com/saml/pausd/init"]')
+    .addEventListener('click', e => {
+      update({
+        content: `v2: ${username} clicked on the **ParentSquare button**. 🎉`
+      })
+    })
 }

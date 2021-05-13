@@ -123,6 +123,7 @@ export class DatePicker {
     this.end = end
     this.selected = null
     this.todayEntry = null
+    this._onChange = new Set()
     this.dates = {}
     this.weeks = []
     this.showDaysLeft = showDaysLeft
@@ -351,10 +352,20 @@ export class DatePicker {
       }
     }
     this.selected = day
-    if (this.onchange) this.onchange(day)
+    for (const onChange of this._onChange) {
+      onChange(day)
+    }
   }
 
   inrange (day) {
     return day >= this.start && day <= this.end
+  }
+
+  onChange (func) {
+    this._onChange.add(func)
+  }
+
+  offChange (func) {
+    this._onChange.delete(func)
   }
 }
