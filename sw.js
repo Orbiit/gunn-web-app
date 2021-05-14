@@ -56,6 +56,26 @@ self.addEventListener('fetch', e => {
           url.pathname.startsWith('/gunn-web-app/.period-images/')
       })
       .then(response => response || fetch(e.request))
+      .then(response => {
+        // status is 0 for opaque responses (eg for images)
+        if (
+          !response.ok &&
+          response.status !== 0 &&
+          url.hostname !== 'discord.com'
+        ) {
+          sendError(`[${url}] HTTP ${response.status}`)
+        }
+        return response
+      })
+      .catch(async err => {
+        if (err) err.ignore = true
+        // Ignore errors from tracking requests
+        if (url.hostname !== 'discord.com') {
+          // Don't `await` so that error sending can be done in parallel
+          sendError(`[${url}] ${err && (err.stack || err.message || err)}`)
+        }
+        throw err
+      })
   )
 })
 self.addEventListener('activate', e => {
@@ -75,13 +95,17 @@ self.addEventListener('activate', e => {
       .then(() => self.clients.claim())
   )
 })
-self.addEventListener('error', e => {
+self.addEventListener('error', err => {
+  if (err.error && err.error.ignore) return
   sendError(
-    e.error && e.error.stack
-      ? e.error.stack
-      : `${e.message} at ${e.filename}:${e.lineno}:${e.colno}`
+    err.error && err.error.stack
+      ? err.error.stack
+      : `${err.message} at ${err.filename}:${err.lineno}:${err.colno}`
   )
 })
-self.addEventListener('unhandledrejection', e => {
-  sendError(e.reason && (e.reason.stack || e.reason.message || e.reason))
+self.addEventListener('unhandledrejection', err => {
+  if (err.reason && err.reason.ignore) return
+  sendError(
+    err.reason && (err.reason.stack || err.reason.message || err.reason)
+  )
 })
