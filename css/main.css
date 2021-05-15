@@ -295,6 +295,7 @@ body #footer .footer-item.active {
   transform-origin: bottom;
   z-index: -1;
   transition: transform 0.2s cubic-bezier(0, 1.4, 1, 1.23);
+  will-change: transform;
 }
 #seconds.notransition::after {
   transition: none;

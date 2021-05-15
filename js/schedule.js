@@ -2092,19 +2092,30 @@ export function initSchedule () {
     ]
   })
   const oldLogError = window.logError
+  let queuedErrors
   window.logError = errorText => {
     oldLogError(errorText)
-    update({
-      content: `${VER}: ${username} experienced an error 😱\n\`\`\`diff\n- ${errorText}\n\`\`\``
-    })
+    if (queuedErrors) {
+      queuedErrors.push(errorText)
+    } else {
+      queuedErrors = []
+      setTimeout(() => {
+        update({
+          content: `${VER}: ${username} experienced an error 😱\n${queuedErrors
+            .map(error => `\`\`\`diff\n- ${error}\n\`\`\``)
+            .join('')}`
+        })
+        queuedErrors = null
+      }, 5000)
+    }
   }
   let time = 0
   setInterval(() => {
-    time += 0.5
+    time += 1
     update({
       content: `${VER}: ${username} has had UGWA open for ${time} hours now.`
     })
-  }, 1800000)
+  }, 3600000)
   document.getElementById('psa').addEventListener('click', e => {
     update({
       content: `${VER}: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
