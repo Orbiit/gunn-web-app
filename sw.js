@@ -95,6 +95,12 @@ self.addEventListener('activate', e => {
       .then(() => self.clients.claim())
   )
 })
+self.addEventListener('notificationclick', e => {
+  const url = e.notification.data && e.notification.data.link
+  if (url) {
+    e.waitUntil(clients.openWindow(url))
+  }
+})
 self.addEventListener('error', err => {
   if (err.error && err.error.ignore) return
   sendError(

@@ -952,16 +952,45 @@ function initNotifications () {
     // Notifications are not supported
     document.getElementById('notif-not-supported').style.display = 'block'
   }
-  const testNotifBtn = document.getElementById('send-test-notif')
-  testNotifBtn.addEventListener('click', e => {
-    testNotifBtn.disabled = true
-    setTimeout(() => {
-      testNotifBtn.disabled = false
-      const notification = new Notification(localize('notif-test'), {
-        body: localize('notif-test-subtitle')
+  let swRegistration
+  async function createNotification ({ header, body, icon, link }) {
+    try {
+      const notification = new Notification(header, {
+        icon,
+        body
       })
       notification.addEventListener('click', e => {
         e.preventDefault()
+        if (link) {
+          const win = window.open(link, '_blank')
+          win.focus()
+        }
+      })
+    } catch (err) {
+      // Android doesn't like `new Notification` (see #207)
+      if (!(err instanceof TypeError) || !navigator.serviceWorker) {
+        throw err
+      }
+      if (!swRegistration) {
+        swRegistration = await navigator.serviceWorker.ready
+      }
+      swRegistration.showNotification(header, {
+        icon,
+        body,
+        data: {
+          link
+        }
+      })
+    }
+  }
+  const testNotifBtn = document.getElementById('send-test-notif')
+  testNotifBtn.addEventListener('click', e => {
+    testNotifBtn.disabled = true
+    setTimeout(async () => {
+      testNotifBtn.disabled = false
+      createNotification({
+        header: localize('notif-test'),
+        body: localize('notif-test-subtitle')
       })
     }, 5000)
   })
@@ -1008,17 +1037,12 @@ function initNotifications () {
                 )
               })
         const openLink = next.link && link
-        const notification = new Notification(text, {
+        createNotification({
+          header: text,
+          body: openLink ? localize('notif-click-desc') : '',
           icon:
             currentPeriod === -1 ? null : getIcon(periods[currentPeriod].name),
-          body: openLink ? localize('notif-click-desc') : ''
-        })
-        notification.addEventListener('click', e => {
-          e.preventDefault()
-          if (openLink) {
-            const win = window.open(link, '_blank')
-            win.focus()
-          }
+          link: openLink && link
         })
       },
       {
@@ -2044,16 +2068,15 @@ export function initSchedule () {
     '`' +
     [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
     '`'
+  const VER = 'v3'
   update({
-    content: `v3: Someone, whose session I shall name ${username}, opened UGWA.`,
+    content: `${VER}: Someone, whose session I shall name ${username}, opened UGWA.`,
     embeds: [
       {
         color: window.errors ? 0xf44336 : 0x2196f3,
-        description:
-          (new Date(2021, 4, 12).getTimezoneOffset() === 420 // Nice
-            ? ''
-            : "User's time zone is weird. Sad!\n\n") +
-          (window.errors ? 'Errors:```\n' + window.errors + '\n```' : ''),
+        description: window.errors
+          ? 'Errors:```\n' + window.errors + '\n```'
+          : '',
         fields: [
           {
             name: 'How long have they been neglecting the PSAs?',
@@ -2061,16 +2084,8 @@ export function initSchedule () {
               'N/A'}`
           },
           {
-            name: 'Is dark theme that important?',
-            value: cookie.getItem('global.theme') || 'N/A'
-          },
-          {
             name: 'How important are phones?',
             value: navigator.userAgent
-          },
-          {
-            name: 'What day are they viewing?',
-            value: datepicker.day.toString()
           }
         ]
       }
@@ -2079,23 +2094,20 @@ export function initSchedule () {
   const oldLogError = window.logError
   window.logError = errorText => {
     oldLogError(errorText)
-    // TODO: Network errors could be better
-    if (errorText !== 'TypeError: Failed to fetch') {
-      update({
-        content: `v3: ${username} experienced an error 😱\n\`\`\`diff\n- ${errorText}\n\`\`\``
-      })
-    }
+    update({
+      content: `${VER}: ${username} experienced an error 😱\n\`\`\`diff\n- ${errorText}\n\`\`\``
+    })
   }
   let time = 0
   setInterval(() => {
     time += 0.5
     update({
-      content: `v3: ${username} has had UGWA open for ${time} hours now.`
+      content: `${VER}: ${username} has had UGWA open for ${time} hours now.`
     })
   }, 1800000)
   document.getElementById('psa').addEventListener('click', e => {
     update({
-      content: `v3: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
+      content: `${VER}: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
         e.target.innerHTML,
         e.target.innerHTML.length < 11
           ? e.target.innerHTML
@@ -2107,7 +2119,7 @@ export function initSchedule () {
     const target = e.target.closest('.footer-item')
     if (target) {
       update({
-        content: `v3: ${username} changed sections to **${target.dataset.section}**.`
+        content: `${VER}: ${username} changed sections to **${target.dataset.section}**.`
       })
     }
   })
@@ -2115,7 +2127,7 @@ export function initSchedule () {
     .querySelector('a[href="https://www.parentsquare.com/saml/pausd/init"]')
     .addEventListener('click', e => {
       update({
-        content: `v3: ${username} clicked on the **ParentSquare button**. 🎉`
+        content: `${VER}: ${username} clicked on the **ParentSquare button**. 🎉`
       })
     })
 }

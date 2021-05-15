@@ -907,6 +907,7 @@ function localizePage () {
 
 function initPWA () {
   const lastPsa = cookie.getItem('[gunn-web-app] scheduleapp.psa')
+  if (!navigator.serviceWorker) return
   try {
     navigator.serviceWorker.register('./sw.js').then(
       regis => {
