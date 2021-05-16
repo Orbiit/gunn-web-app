@@ -532,6 +532,37 @@ export function scheduleApp (options = {}) {
     const noSchool = !summer && !periods.length
     const assignments = options.getAssignments(date)
 
+    let apExams
+    if (options.apSchedule[date.toString()]) {
+      apExams = [
+        'div.material-card.ap-card',
+        ['h1', localize('ap/today')],
+        [
+          {
+            type: 'a',
+            properties: {
+              href:
+                'https://docs.google.com/spreadsheets/d/1o4mS60WSlz64mkgOD1a3-Cw746DSDQwfP_-CyV_YYfk/'
+            }
+          },
+          localize('ap/source')
+        ],
+        ...options.apSchedule[date.toString()].map(([time, name, inPerson]) => [
+          'div',
+          [
+            'span.small-heading',
+            inPerson ? localize('ap/in-person') : localize('ap/digital'),
+            ' · ',
+            getHumanTime(
+              { hour: Math.floor(time / 60), minute: time % 60 },
+              date
+            )
+          ],
+          ['span', name]
+        ])
+      ]
+    }
+
     const optionalPeriods = ['Lunch', 'Brunch', 'Flex']
     let schedule = []
     if (isSchool) {
@@ -609,36 +640,7 @@ export function scheduleApp (options = {}) {
         }
       }
 
-      if (options.apSchedule[date.toString()]) {
-        const exams = options.apSchedule[date.toString()]
-        schedule.push([
-          'div.material-card.ap-card',
-          ['h1', localize('ap/today')],
-          [
-            {
-              type: 'a',
-              properties: {
-                href:
-                  'https://docs.google.com/spreadsheets/d/1o4mS60WSlz64mkgOD1a3-Cw746DSDQwfP_-CyV_YYfk/'
-              }
-            },
-            localize('ap/source')
-          ],
-          ...exams.map(([time, name, inPerson]) => [
-            'div',
-            [
-              'span.small-heading',
-              inPerson ? localize('ap/in-person') : localize('ap/digital'),
-              ' · ',
-              getHumanTime(
-                { hour: Math.floor(time / 60), minute: time % 60 },
-                date
-              )
-            ],
-            ['span', name]
-          ])
-        ])
-      }
+      schedule.push(apExams)
 
       for (const period of periods) {
         const periodStyle = getPeriod(period.name)
@@ -759,7 +761,7 @@ export function scheduleApp (options = {}) {
           ...clubItems
         ])
       }
-    } else if (noSchool) {
+    } else if (noSchool || summer) {
       // Although intended to be deterministic, this could change if I add more
       // sheep
       const seededRandom = mulberry32(date.dayId * 8)
@@ -773,7 +775,10 @@ export function scheduleApp (options = {}) {
             Math.floor(seededRandom() * Math.floor(SHEEP_COUNT / 2)) +
             Math.ceil(SHEEP_COUNT / 2)
       schedule = [
-        ['span.schedule-noschool', localize('no-school')],
+        summer
+          ? ['span.schedule-noschool', localize('summer')]
+          : ['span.schedule-noschool', localize('no-school')],
+        apExams,
         [
           {
             type: 'div.schedule-noschool-sheep',
@@ -801,7 +806,6 @@ export function scheduleApp (options = {}) {
         ]
       ],
       assignments.noPeriod,
-      summer && ['span.schedule-noschool', localize('summer')],
       !summer &&
         alternate && [
           'span.schedule-alternatemsg',

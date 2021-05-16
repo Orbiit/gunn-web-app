@@ -1624,9 +1624,9 @@ function initDatePicker () {
   })
   tomorrower.addEventListener('click', e => {
     const proposal = datepicker.day.add(1)
-    if (proposal <= datepicker.end) {
-      datepicker.day = proposal
-    }
+    // if (proposal <= datepicker.end) {
+    datepicker.day = proposal
+    // }
   })
   document.addEventListener('keydown', e => {
     const pressingArrows =
@@ -1648,7 +1648,7 @@ function initDatePicker () {
   })
   function updateDisabled () {
     yesterdayer.disabled = datepicker.day.add(-1) < datepicker.start
-    tomorrower.disabled = datepicker.day.add(1) > datepicker.end
+    // tomorrower.disabled = datepicker.day.add(1) > datepicker.end
   }
   document.querySelector('#datepicker').addEventListener('click', e => {
     datepicker.open()
@@ -2037,32 +2037,32 @@ export function initSchedule () {
     ).catch(() => "i don't care")
   }
   const names = [
-    'Agregio',
-    'Bombardus',
-    'Coracio',
-    'Doradea',
-    'Elegantie',
-    'Forcia',
-    'Gregaria',
-    'Harehana',
-    'Inosine',
-    'Jordina',
-    'Kalakuma',
-    'Lorianse',
-    'Moricho',
-    'Nagacsio',
-    'Oragius',
-    'Pompus',
-    'Quernia',
-    'Rehehad',
-    'Samisan',
-    'Torfa',
-    'Ugliance',
-    'Vanaschia',
-    'Womnica',
-    'Xingsi',
-    'Yabero',
-    'Zerphia'
+    'Alafred',
+    'Bimbardius',
+    'Calacuno',
+    'Defandana',
+    'Echantsy',
+    'Forahio',
+    'Guntatio',
+    'Horacha',
+    'Isco',
+    'Joraineo',
+    'Kolonea',
+    'Lofadona',
+    'Moniche',
+    'Noridori',
+    'Oscus',
+    'Pofuamio',
+    'Quintuo',
+    'Rochanie',
+    'Somany',
+    'Twatahi',
+    'Uridacius',
+    'Vintesque',
+    'Wemon',
+    'Xitie',
+    'Yesquito',
+    'Zenehare'
   ]
   const username =
     '`' +
