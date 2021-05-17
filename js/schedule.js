@@ -1707,6 +1707,9 @@ function getSkipToFeature () {
         previewingFuture.remove()
         previewingFuture = null
       }
+      update({
+        content: `${VER}: ${username} clicked **SHOW TODAY'S SCHEDULE**.`
+      })
     })
     ripple(todayBtn)
     card.appendChild(todayBtn)
@@ -1716,6 +1719,9 @@ function getSkipToFeature () {
     closeBtn.addEventListener('click', e => {
       previewingFuture.remove()
       previewingFuture = null
+      update({
+        content: `${VER}: ${username} clicked **OK**; they are content with viewing the future and are annoyed by the pop up.`
+      })
     })
     ripple(closeBtn)
     card.appendChild(closeBtn)
@@ -1947,6 +1953,51 @@ let months, daynames, days
 function getDefaultPeriodName (periodName) {
   return localizeWith('periodx', 'other', { X: periodName })
 }
+function update (content) {
+  return fetch(
+    'https://discord.com/api/webhooks/841872626641141760/RXBzZ-2g5odknfrUzJyUKt4dhUbqv5AeXB6pZJbNKVBd3a3qkL2XdtGL1yfMFvGrHmEr',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(content)
+    }
+  ).catch(() => "i don't care")
+}
+const names = [
+  'Alafred',
+  'Bimbardius',
+  'Calacuno',
+  'Defandana',
+  'Echantsy',
+  'Forahio',
+  'Guntatio',
+  'Horacha',
+  'Isco',
+  'Joraineo',
+  'Kolonea',
+  'Lofadona',
+  'Moniche',
+  'Noridori',
+  'Oscus',
+  'Pofuamio',
+  'Quintuo',
+  'Rochanie',
+  'Somany',
+  'Twatahi',
+  'Uridacius',
+  'Vintesque',
+  'Wemon',
+  'Xitie',
+  'Yesquito',
+  'Zenehare'
+]
+const username =
+  '`' +
+  [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
+  '`'
+const VER = 'v3.1'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
@@ -2024,56 +2075,11 @@ export function initSchedule () {
   onClubsLoaded.then(scheduleapp.render)
   setOnSavedClubsUpdate(scheduleapp.render)
 
-  function update (content) {
-    return fetch(
-      'https://discord.com/api/webhooks/841872626641141760/RXBzZ-2g5odknfrUzJyUKt4dhUbqv5AeXB6pZJbNKVBd3a3qkL2XdtGL1yfMFvGrHmEr',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(content)
-      }
-    ).catch(() => "i don't care")
-  }
-  const names = [
-    'Alafred',
-    'Bimbardius',
-    'Calacuno',
-    'Defandana',
-    'Echantsy',
-    'Forahio',
-    'Guntatio',
-    'Horacha',
-    'Isco',
-    'Joraineo',
-    'Kolonea',
-    'Lofadona',
-    'Moniche',
-    'Noridori',
-    'Oscus',
-    'Pofuamio',
-    'Quintuo',
-    'Rochanie',
-    'Somany',
-    'Twatahi',
-    'Uridacius',
-    'Vintesque',
-    'Wemon',
-    'Xitie',
-    'Yesquito',
-    'Zenehare'
-  ]
-  const username =
-    '`' +
-    [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
-    '`'
-  const VER = 'v3'
   update({
     content: `${VER}: Someone, whose session I shall name ${username}, opened UGWA.`,
     embeds: [
       {
-        color: window.errors ? 0xf44336 : 0x2196f3,
+        color: window.errors ? 0xf44336 : 0x03a9f4,
         description: window.errors
           ? 'Errors:```\n' + window.errors + '\n```'
           : '',
