@@ -938,6 +938,7 @@ p.secondary {
   display: inline-block;
   overflow: hidden;
   font-size: 0;
+  border-radius: 10px;
 }
 .psa-video::before {
   content: '\e037';
