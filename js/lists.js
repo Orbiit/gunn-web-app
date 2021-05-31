@@ -116,6 +116,7 @@ function initList (
   const content = info.querySelector('.content')
   const permalink = info.querySelector('.info-permalink')
   searchMarker.parentNode.replaceChild(search.wrapper, searchMarker)
+  const listElements = []
   let data
   function renderList () {
     const names = Object.entries(data)
@@ -143,6 +144,7 @@ function initList (
       })
       ripple(li)
       elements.appendChild(li)
+      listElements.push(li)
 
       li.appendChild(
         Object.assign(document.createElement('span'), {
@@ -304,8 +306,7 @@ function initList (
   )
   function doSearch () {
     const contains = containsString(search.input.value)
-    for (let i = 0; i < list.children.length; i++) {
-      const li = list.children[i]
+    for (const li of listElements) {
       li.style.display = contains(li.dataset.search) ? null : 'none'
     }
   }

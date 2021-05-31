@@ -1997,7 +1997,7 @@ const username =
   '`' +
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
-const VER = 'v3.1'
+const VER = 'v4'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
@@ -2079,7 +2079,7 @@ export function initSchedule () {
     content: `${VER}: Someone, whose session I shall name ${username}, opened UGWA.`,
     embeds: [
       {
-        color: window.errors ? 0xf44336 : 0x03a9f4,
+        color: window.errors ? 0xf44336 : 0x9c27b0,
         description: window.errors
           ? 'Errors:```\n' + window.errors + '\n```'
           : '',
@@ -2101,9 +2101,7 @@ export function initSchedule () {
   let queuedErrors
   window.logError = errorText => {
     oldLogError(errorText)
-    if (queuedErrors) {
-      queuedErrors.push(errorText)
-    } else {
+    if (!queuedErrors) {
       queuedErrors = []
       setTimeout(() => {
         update({
@@ -2114,14 +2112,15 @@ export function initSchedule () {
         queuedErrors = null
       }, 5000)
     }
+    queuedErrors.push(errorText)
   }
   let time = 0
   setInterval(() => {
-    time += 1
+    time += 4
     update({
       content: `${VER}: ${username} has had UGWA open for ${time} hours now.`
     })
-  }, 3600000)
+  }, 1000 * 60 * 60 * 4)
   document.getElementById('psa').addEventListener('click', e => {
     update({
       content: `${VER}: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
