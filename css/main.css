@@ -1144,6 +1144,7 @@ p.secondary {
   overflow: hidden;
 }
 .graduation-wrapper {
+  display: none;
   position: fixed;
   z-index: 21;
   background-color: rgba(0, 0, 0, 0.5);
@@ -1154,18 +1155,50 @@ p.secondary {
   padding-top: 340px;
   padding-top: 20vh;
   box-sizing: border-box;
-  display: flex;
   overflow: auto;
   flex-direction: column;
   align-items: center;
+  animation: graduation-wrapper-in 0.5s;
+}
+.showing-graduation .graduation-wrapper {
+  display: flex;
+}
+.showing-graduation-out .graduation-wrapper {
+  display: flex;
+  animation: graduation-wrapper-out 0.5s forwards;
+  overflow: hidden;
+  pointer-events: none;
+}
+@keyframes graduation-wrapper-in {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+/* Cannot reuse `graduation-wrapper-in` and go backwards because CSS will not restart the animation */
+@keyframes graduation-wrapper-out {
+  from {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  to {
+    background-color: transparent;
+  }
 }
 .graduation-close-msg {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 5px 10px;
   border-radius: 30px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.showing-graduation .graduation-close-msg {
+  opacity: 1;
+  transition-delay: 1s;
 }
 .graduation {
   position: relative;
@@ -1173,18 +1206,42 @@ p.secondary {
   max-width: 600px;
   width: 100%;
   padding: 40px;
-  margin-top: 60px;
+  margin-top: 70px;
   box-sizing: border-box;
   flex: auto;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
+  animation: graduation-in 0.5s;
+}
+.showing-graduation-out .graduation {
+  animation: graduation-out 0.5s forwards;
+}
+@keyframes graduation-in {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes graduation-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(50px);
+  }
 }
 .graduation-image {
   position: absolute;
   left: 50%;
   top: 0;
   border: 10px solid var(--card);
-  background-color: white;
+  background-color: #ddd;
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -1208,4 +1265,40 @@ p.secondary {
     padding: 20px;
     padding-top: 40px;
   }
+}
+#alternatives {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.alternative {
+  display: block;
+  border: 1px solid var(--fill);
+  border-radius: 20px;
+  color: inherit;
+  transition: border 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.alternative:first-child {
+  grid-column: 1 / -1;
+}
+.alternative:hover,
+.tab-focus .alternative:focus {
+  text-decoration: none;
+  border-color: var(--colour);
+}
+.alternative h2 {
+  font-size: 14px;
+  margin: 20px;
+}
+.alternative p {
+  margin: 20px;
+}
+.alternative img {
+  width: 100%;
+}
+#close-grad {
+  display: flex;
+  margin: 0 auto;
 }

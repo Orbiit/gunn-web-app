@@ -1966,32 +1966,32 @@ function update (content) {
   ).catch(() => "i don't care")
 }
 const names = [
-  'Alafred',
-  'Bimbardius',
-  'Calacuno',
-  'Defandana',
-  'Echantsy',
-  'Forahio',
-  'Guntatio',
-  'Horacha',
-  'Isco',
-  'Joraineo',
-  'Kolonea',
-  'Lofadona',
-  'Moniche',
-  'Noridori',
-  'Oscus',
-  'Pofuamio',
-  'Quintuo',
-  'Rochanie',
-  'Somany',
-  'Twatahi',
-  'Uridacius',
-  'Vintesque',
-  'Wemon',
-  'Xitie',
-  'Yesquito',
-  'Zenehare'
+  'Afrada',
+  'Bonbadio',
+  'Curatius',
+  'Dondufus',
+  'Elenamon',
+  'Foreha',
+  'Gunamina',
+  'Hindetao',
+  'Iniscito',
+  'Jamonsano',
+  'Kifo',
+  'Loretane',
+  'Monescone',
+  'Nunenia',
+  'Orefache',
+  'Pumanea',
+  'Quorecana',
+  'Reafea',
+  'Sunepano',
+  'Tumachena',
+  'Umphagura',
+  'Valostene',
+  'Wickichi',
+  'Xinhemao',
+  'Yalaska',
+  'Zefara'
 ]
 const username =
   '`' +
@@ -2104,10 +2104,15 @@ export function initSchedule () {
     if (!queuedErrors) {
       queuedErrors = []
       setTimeout(() => {
+        const content = `${VER}: ${username} experienced an error 😱\n${queuedErrors
+          .map(error => `\`\`\`diff\n- ${error}\n\`\`\``)
+          .join('')}`
         update({
-          content: `${VER}: ${username} experienced an error 😱\n${queuedErrors
-            .map(error => `\`\`\`diff\n- ${error}\n\`\`\``)
-            .join('')}`
+          content:
+            content.length > 1900
+              ? `${content.slice(0, 1900)}\n\n[${content.length -
+                  1900} chars omitted]`
+              : content
         })
         queuedErrors = null
       }, 5000)
