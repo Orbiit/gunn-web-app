@@ -27,7 +27,9 @@ const urlsToCache = [
   'json/alt-schedules-2020.txt',
   'images/sheep-black.png',
   'images/sheep-white.png',
-  'images/gunn-together.svg'
+  'images/gunn-together.svg',
+  'images/grad.svg',
+  'json/alternatives.json'
 ]
 
 function sendError (msg) {

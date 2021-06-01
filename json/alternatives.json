@@ -1,0 +1,16 @@
+[ { "name": "WATT"
+  , "description": "Built with metals forged from deep in the mantle of the Earth. Powered by ancient electric technology, giving it an aesthetic vibrant purple hue."
+  , "image": "https://via.placeholder.com/160x90"
+  , "url": "https://gunnwatt.web.app/"
+  }
+, { "name": "Homework Central"
+  , "description": "Made from sustainably collected grey wood from the deep dark forests. Coated in a protective glaze to prevent blisters. Can slice through rocks with ease."
+  , "image": "https://via.placeholder.com/160x90"
+  , "url": "https://homeworkcentral.web.app/"
+  }
+, { "name": "HWBounty"
+  , "description": "Harvested from the swamps of the Anuran Republic. Blessed by licensed frog wizards. Enhanced durability provided by eco-friendly enchantments."
+  , "image": "https://via.placeholder.com/160x90"
+  , "url": "https://hwbounty.help/"
+  }
+]

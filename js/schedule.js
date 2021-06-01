@@ -36,6 +36,7 @@ import {
   onBlur,
   schoolTimeZone,
   showDialog,
+  shuffleInPlace,
   THEME_COLOUR,
   toEach
 } from './utils.js'
@@ -488,6 +489,16 @@ const formatOptionInfo = {
           scheduleapp.resetCurrentStatus()
         }
       }
+    }
+  },
+  // 18:
+  suppressGraduation: {
+    default: 'no',
+    toggle: {
+      id: 'suppress-grad',
+      on: 'yes',
+      off: 'no',
+      onChange: 'no-reload'
     }
   }
 }
@@ -1179,9 +1190,9 @@ function initLinkOpener () {
         if (formatOptions.timeBeforeAutoLink !== 'off') {
           const openLinkBefore = +formatOptions.timeBeforeAutoLink
           const next = getNext(
-            (pdTime, nowTime, pdName) =>
-              periodstyles[pdName] &&
-              periodstyles[pdName].link &&
+            (pdTime, nowTime, { period }) =>
+              periodstyles[period.name] &&
+              periodstyles[period.name].link &&
               pdTime - openLinkBefore > nowTime,
             { end: false }
           )
@@ -1948,6 +1959,93 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
   document.getElementById('h-days').appendChild(hDays)
 }
 
+const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
+function initGraduation () {
+  const alternativesList = document.getElementById('alternatives')
+  fetch('./json/alternatives.json')
+    .then(r => r.json())
+    .then(alternatives => {
+      shuffleInPlace(alternatives)
+      for (const { name, description, image, url } of alternatives) {
+        const link = Object.assign(document.createElement('a'), {
+          className: 'alternative',
+          href: url,
+          target: '_blank'
+        })
+        ripple(link)
+        link.appendChild(
+          Object.assign(document.createElement('h2'), {
+            textContent: name
+          })
+        )
+        link.appendChild(
+          Object.assign(document.createElement('p'), {
+            textContent: description
+          })
+        )
+        link.appendChild(
+          Object.assign(document.createElement('img'), {
+            src: image,
+            alt: localizeWith('graduation/alt', 'other', { N: name })
+          })
+        )
+        alternativesList.appendChild(link)
+      }
+    })
+
+  let timeoutId
+  function showGraduation () {
+    if (document.body.classList.contains('showing-graduation')) return
+    if (timeoutId) {
+      document.body.classList.remove('showing-graduation-out')
+      clearTimeout(timeoutId)
+    }
+    document.body.classList.add('showing-graduation')
+  }
+  function hideGraduation () {
+    if (!document.body.classList.contains('showing-graduation')) return
+    document.body.classList.remove('showing-graduation')
+    document.body.classList.add('showing-graduation-out')
+    timeoutId = setTimeout(() => {
+      document.body.classList.remove('showing-graduation-out')
+      timeoutId = null
+    }, 500)
+  }
+
+  const wrapper = document.getElementById('graduation-wrapper')
+  wrapper.addEventListener('click', e => {
+    if (!e.target.closest('.graduation')) {
+      hideGraduation()
+    }
+  })
+  document
+    .getElementById('close-grad')
+    .addEventListener('click', hideGraduation)
+
+  scheduleapp
+    .addTimer(
+      getNext => {
+        const nextStart = getNext(
+          (pdTime, nowTime, { period, schedule }) =>
+            pdTime > nowTime && period === schedule[0],
+          { end: false }
+        )
+        const nextEnd = getNext(
+          (pdTime, nowTime, { period, schedule }) =>
+            pdTime > nowTime && period === schedule[schedule.length - 1],
+          { start: false }
+        )
+        console.log(nextStart, nextEnd)
+        return nextStart || nextEnd
+      },
+      next => {
+        //
+      }
+    )
+    .update()
+  showGraduation()
+}
+
 /// initSchedule, called when `localize` is ready
 let months, daynames, days
 function getDefaultPeriodName (periodName) {
@@ -2069,7 +2167,8 @@ export function initSchedule () {
   initBell()
   initSwiping({ yesterdayer, tomorrower })
   initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen)
-  onSection.options.then(initFormatSwitches)
+  initFormatSwitches() // There's also a switch in the graduation dialogue
+  initGraduation()
   onSection.utilities.then(initSupport)
   onSection.options.then(initPeriodCustomisers)
   onClubsLoaded.then(scheduleapp.render)

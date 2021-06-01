@@ -1145,85 +1145,51 @@
       <div class="ios-ok" data-l10n="heaucques"></div>
     </div>
 
-    <div class="graduation-wrapper">
-      <span class="graduation-close-msg"
-        >Click in the shaded area to dismiss.</span
-      >
-      <div class="graduation" id="graduation-message">
+    <div class="graduation-wrapper" id="graduation-wrapper">
+      <span
+        class="graduation-close-msg"
+        data-l10n="graduation/dismiss-msg"
+      ></span>
+      <div class="graduation">
         <img
           src="./images/grad.svg"
           alt="Graduation cap"
           class="graduation-image"
         />
-        <h1>Like the class of 2021, UGWA has grad&shy;uated.</h1>
-        <p>
-          UGWA will update its schedule for the 2021&ndash;2022 school year.
-          After that, there will be no new updates.
-          <strong><a href="#">Read more.</a></strong>
+        <h1 data-l10n="graduation/title"></h1>
+        <p data-l10n="graduation/subtitle">
+          <strong data-l10n-arg="more"
+            ><a
+              href="https://github.com/Orbiit/gunn-web-app/wiki/UGWA-goes-poof"
+              target="_blank"
+              data-l10n="graduation/more"
+            ></a
+          ></strong>
         </p>
-        <p>
-          To stay up to date, you should use a modern app made by a current Gunn
-          student.
+        <p data-l10n="graduation/alt/title"></p>
+        <div id="alternatives"></div>
+        <p data-l10n="graduation/alt/new-app">
+          <a
+            href="https://github.com/Orbiit/gunn-web-app/issues/new"
+            target="_blank"
+            data-l10n-arg="notify"
+          ></a>
         </p>
-        <div id="alternatives">
-          <a
-            class="alternative material-ripple-target"
-            href="#"
-            target="_blank"
-          >
-            <h2>WATT Bounty Central</h2>
-            <p>
-              Lounge on our soft, jade green cushions by the sea with provided
-              noise-cancelling earphones to silence the screams and laughter of
-              the seagulls swooping overhead.
-            </p>
-            <img
-              src="https://via.placeholder.com/160x90"
-              alt="Preview screenshot of WATT Bounty Central"
-            />
-          </a>
-          <a
-            class="alternative material-ripple-target"
-            href="#"
-            target="_blank"
-          >
-            <h2>WATT Bounty Central</h2>
-            <p>
-              Lounge on our soft, jade green cushions by the sea with provided
-              noise-cancelling earphones to silence the screams and laughter of
-              the seagulls swooping overhead.
-            </p>
-            <img
-              src="https://via.placeholder.com/160x90"
-              alt="Preview screenshot of WATT Bounty Central"
-            />
-          </a>
-          <a
-            class="alternative material-ripple-target"
-            href="#"
-            target="_blank"
-          >
-            <h2>WATT Bounty Central</h2>
-            <p>
-              Lounge on our soft, jade green cushions by the sea with provided
-              noise-cancelling earphones to silence the screams and laughter of
-              the seagulls swooping overhead.
-            </p>
-            <img
-              src="https://via.placeholder.com/160x90"
-              alt="Preview screenshot of WATT Bounty Central"
-            />
-          </a>
-        </div>
         <p>
           <label class="material-switch-wrapper">
-            <span class="material-switch" id="supress-grad" tabindex="0"></span>
-            <span>Do not show this again for like a month.</span>
+            <span
+              class="material-switch"
+              id="suppress-grad"
+              tabindex="0"
+            ></span>
+            <span data-l10n="graduation/suppress"></span>
           </label>
         </p>
-        <button class="material ripple-light raised" id="close-grad">
-          Continue using UGWA
-        </button>
+        <button
+          class="material ripple-light raised"
+          id="close-grad"
+          data-l10n="graduation/close"
+        ></button>
       </div>
     </div>
 

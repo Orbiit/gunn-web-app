@@ -69,6 +69,21 @@ export default {
     'finals-worth': 'Portion of grade the final determines: {input}',
     'gmaps-instruct':
       "{for|For Google Maps}: Only works when you're connected to the internet. If you're on touchscreen and can't scroll back up, try scrolling on the buttons.",
+    graduation: {
+      alt: {
+        title:
+          'To stay up to date, you should use a modern app made by a current Gunn student.',
+        'new-app':
+          "Have you made your own app? {notify|Let us know}, and we'll list it here."
+      },
+      close: 'Continue using UGWA',
+      'dismiss-msg': 'Click in the shaded area to dismiss.',
+      more: 'Read more.',
+      subtitle:
+        'UGWA will update its schedule for the 2021–2022 school year. After that, there will be no new updates. {more}',
+      suppress: 'Do not show this again for like a month.',
+      title: 'Like the class of 2021, UGWA has grad\u00aduated.'
+    },
     'h-editor': 'Period 8 settings',
     heaucques: 'OK.',
     'health-screening': {
@@ -273,6 +288,12 @@ export default {
       'the-settings-of-a-great-intellectual-gunn-student.json',
     finals: 'Finals',
     flex: 'Office hours',
+    gmaps: 'use google maps',
+    'gmaps-error':
+      "Google Maps not loading! Maybe you aren't connected to the internet?",
+    graduation: {
+      alt: 'Preview screenshot of {N}'
+    },
     'gunn-together': {
       name: 'Gunn Together',
       sem2:
@@ -280,9 +301,6 @@ export default {
       subtitle:
         'Ask your Period 5 teacher whom you should meet with during this period.'
     },
-    gmaps: 'use google maps',
-    'gmaps-error':
-      "Google Maps not loading! Maybe you aren't connected to the internet?",
     hex: 'Hex',
     image: 'use the image',
     'image-url': 'Image URL',

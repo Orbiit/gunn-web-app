@@ -816,6 +816,19 @@ export function scheduleApp (options = {}) {
   }
   if (!options.viewDay) options.viewDay = Day.today()
   const setState = createReactive(container, customElems)
+  /**
+   * TypeScript type:
+   * (
+   *   timeOk: (
+   *     periodTime: number,
+   *     currentTime: number,
+   *     period: Period,
+   *   ) => boolean,
+   *   options?: { start?: boolean; end?: boolean },
+   * ) =>
+   *   | { period: Period; time: number; type: 'start' | 'end' }
+   *   | null
+   */
   function getNext (timeOk, { start = true, end = true } = {}) {
     const today = Day.today()
     const startOfDay = today.toLocal()
@@ -824,14 +837,15 @@ export function scheduleApp (options = {}) {
     /** Seconds since the start of the day */
     const time = (currentTime() - startOfDay) / 1000
     for (const period of schedule.periods) {
-      if (start && timeOk(period.start.totalminutes * 60, time, period.name)) {
+      const data = { period, schedule }
+      if (start && timeOk(period.start.totalminutes * 60, time, data)) {
         return {
           period: period.name,
           time: period.start.totalminutes * 60 * 1000 + startOfDay.getTime(),
           type: 'start'
         }
       }
-      if (end && timeOk(period.end.totalminutes * 60, time, period.name)) {
+      if (end && timeOk(period.end.totalminutes * 60, time, data)) {
         return {
           period: period.name,
           time: period.end.totalminutes * 60 * 1000 + startOfDay.getTime(),
