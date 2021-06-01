@@ -34,6 +34,7 @@ import {
   logError,
   outsideSchool,
   onBlur,
+  now,
   schoolTimeZone,
   showDialog,
   shuffleInPlace,
@@ -492,15 +493,7 @@ const formatOptionInfo = {
     }
   },
   // 18:
-  suppressGraduation: {
-    default: 'no',
-    toggle: {
-      id: 'suppress-grad',
-      on: 'yes',
-      off: 'no',
-      onChange: 'no-reload'
-    }
-  }
+  suppressGraduation: { default: '0' }
 }
 // Load format options from localStorage
 const formatOptionsCookie = cookie.getItem(
@@ -1171,7 +1164,6 @@ function initLinkOpener () {
     nextLinkOpen.update()
     saveFormatOptions()
   })
-  openLinkInIframe = formatOptions.openNewTab !== 'yes' && setIframe
   const iframeDialog = document.getElementById('iframe-window')
   const iframe = document.getElementById('iframe')
   const iframeTitleLink = document.getElementById('iframe-title')
@@ -1183,6 +1175,7 @@ function initLinkOpener () {
     iframeTitle.nodeValue = name
     showDialog(iframeDialog)
   }
+  openLinkInIframe = formatOptions.openNewTab !== 'yes' && setIframe
 
   const nextLinkOpen = scheduleapp
     .addTimer(
@@ -1959,7 +1952,9 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
   document.getElementById('h-days').appendChild(hDays)
 }
 
-const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
+// const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
+const AFTER_FINALS = 1622493000000 // +new Date(2021, 6 - 1, 0, 13, 30) (TEMP)
+const MONTH = 1000 * 60 * 60 * 24 * 30
 function initGraduation () {
   const alternativesList = document.getElementById('alternatives')
   fetch('./json/alternatives.json')
@@ -2022,28 +2017,64 @@ function initGraduation () {
     .getElementById('close-grad')
     .addEventListener('click', hideGraduation)
 
+  const toggleSwitch = document.getElementById('suppress-grad')
+  formatOptions.suppressGraduation = +formatOptions.suppressGraduation || 0
+  if (currentTime() <= formatOptions.suppressGraduation + MONTH) {
+    toggleSwitch.classList.add('checked')
+  }
+  toggleSwitch.parentNode.addEventListener('click', e => {
+    toggleSwitch.classList.toggle('checked')
+    const checked = toggleSwitch.classList.contains('checked')
+    formatOptions.suppressGraduation = checked ? currentTime() : 0
+    saveFormatOptions()
+  })
+
+  /** Whether now is a good time to show the graduation popup */
+  function isNowOpportune () {
+    const now = currentTime()
+    return now >= AFTER_FINALS && now > formatOptions.suppressGraduation + MONTH
+  }
+
   scheduleapp
     .addTimer(
       getNext => {
         const nextStart = getNext(
-          (pdTime, nowTime, { period, schedule }) =>
-            pdTime > nowTime && period === schedule[0],
+          (pdTime, nowTime, { period, schedule: { periods } }) =>
+            pdTime > nowTime && period === periods[0],
           { end: false }
         )
         const nextEnd = getNext(
-          (pdTime, nowTime, { period, schedule }) =>
-            pdTime > nowTime && period === schedule[schedule.length - 1],
+          (pdTime, nowTime, { period, schedule: { periods } }) =>
+            pdTime > nowTime && period === periods[periods.length - 1],
           { start: false }
         )
-        console.log(nextStart, nextEnd)
         return nextStart || nextEnd
       },
       next => {
-        //
+        if (next.type === 'start') {
+          hideGraduation()
+        } else if (isNowOpportune()) {
+          showGraduation()
+        }
+      },
+      {
+        get enabled () {
+          return isNowOpportune()
+        }
       }
     )
     .update()
-  showGraduation()
+
+  const totalminute = scheduleapp.getTotalMinutes(now())
+  const { periods } = scheduleapp.getSchedule(Day.today())
+  if (
+    (periods.length === 0 ||
+      totalminute < periods[0].start.totalminutes ||
+      totalminute >= periods[periods.length - 1].end.totalminutes) &&
+    isNowOpportune()
+  ) {
+    showGraduation()
+  }
 }
 
 /// initSchedule, called when `localize` is ready
@@ -2167,8 +2198,8 @@ export function initSchedule () {
   initBell()
   initSwiping({ yesterdayer, tomorrower })
   initHEditor(hPeriods, scheduleapp, formatOptions, makeWeekHappen)
-  initFormatSwitches() // There's also a switch in the graduation dialogue
   initGraduation()
+  onSection.options.then(initFormatSwitches)
   onSection.utilities.then(initSupport)
   onSection.options.then(initPeriodCustomisers)
   onClubsLoaded.then(scheduleapp.render)
