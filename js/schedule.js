@@ -1952,8 +1952,10 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
   document.getElementById('h-days').appendChild(hDays)
 }
 
-const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
-const MONTH = 1000 * 60 * 60 * 24 * 30
+// const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
+const AFTER_FINALS = 1622493000000 // +new Date(2021, 6 - 1, 0, 13, 30) (TEMP)
+// const MONTH = 1000 * 60 * 60 * 24 * 30
+const MONTH = 1000 * 60 * 60 // * 24 * 30 (TEMP)
 function initGraduation () {
   const alternativesList = document.getElementById('alternatives')
   fetch('./json/alternatives.json')

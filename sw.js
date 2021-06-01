@@ -29,7 +29,10 @@ const urlsToCache = [
   'images/sheep-white.png',
   'images/gunn-together.svg',
   'images/grad.svg',
-  'json/alternatives.json'
+  'json/alternatives.json',
+  'images/watt-temp.jpg',
+  'images/hc-temp.jpg',
+  'images/hwbounty-temp.jpg'
 ]
 
 function sendError (msg) {
