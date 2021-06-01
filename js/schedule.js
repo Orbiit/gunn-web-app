@@ -1952,10 +1952,8 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
   document.getElementById('h-days').appendChild(hDays)
 }
 
-// const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
-const AFTER_FINALS = 1622493000000 // +new Date(2021, 6 - 1, 0, 13, 30) (TEMP)
-// const MONTH = 1000 * 60 * 60 * 24 * 30
-const MONTH = 1000 * 60 * 60 // * 24 * 30 (TEMP)
+const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
+const MONTH = 1000 * 60 * 60 * 24 * 30
 function initGraduation () {
   const alternativesList = document.getElementById('alternatives')
   fetch('./json/alternatives.json')
@@ -1969,6 +1967,11 @@ function initGraduation () {
           target: '_blank'
         })
         ripple(link)
+        link.addEventListener('click', () => {
+          update({
+            content: `${VER}: ${username} has honourably elected to switch to **${name}**.`
+          })
+        })
         link.appendChild(
           Object.assign(document.createElement('h2'), {
             textContent: name
@@ -2012,16 +2015,28 @@ function initGraduation () {
   wrapper.addEventListener('click', e => {
     if (!e.target.closest('.graduation')) {
       hideGraduation()
+      update({
+        content: `${VER}: ${username} ignored the graduation message.${
+          formatOptions.suppressGraduation ? ' (suppressed)' : ''
+        }`
+      })
     }
   })
-  document
-    .getElementById('close-grad')
-    .addEventListener('click', hideGraduation)
+  document.getElementById('close-grad').addEventListener('click', () => {
+    hideGraduation()
+    update({
+      content: `${VER}: ${username} ignored the graduation message.${
+        formatOptions.suppressGraduation ? ' (suppressed)' : ''
+      }`
+    })
+  })
 
   const toggleSwitch = document.getElementById('suppress-grad')
   formatOptions.suppressGraduation = +formatOptions.suppressGraduation || 0
   if (currentTime() <= formatOptions.suppressGraduation + MONTH) {
     toggleSwitch.classList.add('checked')
+  } else if (formatOptions.suppressGraduation) {
+    formatOptions.suppressGraduation = 0
   }
   toggleSwitch.parentNode.addEventListener('click', e => {
     toggleSwitch.classList.toggle('checked')
