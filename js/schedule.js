@@ -1954,7 +1954,7 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
 
 // const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
 const AFTER_FINALS = 1622493000000 // +new Date(2021, 6 - 1, 0, 13, 30) (TEMP)
-// const MONTH = 1000 * 60 * 60 * 24 * 30
+// const MONTH = 1000 * 60 * 60 * 24 * 30 // TODO: Maybe only make this a week? to be more annoying?
 const MONTH = 1000 * 60 * 60 // * 24 * 30 (TEMP)
 function initGraduation () {
   const alternativesList = document.getElementById('alternatives')
@@ -2012,6 +2012,7 @@ function initGraduation () {
       timeoutId = null
     }, 500)
   }
+  window.showGraduation = showGraduation
 
   const wrapper = document.getElementById('graduation-wrapper')
   wrapper.addEventListener('click', e => {
