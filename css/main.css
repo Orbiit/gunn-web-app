@@ -1275,6 +1275,7 @@ p.secondary {
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  align-items: flex-start;
 }
 .alternative {
   display: block;
@@ -1299,6 +1300,7 @@ p.secondary {
 }
 .alternative p {
   margin: 20px;
+  white-space: pre-wrap;
 }
 .alternative img {
   width: 100%;

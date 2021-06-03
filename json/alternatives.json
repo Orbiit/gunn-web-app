@@ -1,6 +1,6 @@
 [ { "name": "WATT"
-  , "description": "Built with metals forged from deep in the mantle of the Earth. Powered by ancient electric technology, giving it an aesthetic vibrant purple hue."
-  , "image": "./images/watt-temp.jpg"
+  , "description": "Responsive UGWA successor, no sign in necessary! Open sourced on GitHub here: https://github.com/GunnWATT/watt"
+  , "image": "./images/watt-resized.png"
   , "url": "https://gunnwatt.web.app/"
   }
 , { "name": "Homework Central"
