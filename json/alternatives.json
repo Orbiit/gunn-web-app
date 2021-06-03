@@ -4,9 +4,14 @@
   , "url": "https://gunnwatt.web.app/"
   }
 , { "name": "Homework Central"
-  , "description": "Made from sustainably collected grey wood from the deep dark forests. Coated in a protective glaze to prevent blisters. Can slice through rocks with ease."
+  , "description": "Basically UGWA, but young and energetic. Learning new things everyday!"
   , "image": "./images/hc-temp.jpg"
   , "url": "https://homeworkcentral.web.app/"
+  }
+, { "name": "Campus Central"
+  , "description": "Hate Schoology? Loved UGWA?\nThis is the app for you."
+  , "image": "./images/cc-temp.jpg"
+  , "url": "https://campuscentral.web.app/"
   }
 , { "name": "HWBounty"
   , "description": "Harvested from the swamps of the Anuran Republic. Blessed by licensed frog wizards. Enhanced durability provided by eco-friendly enchantments."
