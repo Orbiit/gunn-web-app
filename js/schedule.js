@@ -1952,10 +1952,8 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
   document.getElementById('h-days').appendChild(hDays)
 }
 
-// const AFTER_FINALS = 1622752200000 // +new Date(2021, 6 - 1, 3, 13, 30)
-const AFTER_FINALS = 1622493000000 // +new Date(2021, 6 - 1, 0, 13, 30) (TEMP)
-// const MONTH = 1000 * 60 * 60 * 24 * 30 // TODO: Maybe only make this a week? to be more annoying?
-const MONTH = 1000 * 60 * 60 // * 24 * 30 (TEMP)
+const AFTER_FINALS = 1622736060000 // +new Date(2021, 6 - 1, 3, 9, 1)
+const MONTH = 1000 * 60 * 60 * 24 * 30 // TODO: Maybe only make this a week? to be more annoying?
 function initGraduation () {
   const alternativesList = document.getElementById('alternatives')
   fetch('./json/alternatives.json')
@@ -2012,7 +2010,6 @@ function initGraduation () {
       timeoutId = null
     }, 500)
   }
-  window.showGraduation = showGraduation
 
   const wrapper = document.getElementById('graduation-wrapper')
   wrapper.addEventListener('click', e => {
@@ -2145,7 +2142,7 @@ const username =
   '`' +
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
-const VER = 'v4'
+const VER = 'v4.1'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')

@@ -1195,7 +1195,7 @@ p.secondary {
   border-radius: 30px;
 }
 .showing-graduation .graduation-close-msg {
-  animation: fade-in .5s 1s both;
+  animation: fade-in 0.5s 1s both;
 }
 @keyframes fade-in {
   from {
