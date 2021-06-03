@@ -30,6 +30,7 @@ import {
   escapeHTML,
   getAudioContext,
   googleCalendarId,
+  isOnline,
   loadJsonStorage,
   logError,
   outsideSchool,
@@ -1992,6 +1993,8 @@ function initGraduation () {
       }
     })
 
+  const insertPoint = document.getElementById('grad-video-insert-point')
+  let startedAddingIframe = false
   let timeoutId
   function showGraduation () {
     if (document.body.classList.contains('showing-graduation')) return
@@ -2000,6 +2003,20 @@ function initGraduation () {
       clearTimeout(timeoutId)
     }
     document.body.classList.add('showing-graduation')
+    if (!startedAddingIframe) {
+      startedAddingIframe = true
+      isOnline.then(online => {
+        if (online) {
+          const iframe = document.createElement('iframe')
+          iframe.src = 'https://www.youtube.com/embed/C3Shm6MQEOY'
+          iframe.allow =
+            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+          iframe.setAttribute('allowfullscreen', true)
+          iframe.className = 'grad-end-video'
+          insertPoint.parentNode.replaceChild(iframe, insertPoint)
+        }
+      })
+    }
   }
   function hideGraduation () {
     if (!document.body.classList.contains('showing-graduation')) return

@@ -1158,33 +1158,16 @@ p.secondary {
   overflow: auto;
   flex-direction: column;
   align-items: center;
-  animation: graduation-wrapper-in 0.5s;
+  animation: fade-in 0.5s;
 }
 .showing-graduation .graduation-wrapper {
   display: flex;
 }
 .showing-graduation-out .graduation-wrapper {
   display: flex;
-  animation: graduation-wrapper-out 0.5s forwards;
+  animation: fade-out 0.5s forwards;
   overflow: hidden;
   pointer-events: none;
-}
-@keyframes graduation-wrapper-in {
-  from {
-    background-color: transparent;
-  }
-  to {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-}
-/* Cannot reuse `graduation-wrapper-in` and go backwards because CSS will not restart the animation */
-@keyframes graduation-wrapper-out {
-  from {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  to {
-    background-color: transparent;
-  }
 }
 .graduation-close-msg {
   font-size: 14px;
@@ -1223,21 +1206,17 @@ p.secondary {
 }
 @keyframes graduation-in {
   from {
-    opacity: 0;
     transform: translateY(50px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
 @keyframes graduation-out {
   from {
-    opacity: 1;
     transform: translateY(0);
   }
   to {
-    opacity: 0;
     transform: translateY(50px);
   }
 }
@@ -1308,4 +1287,10 @@ p.secondary {
 #close-grad {
   display: flex;
   margin: 0 auto;
+}
+.grad-end-video {
+  border: none;
+  width: 100%;
+  height: 300px;
+  border-radius: 20px;
 }

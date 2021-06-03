@@ -11,7 +11,7 @@
 , { "name": "Campus Central"
   , "description": "Hate Schoology? Loved UGWA?\nThis is the app for you."
   , "image": "./images/cc-temp.jpg"
-  , "url": "https://campuscentral.web.app/"
+  , "url": "https://campuscentral.repl.co/"
   }
 , { "name": "HWBounty"
   , "description": "Harvested from the swamps of the Anuran Republic. Blessed by licensed frog wizards. Enhanced durability provided by eco-friendly enchantments."
