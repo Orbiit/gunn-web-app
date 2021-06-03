@@ -81,7 +81,7 @@ export default {
       more: 'Read more.',
       subtitle:
         'UGWA will update its schedule for the 2021–2022 school year. After that, there will be no new updates. {more}',
-      suppress: 'Do not show this again for like a month.',
+      suppress: 'Do not show this again for like a week.',
       title: 'Like the class of 2021, UGWA has grad\u00aduated.'
     },
     'h-editor': 'Period 8 settings',

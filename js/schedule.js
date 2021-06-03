@@ -1954,7 +1954,7 @@ function initHEditor (hPeriods, scheduleapp, formatOptions, makeWeekHappen) {
 }
 
 const AFTER_FINALS = 1622736060000 // +new Date(2021, 6 - 1, 3, 9, 1)
-const MONTH = 1000 * 60 * 60 * 24 * 30 // TODO: Maybe only make this a week? to be more annoying?
+const WEEK = 1000 * 60 * 60 * 24 * 7
 function initGraduation () {
   const alternativesList = document.getElementById('alternatives')
   fetch('./json/alternatives.json')
@@ -2050,7 +2050,7 @@ function initGraduation () {
 
   const toggleSwitch = document.getElementById('suppress-grad')
   formatOptions.suppressGraduation = +formatOptions.suppressGraduation || 0
-  if (currentTime() <= formatOptions.suppressGraduation + MONTH) {
+  if (currentTime() <= formatOptions.suppressGraduation + WEEK) {
     toggleSwitch.classList.add('checked')
   } else if (formatOptions.suppressGraduation) {
     formatOptions.suppressGraduation = 0
@@ -2065,7 +2065,7 @@ function initGraduation () {
   /** Whether now is a good time to show the graduation popup */
   function isNowOpportune () {
     const now = currentTime()
-    return now >= AFTER_FINALS && now > formatOptions.suppressGraduation + MONTH
+    return now >= AFTER_FINALS && now > formatOptions.suppressGraduation + WEEK
   }
 
   scheduleapp
@@ -2159,7 +2159,7 @@ const username =
   '`' +
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
-const VER = 'v4.1'
+const VER = 'v4.2'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
