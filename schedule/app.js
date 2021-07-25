@@ -216,26 +216,39 @@ export function scheduleApp (options = {}) {
       })
     } else periods = []
     if (periods.length) {
-      if (options.hPeriods[d.day] && !periods.find(pd => pd.name === 'H')) {
-        const [start, end] = options.hPeriods[d.day]
-        periods.push({
-          name: 'H',
-          start: {
-            hour: Math.floor(start / 60),
-            minute: start % 60,
-            totalminutes: start
-          },
-          end: {
-            hour: Math.floor(end / 60),
-            minute: end % 60,
-            totalminutes: end
-          }
-        })
+      if (options.hPeriods[d.day]) {
+        // Only add period 8 if there isn't already a period 8 in the schedule
+        if (!periods.find(pd => pd.name === 'H')) {
+          const [start, end] = options.hPeriods[d.day]
+          periods.push({
+            name: 'H',
+            start: {
+              hour: Math.floor(start / 60),
+              minute: start % 60,
+              totalminutes: start
+            },
+            end: {
+              hour: Math.floor(end / 60),
+              minute: end % 60,
+              totalminutes: end
+            }
+          })
+        }
+      } else {
+        periods = periods.filter(pd => pd.name !== 'H')
       }
-      if (includeZero && !periods.find(pd => pd.name === '0')) {
-        if (getSchedule(d.add(-1), false).periods.length) {
+      if (includeZero) {
+        // Only add zero period if there isn't already a zero period in the
+        // schedule; zero periods in previous years were on all days except the
+        // first day of the week. (See #102)
+        if (
+          !periods.find(pd => pd.name === '0') &&
+          getSchedule(d.add(-1), false).periods.length
+        ) {
           periods.unshift(options.show0)
         }
+      } else {
+        periods = periods.filter(pd => pd.name !== '0')
       }
     }
     // Putting this before hiding preps so that if you have a prep for Gunn

@@ -1268,7 +1268,7 @@ const normalschedule = [
     { name: 'Brunch', start: makeHMTM(10, 35), end: makeHMTM(10, 40) },
     { name: 'F', start: makeHMTM(10, 50), end: makeHMTM(12, 20) },
     { name: 'Lunch', start: makeHMTM(12, 20), end: makeHMTM(12, 50) },
-    { name: 'SELF', start: makeHMTM(15, 0), end: makeHMTM(15, 50) },
+    { name: 'SELF', start: makeHMTM(13, 0), end: makeHMTM(13, 50) },
     { name: 'G', start: makeHMTM(14, 0), end: makeHMTM(15, 30) }
   ],
   null
