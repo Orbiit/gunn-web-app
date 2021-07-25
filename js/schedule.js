@@ -1222,45 +1222,54 @@ function makeHMTM (hour, minute = 0) {
 const normalschedule = [
   null,
   [
-    { name: 'A', start: makeHMTM(10, 0), end: makeHMTM(10, 30) },
-    { name: 'B', start: makeHMTM(10, 40), end: makeHMTM(11, 10) },
-    { name: 'C', start: makeHMTM(11, 20), end: makeHMTM(11, 50) },
-    { name: 'D', start: makeHMTM(12, 0), end: makeHMTM(12, 35) },
+    { name: '0', start: makeHMTM(7, 55), end: makeHMTM(8, 50) },
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(9, 45) },
+    { name: 'B', start: makeHMTM(9, 55), end: makeHMTM(10, 40) },
+    { name: 'Brunch', start: makeHMTM(10, 40), end: makeHMTM(10, 45) },
+    { name: 'C', start: makeHMTM(10, 55), end: makeHMTM(11, 40) },
+    { name: 'D', start: makeHMTM(11, 50), end: makeHMTM(12, 35) },
     { name: 'Lunch', start: makeHMTM(12, 35), end: makeHMTM(13, 5) },
-    { name: 'E', start: makeHMTM(13, 15), end: makeHMTM(13, 45) },
-    { name: 'F', start: makeHMTM(13, 55), end: makeHMTM(14, 25) },
-    { name: 'G', start: makeHMTM(14, 35), end: makeHMTM(15, 5) }
+    { name: 'E', start: makeHMTM(13, 15), end: makeHMTM(14, 0) },
+    { name: 'F', start: makeHMTM(14, 10), end: makeHMTM(14, 55) },
+    { name: 'G', start: makeHMTM(15, 5), end: makeHMTM(15, 50) },
+    { name: 'H', start: makeHMTM(16, 0), end: makeHMTM(16, 45) }
   ],
   [
-    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
-    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
-    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+    { name: '0', start: makeHMTM(7, 55), end: makeHMTM(8, 50) },
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 35) },
+    { name: 'Brunch', start: makeHMTM(10, 35), end: makeHMTM(10, 40) },
+    { name: 'B', start: makeHMTM(10, 50), end: makeHMTM(12, 20) },
+    { name: 'Lunch', start: makeHMTM(12, 20), end: makeHMTM(12, 50) },
+    { name: 'C', start: makeHMTM(15, 0), end: makeHMTM(14, 30) },
+    { name: 'D', start: makeHMTM(14, 40), end: makeHMTM(16, 10) },
+    { name: 'H', start: makeHMTM(16, 20), end: makeHMTM(17, 55) }
   ],
   [
-    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-    { name: 'GT', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
-    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+    { name: '0', start: makeHMTM(7, 55), end: makeHMTM(8, 50) },
+    { name: 'E', start: makeHMTM(9, 0), end: makeHMTM(10, 35) },
+    { name: 'Brunch', start: makeHMTM(10, 35), end: makeHMTM(10, 40) },
+    { name: 'F', start: makeHMTM(10, 50), end: makeHMTM(12, 20) },
+    { name: 'Lunch', start: makeHMTM(12, 20), end: makeHMTM(12, 50) },
+    { name: 'G', start: makeHMTM(15, 0), end: makeHMTM(14, 30) },
+    { name: 'Flex', start: makeHMTM(14, 40), end: makeHMTM(15, 30) }
   ],
   [
-    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 15) },
-    { name: 'B', start: makeHMTM(10, 25), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'C', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'D', start: makeHMTM(13, 50), end: makeHMTM(15, 5) },
-    { name: 'Flex', start: makeHMTM(15, 10), end: makeHMTM(15, 40) }
+    { name: '0', start: makeHMTM(7, 55), end: makeHMTM(8, 50) },
+    { name: 'A', start: makeHMTM(9, 0), end: makeHMTM(10, 35) },
+    { name: 'Brunch', start: makeHMTM(10, 35), end: makeHMTM(10, 40) },
+    { name: 'B', start: makeHMTM(10, 50), end: makeHMTM(12, 20) },
+    { name: 'Lunch', start: makeHMTM(12, 20), end: makeHMTM(12, 50) },
+    { name: 'C', start: makeHMTM(15, 0), end: makeHMTM(14, 30) },
+    { name: 'D', start: makeHMTM(14, 40), end: makeHMTM(16, 10) },
+    { name: 'H', start: makeHMTM(16, 20), end: makeHMTM(17, 55) }
   ],
   [
-    { name: 'E', start: makeHMTM(9, 40), end: makeHMTM(10, 55) },
-    { name: 'SELF', start: makeHMTM(11, 5), end: makeHMTM(11, 40) },
-    { name: 'Lunch', start: makeHMTM(11, 40), end: makeHMTM(12, 10) },
-    { name: 'F', start: makeHMTM(12, 20), end: makeHMTM(13, 40) },
-    { name: 'G', start: makeHMTM(13, 50), end: makeHMTM(15, 5) }
+    { name: 'E', start: makeHMTM(9, 0), end: makeHMTM(10, 35) },
+    { name: 'Brunch', start: makeHMTM(10, 35), end: makeHMTM(10, 40) },
+    { name: 'F', start: makeHMTM(10, 50), end: makeHMTM(12, 20) },
+    { name: 'Lunch', start: makeHMTM(12, 20), end: makeHMTM(12, 50) },
+    { name: 'SELF', start: makeHMTM(15, 0), end: makeHMTM(15, 50) },
+    { name: 'G', start: makeHMTM(14, 0), end: makeHMTM(15, 30) }
   ],
   null
 ]
@@ -1292,6 +1301,7 @@ function identifyPeriod (name) {
   else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
   // gt - 2021-01-20
   else if (~name.indexOf('together') || ~name.indexOf('gt')) return 'GT'
+  else if (~name.indexOf('zero')) return '0'
   else return name
 }
 function toTraditionalUGWATime (minutes) {
@@ -1305,8 +1315,8 @@ function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
   if (ugwitaData === undefined) return true
   const [month, day] = dayString.split('-').map(Number)
   let date
-  if (month > 6) date = new Date(2020, month - 1, day)
-  else date = new Date(2021, month - 1, day)
+  if (month > 6) date = new Date(2021, month - 1, day)
+  else date = new Date(2022, month - 1, day)
   const periods = []
   if (ugwitaData !== null) {
     ugwitaData.forEach(p => {
@@ -1600,7 +1610,7 @@ function initScheduleApp () {
 function isSchoolDay (d) {
   return scheduleapp.getSchedule(d).periods.length
 }
-const datePickerRange = [Day.parse('2020-08-17'), Day.parse('2021-06-03')] // change for new school year, months are 0-indexed
+const datePickerRange = [Day.parse('2021-08-11'), Day.parse('2022-06-02')] // change for new school year, months are 0-indexed
 function initDatePicker () {
   datepicker = new DatePicker(...datePickerRange)
   datepicker.isSchoolDay = isSchoolDay

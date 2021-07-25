@@ -1,10 +1,10 @@
 # Updating UGWA to a new school year
 
-1. Update `firstDay` and `lastDay` in **js/main.js** to the first/last day of the school year. (This is for alternate schedule fetching.)
+1. Update `firstDay` and `lastDay` in **js/utils.js** to the first/last day of the school year. (This is for alternate schedule fetching.)
 
-2. Set `ALT_KEY` in **js/main.js** to a new localStorage key name to store alternate schedules in. It can follow this format: `[gunn-web-app] alts.20xx-xx`.
+2. Set `ALT_KEY` in **js/utils.js** to a new localStorage key name to store alternate schedules in. It can follow this format: `[gunn-web-app] alts.20xx-xx`.
 
-- You should set `LAST_YEARS_ALT_KEY` in **js/main.js** to last year's `ALT_KEY` so that it clears the stored alternate schedules.
+- You should set `LAST_YEARS_ALT_KEY` in **js/utils.js** to last year's `ALT_KEY` so that it clears the stored alternate schedules.
 
 - **NOTE: You might not want to do this until after the school has released alternate schedules on their Google Calendar**, so it only force updates when it's ready.
 

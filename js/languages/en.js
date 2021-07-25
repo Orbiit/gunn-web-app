@@ -80,7 +80,7 @@ export default {
       'dismiss-msg': 'Click in the shaded area to dismiss.',
       more: 'Read more.',
       subtitle:
-        'UGWA will update its schedule for the 2021–2022 school year. After that, there will be no new updates. {more}',
+        'UGWA has updated its schedule for the 2021–2022 school year. There will no longer be new updates. {more}',
       suppress: 'Do not show this again for like a week.',
       title: 'Like the class of 2021, UGWA has grad\u00aduated.'
     },
@@ -241,7 +241,7 @@ export default {
     'barcode-legacy-default': 'Student #{N}',
     'barcode-student-placeholder': 'Whose ID is this?',
     'blamed-teacher': 'Blamed Teacher',
-    brunch: 'Break/Brunch',
+    brunch: 'Brunch',
     cannot: 'There was a problem fetching the image.',
     'close-future': 'OK',
     club: {
@@ -287,7 +287,7 @@ export default {
     'export-file-name':
       'the-settings-of-a-great-intellectual-gunn-student.json',
     finals: 'Finals',
-    flex: 'Office hours',
+    flex: 'Prime',
     gmaps: 'use google maps',
     'gmaps-error':
       "Google Maps not loading! Maybe you aren't connected to the internet?",
@@ -362,7 +362,7 @@ export default {
     'supreme-leader': 'Supreme Leader',
     symbols: {
       brunch: '🧃',
-      flex: 'Tut.',
+      flex: 'Prim.',
       lunch: '🍱',
       'period-a': '1',
       'period-b': '2',

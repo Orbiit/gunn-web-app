@@ -110,9 +110,6 @@ export class Day {
   }
 }
 
-// Date format names:
-// weird = the weird {d, m, y} object format that this uses for some reason
-// js = JavaScript Date object
 export class DatePicker {
   // 0 indexed months, but 1 indexed dates and years
   constructor (start, end, elem, { showDaysLeft = false } = {}) {
@@ -208,7 +205,7 @@ export class DatePicker {
       if (this.isSchoolDay) {
         const weeksWithSchoolDays = new Set()
         let schoolDays = 0
-        let encounteredToday = false
+        let encounteredToday = Day.today() < this.start
         let curr = this.start
         while (curr <= this.end) {
           const entry = this.dates[curr.dayId]
