@@ -1291,6 +1291,7 @@ function identifyPeriod (name) {
   if (~name.indexOf('self')) return 'SELF'
   else if (
     ~name.indexOf('flex') ||
+    ~name.indexOf('prime') || // 2021-12-14
     ~name.indexOf('assembl') ||
     ~name.indexOf('attend') || // HACK to detect PSAT day (2018-10-10) - as per Ugwisha
     ~name.indexOf('office') || // Office hours (2020-12-15 to 17, distance learning finals)
@@ -1301,6 +1302,7 @@ function identifyPeriod (name) {
   else if (~name.indexOf('unch') || ~name.indexOf('turkey')) return 'Lunch'
   // gt - 2021-01-20
   else if (~name.indexOf('together') || ~name.indexOf('gt')) return 'GT'
+  // First time zero pd was listed in an alt sched 2021-08-11
   else if (~name.indexOf('zero')) return '0'
   else return name
 }
@@ -1320,7 +1322,8 @@ function ugwaifyAlternates (altObj, dayString, ugwitaData, desc) {
   const periods = []
   if (ugwitaData !== null) {
     ugwitaData.forEach(p => {
-      if (!/collaboration|meeting/i.test(p.name)) {
+      // PLC - 2021-12-14
+      if (!/collaboration|meeting|plc/i.test(p.name)) {
         const pd = identifyPeriod(p.name)
         periods.push({
           name: pd,
@@ -2313,7 +2316,9 @@ export function initSchedule () {
     const target = e.target.closest('.footer-item')
     if (target) {
       update({
-        content: `${VER}: ${username} changed sections to **${target.dataset.section}**.`
+        content: `${VER}: ${username} changed sections to **${
+          target.dataset.section
+        }**.`
       })
     }
   })

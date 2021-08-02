@@ -13,7 +13,7 @@
   "devDependencies": {
     "clean-css": "^4.2.3",
     "html-minifier": "^3.5.21",
-    "prettier-standard": "^16.4.1",
+    "prettier-standard": "^15.0.1",
     "rollup": "^2.47.0",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.13.6"

@@ -54,7 +54,7 @@
   "html/feature-based": [],
   "html/finals-worth": ["input"],
   "html/gmaps-instruct": ["for"],
-  "html/graduation/alt/new-app": ["notify"],
+  "html/graduation/alt/new-app": ["discord", "notify"],
   "html/graduation/alt/title": [],
   "html/graduation/close": [],
   "html/graduation/dismiss-msg": [],

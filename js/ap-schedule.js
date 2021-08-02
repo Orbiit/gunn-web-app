@@ -13,15 +13,9 @@ export default {
     [540, 'English Literature', false],
     [780, 'Comp Sci A', false]
   ],
-  '2021-05-19': [
-    [540, 'US History', false],
-    [780, 'Macroeconomics', false]
-  ],
+  '2021-05-19': [[540, 'US History', false], [780, 'Macroeconomics', false]],
   '2021-05-20': [[780, 'Psychology', false]],
-  '2021-05-21': [
-    [720, 'German', true],
-    [720, 'Spanish Literature', true]
-  ],
+  '2021-05-21': [[720, 'German', true], [720, 'Spanish Literature', true]],
   '2021-05-24': [
     [480, 'Calculus AB', true],
     [480, 'Calculus BC', true],
@@ -34,14 +28,8 @@ export default {
     [720, 'Statistics', true]
   ],
   '2021-05-26': [[780, 'Comp Sci Principles', false]],
-  '2021-05-27': [
-    [540, 'Biology', false],
-    [780, 'APES', false]
-  ],
-  '2021-05-28': [
-    [540, 'Human Geo.', false],
-    [780, 'Microeconomics', false]
-  ],
+  '2021-05-27': [[540, 'Biology', false], [780, 'APES', false]],
+  '2021-05-28': [[540, 'Human Geo.', false], [780, 'Microeconomics', false]],
   '2021-06-09': [
     [540, 'Calculus AB', false],
     [540, 'Calculus BC', false],

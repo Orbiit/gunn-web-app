@@ -74,7 +74,7 @@ export default {
         title:
           'To stay up to date, you should use a modern app made by a current Gunn student.',
         'new-app':
-          "Have you made your own app? {notify|Let us know}, and we'll list it here."
+          "If you're reading this, you should join the {discord|unofficial Gunn Discord server}. Also, if you've made your own app, {notify|let us know} so we can list it here."
       },
       close: 'Continue using UGWA',
       'dismiss-msg': 'Click in the shaded area to dismiss.',

@@ -16,7 +16,9 @@ export function zoomImage (img) {
       return Math.sqrt(sum)
     }
   function update () {
-    img.style.transform = `translate(${translate.x}px,${translate.y}px) rotate(${currentRotate}deg) scale(${currentScale})`
+    img.style.transform = `translate(${translate.x}px,${
+      translate.y
+    }px) rotate(${currentRotate}deg) scale(${currentScale})`
     rotator.style.transform = `rotate(${currentRotate}deg)`
   }
   img.addEventListener(
