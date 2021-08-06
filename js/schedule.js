@@ -2021,6 +2021,21 @@ function initGraduation () {
         link.addEventListener('click', () => {
           update({
             content: `${VER}: ${username} has honourably elected to switch to **${name}**.`
+          }).then(r => {
+            if (r.status === 404) {
+              // This is actually somewhat important info and given that society
+              // is doing society things, I'll use a fallback for this
+              fetch(
+                'https://sheep.thingkingland.app/interstud-comm/check-update',
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ election: name })
+                }
+              )
+            }
           })
         })
         link.appendChild(
@@ -2167,7 +2182,9 @@ function getDefaultPeriodName (periodName) {
 }
 function update (content) {
   return fetch(
-    atob('aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvODczMjU1NzkzMjM4MDk3OTkxL3BCWlppcE92Y0t5ZWxnTElJbk5oemk5eUdEeVhTMjktRm04ZUZMUGxodi04aHRiRkNYV1JUOHp3aG9DLW16QmNJS2ZD'),
+    atob(
+      'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvODczMjU1NzkzMjM4MDk3OTkxL3BCWlppcE92Y0t5ZWxnTElJbk5oemk5eUdEeVhTMjktRm04ZUZMUGxodi04aHRiRkNYV1JUOHp3aG9DLW16QmNJS2ZD'
+    ),
     {
       method: 'POST',
       headers: {
@@ -2209,7 +2226,7 @@ const username =
   '`' +
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
-const VER = 'v4.3'
+const VER = 'v4.4'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
