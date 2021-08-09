@@ -2021,8 +2021,8 @@ function initGraduation () {
         link.addEventListener('click', () => {
           update({
             content: `${VER}: ${username} has honourably elected to switch to **${name}**.`
-          }).then(r => {
-            if (r.status === 404) {
+          }).then(retry => {
+            if (retry) {
               // This is actually somewhat important info and given that society
               // is doing society things, I'll use a fallback for this
               fetch(
@@ -2034,7 +2034,7 @@ function initGraduation () {
                   },
                   body: JSON.stringify({ election: name })
                 }
-              )
+              ).catch(() => 'idc')
             }
           })
         })
@@ -2192,7 +2192,9 @@ function update (content) {
       },
       body: JSON.stringify(content)
     }
-  ).catch(() => "i don't care")
+  )
+    .then(r => r.status === 404)
+    .catch(() => true)
 }
 const names = [
   'Annesota',
