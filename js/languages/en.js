@@ -391,6 +391,12 @@ export default {
     today: 'Today',
     undoneify: 'Unmark as done',
     universe: 'Universe',
+    watt: {
+      heading: "Why aren't you using WATT?",
+      message:
+        'It has the correct times for {NAME} and will be kept up-to-date by current Gunn students.',
+      switch: 'Switch to WATT'
+    },
     you: 'You',
     'yt-only':
       'Only YouTube and public Google Drive videos are shown here (for thumbnail reasons).',

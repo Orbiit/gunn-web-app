@@ -235,7 +235,6 @@ function initList (
                   Object.assign(document.createElement('a'), {
                     href: link.includes('@') ? `mailto:${item[prop]}` : link,
                     target: '_blank',
-                    rel: 'noopener noreferrer',
                     textContent: link
                   })
                 )
@@ -529,7 +528,6 @@ function initClubs () {
           const entry = Object.assign(document.createElement('a'), {
             href: link,
             target: '_blank',
-            rel: 'noopener noreferrer',
             className: 'club-ad'
           })
           Object.assign(entry.dataset, { name, embed })

@@ -183,3 +183,22 @@ body.dark .schedule-container .schedule-periodprogress > div {
 .ap-current {
   font-weight: bold;
 }
+
+.watt-ad {
+  padding: 24px;
+  border-radius: 10px;
+  background-color: white;
+  color: rgba(0, 0, 0, 0.87);
+}
+.light .watt-ad {
+  background-color: var(--theme);
+  color: white;
+}
+.light .watt-ad .material.raised {
+  background-color: white;
+  color: var(--theme);
+}
+.watt-ad h3 {
+  font-size: 24px;
+  margin: 0;
+}

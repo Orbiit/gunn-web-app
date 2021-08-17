@@ -29,7 +29,6 @@ export const customElems = {
     'ext-link': ({ options: { ripple: rippleEffect } }) => {
       const link = document.createElement('a')
       link.target = '_blank'
-      link.rel = 'noopener noreferrer'
       if (rippleEffect) ripple(link)
       return link
     },
@@ -673,6 +672,28 @@ export function scheduleApp (options = {}) {
               T2: getUsefulTimePhrase(totalminute - period.start.totalminutes)
             })
           }
+        }
+        // Get people to use WATT by intentionally not fixing the typo in the
+        // schedule
+        if (period.end.totalminutes < period.start.totalminutes) {
+          schedule.push([
+            'div.watt-ad',
+            ['h3', localize('watt/heading')],
+            [
+              'p',
+              localizeWith('watt/message', 'other', { NAME: periodStyle.label })
+            ],
+            [
+              {
+                type: 'ext-link.material.raised.watt-link',
+                properties: {
+                  href: 'https://gunnwatt.web.app/'
+                },
+                options: { ripple: true }
+              },
+              localize('watt/switch')
+            ]
+          ])
         }
         let clubItems = []
         if (period.name === 'Lunch' && dayToPrime[date.day]) {

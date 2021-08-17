@@ -1,4 +1,4 @@
-/* global fetch, caches, alert, Notification */
+/* global fetch, caches, alert, Notification, atob */
 
 import {
   altScheduleRegex,
@@ -1762,9 +1762,6 @@ function getSkipToFeature () {
         previewingFuture.remove()
         previewingFuture = null
       }
-      update({
-        content: `${VER}: ${username} clicked **SHOW TODAY'S SCHEDULE**.`
-      })
     })
     ripple(todayBtn)
     card.appendChild(todayBtn)
@@ -1774,9 +1771,6 @@ function getSkipToFeature () {
     closeBtn.addEventListener('click', e => {
       previewingFuture.remove()
       previewingFuture = null
-      update({
-        content: `${VER}: ${username} clicked **OK**; they are content with viewing the future and are annoyed by the pop up.`
-      })
     })
     ripple(closeBtn)
     card.appendChild(closeBtn)
@@ -2230,7 +2224,7 @@ const username =
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
 
-const VER = 'v4.5'
+const VER = 'v4.6'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
@@ -2313,7 +2307,7 @@ export function initSchedule () {
     content: `${VER}: Someone, whose session I shall name ${username}, opened UGWA.`,
     embeds: [
       {
-        color: window.errors ? 0xf44336 : 0x00bcd4,
+        color: window.errors ? 0xf44336 : 0x2196f3,
         description: window.errors
           ? 'Errors:```\n' + window.errors + '\n```'
           : '',
@@ -2360,31 +2354,12 @@ export function initSchedule () {
       content: `${VER}: ${username} has had UGWA open for ${time} hours now.`
     })
   }, 1000 * 60 * 60 * 4)
-  document.getElementById('psa').addEventListener('click', e => {
-    update({
-      content: `${VER}: ${username} clicked on \`\`\`html\n${e.target.outerHTML.replace(
-        e.target.innerHTML,
-        e.target.innerHTML.length < 11
-          ? e.target.innerHTML
-          : e.target.innerHTML.slice(0, 10) + '...'
-      )}\n\`\`\`That button might be useful.`
-    })
-  })
-  document.getElementById('footer').addEventListener('click', e => {
-    const target = e.target.closest('.footer-item')
+  document.addEventListener('click', e => {
+    const target = e.target.closest('.watt-link')
     if (target) {
       update({
-        content: `${VER}: ${username} changed sections to **${
-          target.dataset.section
-        }**.`
+        content: `${VER}: ${username} has begrudgingly made the transition.`
       })
     }
   })
-  document
-    .querySelector('a[href="https://www.parentsquare.com/saml/pausd/init"]')
-    .addEventListener('click', e => {
-      update({
-        content: `${VER}: ${username} clicked on the **ParentSquare button**. 🎉`
-      })
-    })
 }
