@@ -7,15 +7,18 @@
   , "description": "Basically UGWA, but young and energetic. Learning new things everyday!"
   , "image": "./images/hc-temp.jpg"
   , "url": "https://homeworkcentral.web.app/"
+  , "exclude": true
   }
 , { "name": "Campus Central"
   , "description": "Hate Schoology? Loved UGWA?\nThis is the app for you."
   , "image": "./images/cc-temp.jpg"
   , "url": "https://campuscentral.repl.co/"
+  , "exclude": true
   }
 , { "name": "HWBounty"
   , "description": "Harvested from the swamps of the Anuran Republic. Blessed by licensed frog wizards. Enhanced durability provided by eco-friendly enchantments."
   , "image": "./images/hwbounty-temp.jpg"
   , "url": "https://hwbounty.help/signup/gunn"
+  , "exclude": true
   }
 ]

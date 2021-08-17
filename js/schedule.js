@@ -2011,7 +2011,8 @@ function initGraduation () {
     .then(r => r.json())
     .then(alternatives => {
       shuffleInPlace(alternatives)
-      for (const { name, description, image, url } of alternatives) {
+      for (const { name, description, image, url, exclude } of alternatives) {
+        if (exclude) continue
         const link = Object.assign(document.createElement('a'), {
           className: 'alternative',
           href: url,
@@ -2183,7 +2184,7 @@ function getDefaultPeriodName (periodName) {
 function update (content) {
   return fetch(
     atob(
-      'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvODczMjU1NzkzMjM4MDk3OTkxL3BCWlppcE92Y0t5ZWxnTElJbk5oemk5eUdEeVhTMjktRm04ZUZMUGxodi04aHRiRkNYV1JUOHp3aG9DLW16QmNJS2ZD'
+      'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvODczMjU3ODkxNjk4NzM3MjEyL3hkeXg4UGtkUkROR1BnUndPQXJnUU9fdmtNblE4ZnY2TmpNUlFySkQ0aUY3NXhOS3d2ay0wbTZObTBNZ0licnJDSnlB'
     ),
     {
       method: 'POST',

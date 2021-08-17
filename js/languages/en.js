@@ -139,7 +139,7 @@ export default {
       'Automatically open a period\'s link {time} when it starts. {emphasis|NOTE: Pages cannot be opened automatically unless you allow the "Pop-ups and redirects" permission in the site settings.}',
     options: 'Options',
     'other-apps':
-      'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {bellhop|Bellhop} by Kartik C. · {nugwa|Not UGWA} by Tomer S. · {hw-central|Homework Central} by Saumya S. · {ugwa-backend|WATT} by Yu-Ting C. and Kevin Y.',
+      'Gunn apps made by other people: {tga-ios|TheGunnApp} by the iOS App Development club · {tga-android|TheGunnApp} by David C. · {bellhop|Bellhop} by Kartik C. · {nugwa|Not UGWA} by Tomer S. · {hw-central|Homework Central} by Saumya S. · {ugwa-backend|WATT} by Yu-Ting C., Kevin Y., and Roger F. · {hwbounty|HWBounty} by John L., Ash R., Dylan L., and Syma C.',
     'other-versions':
       'Other versions: {gunn-schedule|Gunn Schedule} (no alternate schedules) · {ugwita|Ugwita} (ugly) · {ugwa2|Ugwa 2} (not done) · {ugwisha|Ugwisha}.',
     periods: 'Periods',

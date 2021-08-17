@@ -30,10 +30,10 @@ const urlsToCache = [
   'images/gunn-together.svg',
   'images/grad.svg',
   'json/alternatives.json',
-  'images/watt-resized.png',
-  'images/hc-temp.jpg',
-  'images/cc-temp.jpg',
-  'images/hwbounty-temp.jpg'
+  'images/watt-resized.png'
+  // 'images/hc-temp.jpg',
+  // 'images/cc-temp.jpg',
+  // 'images/hwbounty-temp.jpg'
 ]
 
 function sendError (msg) {
