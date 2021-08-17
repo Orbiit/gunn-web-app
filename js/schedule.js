@@ -2229,7 +2229,8 @@ const username =
   '`' +
   [1, 2, 3].map(() => names[(Math.random() * names.length) | 0]).join(' ') +
   '`'
-const VER = 'v4.4'
+
+const VER = 'v4.5'
 export function initSchedule () {
   months = localize('months').split('  ')
   daynames = localize('days').split('  ')
