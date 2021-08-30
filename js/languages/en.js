@@ -395,6 +395,17 @@ export default {
       heading: "Why aren't you using WATT?",
       message:
         'It has the correct times for {NAME} and will be kept up-to-date by current Gunn students.',
+      other: {
+        heading: 'Use WATT now.',
+        message1: 'It shows the schedule around a clock, which is pretty cool.',
+        message2: "It's asbestos-free.",
+        message3: "It doesn't have any ties with Russia.",
+        message4: 'Let go of the past.',
+        message5: 'It has updated staff schedules.',
+        message6: "You're holding onto a sinking ship.",
+        message7:
+          "Don't be like those who held onto TheGunnApp even when it was out of date."
+      },
       switch: 'Switch to WATT'
     },
     you: 'You',

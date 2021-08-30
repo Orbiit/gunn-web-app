@@ -72,6 +72,16 @@ const applyAltSchedMsg = createL10nApplier(localize('alt-msg'), {
   D: 'strong'
 })
 
+const wattMessages = [
+  localize('watt/other/message1'),
+  localize('watt/other/message2'),
+  localize('watt/other/message3'),
+  localize('watt/other/message4'),
+  localize('watt/other/message5'),
+  localize('watt/other/message6'),
+  localize('watt/other/message7')
+]
+
 const colourtoy = document.createElement('div')
 function isLight (colour) {
   colourtoy.style.backgroundColor = colour
@@ -654,7 +664,7 @@ export function scheduleApp (options = {}) {
 
       schedule.push(apExams)
 
-      for (const period of periods) {
+      for (const [i, period] of periods.entries()) {
         const periodStyle = getPeriod(period.name)
         let periodTimeLeft = null
         if (isToday) {
@@ -682,6 +692,25 @@ export function scheduleApp (options = {}) {
             [
               'p',
               localizeWith('watt/message', 'other', { NAME: periodStyle.label })
+            ],
+            [
+              {
+                type: 'ext-link.material.raised.watt-link',
+                properties: {
+                  href: 'https://gunnwatt.web.app/'
+                },
+                options: { ripple: true }
+              },
+              localize('watt/switch')
+            ]
+          ])
+        } else {
+          schedule.push([
+            'div.watt-ad',
+            ['h3', localize('watt/other/heading')],
+            [
+              'p',
+              wattMessages[(date.dayId * 17 + i * 53) % wattMessages.length]
             ],
             [
               {
