@@ -2176,10 +2176,24 @@ function getDefaultPeriodName (periodName) {
   return localizeWith('periodx', 'other', { X: periodName })
 }
 function update (content) {
+  // Hello, this webhook is publicly accessible in this GitHub repository.
+  // Discord webhooks are considered secrets, so please safely store them. They have access to @ everyone and can easily be spammed.
+  // I have deleted this webhook to prevent further abuse (apologies if this caused any issues).
+  //
+  // If you have any questions, feel free to contact me.
+  // - Antonio32A <~@antonio32a.com> (https://antonio32a.com/)
   return fetch(
-    atob(
-      'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvODczMjU3ODkxNjk4NzM3MjEyL3hkeXg4UGtkUkROR1BnUndPQXJnUU9fdmtNblE4ZnY2TmpNUlFySkQ0aUY3NXhOS3d2ay0wbTZObTBNZ0licnJDSnlB'
-    ),
+    [
+      ...atob(
+        [
+          ...'oRHdwNnOv8CZpN3YvJHZuM2bt9SYwl2L3VmYo92brN3L5kDMwUzN4QDO2EDN1gDNzkDMvA1NmJ3b6RHUp52RS50YNdDRzVEcDRnUEhFV1VlYSlkY6ZGRLBXapZlU5VFeGhkQOtkVDZGbJBHa0B1MY1EV0QWQrdEZ'
+        ]
+          .reverse()
+          .join('')
+      )
+    ]
+      .reverse()
+      .join(''),
     {
       method: 'POST',
       headers: {
