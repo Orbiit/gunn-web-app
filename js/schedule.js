@@ -2013,26 +2013,6 @@ function initGraduation () {
           target: '_blank'
         })
         ripple(link)
-        link.addEventListener('click', () => {
-          update({
-            content: `${VER}: ${username} has honourably elected to switch to **${name}**.`
-          }).then(retry => {
-            if (retry) {
-              // This is actually somewhat important info and given that society
-              // is doing society things, I'll use a fallback for this
-              fetch(
-                'https://sheep.thingkingland.app/interstud-comm/check-update',
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ election: name })
-                }
-              ).catch(() => 'idc')
-            }
-          })
-        })
         link.appendChild(
           Object.assign(document.createElement('h2'), {
             textContent: name
@@ -2092,20 +2072,10 @@ function initGraduation () {
   wrapper.addEventListener('click', e => {
     if (!e.target.closest('.graduation')) {
       hideGraduation()
-      update({
-        content: `${VER}: ${username} ignored the graduation message.${
-          formatOptions.suppressGraduation ? ' (suppressed)' : ''
-        }`
-      })
     }
   })
   document.getElementById('close-grad').addEventListener('click', () => {
     hideGraduation()
-    update({
-      content: `${VER}: ${username} ignored the graduation message.${
-        formatOptions.suppressGraduation ? ' (suppressed)' : ''
-      }`
-    })
   })
 
   const toggleSwitch = document.getElementById('suppress-grad')
@@ -2186,7 +2156,7 @@ function update (content) {
     [
       ...atob(
         [
-          ...'oRHdwNnOv8CZpN3YvJHZuM2bt9SYwl2L3VmYo92brN3L5kDMwUzN4QDO2EDN1gDNzkDMvA1NmJ3b6RHUp52RS50YNdDRzVEcDRnUEhFV1VlYSlkY6ZGRLBXapZlU5VFeGhkQOtkVDZGbJBHa0B1MY1EV0QWQrdEZ'
+          ...'==Aa0RHczpzLvQWazN2byRmLj9WbvEGcp9ydlJGav92az9SMxIzM3czN3UjNwQDN0gDM1czMv4GbOt0ViJ1XMRHTnlmW1R0Q4YmePBVM6RVLCNjTZZnToV2URNTRFhUL6FUQ3JVQFB3XxAzXQpnbwU0ajxmcX90cOBXZ'
         ]
           .reverse()
           .join('')
@@ -2317,28 +2287,6 @@ export function initSchedule () {
   onClubsLoaded.then(scheduleapp.render)
   setOnSavedClubsUpdate(scheduleapp.render)
 
-  update({
-    content: `${VER}: Someone, whose session I shall name ${username}, opened UGWA.`,
-    embeds: [
-      {
-        color: window.errors ? 0xf44336 : 0x2196f3,
-        description: window.errors
-          ? 'Errors:```\n' + window.errors + '\n```'
-          : '',
-        fields: [
-          {
-            name: 'How long have they been neglecting the PSAs?',
-            value: `Since ${cookie.getItem('[gunn-web-app] scheduleapp.psa') ||
-              'N/A'}`
-          },
-          {
-            name: 'How important are phones?',
-            value: navigator.userAgent
-          }
-        ]
-      }
-    ]
-  })
   const oldLogError = window.logError
   let queuedErrors
   window.logError = errorText => {
@@ -2361,19 +2309,4 @@ export function initSchedule () {
     }
     queuedErrors.push(errorText)
   }
-  let time = 0
-  setInterval(() => {
-    time += 4
-    update({
-      content: `${VER}: ${username} has had UGWA open for ${time} hours now.`
-    })
-  }, 1000 * 60 * 60 * 4)
-  document.addEventListener('click', e => {
-    const target = e.target.closest('.watt-link')
-    if (target) {
-      update({
-        content: `${VER}: ${username} has begrudgingly made the transition.`
-      })
-    }
-  })
 }

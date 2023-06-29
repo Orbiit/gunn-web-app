@@ -109,9 +109,10 @@ try {
      * @return {Date} The Date object with values from the school's time zone.
      */
     const timeAtSchool = function timeAtSchool (dateObj) {
+      // Expected format: 6/28/2023 AD, 18:00:58
       const datetime = schoolTzFormatter.format(dateObj)
-      const [date, fullYear, time] = datetime.split(/,\s+/)
-      const [month, day] = date.split(' ')
+      const [date, time] = datetime.split(', ')
+      const [month, day, fullYear] = date.split('/')
       const [year, era] = fullYear.split(' ')
       const [hour, minute, second] = time.split(':')
       // Local time for formatter time zone
