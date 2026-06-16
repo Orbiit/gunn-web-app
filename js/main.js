@@ -629,13 +629,13 @@ function initChat () {
       preview.appendChild(note)
     })
 
-    username = cookie.getItem('[gunn-web-app] chat.username')
-    while (!username) {
-      output.value += '\nEnter your name:'
-      username = await getInput
-      output.value += '\n' + username
-    }
-    cookie.setItem('[gunn-web-app] chat.username', username)
+    // username = cookie.getItem('[gunn-web-app] chat.username')
+    // while (!username) {
+    //   output.value += '\nEnter your name:'
+    //   username = await getInput
+    //   output.value += '\n' + username
+    // }
+    // cookie.setItem('[gunn-web-app] chat.username', username)
 
     function purify (text) {
       return text
@@ -714,25 +714,25 @@ function initChat () {
       ws.addEventListener('open', resolve)
       ws.addEventListener('error', reject)
     })
-    ws.send(
-      JSON.stringify({
-        type: 'identify',
-        id: userId,
-        name: username
-      })
-    )
+    // ws.send(
+    //   JSON.stringify({
+    //     type: 'identify',
+    //     id: userId,
+    //     name: username
+    //   })
+    // )
     let ratelimitTimeoutID = null
     let lastMessage
     let messages = 0
     while (true) {
       const message = await getInput
       if (message && message !== lastMessage) {
-        ws.send(
-          JSON.stringify({
-            type: 'message',
-            message
-          })
-        )
+        // ws.send(
+        //   JSON.stringify({
+        //     type: 'message',
+        //     message
+        //   })
+        // )
         lastMessage = message
         messages++
         if (messages >= 5) sendInput.disabled = true
