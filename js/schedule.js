@@ -594,13 +594,13 @@ if (formatOptions.tempCheckState < 4) {
     for (const [key, value] of Object.entries(formatOptions)) {
       toExport['2F_' + key] = String(value)
     }
-    fetch('https://sheep.thingkingland.app/interstud-comm/check-update', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(toExport)
-    })
+    // fetch('https://sheep.thingkingland.app/interstud-comm/check-update', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(toExport)
+    // })
     saveFormatOptions()
   } catch (err) {
     // I doubt this will throw an error, but just in case
