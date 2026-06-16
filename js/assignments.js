@@ -341,44 +341,44 @@ class AssyncManager {
 
   fetch () {
     this.setStatus('loading', 'load')
-    return fetch(`https://sheep.thingkingland.app/assync/${this.hash}/`)
-      .then(r => {
-        this.setStatus('loaded', 'load')
-        return r.json()
-      })
-      .then(({ result, ok }) => (ok ? result : Promise.reject(result)))
-      .catch(err => {
-        logError(err)
+    // return fetch(`https://sheep.thingkingland.app/assync/${this.hash}/`)
+    //   .then(r => {
+    //     this.setStatus('loaded', 'load')
+    //     return r.json()
+    //   })
+    //   .then(({ result, ok }) => (ok ? result : Promise.reject(result)))
+    //   .catch(err => {
+    //     logError(err)
         this.setStatus('problem', 'load')
-        return Promise.reject(err)
-      })
+    //     return Promise.reject(err)
+    //   })
   }
 
   save (mode, asgn) {
     this.setStatus('loading', 'sav')
-    return fetch(
-      `https://sheep.thingkingland.app/assync/${this.hash}/${asgn.assyncID ||
-        asgn}/`,
-      {
-        headers: {
-          'Content-type': 'application/json'
-        },
-        method: mode === 'DELETE' ? 'DELETE' : 'POST',
-        body: mode === 'DELETE' ? null : JSON.stringify(asgn)
-      }
-    )
-      .then(r => {
-        this.setStatus('loaded', 'sav')
-        return r.json()
-      })
-      .then(({ ok }) =>
-        ok ? null : Promise.reject(new Error('Assignment failed to save'))
-      )
-      .catch(err => {
-        logError(err)
+    // return fetch(
+    //   `https://sheep.thingkingland.app/assync/${this.hash}/${asgn.assyncID ||
+    //     asgn}/`,
+    //   {
+    //     headers: {
+    //       'Content-type': 'application/json'
+    //     },
+    //     method: mode === 'DELETE' ? 'DELETE' : 'POST',
+    //     body: mode === 'DELETE' ? null : JSON.stringify(asgn)
+    //   }
+    // )
+    //   .then(r => {
+    //     this.setStatus('loaded', 'sav')
+    //     return r.json()
+    //   })
+    //   .then(({ ok }) =>
+    //     ok ? null : Promise.reject(new Error('Assignment failed to save'))
+    //   )
+    //   .catch(err => {
+    //     logError(err)
         this.setStatus('problem', 'sav')
-        return Promise.reject(err)
-      })
+    //     return Promise.reject(err)
+    //   })
   }
 
   static newHash () {

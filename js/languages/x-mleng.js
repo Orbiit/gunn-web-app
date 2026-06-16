@@ -170,7 +170,7 @@ window.langs['x-mleng'] = {
     import: 'import',
     assync: 'Assignment Synchronization System (Assync)',
     'assync-desc':
-      'Assync allows you to sync your assignments across devices. This is an experimental feature.',
+      'Assync allows you to sync your assignments across devices. This feature has been disabled, and your data is no longer available.',
     'create-assync': 'Create Assync account',
     'or-assync': ' or ',
     'join-assync': 'Sync to account',
@@ -280,10 +280,10 @@ window.langs['x-mleng'] = {
       'the-settings-of-a-great-intellectual-gunn-student.json',
     'assync-loading': 'Loading assignments...',
     'assync-loaded': 'Assignments loaded.',
-    'assync-loading-problem': 'There was a problem loading the assignments.',
+    'assync-loading-problem': 'There was a problem loading the assignments. Assync is no longer available.',
     'assync-saving': 'Saving changes...',
     'assync-saved': 'Changes saved.',
-    'assync-saving-problem': 'There was a problem saving the changes.'
+    'assync-saving-problem': 'There was a problem saving the changes. Assync is no longer available.'
   },
   placeholders: {
     clubs: 'Search clubs',

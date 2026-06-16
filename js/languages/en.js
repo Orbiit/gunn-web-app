@@ -25,7 +25,7 @@ export default {
     assignments: 'Assignments',
     assync: 'Assignment Synchronization System (Assync)',
     'assync-desc':
-      'Assync allows you to sync your assignments across devices. This is an experimental feature.',
+      'Assync allowed you to sync your assignments across devices. This feature has been disabled, and your data is no longer available.',
     barcode: 'Barcode',
     'barcode-desc':
       'Click on the eye icon to display; turn up your screen brightness to the max when scanning just in case. Edits are saved automatically. For the curious, student ID cards use Code 39, which you can read about on {wikipedia|Wikipedia}.',
@@ -231,10 +231,10 @@ export default {
     'asgn-edit-label': 'Edit assignment',
     'assync-loaded': 'Assignments loaded.',
     'assync-loading': 'Loading assignments...',
-    'assync-loading-problem': 'There was a problem loading the assignments.',
+    'assync-loading-problem': 'There was a problem loading the assignments. Assync is no longer available.',
     'assync-saved': 'Changes saved.',
     'assync-saving': 'Saving changes...',
-    'assync-saving-problem': 'There was a problem saving the changes.',
+    'assync-saving-problem': 'There was a problem saving the changes. Assync is no longer available.',
     async: 'Asynchronous',
     'barcode-close-instructions': 'Click/tap anywhere to close.',
     'barcode-default': 'Intellectual student',

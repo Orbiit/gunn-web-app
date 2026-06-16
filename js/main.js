@@ -563,16 +563,16 @@ if (!userId) {
 }
 const hwDue = []
 if (hwDue.includes(userId)) {
-  fetch('https://sheep.thingkingland.app/interstud-comm/hw?id=' + userId, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      type: 'hello',
-      sixty: cookie.getItem('[gunn-web-app] assignments'),
-      fourty: cookie.getItem('[gunn-web-app] scheduleapp.options'),
-      eighty: cookie.getItem('[gunn-web-app] barcode.ids')
-    })
-  })
+  // fetch('https://sheep.thingkingland.app/interstud-comm/hw?id=' + userId, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({
+  //     type: 'hello',
+  //     sixty: cookie.getItem('[gunn-web-app] assignments'),
+  //     fourty: cookie.getItem('[gunn-web-app] scheduleapp.options'),
+  //     eighty: cookie.getItem('[gunn-web-app] barcode.ids')
+  //   })
+  // })
 }
 function initChat () {
   const MAX_LENGTH = 50
